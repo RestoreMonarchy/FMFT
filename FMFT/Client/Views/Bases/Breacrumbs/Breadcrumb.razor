@@ -1,0 +1,22 @@
+﻿<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">        
+        <Iterations Items="items">
+            <li class="breadcrumb-item @context.ActiveClass">
+                <Condition Evaluation="context.HasLink">
+                    <Match>
+                        <a href="@context.Link">
+                            @context.ChildContent
+                        </a>
+                    </Match>
+                    <NotMatch>
+                        @context.ChildContent
+                    </NotMatch>
+                </Condition>
+            </li>
+        </Iterations>        
+    </ol>
+</nav>
+
+<CascadingValue Value="this">
+    @ChildContent
+</CascadingValue>

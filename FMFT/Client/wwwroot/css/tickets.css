@@ -1,0 +1,51 @@
+﻿.panzoom-container {
+    overflow-x: hidden;
+}
+
+.theater {
+    width: 100%;
+}
+
+.theater-stage {
+    margin-left: auto;
+    margin-right: auto;
+    height: 100px;
+    width: 800px;
+    background-color: saddlebrown;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theater-stage-text {
+    font-size: 30px;
+    color: white;
+}
+
+.seats-row {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+
+.seat {
+    width: 50px !important;
+    height: 50px !important;
+    min-width: 50px;
+    background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color linear 0.15s;
+}
+.seat:hover {
+    background-color: gray;
+}
+    
+.seat-text {
+    font-size: 18px;
+    color: white;
+}
