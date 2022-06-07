@@ -1,0 +1,40 @@
+﻿<div @ref="ContainerElement" class="border border-2 border-white bg-dark panzoom-container">
+    <div class="panzoom-toolbar">
+        <button class="panzoom-button panzoom-zoomin">
+            <i class="bi bi-zoom-in"></i>
+        </button>
+        <button class="panzoom-button panzoom-zoomout">
+            <i class="bi bi-zoom-out"></i>
+        </button>
+        <button class="panzoom-button panzoom-reset">
+            <i class="bi bi-arrow-clockwise"></i>
+        </button>
+    </div>
+    <div class="panzoom-element">
+
+        <div class="theater">
+
+            <div class="theater-stage">
+                <div class="theater-stage-text">
+                    Stage   
+                </div>
+            </div>
+
+            @for (int i = 1; i < 7; i++)
+            {
+                <div class="seats-row my-2">
+                    @for (int j = 1; j < 20 + i; j++)
+                    {
+                        <div class="mx-1 seat">
+                            <div class="seat-text">
+                                @j
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+        
+        
+    </div>
+</div>

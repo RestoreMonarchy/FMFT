@@ -1,4 +1,5 @@
 using FMFT.Client;
+using FMFT.Client.Brokers.JSRuntimes;
 using FMFT.Client.Brokers.Navigations;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -10,5 +11,6 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
 builder.Services.AddScoped<INavigationBroker, NavigationBroker>();
+builder.Services.AddScoped<IJSRuntimeBroker, JSRuntimeBroker>();
 
 await builder.Build().RunAsync();

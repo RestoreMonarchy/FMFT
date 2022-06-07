@@ -1,15 +1,35 @@
 ﻿
-function DoPanzoom() {
-    const elem = document.getElementById('panzoom-element')
+function InitializePanzoom(containerElement) {
+
+    const elem = containerElement.getElementsByClassName('panzoom-element')[0];
+
+    console.log(elem);
+
     const panzoom = Panzoom(elem, {
-        maxScale: 5
+        maxScale: 5,
+        canvas: true
     })
     /*panzoom.pan(1000, 10)*/
-    panzoom.zoom(0.5, { animate: true })
+    panzoom.zoom(1, { animate: false })
 
-    const zoomInButton = document.getElementById('panzoom-zoomin');
-    const zoomOutButton = document.getElementById('panzoom-zoomout');
-    const resetButton = document.getElementById('panzoom-reset');
+    //var height = containerElement.height;
+    //var width = containerElement.offsetWidth - 100;
+
+    //var elemHeight = elem.height;
+    //var elemWidth = elem.offsetWidth - 100;
+    //console.log(width);
+    //console.log(elemWidth);
+
+    //var zoom = width / elemWidth;
+    //console.log(zoom);
+    //panzoom.zoom(zoom);
+
+
+    const toolbarElem = containerElement.getElementsByClassName("panzoom-toolbar")[0];
+
+    const zoomInButton = toolbarElem.getElementsByClassName('panzoom-zoomin')[0];
+    const zoomOutButton = toolbarElem.getElementsByClassName('panzoom-zoomout')[0];
+    const resetButton = toolbarElem.getElementsByClassName('panzoom-reset')[0];
 
     zoomInButton.addEventListener('click', panzoom.zoomIn)
     zoomOutButton.addEventListener('click', panzoom.zoomOut)
@@ -19,5 +39,5 @@ function DoPanzoom() {
     // There are several available methods for zooming
     // that can be bound on button clicks or mousewheel.
     //button.addEventListener('click', panzoom.zoomIn)
-    //elem.parentElement.addEventListener('wheel', panzoom.zoomWithWheel)
+    containerElement.addEventListener('wheel', panzoom.zoomWithWheel)
 }

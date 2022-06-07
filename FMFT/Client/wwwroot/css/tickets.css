@@ -1,5 +1,30 @@
 ﻿.panzoom-container {
     overflow-x: hidden;
+    position: relative;
+    height: 500px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.panzoom-toolbar {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    z-index: 1;
+}
+
+.panzoom-button {
+    padding: 6px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    color: black;
+    background-color: white;
+    border: none;
+    font-size: 18px;
+    font-weight: 900;
 }
 
 .theater {
@@ -7,10 +32,11 @@
 }
 
 .theater-stage {
-    margin-left: auto;
-    margin-right: auto;
+    margin-right: auto !important;
+    margin-left: auto !important;
     height: 100px;
     width: 800px;
+    min-width: 800px;
     background-color: saddlebrown;
     margin-top: 20px;
     margin-bottom: 30px;
@@ -28,12 +54,13 @@
     display: flex !important;
     align-items: center;
     justify-content: center;
+    width: 100%;
 }
 
 .seat {
-    width: 50px !important;
-    height: 50px !important;
-    min-width: 50px;
+    width: 35px !important;
+    height: 35px !important;
+    min-width: 35px;
     background-color: black;
     display: flex;
     align-items: center;
@@ -46,6 +73,6 @@
 }
     
 .seat-text {
-    font-size: 18px;
+    font-size: 15px;
     color: white;
 }

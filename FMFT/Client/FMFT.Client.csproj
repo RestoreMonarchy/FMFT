@@ -19,8 +19,4 @@
     <ProjectReference Include="..\Shared\FMFT.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\Components\" />
-  </ItemGroup>
-
 </Project>
