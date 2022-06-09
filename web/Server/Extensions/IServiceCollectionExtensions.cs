@@ -8,6 +8,7 @@ using FMFT.Web.Server.Services.Foundations.Seats;
 using FMFT.Web.Server.Services.Foundations.Shows;
 using FMFT.Web.Server.Services.Foundations.Users;
 using FMFT.Web.Server.Services.Processings.Users;
+using FMFT.Web.Server.Services.Foundations.Reservations;
 
 namespace FMFT.Web.Server.Extensions
 {
@@ -28,6 +29,7 @@ namespace FMFT.Web.Server.Extensions
             services.AddTransient<IAuditoriumService, AuditoriumService>();
             services.AddTransient<IShowService, ShowService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IReservationService, ReservationService>();
             return services;
         }
 
