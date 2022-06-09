@@ -1,7 +1,7 @@
 ﻿CREATE TABLE dbo.Seats
 (
 	Id INT IDENTITY(1,1) NOT NULL CONSTRAINT PK_Seats PRIMARY KEY,
-	[Row] INT NOT NULL,
-	[Number] INT NOT NULL,
-	CONSTRAINT UK_Seats_RowNumber UNIQUE (Row, Number)
+	[Row] SMALLINT NOT NULL,
+	Number SMALLINT NOT NULL,
+	CONSTRAINT UK_Seats_RowNumber UNIQUE ([Row], Number)
 )

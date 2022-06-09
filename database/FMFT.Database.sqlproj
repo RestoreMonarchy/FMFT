@@ -62,4 +62,7 @@
   <ItemGroup>
     <Build Include="dbo\tables\Seats.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="FMFT.Database.publish.xml" />
+  </ItemGroup>
 </Project>

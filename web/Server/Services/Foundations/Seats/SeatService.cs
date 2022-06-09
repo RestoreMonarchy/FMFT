@@ -15,7 +15,7 @@ namespace FMFT.Web.Server.Services.Foundations.Seats
 
         public async ValueTask<Seat> RetrieveSeatByIdAsync(int seatId)
         {
-            Seat seat = await storageBroker.RetrieveSeatByIdAsync(seatId);
+            Seat seat = await storageBroker.SelectSeatByIdAsync(seatId);
             if (seat == null)
             {
                 throw new SeatNotFoundException();
@@ -26,7 +26,7 @@ namespace FMFT.Web.Server.Services.Foundations.Seats
 
         public async ValueTask<IEnumerable<Seat>> RetrieveAllSeatsAsync()
         {
-            IEnumerable<Seat> seats = await storageBroker.RetrieveAllSeatsAsync();
+            IEnumerable<Seat> seats = await storageBroker.SelectAllSeatsAsync();
 
             return seats;
         }
