@@ -1,8 +1,12 @@
+using FMFT.Web.Server.Extensions;
 using Microsoft.AspNetCore.ResponseCompression;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddBrokers();
+builder.Services.AddFoundations();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
