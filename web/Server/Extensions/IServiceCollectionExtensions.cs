@@ -1,4 +1,5 @@
 ﻿using FMFT.Web.Server.Brokers.Storages;
+using FMFT.Web.Server.Services.Foundations.Auditoriums;
 using FMFT.Web.Server.Services.Foundations.Seats;
 
 namespace FMFT.Web.Server.Extensions
@@ -14,6 +15,7 @@ namespace FMFT.Web.Server.Extensions
         public static IServiceCollection AddFoundations(this IServiceCollection services)
         {
             services.AddTransient<ISeatService, SeatService>();
+            services.AddTransient<IAuditoriumService, AuditoriumService>();
             return services;
         }
     }

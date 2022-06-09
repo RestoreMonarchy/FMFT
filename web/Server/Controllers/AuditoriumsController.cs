@@ -1,0 +1,39 @@
+﻿using FMFT.Web.Server.Services.Foundations.Auditoriums;
+using FMFT.Web.Shared.Models.Auditoriums;
+using FMFT.Web.Shared.Models.Auditoriums.Exceptions;
+using Microsoft.AspNetCore.Mvc;
+
+namespace FMFT.Web.Server.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]")]
+    public class AuditoriumsController : ControllerBase
+    {
+        private readonly IAuditoriumService auditoriumService;
+
+        public AuditoriumsController(IAuditoriumService auditoriumService)
+        {
+            this.auditoriumService = auditoriumService;
+        }
+
+        [HttpGet]
+        public async ValueTask<IActionResult> GetAuditoriums()
+        {
+            IEnumerable<Auditorium> auditoriums = await auditoriumService.RetrieveAllAuditoriumsAsync();
+            return Ok(auditoriums);
+        }
+
+        [HttpGet("{auditoriumId}")]
+        public async ValueTask<IActionResult> GetAuditorium(int auditoriumId)
+        {
+            try
+            {
+                Auditorium auditorium = await auditoriumService.RetrieveAuditoriumByIdAsync(auditoriumId);
+                return Ok(auditorium);
+            } catch (AuditoriumNotFoundException)
+            {
+                return NotFound();
+            }            
+        }
+    }
+}
