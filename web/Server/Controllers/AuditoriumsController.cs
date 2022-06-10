@@ -2,12 +2,13 @@
 using FMFT.Web.Shared.Models.Auditoriums;
 using FMFT.Web.Shared.Models.Auditoriums.Exceptions;
 using Microsoft.AspNetCore.Mvc;
+using RESTFulSense.Controllers;
 
 namespace FMFT.Web.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class AuditoriumsController : ControllerBase
+    public class AuditoriumsController : RESTFulController
     {
         private readonly IAuditoriumService auditoriumService;
 

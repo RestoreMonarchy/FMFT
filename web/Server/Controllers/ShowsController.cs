@@ -2,12 +2,13 @@
 using FMFT.Web.Shared.Models.Shows;
 using FMFT.Web.Shared.Models.Shows.Exceptions;
 using Microsoft.AspNetCore.Mvc;
+using RESTFulSense.Controllers;
 
 namespace FMFT.Web.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ShowsController : ControllerBase
+    public class ShowsController : RESTFulController
     {
         private readonly IShowService showService;
 

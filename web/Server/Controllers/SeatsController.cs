@@ -2,12 +2,13 @@
 using FMFT.Web.Shared.Models.Seats;
 using FMFT.Web.Shared.Models.Seats.Exceptions;
 using Microsoft.AspNetCore.Mvc;
+using RESTFulSense.Controllers;
 
 namespace FMFT.Web.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class SeatsController : ControllerBase
+    public class SeatsController : RESTFulController
     {
         private readonly ISeatService seatService;
 
