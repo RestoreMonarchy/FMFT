@@ -1,5 +1,6 @@
 ﻿using FMFT.Web.Server.Brokers.Storages;
 using FMFT.Web.Shared.Models.Shows;
+using FMFT.Web.Shared.Models.Shows.Exceptions;
 
 namespace FMFT.Web.Server.Services.Foundations.Shows
 {
@@ -15,6 +16,11 @@ namespace FMFT.Web.Server.Services.Foundations.Shows
         public async ValueTask<Show> RetrieveShowByIdAsync(int showId)
         {
             Show show = await storageBroker.SelectShowByIdAsync(showId);
+            if (show == null) 
+            {
+                throw new ShowNotFoundException();
+            }
+
             return show;
         }
 

@@ -1,0 +1,17 @@
+﻿@using FMFT.Web.Shared.Models.Shows.Exceptions
+
+<Condition Evaluation="Exception == null">
+    <Match>
+        <LoadingView State="Show">
+            <h3>@Show.Name</h3>
+            <p>@Show.Description</p>
+        </LoadingView>
+    </Match>
+    <NotMatch>
+        <Condition Evaluation="this.Exception is ShowNotFoundException">
+            <Match>
+                Show with the specified Id could not be found
+            </Match>
+        </Condition>
+    </NotMatch>
+</Condition>

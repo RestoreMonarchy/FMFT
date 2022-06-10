@@ -16,5 +16,10 @@ namespace FMFT.Web.Client.Services.Views.Shows
         {
             return await showService.RetrieveAllShowsAsync();
         }
+
+        public async ValueTask<Show> RetrieveShowByIdAsync(int showId)
+        {
+            return await showService.RetrieveShowByIdAsync(showId);
+        }
     }
 }
