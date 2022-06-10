@@ -6,6 +6,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: #d5d5d5;
 }
 
 .panzoom-toolbar {
@@ -61,13 +62,18 @@
     width: 35px !important;
     height: 35px !important;
     min-width: 35px;
-    background-color: black;
+    background-color: #393939;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     transition: background-color linear 0.15s;
 }
+
+.seat-busy {
+    background-color: red !important;
+}
+
 .seat:hover {
     background-color: gray;
 }
