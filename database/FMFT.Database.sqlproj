@@ -58,11 +58,16 @@
     <Folder Include="Properties" />
     <Folder Include="dbo" />
     <Folder Include="dbo\tables" />
+    <Folder Include="dbo\procedures" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\tables\Seats.sql" />
     <Build Include="dbo\tables\Auditoriums.sql" />
     <Build Include="dbo\tables\Shows.sql" />
+    <Build Include="dbo\tables\Users.sql" />
+    <Build Include="dbo\tables\UserLogins.sql" />
+    <Build Include="dbo\procedures\RegisterUserWithPassword.sql" />
+    <Build Include="dbo\procedures\RegisterUserWithLogin.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FMFT.Database.publish.xml" />
