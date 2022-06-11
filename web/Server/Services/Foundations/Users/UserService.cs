@@ -25,7 +25,24 @@ namespace FMFT.Web.Server.Services.Foundations.Users
 
         public async ValueTask<User> RetrieveUserByIdAsync(int userId)
         {
-            return await storageBroker.SelectUserByIdAsync(userId);
+            User user = await storageBroker.SelectUserByIdAsync(userId);
+            if (user == null)
+            {
+                throw new UserNotFoundException();
+            }
+
+            return user;
+        }
+
+        public async ValueTask<User> RetrieveUserByEmailAsync(string email)
+        {
+            User user = await storageBroker.SelectUserByEmailAsync(email);
+            if (user == null)
+            {
+                throw new UserNotFoundException();
+            }
+
+            return user;
         }
 
         public async ValueTask<User> RegisterUserWithPasswordAsync(RegisterUserWithPasswordParams @params)

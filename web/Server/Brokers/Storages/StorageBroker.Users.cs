@@ -19,6 +19,12 @@ namespace FMFT.Web.Server.Brokers.Storages
             return await connection.QueryAsync<User>(sql);
         }
 
+        public async ValueTask<User> SelectUserByEmailAsync(string email)
+        {
+            const string sql = "SELECT * FROM dbo.Users WHERE Email = @email;";
+            return await connection.QuerySingleOrDefaultAsync<User>(sql, new { email });
+        }
+
         public async ValueTask<StoredProcedureResult<User>> RegisterUserWithPasswordAsync(
             RegisterUserWithPasswordParams @params)
         {

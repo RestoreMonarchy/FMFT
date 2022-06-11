@@ -8,6 +8,7 @@ namespace FMFT.Web.Server.Services.Foundations.Users
         ValueTask<User> RegisterUserWithLoginAsync(RegisterUserWithLoginParams @params);
         ValueTask<User> RegisterUserWithPasswordAsync(RegisterUserWithPasswordParams @params);
         ValueTask<IEnumerable<User>> RetrieveAllUsersAsync();
+        ValueTask<User> RetrieveUserByEmailAsync(string email);
         ValueTask<User> RetrieveUserByIdAsync(int userId);
     }
 }

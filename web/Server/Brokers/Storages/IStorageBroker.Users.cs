@@ -10,5 +10,6 @@ namespace FMFT.Web.Server.Brokers.Storages
         ValueTask<StoredProcedureResult<User>> RegisterUserWithLoginAsync(RegisterUserWithLoginParams @params);
         ValueTask<User> SelectUserByIdAsync(int userId);
         ValueTask<IEnumerable<User>> SelectAllUsersAsync();
+        ValueTask<User> SelectUserByEmailAsync(string email);
     }
 }
