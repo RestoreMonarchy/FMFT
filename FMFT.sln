@@ -15,6 +15,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FMFT.Web.Server", "web\Serv
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "FMFT.Database", "database\FMFT.Database.sqlproj", "{B16EFD75-CC38-4547-B61E-66CE0F3DDCE2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "extensions", "extensions", "{A7DBB44D-AE92-4CA3-B5F4-D55C422CC8EF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FMFT.Extensions.Authentication", "extensions\Authentication\FMFT.Extensions.Authentication.csproj", "{55D93158-6392-4266-84BE-BEF565CD6DF5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,10 @@ Global
 		{B16EFD75-CC38-4547-B61E-66CE0F3DDCE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B16EFD75-CC38-4547-B61E-66CE0F3DDCE2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B16EFD75-CC38-4547-B61E-66CE0F3DDCE2}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{55D93158-6392-4266-84BE-BEF565CD6DF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55D93158-6392-4266-84BE-BEF565CD6DF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55D93158-6392-4266-84BE-BEF565CD6DF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55D93158-6392-4266-84BE-BEF565CD6DF5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +56,7 @@ Global
 		{D27DBD56-FA00-464C-BDE8-F5F22CD69A5D} = {87642E47-A7F6-4390-ABFB-355CFB8DDA6A}
 		{CC94C226-FFD4-457A-94AE-45F79D92809C} = {87642E47-A7F6-4390-ABFB-355CFB8DDA6A}
 		{B16EFD75-CC38-4547-B61E-66CE0F3DDCE2} = {1A1BA88F-2DF7-4BE1-A61C-6C93AD0D8B97}
+		{55D93158-6392-4266-84BE-BEF565CD6DF5} = {A7DBB44D-AE92-4CA3-B5F4-D55C422CC8EF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {81FEE0D1-B373-4D86-8197-E4065AEF25AD}
