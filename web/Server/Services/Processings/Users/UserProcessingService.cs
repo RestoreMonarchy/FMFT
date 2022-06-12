@@ -56,7 +56,14 @@ namespace FMFT.Web.Server.Services.Processings.Users
 
         public async ValueTask SignInUserWithPasswordAsync(SignInUserWithPasswordModel model)
         {
-            User user = await userService.RetrieveUserByEmailAsync(model.Email);
+            User user;
+            try
+            {
+                user = await userService.RetrieveUserByEmailAsync(model.Email);
+            } catch (UserNotFoundException)
+            {
+                throw new UserPasswordNotMatchException();
+            }            
             
             if (!encryptionBroker.VerifyPassword(model.PasswordText, user.PasswordHash))
             {

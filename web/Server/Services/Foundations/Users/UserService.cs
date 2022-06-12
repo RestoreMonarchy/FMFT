@@ -47,18 +47,21 @@ namespace FMFT.Web.Server.Services.Foundations.Users
 
         public async ValueTask<User> RegisterUserWithPasswordAsync(RegisterUserWithPasswordParams @params)
         {
+            RegisterUserWithPasswordValidationException validationException = new();
             if (validationBroker.IsEmailInvalid(@params.Email))
             {
-                throw new UserEmailInvalidException();
+                validationException.UpsertDataList("Email", "Invalid");
             }
             if (validationBroker.IsStringInvalid(@params.FirstName, true, 255, 3))
             {
-                throw new UserFirstNameInvalidException();
+                validationException.UpsertDataList("FirstName", "Invalid");
             }
             if (validationBroker.IsStringInvalid(@params.LastName, true, 255, 3))
             {
-                throw new UserLastNameInvalidException();
+                validationException.UpsertDataList("LastName", "Invalid");
             }
+
+            validationException.ThrowIfContainsErrors();
 
             StoredProcedureResult<User> result = await storageBroker.RegisterUserWithPasswordAsync(@params);
             if (result.ReturnValue == 1)
@@ -71,26 +74,29 @@ namespace FMFT.Web.Server.Services.Foundations.Users
 
         public async ValueTask<User> RegisterUserWithLoginAsync(RegisterUserWithLoginParams @params)
         {
+            RegisterUserWithLoginValidationException validationException = new();
             if (validationBroker.IsEmailInvalid(@params.Email))
             {
-                throw new UserEmailInvalidException();
+                validationException.UpsertDataList("Email", "Invalid");
             }
             if (validationBroker.IsStringInvalid(@params.FirstName, true, 255, 3))
             {
-                throw new UserFirstNameInvalidException();
+                validationException.UpsertDataList("FirstName", "Invalid");
             }
             if (validationBroker.IsStringInvalid(@params.LastName, true, 255, 3))
             {
-                throw new UserLastNameInvalidException();
+                validationException.UpsertDataList("LastName", "Invalid");
             }
             if (validationBroker.IsStringInvalid(@params.LoginProvider, true, 255, 0))
             {
-                throw new UserLoginLoginProviderInvalidException();
+                validationException.UpsertDataList("LoginProvider", "Invalid");
             }
             if (validationBroker.IsStringInvalid(@params.ProviderKey, true, 255, 0))
             {
-                throw new UserLoginProviderKeyInvalidException();
+                validationException.UpsertDataList("ProviderKey", "Invalid");
             }
+
+            validationException.ThrowIfContainsErrors();
 
             StoredProcedureResult<User> result = await storageBroker.RegisterUserWithLoginAsync(@params);
             if (result.ReturnValue == 1)

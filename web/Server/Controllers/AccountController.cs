@@ -18,16 +18,17 @@ namespace FMFT.Web.Server.Controllers
         }
 
         [HttpPost("register")]
-        public async ValueTask<IActionResult> Register(
-            [FromBody] RegisterUserWithPasswordModel model,
-            [FromQuery] string returnUrl = "/")
+        public async ValueTask<IActionResult> Register([FromBody] RegisterUserWithPasswordModel model)
         {
             try
             {
                 await userService.RegisterUserWithPasswordAsync(model);
-            } catch (UserPasswordInvalidException)
+            } catch (UserPasswordInvalidException exception)
             {
-                return Problem();
+                return BadRequest(exception);
+            } catch (RegisterUserWithPasswordValidationException exception)
+            {
+                return BadRequest(exception);
             } catch (UserEmailAlreadyExistsException)
             {
                 return Conflict();
@@ -37,26 +38,24 @@ namespace FMFT.Web.Server.Controllers
         } 
 
         [HttpPost("login")]
-        public async ValueTask<IActionResult> LogIn(
-            [FromBody] SignInUserWithPasswordModel model, 
-            [FromQuery] string returnUrl = "/")
+        public async ValueTask<IActionResult> LogIn([FromBody] SignInUserWithPasswordModel model)
         {
             try
             {
                 await userService.SignInUserWithPasswordAsync(model);
-            } catch (UserPasswordNotMatchException)
+            } catch (UserPasswordNotMatchException exception)
             {
-                return BadRequest();
+                return Forbidden(exception);
             }
 
-            return LocalRedirect(returnUrl);
+            return Ok();
         }
 
-        [HttpGet("logout")]
-        public async ValueTask<IActionResult> LogOut([FromQuery] string returnUrl = "/")
+        [HttpPost("logout")]
+        public async ValueTask<IActionResult> LogOut()
         {
             await userService.SignOutUserAsync();
-            return LocalRedirect(returnUrl);
+            return Ok();
         }
     }
 }
