@@ -1,0 +1,34 @@
+﻿@inherits LayoutComponentBase
+
+<main class="form-signin text-center bg-light rounded rounded-3">
+    <img class="mb-3 rounded-circle" src="/img/logo.jpg" alt="" width="100" height="100">
+    
+    <div>
+        @Body
+    </div>    
+
+    <p class="my-3 text-muted">&copy; @DateTime.UtcNow.Year</p>
+</main>
+
+@*
+    This cannot be in the isolated CSS file
+*@
+<style rel="stylesheet">
+    html, body {
+        height: 100% !important;
+    }
+
+    body {
+        display: flex;
+        align-items: center !important;
+        padding-top: 40px;
+        padding-bottom: 40px;
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/img/background.jpg) no-repeat center center fixed;
+        background-size: cover;
+    }
+
+    #app {
+        display: flex;
+        width: 100%;
+    }
+</style>

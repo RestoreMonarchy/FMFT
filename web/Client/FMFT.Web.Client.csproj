@@ -10,14 +10,27 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Shared\AccountLayout.razor.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Shared\AccountLayout.razor.css" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.5" PrivateAssets="all" />
     <PackageReference Include="PrettyBlazor" Version="1.2.0" />
-    <PackageReference Include="RESTFulSense.WebAssembly" Version="0.9.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Shared\FMFT.Web.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="RESTFulSense.WebAssembly">
+      <HintPath>..\..\..\..\Other\RESTFulSense\RESTFulSense.WebAssembly\bin\Debug\net6.0\RESTFulSense.WebAssembly.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

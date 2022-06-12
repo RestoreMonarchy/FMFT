@@ -1,0 +1,13 @@
+﻿<Condition Evaluation="IsSpinning">
+    <Match>
+        <button class="@Class" type="button" disabled>
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            @SpinningText
+        </button>
+    </Match>
+    <NotMatch>
+        <button class="@Class" @onclick="OnClick" disabled="@IsDisabled">
+            @ChildContent
+        </button>
+    </NotMatch>
+</Condition>
