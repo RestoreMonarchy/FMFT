@@ -12,6 +12,11 @@ namespace FMFT.Web.Server.Brokers.Authentications
             context = new AuthenticationContext(httpContextAccessor.HttpContext);
         }
 
+        public async ValueTask SignOutAsync()
+        {
+            await context.SignOutAsync();
+        }
+
         public async ValueTask SignInAsync(
             Dictionary<string, object> claimsDictionary, 
             bool isPersistent, 

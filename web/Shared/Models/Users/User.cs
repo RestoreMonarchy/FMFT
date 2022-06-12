@@ -1,4 +1,6 @@
-﻿namespace FMFT.Web.Shared.Models.Users
+﻿using System.Text.Json.Serialization;
+
+namespace FMFT.Web.Shared.Models.Users
 {
     public class User
     {
@@ -11,5 +13,8 @@
         public bool IsEmailConfirmed { get; set; }
         public DateTimeOffset? ConfirmEmailSendDate { get; set; }
         public DateTime CreateDate { get; set; }
+
+        [JsonIgnore]
+        public string PasswordHash { get; set; }
     }
 }
