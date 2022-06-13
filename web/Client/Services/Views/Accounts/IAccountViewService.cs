@@ -4,6 +4,7 @@ namespace FMFT.Web.Client.Services.Views.Accounts
 {
     public interface IAccountViewService
     {
+        void ForceLoadNavigateTo(string url);
         ValueTask LoginAsync(SignInUserWithPasswordModel model);
         ValueTask RegisterAsync(RegisterUserWithPasswordModel model);
     }

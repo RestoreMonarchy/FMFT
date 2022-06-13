@@ -35,6 +35,7 @@ namespace FMFT.Web.Client.Views.Components.Accounts
             {
                 await Task.Delay(2000);
                 await AccountViewService.LoginAsync(Model);
+                AccountViewService.ForceLoadNavigateTo("/");
             } catch (UserPasswordNotMatchException)
             {
                 UserPasswordNotMatchAlert.Show();

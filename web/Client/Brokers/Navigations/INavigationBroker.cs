@@ -9,5 +9,8 @@ namespace FMFT.Web.Client.Brokers.Navigations
         string RelativeUri { get; }
 
         event Action<LocationChangedEventArgs> OnLocationChange;
+
+        void ForceLoadNavigateTo(string url);
+        void NavigateTo(string url);
     }
 }

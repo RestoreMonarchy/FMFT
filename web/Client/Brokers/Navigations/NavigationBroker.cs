@@ -22,5 +22,15 @@ namespace FMFT.Web.Client.Brokers.Navigations
         {
             OnLocationChange?.Invoke(e);
         }
+
+        public void ForceLoadNavigateTo(string url)
+        {
+            navigationManager.NavigateTo(url, true);
+        }
+
+        public void NavigateTo(string url)
+        {
+            navigationManager.NavigateTo(url);
+        }
     }
 }
