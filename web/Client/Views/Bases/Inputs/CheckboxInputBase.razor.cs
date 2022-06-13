@@ -2,30 +2,28 @@
 
 namespace FMFT.Web.Client.Views.Bases.Inputs
 {
-    public partial class TextInputBase
+    public partial class CheckboxInputBase : InputBase
     {
         [Parameter]
-        public string Value { get; set; }
+        public RenderFragment ChildContent { get; set; }
 
         [Parameter]
-        public string Placeholder { get; set; }
+        public bool Value { get; set; }
 
         [Parameter]
-        public EventCallback<string> ValueChanged { get; set; }
+        public EventCallback<bool> ValueChanged { get; set; }
 
         [Parameter]
         public string Class { get; set; }
 
-        public bool IsEnabled => IsDisabled is false;
-
-        protected Task OnValueChanged(ChangeEventArgs changeEventArgs)
+        private Task OnValueChanged(ChangeEventArgs changeEventArgs)
         {
-            this.Value = changeEventArgs.Value.ToString();
-
+            this.Value = bool.Parse(changeEventArgs.Value.ToString());
+            
             return ValueChanged.InvokeAsync(this.Value);
         }
 
-        public Task SetValueAsync(string value) =>
+        public Task SetValueAsync(bool value) =>
         InvokeAsync(async () =>
         {
             this.Value = value;
