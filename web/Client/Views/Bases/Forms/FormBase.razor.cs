@@ -16,7 +16,7 @@ namespace FMFT.Web.Client.Views.Bases.Forms
             Inputs.Add(inputBase);
         }
 
-        public void Disable()
+        public void DisableAll()
         {
             foreach (InputBase input in Inputs)
             {
@@ -24,7 +24,7 @@ namespace FMFT.Web.Client.Views.Bases.Forms
             }
         }
 
-        public void Enable()
+        public void EnableAll()
         {
             foreach (InputBase input in Inputs)
             {

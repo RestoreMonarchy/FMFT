@@ -7,9 +7,9 @@ namespace FMFT.Web.Client.Views.Bases.Inputs
     {
         [Parameter]
         public bool IsDisabled { get; set; }
+
         [CascadingParameter]
         public FormBase Form { get; set; }
-
 
         protected override void OnAfterRender(bool firstRender)
         {

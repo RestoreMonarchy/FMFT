@@ -1,4 +1,5 @@
 ﻿using FMFT.Web.Client.Services.Views.Accounts;
+using FMFT.Web.Client.Views.Bases.Alerts;
 using FMFT.Web.Client.Views.Bases.Buttons;
 using FMFT.Web.Client.Views.Bases.Forms;
 using FMFT.Web.Client.Views.Bases.Inputs;
@@ -21,20 +22,26 @@ namespace FMFT.Web.Client.Views.Components.Accounts
         public TextInputBase PasswordInput { get; set; }
         public CheckboxInputBase PersistentCheckbox { get; set; }
 
+        public AlertGroupBase AlertGroup { get; set; }
+        public AlertBase UserPasswordNotMatchAlert { get; set; }
+
         public async Task SubmitLoginAsync()
         {
-            Form.Disable();
+            AlertGroup.HideAll();
+            Form.DisableAll();
             SubmitButton.StartSpinning();
+
             try
             {
+                await Task.Delay(2000);
                 await AccountViewService.LoginAsync(Model);
             } catch (UserPasswordNotMatchException)
             {
-                // Password or username is invalid
+                UserPasswordNotMatchAlert.Show();
             } finally
             {
                 SubmitButton.StopSpinning();
-                Form.Enable();
+                Form.EnableAll();
             }
         }
     }
