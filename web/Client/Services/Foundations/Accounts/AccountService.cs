@@ -34,6 +34,9 @@ namespace FMFT.Web.Client.Services.Foundations.Accounts
             catch (HttpResponseBadRequestException exception)
             {
                 throw new RegisterUserWithPasswordValidationException(exception, exception.Data);
+            } catch (HttpResponseConflictException)
+            {
+                throw new UserEmailAlreadyExistsException();
             }
         }
     }

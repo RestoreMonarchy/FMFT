@@ -1,0 +1,21 @@
+﻿@page "/account/register"
+@using FMFT.Web.Client.Views.Components.Accounts
+@layout AccountLayout
+
+<div class="mb-3">
+    <h5>Register</h5>
+</div>
+
+<RegisterUserWithPasswordComponent />
+
+<p class="my-3 text-muted">
+    &copy; @DateTime.UtcNow.Year
+</p>
+
+<div class="d-flex">
+    <div class="small">
+        <a href="/account/login" class="text-decoration-none">
+            <i class="bi bi-arrow-counterclockwise"></i> Go to login
+        </a>
+    </div>
+</div>
