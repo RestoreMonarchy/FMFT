@@ -2,6 +2,7 @@
 using FMFT.Web.Server.Brokers.Encryptions;
 using FMFT.Web.Server.Brokers.Storages;
 using FMFT.Web.Server.Brokers.Validations;
+using FMFT.Web.Server.Services.Implementations.Cookies;
 using FMFT.Web.Server.Services.Foundations.Auditoriums;
 using FMFT.Web.Server.Services.Foundations.Seats;
 using FMFT.Web.Server.Services.Foundations.Shows;
@@ -33,6 +34,12 @@ namespace FMFT.Web.Server.Extensions
         public static IServiceCollection AddProcessings(this IServiceCollection services)
         {
             services.AddTransient<IUserProcessingService, UserProcessingService>();
+            return services;
+        }
+
+        public static IServiceCollection AddImplementations(this IServiceCollection services)
+        {
+            services.AddTransient<CustomCookieAuthenticationEvents>();
             return services;
         }
     }

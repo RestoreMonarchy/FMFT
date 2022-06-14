@@ -1,6 +1,7 @@
 using FMFT.Extensions.Authentication.Server.Extensions;
 using FMFT.Extensions.Authentication.Shared.Constants;
 using FMFT.Web.Server.Extensions;
+using FMFT.Web.Server.Services.Implementations.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,12 +11,16 @@ builder.Services.AddBrokers();
 builder.Services.AddFoundations();
 builder.Services.AddProcessings();
 
+builder.Services.AddImplementations();
+
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddDefaultAuthentication()
     .AddCookie(FMFTAuthenticationDefaults.ApplicationScheme, o =>
     {
+        o.Cookie.Name = FMFTAuthenticationDefaults.ApplicationScheme;
         o.ExpireTimeSpan = TimeSpan.FromHours(24);
+        o.EventsType = typeof(CustomCookieAuthenticationEvents);
     })
     .AddCookie(FMFTAuthenticationDefaults.ExternalScheme, o =>
     {
