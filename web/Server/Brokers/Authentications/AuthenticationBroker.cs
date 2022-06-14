@@ -1,4 +1,4 @@
-﻿using FMFT.Extensions.Authentication;
+﻿using FMFT.Extensions.Authentication.Server;
 using System.Security.Claims;
 
 namespace FMFT.Web.Server.Brokers.Authentications
@@ -10,6 +10,18 @@ namespace FMFT.Web.Server.Brokers.Authentications
         public AuthenticationBroker(IHttpContextAccessor httpContextAccessor)
         {
             context = new AuthenticationContext(httpContextAccessor.HttpContext);
+        }
+
+        public bool IsAuthenticated => context.IsAuthenticated;
+        public bool IsNotAuthenticated => !IsAuthenticated;
+
+        public int AuthenticatedUserId
+        {
+            get
+            {
+                string userIdString = context.FindClaimValue(ClaimTypes.NameIdentifier);
+                return Convert.ToInt32(userIdString);
+            }
         }
 
         public async ValueTask SignOutAsync()

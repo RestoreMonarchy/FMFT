@@ -29,6 +29,7 @@ namespace FMFT.Web.Client.Views.Components.Accounts
 
         public async Task SubmitRegisterAsync()
         {
+            AlertGroup.HideAll();
             Form.DisableAll();
             SubmitButton.StartSpinning();
             try

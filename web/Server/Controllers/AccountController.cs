@@ -1,6 +1,8 @@
 ﻿using FMFT.Web.Server.Services.Processings.Users;
+using FMFT.Web.Shared.Models.Users;
 using FMFT.Web.Shared.Models.Users.Exceptions;
 using FMFT.Web.Shared.Models.Users.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
 
@@ -15,6 +17,14 @@ namespace FMFT.Web.Server.Controllers
         public AccountController(IUserProcessingService userService)
         {
             this.userService = userService;
+        }
+
+        [Authorize]
+        [HttpGet("info")]
+        public async ValueTask<IActionResult> Info()
+        {
+            UserInfo userInfo = await userService.GetAuthenticatedUserInfoAsync();
+            return Ok(userInfo);
         }
 
         [HttpPost("register")]
@@ -51,11 +61,11 @@ namespace FMFT.Web.Server.Controllers
             return Ok();
         }
 
-        [HttpPost("logout")]
-        public async ValueTask<IActionResult> LogOut()
+        [HttpGet("logout")]
+        public async ValueTask<IActionResult> LogOut([FromQuery] string returnUrl = "/")
         {
             await userService.SignOutUserAsync();
-            return Ok();
+            return LocalRedirect(returnUrl);
         }
     }
 }

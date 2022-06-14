@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace FMFT.Extensions.Authentication.Models
+namespace FMFT.Extensions.Authentication.Server.Models
 {
     public class ExternalLoginInfo
     {

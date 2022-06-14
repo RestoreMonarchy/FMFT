@@ -1,5 +1,7 @@
+using FMFT.Extensions.Authentication.Client.Extensions;
 using FMFT.Web.Client;
 using FMFT.Web.Client.Brokers.APIs;
+using FMFT.Web.Client.Brokers.Authentications;
 using FMFT.Web.Client.Brokers.JSRuntimes;
 using FMFT.Web.Client.Brokers.Navigations;
 using FMFT.Web.Client.Services.Foundations.Accounts;
@@ -19,6 +21,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 builder.Services.AddScoped<INavigationBroker, NavigationBroker>();
 builder.Services.AddScoped<IJSRuntimeBroker, JSRuntimeBroker>();
 builder.Services.AddScoped<IAPIBroker, APIBroker>();
+builder.Services.AddScoped<IAuthenticationBroker, AuthenticationBroker>();
 
 builder.Services.AddScoped<IShowService, ShowService>();
 builder.Services.AddScoped<IAuditoriumService, AuditoriumService>();
@@ -26,5 +29,7 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 
 builder.Services.AddScoped<IShowViewService, ShowViewService>();
 builder.Services.AddScoped<IAccountViewService, AccountViewService>();
+
+builder.Services.AddCustomAuthentication();
 
 await builder.Build().RunAsync();

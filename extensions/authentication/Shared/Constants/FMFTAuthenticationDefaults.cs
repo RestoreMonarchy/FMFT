@@ -1,4 +1,4 @@
-﻿namespace FMFT.Extensions.Authentication.Constants
+﻿namespace FMFT.Extensions.Authentication.Shared.Constants
 {
     public class FMFTAuthenticationDefaults
     {

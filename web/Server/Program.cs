@@ -1,7 +1,6 @@
-using FMFT.Extensions.Authentication.Constants;
-using FMFT.Extensions.Authentication.Extensions;
+using FMFT.Extensions.Authentication.Server.Extensions;
+using FMFT.Extensions.Authentication.Shared.Constants;
 using FMFT.Web.Server.Extensions;
-using Microsoft.AspNetCore.ResponseCompression;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +15,6 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddDefaultAuthentication()
     .AddCookie(FMFTAuthenticationDefaults.ApplicationScheme, o =>
     {
-        o.LoginPath = new PathString("/Account/Login");
         o.ExpireTimeSpan = TimeSpan.FromHours(24);
     })
     .AddCookie(FMFTAuthenticationDefaults.ExternalScheme, o =>
@@ -48,8 +46,9 @@ app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseAuthentication();
 
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapRazorPages();
 app.MapControllers();

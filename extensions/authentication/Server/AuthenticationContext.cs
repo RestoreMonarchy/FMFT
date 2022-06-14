@@ -1,11 +1,11 @@
-﻿using FMFT.Extensions.Authentication.Constants;
-using FMFT.Extensions.Authentication.Extensions;
-using FMFT.Extensions.Authentication.Models;
+﻿using FMFT.Extensions.Authentication.Server.Models;
+using FMFT.Extensions.Authentication.Shared.Constants;
+using FMFT.Extensions.Authentication.Shared.Extensions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
-namespace FMFT.Extensions.Authentication
+namespace FMFT.Extensions.Authentication.Server
 {
     public class AuthenticationContext
     {
@@ -15,6 +15,11 @@ namespace FMFT.Extensions.Authentication
         {
             this.httpContext = httpContext;
         }
+
+        public bool IsAuthenticated => httpContext.User?.Identity?.IsAuthenticated ?? false;
+
+        public string FindClaimValue(string claimType)
+            => httpContext.User.FindFirstValue(claimType);
 
         public async ValueTask SignInAsync(IList<Claim> claims, bool isPersistent, string authenticationMethod)
         {
@@ -37,7 +42,7 @@ namespace FMFT.Extensions.Authentication
             ClaimsIdentity claimsIdentity = new(FMFTAuthenticationDefaults.ApplicationScheme);
             claimsIdentity.AddClaims(claims);
             ClaimsPrincipal claimsPrincipal = new(claimsIdentity);
-            await httpContext.SignInAsync(claimsPrincipal, properties);
+            await httpContext.SignInAsync(FMFTAuthenticationDefaults.ApplicationScheme, claimsPrincipal, properties);
         }
 
         public async ValueTask SignOutAsync()

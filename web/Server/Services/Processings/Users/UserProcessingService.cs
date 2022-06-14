@@ -10,7 +10,7 @@ using System.Security.Claims;
 
 namespace FMFT.Web.Server.Services.Processings.Users
 {
-    public class UserProcessingService : IUserProcessingService
+    public partial class UserProcessingService : IUserProcessingService
     {
         private readonly IUserService userService;
         private readonly IAuthenticationBroker authenticationBroker;
@@ -27,6 +27,23 @@ namespace FMFT.Web.Server.Services.Processings.Users
             this.authenticationBroker = authenticationBroker;
             this.encryptionBroker = encryptionBroker;
             this.validationBroker = validationBroker;
+        }
+
+        public async ValueTask<User> GetAuthenticatedUserAsync()
+        {
+            if (authenticationBroker.IsNotAuthenticated)
+            {
+                throw new UserNotAuthenticatedException();
+            }
+
+            int userId = authenticationBroker.AuthenticatedUserId;
+            return await userService.RetrieveUserByIdAsync(userId);
+        }
+
+        public async ValueTask<UserInfo> GetAuthenticatedUserInfoAsync()
+        {
+            User user = await GetAuthenticatedUserAsync();
+            return MapUserToUserInfo(user);
         }
 
         public async ValueTask SignOutUserAsync()
