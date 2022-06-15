@@ -32,7 +32,8 @@ namespace FMFT.Web.Server.Controllers
         {
             try
             {
-                await userService.RegisterUserWithPasswordAsync(model);
+                UserInfo userInfo = await userService.RegisterUserWithPasswordAsync(model);
+                return Ok(userInfo);
             } catch (UserPasswordInvalidException exception)
             {
                 return BadRequest(exception);
@@ -43,8 +44,6 @@ namespace FMFT.Web.Server.Controllers
             {
                 return Conflict();
             }
-
-            return Ok();
         } 
 
         [HttpPost("login")]
@@ -52,13 +51,12 @@ namespace FMFT.Web.Server.Controllers
         {
             try
             {
-                await userService.SignInUserWithPasswordAsync(model);
+                UserInfo userInfo = await userService.SignInUserWithPasswordAsync(model);
+                return Ok(userInfo);
             } catch (UserPasswordNotMatchException exception)
             {
                 return Forbidden(exception);
             }
-
-            return Ok();
         }
 
         [HttpGet("logout")]

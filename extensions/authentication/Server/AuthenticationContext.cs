@@ -1,6 +1,7 @@
 ﻿using FMFT.Extensions.Authentication.Server.Models;
 using FMFT.Extensions.Authentication.Shared.Constants;
 using FMFT.Extensions.Authentication.Shared.Extensions;
+using FMFT.Extensions.Authentication.Shared.Models.Exceptions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
@@ -19,7 +20,12 @@ namespace FMFT.Extensions.Authentication.Server
         public bool IsAuthenticated => httpContext.User?.Identity?.IsAuthenticated ?? false;
 
         public string FindClaimValue(string claimType)
-            => httpContext.User.FindFirstValue(claimType);
+        {
+            if (!IsAuthenticated)
+                throw new NotAuthenticatedException();
+
+            return httpContext.User.FindFirstValue(claimType);
+        }            
 
         public async ValueTask SignInAsync(IList<Claim> claims, bool isPersistent, string authenticationMethod)
         {

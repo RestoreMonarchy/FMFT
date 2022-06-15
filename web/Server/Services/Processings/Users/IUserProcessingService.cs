@@ -7,8 +7,8 @@ namespace FMFT.Web.Server.Services.Processings.Users
     {
         ValueTask<User> GetAuthenticatedUserAsync();
         ValueTask<UserInfo> GetAuthenticatedUserInfoAsync();
-        ValueTask RegisterUserWithPasswordAsync(RegisterUserWithPasswordModel model);
-        ValueTask SignInUserWithPasswordAsync(SignInUserWithPasswordModel model);
+        ValueTask<UserInfo> RegisterUserWithPasswordAsync(RegisterUserWithPasswordModel model);
+        ValueTask<UserInfo> SignInUserWithPasswordAsync(SignInUserWithPasswordModel model);
         ValueTask SignOutUserAsync();
     }
 }

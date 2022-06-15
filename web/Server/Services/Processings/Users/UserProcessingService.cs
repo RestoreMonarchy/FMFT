@@ -1,4 +1,5 @@
-﻿using FMFT.Web.Server.Brokers.Authentications;
+﻿using FMFT.Extensions.Authentication.Shared.Models.Exceptions;
+using FMFT.Web.Server.Brokers.Authentications;
 using FMFT.Web.Server.Brokers.Encryptions;
 using FMFT.Web.Server.Brokers.Validations;
 using FMFT.Web.Server.Services.Foundations.Users;
@@ -31,12 +32,15 @@ namespace FMFT.Web.Server.Services.Processings.Users
 
         public async ValueTask<User> GetAuthenticatedUserAsync()
         {
-            if (authenticationBroker.IsNotAuthenticated)
+            int userId;
+            try
+            {
+                userId = authenticationBroker.AuthenticatedUserId;
+            } catch (NotAuthenticatedException)
             {
                 throw new UserNotAuthenticatedException();
             }
-
-            int userId = authenticationBroker.AuthenticatedUserId;
+            
             return await userService.RetrieveUserByIdAsync(userId);
         }
 
@@ -51,7 +55,7 @@ namespace FMFT.Web.Server.Services.Processings.Users
             await authenticationBroker.SignOutAsync();
         }
 
-        public async ValueTask RegisterUserWithPasswordAsync(RegisterUserWithPasswordModel model)
+        public async ValueTask<UserInfo> RegisterUserWithPasswordAsync(RegisterUserWithPasswordModel model)
         {
             if (validationBroker.IsPasswordInvalid(model.PasswordText))
             {
@@ -69,9 +73,10 @@ namespace FMFT.Web.Server.Services.Processings.Users
 
             User user = await userService.RegisterUserWithPasswordAsync(@params);
             await SignInUserAsync(user, false, null);
+            return MapUserToUserInfo(user);
         }
 
-        public async ValueTask SignInUserWithPasswordAsync(SignInUserWithPasswordModel model)
+        public async ValueTask<UserInfo> SignInUserWithPasswordAsync(SignInUserWithPasswordModel model)
         {
             User user;
             try
@@ -87,7 +92,8 @@ namespace FMFT.Web.Server.Services.Processings.Users
                 throw new UserPasswordNotMatchException();
             }
 
-            await SignInUserAsync(user, model.IsPersistent, null);            
+            await SignInUserAsync(user, model.IsPersistent, null);
+            return MapUserToUserInfo(user);
         }
 
         private async ValueTask SignInUserAsync(User user, bool isPersistent, string authenticationMethod)

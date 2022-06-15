@@ -5,6 +5,7 @@ using FMFT.Web.Client.Views.Bases.Forms;
 using FMFT.Web.Client.Views.Bases.Inputs;
 using FMFT.Web.Shared.Models.Users.Exceptions;
 using FMFT.Web.Shared.Models.Users.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 
 namespace FMFT.Web.Client.Views.Components.Accounts
