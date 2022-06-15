@@ -1,0 +1,10 @@
+﻿<li class="nav-item dropdown">
+    <a class="nav-link @GetActiveClass() dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        @Value
+    </a>
+    <ul class="dropdown-menu">
+        <CascadingValue Value="this">
+            @ChildContent
+        </CascadingValue>
+    </ul>
+</li>

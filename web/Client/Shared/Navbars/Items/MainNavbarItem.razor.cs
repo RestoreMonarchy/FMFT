@@ -13,9 +13,9 @@ namespace FMFT.Web.Client.Shared.Navbars.Items
         [Inject]
         public INavigationBroker NavigationBroker { get; set; }
 
-        private string CurrentLocation => NavigationBroker.RelativeUri;
+        protected string CurrentLocation => NavigationBroker.RelativeUri;
 
-        private string GetActiveClass()
+        public bool IsActive()
         {
             string location = Location.TrimStart('/');
 
@@ -23,16 +23,23 @@ namespace FMFT.Web.Client.Shared.Navbars.Items
             {
                 if (CurrentLocation == string.Empty)
                 {
-                    return "active";
+                    return true;
                 }
-                return string.Empty;
+
+                return false;
             }
 
             if (CurrentLocation.StartsWith(location, StringComparison.OrdinalIgnoreCase))
             {
-                return "active";
+                return true;
             }
-            return string.Empty;
+
+            return false;
+        }
+
+        protected string GetActiveClass()
+        {
+            return IsActive() ? "active" : string.Empty;
         }
     }
 }

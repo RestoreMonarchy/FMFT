@@ -3,8 +3,6 @@ function InitializePanzoom(containerElement) {
 
     const elem = containerElement.getElementsByClassName('panzoom-element')[0];
 
-    console.log(elem);
-
     const panzoom = Panzoom(elem, {
         maxScale: 5,
         canvas: true
