@@ -1,0 +1,15 @@
+﻿@page "/account"
+@using FMFT.Web.Client.Views.Components.Accounts
+@using FMFT.Web.Shared.Attributes
+@attribute [CustomAuthorize]
+
+<Breadcrumb>
+    <BreadcrumbItem Link="/">
+        Home
+    </BreadcrumbItem>
+    <BreadcrumbItem Active="true">
+        Account
+    </BreadcrumbItem>
+</Breadcrumb>
+
+<AccountInfoComponent />
