@@ -4,6 +4,11 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Include="..\dbo\tables\*.sql" />
+	<Content Include="..\dbo\procedures\*.sql" />
+  </ItemGroup>
+
   <!--<ItemGroup>
     <Content Include="..\dbo\tables\*.sql" />
 	<Content Include="..\dbo\tables\quartz\*.sql" />
