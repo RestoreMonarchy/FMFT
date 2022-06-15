@@ -1,12 +1,12 @@
-﻿using FMFT.Extensions.Authentication.Server.Models;
-using FMFT.Extensions.Authentication.Shared.Constants;
-using FMFT.Extensions.Authentication.Shared.Extensions;
-using FMFT.Extensions.Authentication.Shared.Models.Exceptions;
+﻿using FMFT.Extensions.Authentication.Models;
+using FMFT.Extensions.Authentication.Constants;
+using FMFT.Extensions.Authentication.Extensions;
+using FMFT.Extensions.Authentication.Models.Exceptions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
-namespace FMFT.Extensions.Authentication.Server
+namespace FMFT.Extensions.Authentication
 {
     public class AuthenticationContext
     {

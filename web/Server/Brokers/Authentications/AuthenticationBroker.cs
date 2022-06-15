@@ -1,4 +1,4 @@
-﻿using FMFT.Extensions.Authentication.Server;
+﻿using FMFT.Extensions.Authentication;
 using System.Security.Claims;
 
 namespace FMFT.Web.Server.Brokers.Authentications

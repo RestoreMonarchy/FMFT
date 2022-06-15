@@ -1,5 +1,5 @@
-using FMFT.Extensions.Authentication.Server.Extensions;
-using FMFT.Extensions.Authentication.Shared.Constants;
+using FMFT.Extensions.Authentication.Extensions;
+using FMFT.Extensions.Authentication.Constants;
 using FMFT.Web.Server.Extensions;
 using FMFT.Web.Server.Services.Implementations.Cookies;
 

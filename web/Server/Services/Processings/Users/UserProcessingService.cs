@@ -1,4 +1,4 @@
-﻿using FMFT.Extensions.Authentication.Shared.Models.Exceptions;
+﻿using FMFT.Extensions.Authentication.Models.Exceptions;
 using FMFT.Web.Server.Brokers.Authentications;
 using FMFT.Web.Server.Brokers.Encryptions;
 using FMFT.Web.Server.Brokers.Validations;

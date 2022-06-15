@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\extensions\authentication\Server\FMFT.Extensions.Authentication.Server.csproj" />
+    <ProjectReference Include="..\..\extensions\Authentication\FMFT.Extensions.Authentication.csproj" />
     <ProjectReference Include="..\Client\FMFT.Web.Client.csproj" />
     <ProjectReference Include="..\Shared\FMFT.Web.Shared.csproj" />
   </ItemGroup>

@@ -1,8 +1,8 @@
-﻿using FMFT.Extensions.Authentication.Shared.Constants;
+﻿using FMFT.Extensions.Authentication.Constants;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace FMFT.Extensions.Authentication.Server.Extensions
+namespace FMFT.Extensions.Authentication.Extensions
 {
     public static class IServiceCollectionExtensions
     {

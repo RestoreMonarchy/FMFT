@@ -11,8 +11,4 @@
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Shared\FMFT.Extensions.Authentication.Shared.csproj" />
-  </ItemGroup>
-
 </Project>

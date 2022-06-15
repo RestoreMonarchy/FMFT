@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FMFT.Extensions.Authentication.Shared.Models.Exceptions
+namespace FMFT.Extensions.Authentication.Models.Exceptions
 {
     public class NotAuthenticatedException : Exception
     {

@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace FMFT.Extensions.Authentication.Shared.Extensions
+namespace FMFT.Extensions.Authentication.Extensions
 {
     public static class ClaimsPrincipalExtensions
     {
