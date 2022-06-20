@@ -37,6 +37,5 @@ function InitializePanzoom(containerElement) {
     // There are several available methods for zooming
     // that can be bound on button clicks or mousewheel.
     //button.addEventListener('click', panzoom.zoomIn)
-
-    /*containerElement.addEventListener('wheel', panzoom.zoomWithWheel)*/
+    containerElement.addEventListener('wheel', panzoom.zoomWithWheel)
 }
