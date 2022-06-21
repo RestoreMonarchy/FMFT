@@ -70,6 +70,7 @@
     <Build Include="dbo\procedures\RegisterUserWithPassword.sql" />
     <Build Include="dbo\procedures\RegisterUserWithLogin.sql" />
     <Build Include="dbo\tables\Reservations.sql" />
+    <Build Include="dbo\procedures\CreateReservation.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FMFT.Database.publish.xml" />

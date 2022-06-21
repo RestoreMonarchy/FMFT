@@ -10,7 +10,5 @@ namespace FMFT.Web.Server.Services.Foundations.Reservations
         {
             this.storageBroker = storageBroker;
         }
-
-
     }
 }
