@@ -22,6 +22,9 @@ namespace FMFT.Web.Client.Views.Bases.Buttons
         [Parameter]
         public string Class { get; set; }
 
+        private List<string> AddedClasses { get; set; } = new();
+        private string AddedClassesString => string.Join(' ', AddedClasses);
+
         public void Click() => InvokeAsync(OnClick.InvokeAsync);
 
         public void Disable()
@@ -46,6 +49,17 @@ namespace FMFT.Web.Client.Views.Bases.Buttons
         {
             this.IsSpinning = false;
             InvokeAsync(StateHasChanged);
+        }
+
+        public void AddClass(string className)
+        {
+            if (!AddedClasses.Contains(className))
+                AddedClasses.Add(className);
+        }
+
+        public void RemoveClass(string className)
+        {
+            AddedClasses.Remove(className);
         }
     }
 }

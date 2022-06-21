@@ -59,6 +59,7 @@
 }
 
 .seat {
+    border: none;
     width: 35px !important;
     height: 35px !important;
     min-width: 35px;
@@ -70,8 +71,12 @@
     transition: background-color linear 0.15s;
 }
 
+.seat-selected {
+    background-color: black;
+}
+
 .seat-busy {
-    background-color: red !important;
+    background-color: red;
 }
 
 .seat:hover {
