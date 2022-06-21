@@ -59,6 +59,7 @@
     <Folder Include="dbo" />
     <Folder Include="dbo\tables" />
     <Folder Include="dbo\procedures" />
+    <Folder Include="scripts" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\tables\Seats.sql" />
@@ -71,5 +72,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="FMFT.Database.publish.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="scripts\Script.PostDeployment.sql" />
   </ItemGroup>
 </Project>
