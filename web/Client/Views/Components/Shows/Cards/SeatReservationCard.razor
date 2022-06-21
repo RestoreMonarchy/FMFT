@@ -1,0 +1,60 @@
+﻿@using FMFT.Web.Client.Views.Components.Shows.Cards.Selectors
+
+<div class="card">
+    <div class="card-header">
+        Seat Reservation
+    </div>
+    <div class="card-body">
+        <div class="mb-2">
+            Select the seats you would like to reserve
+        </div>                    
+        <div>
+            <div class="d-flex align-items-center mb-2">
+                <div class="seat">
+                    <div class="seat-text">
+                        N
+                    </div>                                
+                </div>
+                <div class="ms-2">
+                    - Free Seat
+                </div>
+            </div>
+            <div class="d-flex align-items-center mb-2">
+                <div class="seat seat-busy">
+                    <div class="seat-text">
+                        N
+                    </div>                                
+                </div>
+                <div class="ms-2">
+                    - Busy Seat
+                </div>
+            </div>
+            <div class="d-flex align-items-center">
+                <div class="seat seat-selected">
+                    <div class="seat-text">
+                        N
+                    </div>                                
+                </div>
+                <div class="ms-2">
+                    - Selected Seat
+                </div>
+            </div>
+        </div>
+    </div>
+    <SeatSelector Auditorium="Auditorium" @bind-SelectedSeats="SelectedSeats" />
+    <div class="card-body">
+        Selected Seats:
+
+        <ul>
+            <Iterations Items="SelectedSeats">
+                <li>
+                    Row: @context.Row Number: @context.Number
+                </li>
+            </Iterations>
+        </ul>
+
+        <button class="btn btn-primary" disabled>
+            Reserve
+        </button>
+    </div>
+</div>
