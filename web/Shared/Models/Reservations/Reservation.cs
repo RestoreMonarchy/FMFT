@@ -6,6 +6,7 @@
         public int ShowId { get; set; }
         public int SeatId { get; set; }
         public int UserId { get; set; }
+        public ReservationStatus Status { get; set; }
         public DateTime CreateDate { get; set; }
     }
 }
