@@ -15,9 +15,10 @@
 	<Content Include="..\dbo\functions\*.sql" />
     <Content Include="..\dbo\procedures\*.sql" />
   </ItemGroup>
+  -->
   
   <ItemGroup>
-	<PostDeploy Include="..\dbo\scripts\Script.PostDeployment.sql" />
-  </ItemGroup>-->
+	<PostDeploy Include="..\scripts\Script.PostDeployment.sql" />
+  </ItemGroup>
 
 </Project>

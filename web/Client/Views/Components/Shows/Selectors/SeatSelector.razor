@@ -1,0 +1,38 @@
+﻿<div @ref="ContainerElement" class="panzoom-container">
+    <div class="panzoom-toolbar">
+        <button class="panzoom-button panzoom-zoomin">
+            <i class="bi bi-zoom-in"></i>
+        </button>
+        <button class="panzoom-button panzoom-zoomout">
+            <i class="bi bi-zoom-out"></i>
+        </button>
+        <button class="panzoom-button panzoom-reset">
+            <i class="bi bi-arrow-clockwise"></i>
+        </button>
+    </div>
+    <div class="panzoom-element">
+
+        <div class="theater">
+
+            <div class="theater-stage">
+                <div class="theater-stage-text">
+                    Stage   
+                </div>
+            </div>
+
+            <Iterations Items="RowSeats">
+                <div class="seats-row my-2">
+                    <Iterations Items="context" Context="seat">
+                        <div class="mx-1 seat">
+                            <div class="seat-text">
+                                @seat.Number
+                            </div>
+                        </div>
+                    </Iterations>
+                </div>
+            </Iterations>
+        </div>
+        
+        
+    </div>
+</div>

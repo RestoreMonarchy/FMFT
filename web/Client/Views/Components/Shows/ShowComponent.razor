@@ -1,4 +1,5 @@
-﻿@using FMFT.Web.Shared.Models.Auditoriums.Exceptions
+﻿@using FMFT.Web.Client.Views.Components.Shows.Selectors
+@using FMFT.Web.Shared.Models.Auditoriums.Exceptions
 @using FMFT.Web.Shared.Models.Shows.Exceptions
 
 <Condition Evaluation="Exception == null">
@@ -44,7 +45,7 @@
                         </div>
                     </div>
                 </div>
-                <FMFT.Web.Client.Views.Components.Tickets.SeatSelectorComponent />
+                <SeatSelector Auditorium="Auditorium" />
                 <div class="card-body">
                     Summary:
                     <ul>
