@@ -41,17 +41,21 @@
             </div>
         </div>
     </div>
-    <SeatSelector Auditorium="Auditorium" @bind-SelectedSeats="SelectedSeats" />
+    <SeatSelector Auditorium="Auditorium" @bind-SelectedSeat="SelectedSeat" />
     <div class="card-body">
-        Selected Seats:
 
-        <ul>
-            <Iterations Items="SelectedSeats">
-                <li>
-                    Row: @context.Row Number: @context.Number
-                </li>
-            </Iterations>
-        </ul>
+        <p>
+            <Condition Evaluation="SelectedSeat == null">
+                <Match>
+                    Please select a seat
+                </Match>
+                <NotMatch>
+                    Selected Seat: [Row: @SelectedSeat.Row] [Number: @SelectedSeat.Number]
+                </NotMatch>
+            </Condition>
+        </p>
+        
+        
 
         <button class="btn btn-primary" disabled>
             Reserve

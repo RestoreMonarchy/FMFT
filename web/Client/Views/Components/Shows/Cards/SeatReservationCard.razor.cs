@@ -9,6 +9,6 @@ namespace FMFT.Web.Client.Views.Components.Shows.Cards
         [Parameter]
         public Auditorium Auditorium { get; set; }
 
-        public List<Seat> SelectedSeats { get; set; } = new();
+        public Seat SelectedSeat { get; set; }
     }
 }
