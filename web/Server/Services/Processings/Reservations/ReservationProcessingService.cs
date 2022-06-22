@@ -1,4 +1,5 @@
-﻿using FMFT.Web.Server.Services.Foundations.Reservations;
+﻿using FMFT.Web.Server.Brokers.Authentications;
+using FMFT.Web.Server.Services.Foundations.Reservations;
 using FMFT.Web.Shared.Models.Reservations;
 using FMFT.Web.Shared.Models.Reservations.Models;
 using FMFT.Web.Shared.Models.Reservations.Params;
@@ -8,10 +9,13 @@ namespace FMFT.Web.Server.Services.Processings.Reservations
     public class ReservationProcessingService : IReservationProcessingService
     {
         private readonly IReservationService reservationService;
+        private readonly IAuthenticationBroker authenticationBroker;
 
-        public ReservationProcessingService(IReservationService reservationService)
+        public ReservationProcessingService(IReservationService reservationService, 
+            IAuthenticationBroker authenticationBroker)
         {
             this.reservationService = reservationService;
+            this.authenticationBroker = authenticationBroker;
         }
 
         public async ValueTask<IEnumerable<Reservation>> RetrieveAllReservationsAsync()
@@ -32,6 +36,11 @@ namespace FMFT.Web.Server.Services.Processings.Reservations
                 SeatId = model.SeatId,
                 UserId = model.UserId
             };
+
+            if (@params.UserId == 0)
+            {
+                @params.UserId = authenticationBroker.AuthenticatedUserId;
+            }
 
             return await reservationService.CreateReservationAsync(@params);
         }

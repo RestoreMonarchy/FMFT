@@ -4,6 +4,7 @@ using FMFT.Web.Client.Brokers.JSRuntimes;
 using FMFT.Web.Client.Brokers.Navigations;
 using FMFT.Web.Client.Services.Foundations.Accounts;
 using FMFT.Web.Client.Services.Foundations.Auditoriums;
+using FMFT.Web.Client.Services.Foundations.Reservations;
 using FMFT.Web.Client.Services.Foundations.Shows;
 using FMFT.Web.Client.Services.Processings.Accounts;
 using FMFT.Web.Client.Services.Views.Accounts;
@@ -24,6 +25,7 @@ builder.Services.AddScoped<IAPIBroker, APIBroker>();
 builder.Services.AddScoped<IShowService, ShowService>();
 builder.Services.AddScoped<IAuditoriumService, AuditoriumService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IReservationService, ReservationService>();
 
 builder.Services.AddScoped<IAccountProcessingService, AccountProcessingService>();
 

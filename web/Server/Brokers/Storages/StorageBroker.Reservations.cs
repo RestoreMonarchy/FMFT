@@ -41,7 +41,6 @@ namespace FMFT.Web.Server.Brokers.Storages
 
             result.Result = await QueryReservationAsync(sql, parameters, CommandType.StoredProcedure);
             result.ReturnValue = GetReturnValue(parameters);
-
             return result;
         }
 
