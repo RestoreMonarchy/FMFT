@@ -11,9 +11,9 @@ namespace FMFT.Web.Client.Views.Components.Shows.Cards.Selectors
         [Parameter]
         public Auditorium Auditorium { get; set; }
         [Parameter]
-        public List<Seat> SelectedSeats { get; set; } = new();
+        public Seat SelectedSeat { get; set; }
         [Parameter]
-        public EventCallback<List<Seat>> SelectedSeatsChanged { get; set; }
+        public EventCallback<Seat> SelectedSeatChanged { get; set; }
 
         [Inject]
         public IJSRuntimeBroker JSRuntimeBroker { get; set; }
@@ -36,18 +36,20 @@ namespace FMFT.Web.Client.Views.Components.Shows.Cards.Selectors
 
         public void HandleClickSeat(Seat seat)
         {
-            if (SelectedSeats.Contains(seat))
+            if (SelectedSeat != null)
+                seatButtons[SelectedSeat.Id].RemoveClass("seat-selected");
+
+            if (SelectedSeat == seat)
             {
-                SelectedSeats.Remove(seat);
-                seatButtons[seat.Id].RemoveClass("seat-selected");
-                InvokeAsync(() => SelectedSeatsChanged.InvokeAsync(SelectedSeats));
+                SelectedSeat = null;
             }
             else
             {
-                SelectedSeats.Add(seat);
+                SelectedSeat = seat;
                 seatButtons[seat.Id].AddClass("seat-selected");
-                InvokeAsync(() => SelectedSeatsChanged.InvokeAsync(SelectedSeats));
             }
+
+            InvokeAsync(() => SelectedSeatChanged.InvokeAsync(SelectedSeat));
         }
     }
 }
