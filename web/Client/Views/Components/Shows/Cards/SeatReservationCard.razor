@@ -4,6 +4,7 @@
     <div class="card-header">
         Seat Reservation
     </div>
+    <SeatSelector Auditorium="Auditorium" @bind-SelectedSeat="SelectedSeat" />
     <div class="card-body">
         <div class="mb-2">
             Select the seats you would like to reserve
@@ -40,8 +41,7 @@
                 </div>
             </div>
         </div>
-    </div>
-    <SeatSelector Auditorium="Auditorium" @bind-SelectedSeat="SelectedSeat" />
+    </div>    
     <div class="card-body">
 
         <p>
@@ -55,10 +55,27 @@
             </Condition>
         </p>
         
-        
+        <AlertGroupBase @ref="AlertGroup">
+            <AlertBase @ref="SeatAlreadyReservedAlert" Class="alert-danger">
+                This seat is alraedy reserved
+            </AlertBase>
+            <AlertBase @ref="UserAlreadyReservedAlert" Class="alert-danger">
+                You have already reserved a seat for this show
+            </AlertBase>
+        </AlertGroupBase>
 
-        <button class="btn btn-primary" disabled>
-            Reserve
-        </button>
+        <CustomAuthorizeView>
+            <Authorized>
+                <ButtonBase @ref="ReserveButton" OnClick="HandleReserveButtonClick" Class="btn btn-primary" IsDisabled="SelectedSeat == null">
+                    Reserve
+                </ButtonBase>
+            </Authorized>
+            <NotAuthorized>
+                <div>
+                    You have to be logged in to reserve a seat
+                </div>
+            </NotAuthorized>
+        </CustomAuthorizeView>
+        
     </div>
 </div>

@@ -1,6 +1,10 @@
 ﻿using FMFT.Web.Client.Services.Foundations.Auditoriums;
+using FMFT.Web.Client.Services.Foundations.Reservations;
 using FMFT.Web.Client.Services.Foundations.Shows;
+using FMFT.Web.Client.Services.Processings.Accounts;
 using FMFT.Web.Shared.Models.Auditoriums;
+using FMFT.Web.Shared.Models.Reservations;
+using FMFT.Web.Shared.Models.Reservations.Models;
 using FMFT.Web.Shared.Models.Shows;
 
 namespace FMFT.Web.Client.Services.Views.Shows
@@ -9,11 +13,15 @@ namespace FMFT.Web.Client.Services.Views.Shows
     {
         private readonly IShowService showService;
         private readonly IAuditoriumService auditoriumService;
+        private readonly IReservationService reservationService;
 
-        public ShowViewService(IShowService showService, IAuditoriumService auditoriumService)
+        public ShowViewService(IShowService showService,
+            IAuditoriumService auditoriumService,
+            IReservationService reservationService)
         {
             this.showService = showService;
             this.auditoriumService = auditoriumService;
+            this.reservationService = reservationService;
         }
 
         public async ValueTask<List<Show>> RetrieveAllShowsAsync()
@@ -29,6 +37,11 @@ namespace FMFT.Web.Client.Services.Views.Shows
         public async ValueTask<Auditorium> RetrieveAuditoriumAsync(int auditoriumId)
         {
             return await auditoriumService.RetrieveAuditoriumByIdAsync(auditoriumId);
+        }
+
+        public async ValueTask<Reservation> CreateReservationAsync(CreateReservationModel model)
+        {
+            return await reservationService.CreateReservationAsync(model);
         }
     }
 }
