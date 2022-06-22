@@ -9,6 +9,7 @@ using FMFT.Web.Server.Services.Foundations.Shows;
 using FMFT.Web.Server.Services.Foundations.Users;
 using FMFT.Web.Server.Services.Processings.Users;
 using FMFT.Web.Server.Services.Foundations.Reservations;
+using FMFT.Web.Server.Services.Processings.Reservations;
 
 namespace FMFT.Web.Server.Extensions
 {
@@ -36,6 +37,7 @@ namespace FMFT.Web.Server.Extensions
         public static IServiceCollection AddProcessings(this IServiceCollection services)
         {
             services.AddTransient<IUserProcessingService, UserProcessingService>();
+            services.AddTransient<IReservationProcessingService, ReservationProcessingService>();
             return services;
         }
 
