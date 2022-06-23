@@ -32,6 +32,17 @@ namespace FMFT.Web.Server.Brokers.Storages
             return await QueryReservationsAsync(sql);
         }
 
+        public async ValueTask<IEnumerable<Reservation>> SelectReservationsByUserIdAsync(int userId)
+        {
+            const string sql = @"SELECT r.*, s.*, se.*, u.* FROM dbo.Reservations r
+                JOIN dbo.Shows s ON s.Id = r.ShowId
+                JOIN dbo.Seats se ON se.Id = r.SeatId
+                JOIN dbo.Users u ON u.Id = r.UserId
+                WHERE r.UserId = @userId;";
+
+            return await QueryReservationsAsync(sql, new { userId });
+        }
+
         public async ValueTask<StoredProcedureResult<Reservation>> CreateReservationAsync(
             CreateReservationParams @params)
         {
