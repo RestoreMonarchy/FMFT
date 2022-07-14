@@ -29,10 +29,15 @@ builder.Services.AddDefaultAuthentication()
         o.Cookie.Name = FMFTAuthenticationDefaults.ExternalScheme;
         o.ExpireTimeSpan = TimeSpan.FromMinutes(10);
     })
-    .AddGoogle(options => 
+    .AddGoogle(options =>
     {
         options.ClientId = configuration.GetSection("Authentication").GetSection("Google")["ClientId"];
         options.ClientSecret = configuration.GetSection("Authentication").GetSection("Google")["ClientSecret"];
+    })
+    .AddFacebook(options => 
+    {
+        options.AppId = configuration.GetSection("Authentication").GetSection("Facebook")["AppId"];
+        options.AppSecret = configuration.GetSection("Authentication").GetSection("Facebook")["AppSecret"];
     });
 
 builder.Services.AddControllersWithViews();
