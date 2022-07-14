@@ -1,4 +1,5 @@
-﻿using FMFT.Extensions.Authentication.Models.Exceptions;
+﻿using FMFT.Extensions.Authentication.Models;
+using FMFT.Extensions.Authentication.Models.Exceptions;
 using FMFT.Web.Server.Brokers.Authentications;
 using FMFT.Web.Server.Brokers.Encryptions;
 using FMFT.Web.Server.Brokers.Validations;
@@ -96,22 +97,45 @@ namespace FMFT.Web.Server.Services.Processings.Users
             return MapUserToUserInfo(user);
         }
 
-        private async ValueTask SignInUserAsync(User user, bool isPersistent, string authenticationMethod)
+        public ValueTask ChallengeExternalLoginAsync(string provider, string redirectUrl)
         {
-            Dictionary<string, object> claimsDictionary = UserToClaimsDictionary(user);
-            await authenticationBroker.SignInAsync(claimsDictionary, isPersistent, authenticationMethod);
+            return authenticationBroker.ChallengeExternalLoginAsync(provider, redirectUrl);
         }
 
-        private Dictionary<string, object> UserToClaimsDictionary(User user)
+        public async ValueTask HandleExternalLoginCallbackAsync()
         {
-            return new Dictionary<string, object>()
+            ExternalLoginInfo externalLoginInfo = await authenticationBroker.GetExternalLoginInfoAsync();
+            if (externalLoginInfo == null)
             {
-                { ClaimTypes.NameIdentifier, user.Id },
-                { ClaimTypes.Email, user.Email },
-                { ClaimTypes.GivenName, user.FirstName },
-                { ClaimTypes.Surname, user.LastName },
-                { ClaimTypes.Role, user.Role }             
-            };
+                throw new ExternalLoginInfoNotFoundException();
+            }
+
+            try
+            {
+                await SignInUserWithExternalLoginAsync(externalLoginInfo);
+            } catch (UserNotFoundException)
+            {
+                await RegisterUserWithExteranlLoginAsync(externalLoginInfo);
+            }
+        }
+
+        private async ValueTask SignInUserWithExternalLoginAsync(ExternalLoginInfo externalLoginInfo)
+        {
+            User user = await userService.RetrieveUserByLoginAsync(externalLoginInfo.ProviderName, externalLoginInfo.ProviderKey);
+            await SignInUserAsync(user, true, externalLoginInfo.ProviderName);
+        }
+
+        private async ValueTask RegisterUserWithExteranlLoginAsync(ExternalLoginInfo externalLoginInfo)
+        {
+            RegisterUserWithLoginParams @params = MapExternalLoginInfoToRegisterUserWithLoginParams(externalLoginInfo);
+            User user = await userService.RegisterUserWithLoginAsync(@params);
+            await SignInUserAsync(user, true, externalLoginInfo.ProviderName);
+        }
+
+        private async ValueTask SignInUserAsync(User user, bool isPersistent, string authenticationMethod)
+        {
+            Dictionary<string, object> claimsDictionary = MapUserToClaimsDictionary(user);
+            await authenticationBroker.SignInAsync(claimsDictionary, isPersistent, authenticationMethod);
         }
     }
 }

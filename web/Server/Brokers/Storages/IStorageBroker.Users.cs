@@ -11,5 +11,6 @@ namespace FMFT.Web.Server.Brokers.Storages
         ValueTask<User> SelectUserByIdAsync(int userId);
         ValueTask<IEnumerable<User>> SelectAllUsersAsync();
         ValueTask<User> SelectUserByEmailAsync(string email);
+        ValueTask<User> SelectUserByLoginAsync(string providerName, string providerKey);
     }
 }

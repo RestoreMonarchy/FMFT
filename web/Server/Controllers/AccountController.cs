@@ -65,5 +65,33 @@ namespace FMFT.Web.Server.Controllers
             await userService.SignOutUserAsync();
             return LocalRedirect(returnUrl);
         }
+
+        [HttpPost("externallogin")]
+        public async ValueTask ExternalLogin([FromForm] string provider, [FromForm] string redirectUrl)
+        {
+            await userService.ChallengeExternalLoginAsync(provider, redirectUrl);
+        }
+
+        [HttpGet("externallogincallback")]
+        public async ValueTask<IActionResult> ExternalLoginCallback()
+        {
+            try
+            {
+                await userService.HandleExternalLoginCallbackAsync();
+                return Ok();
+            } catch (RegisterUserWithLoginValidationException)
+            {
+                return Redirect("/Account/ExternalLoginConfirmation");
+            } catch (ExternalLoginInfoNotFoundException)
+            {
+                return Redirect("/Account/Login");
+            } catch (UserEmailAlreadyExistsException)
+            {
+                return Redirect("/Account/Login");
+            } catch (UserLoginAlreadyExistsException)
+            {
+                return Redirect("/Account/Login");
+            }
+        }
     }
 }

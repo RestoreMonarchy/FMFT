@@ -3,7 +3,7 @@
 	@FirstName NVARCHAR(255),
 	@LastName NVARCHAR(255),
 	@Role VARCHAR(255),
-	@LoginProvider NVARCHAR(255),
+	@ProviderName NVARCHAR(255),
 	@ProviderKey NVARCHAR(255),
 	@IsEmailConfirmed BIT
 AS
@@ -16,7 +16,7 @@ BEGIN
 		RETURN 1;
 	END
 
-	IF EXISTS(SELECT * FROM dbo.UserLogins WHERE LoginProvider = @LoginProvider AND ProviderKey = @ProviderKey)
+	IF EXISTS(SELECT * FROM dbo.UserLogins WHERE ProviderName = @ProviderName AND ProviderKey = @ProviderKey)
 	BEGIN
 		RETURN 2;
 	END
@@ -28,8 +28,8 @@ BEGIN
 
 	DECLARE @userId INT = SCOPE_IDENTITY();
 
-	INSERT INTO dbo.UserLogins (UserId, LoginProvider, ProviderKey)
-	VALUES (@userId, @LoginProvider, @ProviderKey);
+	INSERT INTO dbo.UserLogins (UserId, ProviderName, ProviderKey)
+	VALUES (@userId, @ProviderName, @ProviderKey);
 
 	COMMIT;
 

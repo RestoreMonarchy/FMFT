@@ -5,8 +5,10 @@ namespace FMFT.Web.Server.Services.Processings.Users
 {
     public interface IUserProcessingService
     {
+        ValueTask ChallengeExternalLoginAsync(string provider, string redirectUrl);
         ValueTask<User> GetAuthenticatedUserAsync();
         ValueTask<UserInfo> GetAuthenticatedUserInfoAsync();
+        ValueTask HandleExternalLoginCallbackAsync();
         ValueTask<UserInfo> RegisterUserWithPasswordAsync(RegisterUserWithPasswordModel model);
         ValueTask<UserInfo> SignInUserWithPasswordAsync(SignInUserWithPasswordModel model);
         ValueTask SignOutUserAsync();

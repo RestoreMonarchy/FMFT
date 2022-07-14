@@ -58,6 +58,14 @@ namespace FMFT.Extensions.Authentication
             httpContext.User = null;
         }
 
+        public async ValueTask ChallengeExternalLoginAsync(string provider, string redirectUrl)
+        {
+            AuthenticationProperties authenticationProperties = 
+                ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+
+            await httpContext.ChallengeAsync(provider, authenticationProperties);
+        }
+
         public AuthenticationProperties ConfigureExternalAuthenticationProperties(
             string provider, 
             string redirectUrl)
