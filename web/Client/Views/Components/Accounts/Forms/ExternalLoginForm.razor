@@ -1,0 +1,21 @@
+﻿<form action="account/externallogin" method="POST">
+    <input type="text" name="provider" value="@Provider" hidden />
+    <input type="text" name="returnUrl" value="" hidden />
+    <button class="btn btn-outline-dark d-flex w-100 mb-2" type="submit">
+        <div class="float-start" style="margin-top: -3px;">
+            <img src="@IconUrl" width="20" height="20" />
+        </div>
+        <div class="text-center w-100">
+            @Text
+        </div>
+    </button>
+</form>
+
+@code {
+    [Parameter]
+    public string IconUrl { get; set; }
+    [Parameter]
+    public string Text { get; set; }
+    [Parameter]
+    public string Provider { get; set; }
+}

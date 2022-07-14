@@ -2,48 +2,9 @@
 @using FMFT.Web.Client.Views.Components.Accounts
 @layout AccountLayout
 
-<div class="mb-3">
-    <h5>Login</h5>
-</div>
 
-<SignInUserWithPasswordComponent />
+<LoginComponent />
 
-<div class="my-2 text-start small">
-    <div>
-        Don't have account yet? 
-        <a class="text-decoration-none" href="/account/register">
-            Register
-        </a>
-    </div>
-    <div>
-        Forgot your password? 
-        <a class="text-decoration-none" href="/account/requestresetpassword">
-            Reset Password
-        </a>
-    </div>    
-</div>
-
-<div class="my-2 fw-bold">
-    OR
-</div>
-
-<button class="btn btn-outline-dark d-flex w-100 mb-2 disabled">
-    <div class="float-start" style="margin-top: -3px;">
-        <img src="/img/icons/google_icon.png" width="20" height="20" />
-    </div>
-    <div class="text-center w-100">
-        Sign in with Google
-    </div>
-</button>
-
-<button class="btn btn-outline-dark d-flex w-100 mb-2 disabled">
-    <div class="float-start" style="margin-top: -3px;">
-        <img src="/img/icons/facebook_icon.png" width="20" height="20" />
-    </div>
-    <div class="text-center w-100">
-        Sign in with Facebook
-    </div>
-</button>
 
 <p class="my-3 text-muted">
     &copy; @DateTime.UtcNow.Year

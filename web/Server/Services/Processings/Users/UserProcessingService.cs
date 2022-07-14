@@ -2,6 +2,7 @@
 using FMFT.Extensions.Authentication.Models.Exceptions;
 using FMFT.Web.Server.Brokers.Authentications;
 using FMFT.Web.Server.Brokers.Encryptions;
+using FMFT.Web.Server.Brokers.Urls;
 using FMFT.Web.Server.Brokers.Validations;
 using FMFT.Web.Server.Services.Foundations.Users;
 using FMFT.Web.Shared.Models.Users;
@@ -18,17 +19,20 @@ namespace FMFT.Web.Server.Services.Processings.Users
         private readonly IAuthenticationBroker authenticationBroker;
         private readonly IEncryptionBroker encryptionBroker;
         private readonly IValidationBroker validationBroker;
+        private readonly IUrlBroker urlBroker;
 
         public UserProcessingService(
-            IUserService userService, 
-            IAuthenticationBroker authenticationBroker, 
+            IUserService userService,
+            IAuthenticationBroker authenticationBroker,
             IEncryptionBroker encryptionBroker,
-            IValidationBroker validationBroker)
+            IValidationBroker validationBroker,
+            IUrlBroker urlBroker)
         {
             this.userService = userService;
             this.authenticationBroker = authenticationBroker;
             this.encryptionBroker = encryptionBroker;
             this.validationBroker = validationBroker;
+            this.urlBroker = urlBroker;
         }
 
         public async ValueTask<User> GetAuthenticatedUserAsync()
@@ -97,9 +101,10 @@ namespace FMFT.Web.Server.Services.Processings.Users
             return MapUserToUserInfo(user);
         }
 
-        public ValueTask ChallengeExternalLoginAsync(string provider, string redirectUrl)
+        public async ValueTask ChallengeExternalLoginAsync(string provider, string returnUrl)
         {
-            return authenticationBroker.ChallengeExternalLoginAsync(provider, redirectUrl);
+            string redirectUrl = urlBroker.Action("ExternalLoginCallback", "Account", new { returnUrl });
+            await authenticationBroker.ChallengeExternalLoginAsync(provider, redirectUrl);
         }
 
         public async ValueTask HandleExternalLoginCallbackAsync()
