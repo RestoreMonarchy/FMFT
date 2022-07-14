@@ -1,4 +1,6 @@
 ﻿using FMFT.Extensions.Authentication;
+using FMFT.Extensions.Authentication.Models;
+using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 
 namespace FMFT.Web.Server.Brokers.Authentications
@@ -37,6 +39,16 @@ namespace FMFT.Web.Server.Brokers.Authentications
             List<Claim> claims = DictionaryToClaims(claimsDictionary);
 
             await context.SignInAsync(claims, isPersistent, authenticationMethod);
+        }
+
+        public async ValueTask ChallengeExternalLoginAsync(string provider, string redirectUrl)
+        {
+            await context.ChallengeExternalLoginAsync(provider, redirectUrl);
+        }
+
+        public async ValueTask<ExternalLoginInfo> GetExternalLoginInfoAsync()
+        {
+            return await context.GetExternalLoginInfoAsync();
         }
 
         private List<Claim> DictionaryToClaims(Dictionary<string, object> claims)

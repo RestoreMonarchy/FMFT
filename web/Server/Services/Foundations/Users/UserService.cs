@@ -45,6 +45,17 @@ namespace FMFT.Web.Server.Services.Foundations.Users
             return user;
         }
 
+        public async ValueTask<User> RetrieveUserByLoginAsync(string providerName, string providerKey)
+        {
+            User user = await storageBroker.SelectUserByLoginAsync(providerName, providerKey);
+            if (user == null)
+            {
+                throw new UserNotFoundException();
+            }
+
+            return user;
+        }
+
         public async ValueTask<User> RegisterUserWithPasswordAsync(RegisterUserWithPasswordParams @params)
         {
             RegisterUserWithPasswordValidationException validationException = new();
@@ -87,7 +98,7 @@ namespace FMFT.Web.Server.Services.Foundations.Users
             {
                 validationException.UpsertDataList("LastName", "Invalid");
             }
-            if (validationBroker.IsStringInvalid(@params.LoginProvider, true, 255, 0))
+            if (validationBroker.IsStringInvalid(@params.ProviderName, true, 255, 0))
             {
                 validationException.UpsertDataList("LoginProvider", "Invalid");
             }
