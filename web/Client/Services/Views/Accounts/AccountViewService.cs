@@ -25,6 +25,9 @@ namespace FMFT.Web.Client.Services.Views.Accounts
         public async ValueTask RegisterAsync(RegisterUserWithPasswordModel model)
             => await accountService.RegisterAsync(model);
 
+        public async ValueTask ConfirmExternalLoginAsync(ExternalLoginConfirmationModel model)
+            => await accountService.ConfirmExternalLoginAsync(model);
+
         public void ForceLoadNavigateTo(string url)
             => navigationBroker.ForceLoadNavigateTo(url);
     }
