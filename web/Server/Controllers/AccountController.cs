@@ -67,9 +67,9 @@ namespace FMFT.Web.Server.Controllers
         }
 
         [HttpPost("externallogin")]
-        public async ValueTask ExternalLogin([FromForm] string provider, [FromForm] string redirectUrl)
+        public async ValueTask ExternalLogin([FromForm] string provider, [FromForm] string returnUrl = "/")
         {
-            await userService.ChallengeExternalLoginAsync(provider, redirectUrl);
+            await userService.ChallengeExternalLoginAsync(provider, returnUrl);
         }
 
         [HttpGet("externallogincallback")]
@@ -78,7 +78,7 @@ namespace FMFT.Web.Server.Controllers
             try
             {
                 await userService.HandleExternalLoginCallbackAsync();
-                return Ok();
+                return Redirect("/");
             } catch (RegisterUserWithLoginValidationException)
             {
                 return Redirect("/Account/ExternalLoginConfirmation");

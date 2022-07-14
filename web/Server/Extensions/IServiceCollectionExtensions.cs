@@ -10,6 +10,7 @@ using FMFT.Web.Server.Services.Foundations.Users;
 using FMFT.Web.Server.Services.Processings.Users;
 using FMFT.Web.Server.Services.Foundations.Reservations;
 using FMFT.Web.Server.Services.Processings.Reservations;
+using FMFT.Web.Server.Brokers.Urls;
 
 namespace FMFT.Web.Server.Extensions
 {
@@ -21,6 +22,7 @@ namespace FMFT.Web.Server.Extensions
             services.AddScoped<IAuthenticationBroker, AuthenticationBroker>();
             services.AddScoped<IEncryptionBroker, EncryptionBroker>();
             services.AddScoped<IValidationBroker, ValidationBroker>();
+            services.AddScoped<IUrlBroker, UrlBroker>();
             return services;
         }
 

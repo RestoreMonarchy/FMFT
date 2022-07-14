@@ -7,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+IConfiguration configuration = builder.Configuration;
+
 builder.Services.AddBrokers();
 builder.Services.AddFoundations();
 builder.Services.AddProcessings();
@@ -26,6 +28,11 @@ builder.Services.AddDefaultAuthentication()
     {
         o.Cookie.Name = FMFTAuthenticationDefaults.ExternalScheme;
         o.ExpireTimeSpan = TimeSpan.FromMinutes(10);
+    })
+    .AddGoogle(options => 
+    {
+        options.ClientId = configuration.GetSection("Authentication").GetSection("Google")["ClientId"];
+        options.ClientSecret = configuration.GetSection("Authentication").GetSection("Google")["ClientSecret"];
     });
 
 builder.Services.AddControllersWithViews();

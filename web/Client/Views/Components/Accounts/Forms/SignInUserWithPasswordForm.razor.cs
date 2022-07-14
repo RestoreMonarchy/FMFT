@@ -7,9 +7,9 @@ using FMFT.Web.Shared.Models.Users.Exceptions;
 using FMFT.Web.Shared.Models.Users.Models;
 using Microsoft.AspNetCore.Components;
 
-namespace FMFT.Web.Client.Views.Components.Accounts
+namespace FMFT.Web.Client.Views.Components.Accounts.Forms
 {
-    public partial class SignInUserWithPasswordComponent
+    public partial class SignInUserWithPasswordForm
     {
         [Inject]
         public IAccountViewService AccountViewService { get; set; }
