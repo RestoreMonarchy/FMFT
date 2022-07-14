@@ -45,6 +45,11 @@ namespace FMFT.Web.Client.Services.Processings.Accounts
             ChangeUserInfo(userInfo);
         }
 
+        public async ValueTask ConfirmExternalLoginAsync(ExternalLoginConfirmationModel model)
+        {
+            UserInfo userInfo = await accountService.ConfirmExternalLoginAsync(model);
+            ChangeUserInfo(userInfo);
+        }
 
         public async ValueTask LoginAsync(SignInUserWithPasswordModel model)
         {

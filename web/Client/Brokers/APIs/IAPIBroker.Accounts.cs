@@ -8,5 +8,6 @@ namespace FMFT.Web.Client.Brokers.APIs
         ValueTask<UserInfo> GetAccountInfoAsync();
         ValueTask<UserInfo> PostAccountLoginAsync(SignInUserWithPasswordModel model);
         ValueTask<UserInfo> PostAccountRegisterAsync(RegisterUserWithPasswordModel model);
+        ValueTask<UserInfo> PostExternalLoginConfirmationAsync(ExternalLoginConfirmationModel model);
     }
 }

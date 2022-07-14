@@ -1,5 +1,6 @@
 ﻿using FMFT.Extensions.Authentication.Models;
 using FMFT.Web.Shared.Models.Users;
+using FMFT.Web.Shared.Models.Users.Models;
 using FMFT.Web.Shared.Models.Users.Params;
 using System.Security.Claims;
 
@@ -7,6 +8,15 @@ namespace FMFT.Web.Server.Services.Processings.Users
 {
     public partial class UserProcessingService
     {
+        private RegisterUserWithLoginParams MapExternalLoginInfoAndConfirmationToRegisterUserWithLoginParams(
+            ExternalLoginInfo externalLoginInfo,
+            ExternalLoginConfirmationModel model)
+        {
+            RegisterUserWithLoginParams @params = MapExternalLoginInfoToRegisterUserWithLoginParams(externalLoginInfo);
+            @params.Email = model.Email;
+            return @params;
+        }
+
         private RegisterUserWithLoginParams MapExternalLoginInfoToRegisterUserWithLoginParams(ExternalLoginInfo externalLoginInfo)
         {
             return new RegisterUserWithLoginParams()

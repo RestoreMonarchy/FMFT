@@ -124,6 +124,20 @@ namespace FMFT.Web.Server.Services.Processings.Users
             }
         }
 
+        public async ValueTask<UserInfo> ConfirmExternalLoginAsync(ExternalLoginConfirmationModel model)
+        {
+            ExternalLoginInfo externalLoginInfo = await authenticationBroker.GetExternalLoginInfoAsync();
+            if (externalLoginInfo == null)
+            {
+                throw new ExternalLoginInfoNotFoundException();
+            }
+
+            RegisterUserWithLoginParams @params = MapExternalLoginInfoAndConfirmationToRegisterUserWithLoginParams(externalLoginInfo, model);
+            User user = await userService.RegisterUserWithLoginAsync(@params);
+            await SignInUserAsync(user, true, externalLoginInfo.ProviderName);
+            return MapUserToUserInfo(user);
+        }
+
         private async ValueTask SignInUserWithExternalLoginAsync(ExternalLoginInfo externalLoginInfo)
         {
             User user = await userService.RetrieveUserByLoginAsync(externalLoginInfo.ProviderName, externalLoginInfo.ProviderKey);

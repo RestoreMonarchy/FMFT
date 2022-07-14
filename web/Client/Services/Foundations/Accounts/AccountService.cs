@@ -54,5 +54,23 @@ namespace FMFT.Web.Client.Services.Foundations.Accounts
                 throw new UserEmailAlreadyExistsException();
             }
         }
+
+        public async ValueTask<UserInfo> ConfirmExternalLoginAsync(ExternalLoginConfirmationModel model)
+        {
+            try
+            {
+                UserInfo userInfo = await apiBroker.PostExternalLoginConfirmationAsync(model);
+                return userInfo;
+            } catch (HttpResponseConflictException)
+            {
+                throw new UserEmailAlreadyExistsException();
+            } catch (HttpResponseUnauthorizedException)
+            {
+                throw new ExternalLoginInfoNotFoundException();
+            } catch (HttpResponseBadRequestException exception)
+            {
+                throw new RegisterUserWithLoginValidationException(exception, exception.Data);
+            }
+        }
     }
 }

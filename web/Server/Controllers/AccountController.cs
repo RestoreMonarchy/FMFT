@@ -66,13 +66,13 @@ namespace FMFT.Web.Server.Controllers
             return LocalRedirect(returnUrl);
         }
 
-        [HttpPost("externallogin")]
+        [HttpPost("ExternalLogin")]
         public async ValueTask ExternalLogin([FromForm] string provider, [FromForm] string returnUrl = "/")
         {
             await userService.ChallengeExternalLoginAsync(provider, returnUrl);
         }
 
-        [HttpGet("externallogincallback")]
+        [HttpGet("ExternalLoginCallback")]
         public async ValueTask<IActionResult> ExternalLoginCallback()
         {
             try
@@ -92,6 +92,28 @@ namespace FMFT.Web.Server.Controllers
             {
                 return Redirect("/Account/Login");
             }
+        }
+
+        [HttpPost("ExternalLoginConfirmation")]
+        public async ValueTask<IActionResult> ExternalLoginConfirmation([FromBody] ExternalLoginConfirmationModel model)
+        {
+            try
+            {
+                UserInfo userInfo = await userService.ConfirmExternalLoginAsync(model);
+                return Ok(userInfo);
+            } catch (UserEmailAlreadyExistsException)
+            {
+                return Conflict();
+            } catch (UserLoginAlreadyExistsException)
+            {
+                return Conflict();
+            } catch (ExternalLoginInfoNotFoundException)
+            {
+                return Unauthorized();
+            } catch (RegisterUserWithLoginValidationException e)
+            {
+                return BadRequest(e);
+            }            
         }
     }
 }

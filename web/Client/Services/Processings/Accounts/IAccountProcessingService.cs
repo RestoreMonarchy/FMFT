@@ -10,6 +10,7 @@ namespace FMFT.Web.Client.Services.Processings.Accounts
 
         event Action UserInfoChanged;
 
+        ValueTask ConfirmExternalLoginAsync(ExternalLoginConfirmationModel model);
         ValueTask InitializeAsync();
         ValueTask LoginAsync(SignInUserWithPasswordModel model);
         ValueTask RegisterAsync(RegisterUserWithPasswordModel model);
