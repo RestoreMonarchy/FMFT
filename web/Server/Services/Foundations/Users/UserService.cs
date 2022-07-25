@@ -1,4 +1,5 @@
-﻿using FMFT.Web.Server.Brokers.Storages;
+﻿using FMFT.Web.Server.Brokers.Authentications;
+using FMFT.Web.Server.Brokers.Storages;
 using FMFT.Web.Server.Brokers.Validations;
 using FMFT.Web.Server.Models.Database;
 using FMFT.Web.Shared.Models.Users;
@@ -11,11 +12,30 @@ namespace FMFT.Web.Server.Services.Foundations.Users
     {
         private readonly IStorageBroker storageBroker;
         private readonly IValidationBroker validationBroker;
+        private readonly IAuthenticationBroker authenticationBroker;
 
-        public UserService(IStorageBroker storageBroker, IValidationBroker validationBroker)
+        public UserService(IStorageBroker storageBroker, 
+            IValidationBroker validationBroker, 
+            IAuthenticationBroker authenticationBroker)
         {
             this.storageBroker = storageBroker;
             this.validationBroker = validationBroker;
+            this.authenticationBroker = authenticationBroker;
+        }
+
+        public bool IsUserAuthenticated()
+        {
+            return authenticationBroker.IsAuthenticated;
+        }
+
+        public int RetrieveAuthenticatedUserId()
+        {
+            if (authenticationBroker.IsNotAuthenticated)
+            {
+                throw new UserNotAuthenticatedException();
+            }
+
+            return authenticationBroker.AuthenticatedUserId;
         }
 
         public async ValueTask<IEnumerable<User>> RetrieveAllUsersAsync()

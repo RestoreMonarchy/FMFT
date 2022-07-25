@@ -23,7 +23,7 @@ namespace FMFT.Web.Server.Controllers
         [HttpGet("info")]
         public async ValueTask<IActionResult> Info()
         {
-            UserInfo userInfo = await userService.GetAuthenticatedUserInfoAsync();
+            UserInfo userInfo = await userService.RetrieveAuthenticatedUserInfoAsync();
             return Ok(userInfo);
         }
 
