@@ -12,6 +12,7 @@ IConfiguration configuration = builder.Configuration;
 builder.Services.AddBrokers();
 builder.Services.AddFoundations();
 builder.Services.AddProcessings();
+builder.Services.AddOrchestrations();
 
 builder.Services.AddImplementations();
 
@@ -47,7 +48,9 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
+
 app.MapControllers();
+
 app.MapFallbackToFile("index.html");
 
 app.Run();

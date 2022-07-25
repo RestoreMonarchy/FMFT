@@ -33,20 +33,8 @@ namespace FMFT.Web.Server.Services.Processings.Reservations
             return await reservationService.RetrieveReservationByIdAsync(reservationId);
         }
 
-        public async ValueTask<Reservation> CreateReservationAsync(CreateReservationModel model)
+        public async ValueTask<Reservation> CreateReservationAsync(CreateReservationParams @params)
         {
-            CreateReservationParams @params = new()
-            {
-                ShowId = model.ShowId,
-                SeatId = model.SeatId,
-                UserId = model.UserId
-            };
-
-            if (@params.UserId == 0)
-            {
-                @params.UserId = authenticationBroker.AuthenticatedUserId;
-            }
-
             return await reservationService.CreateReservationAsync(@params);
         }
     }

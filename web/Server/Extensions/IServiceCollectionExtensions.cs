@@ -14,6 +14,7 @@ using FMFT.Web.Server.Brokers.Urls;
 using FMFT.Extensions.Authentication.Constants;
 using FMFT.Extensions.Authentication.Extensions;
 using Microsoft.AspNetCore.Authentication;
+using FMFT.Web.Server.Services.Orchestrations.UserReservations;
 
 namespace FMFT.Web.Server.Extensions
 {
@@ -79,6 +80,12 @@ namespace FMFT.Web.Server.Extensions
         {
             services.AddTransient<IUserProcessingService, UserProcessingService>();
             services.AddTransient<IReservationProcessingService, ReservationProcessingService>();
+            return services;
+        }
+
+        public static IServiceCollection AddOrchestrations(this IServiceCollection services)
+        {
+            services.AddTransient<IUserReservationOrchestrationService, UserReservationOrchestrationService>();
             return services;
         }
 
