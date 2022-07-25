@@ -11,11 +11,50 @@ using FMFT.Web.Server.Services.Processings.Users;
 using FMFT.Web.Server.Services.Foundations.Reservations;
 using FMFT.Web.Server.Services.Processings.Reservations;
 using FMFT.Web.Server.Brokers.Urls;
+using FMFT.Extensions.Authentication.Constants;
+using FMFT.Extensions.Authentication.Extensions;
+using Microsoft.AspNetCore.Authentication;
 
 namespace FMFT.Web.Server.Extensions
 {
     public static class IServiceCollectionExtensions
     {
+        public static IServiceCollection AddFMFTAuthentication(this IServiceCollection services, IConfiguration configuration)
+        {
+            AuthenticationBuilder authenticationBuilder = services.AddDefaultAuthentication()
+                .AddCookie(FMFTAuthenticationDefaults.ApplicationScheme, o =>
+                {
+                    o.Cookie.Name = FMFTAuthenticationDefaults.ApplicationScheme;
+                    o.ExpireTimeSpan = TimeSpan.FromHours(24);
+                    o.EventsType = typeof(CustomCookieAuthenticationEvents);
+                })
+                .AddCookie(FMFTAuthenticationDefaults.ExternalScheme, o =>
+                {
+                    o.Cookie.Name = FMFTAuthenticationDefaults.ExternalScheme;
+                    o.ExpireTimeSpan = TimeSpan.FromMinutes(10);
+                });
+            
+            if (configuration.GetSection("Authentication").GetSection("Google").GetValue<bool>("Enabled"))
+            {
+                authenticationBuilder.AddGoogle(options =>
+                {
+                    options.ClientId = configuration.GetSection("Authentication").GetSection("Google")["ClientId"];
+                    options.ClientSecret = configuration.GetSection("Authentication").GetSection("Google")["ClientSecret"];
+                });
+            }
+
+            if (configuration.GetSection("Authentication").GetSection("Facebook").GetValue<bool>("Enabled"))
+            {
+                authenticationBuilder.AddFacebook(options =>
+                {
+                    options.AppId = configuration.GetSection("Authentication").GetSection("Facebook")["AppId"];
+                    options.AppSecret = configuration.GetSection("Authentication").GetSection("Facebook")["AppSecret"];
+                });
+            }
+
+            return services;
+        }
+
         public static IServiceCollection AddBrokers(this IServiceCollection services)
         {
             services.AddScoped<IStorageBroker, StorageBroker>();
