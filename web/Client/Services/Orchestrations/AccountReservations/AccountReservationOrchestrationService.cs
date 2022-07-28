@@ -18,9 +18,17 @@ namespace FMFT.Web.Client.Services.Orchestrations.AccountReservations
             this.reservationService = reservationService;
         }
 
+        public async ValueTask<IEnumerable<Reservation>> RetrieveAccountReservationsAsync()
+        {
+            throw new NotImplementedException();
+            
+        }
+
         public async ValueTask<Reservation> CreateAccountReservationsAsync(CreateReservationModel model)
         {
-            return null;
+            int userId = accountService.UserInfo.Id;
+            model.UserId = userId;
+            return await reservationService.CreateReservationAsync(model);
         }
     }
 }

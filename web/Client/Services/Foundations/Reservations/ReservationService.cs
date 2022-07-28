@@ -2,6 +2,7 @@
 using FMFT.Web.Shared.Models.Reservations;
 using FMFT.Web.Shared.Models.Reservations.Exceptions;
 using FMFT.Web.Shared.Models.Reservations.Models;
+using FMFT.Web.Shared.Models.Users.Exceptions;
 using RESTFulSense.WebAssembly.Exceptions;
 
 namespace FMFT.Web.Client.Services.Foundations.Reservations
@@ -27,10 +28,23 @@ namespace FMFT.Web.Client.Services.Foundations.Reservations
             }            
         }
 
-        public async ValueTask<List<Reservation>> RetrieveAllReservationsASync()
+        public async ValueTask<List<Reservation>> RetrieveAllReservationsAsync()
         {
             List<Reservation> reservations = await apiBroker.GetAllReservationsAsync();
             return reservations;
+        }
+
+        public async ValueTask<List<Reservation>> RetrieveUserReservationsAsync(int userId)
+        {
+            try
+            {
+                List<Reservation> reservations = await apiBroker.GetUserReservationsAsync(userId);
+                return reservations;
+            } catch (HttpResponseUnauthorizedException)
+            {
+                // using Models.Users exception inside Reservation service
+                throw new UserNotAuthorizedException();
+            }
         }
 
         public async ValueTask<Reservation> CreateReservationAsync(CreateReservationModel model)
@@ -45,6 +59,10 @@ namespace FMFT.Web.Client.Services.Foundations.Reservations
             } catch (HttpResponseForbiddenException)
             {
                 throw new UserAlreadyReservedException();
+            } catch (HttpResponseUnauthorizedException)
+            {
+                // using Models.Users exception inside Reservation service
+                throw new UserNotAuthorizedException();
             }
         }
     }

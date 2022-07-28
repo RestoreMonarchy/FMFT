@@ -8,5 +8,6 @@ namespace FMFT.Web.Client.Brokers.APIs
         ValueTask<Reservation> GetReservationByIdAsync(int reservationId);
         ValueTask<List<Reservation>> GetAllReservationsAsync();
         ValueTask<Reservation> CreateReservationAsync(CreateReservationModel model);
+        ValueTask<List<Reservation>> GetUserReservationsAsync(int userId);
     }
 }
