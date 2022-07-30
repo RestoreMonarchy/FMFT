@@ -1,5 +1,5 @@
-﻿using FMFT.Web.Shared.Models.Users;
-using FMFT.Web.Shared.Models.Users.Models;
+﻿using FMFT.Web.Shared.Models.Accounts;
+using FMFT.Web.Shared.Models.Accounts.Requests;
 
 namespace FMFT.Web.Client.Brokers.APIs
 {
@@ -7,28 +7,28 @@ namespace FMFT.Web.Client.Brokers.APIs
     {
         private const string AccountsRelativeUrl = "account";
 
-        public async ValueTask<UserInfo> GetAccountInfoAsync()
+        public async ValueTask<Account> GetAccountInfoAsync()
         {
             string url = $"{AccountsRelativeUrl}/info";
-            return await GetAsync<UserInfo>(url);
+            return await GetAsync<Account>(url);
         }
 
-        public async ValueTask<UserInfo> PostAccountLoginAsync(SignInUserWithPasswordModel model)
+        public async ValueTask<Account> PostAccountLoginAsync(SignInUserWithPasswordRequest request)
         {
             string url = $"{AccountsRelativeUrl}/login";
-            return await PostAsync<SignInUserWithPasswordModel, UserInfo>(url, model);
+            return await PostAsync<SignInUserWithPasswordRequest, Account>(url, request);
         }
 
-        public async ValueTask<UserInfo> PostAccountRegisterAsync(RegisterUserWithPasswordModel model)
+        public async ValueTask<Account> PostAccountRegisterAsync(RegisterUserWithPasswordRequest request)
         {
             string url = $"{AccountsRelativeUrl}/register";
-            return await PostAsync<RegisterUserWithPasswordModel, UserInfo>(url, model);
+            return await PostAsync<RegisterUserWithPasswordRequest, Account>(url, request);
         }
 
-        public async ValueTask<UserInfo> PostExternalLoginConfirmationAsync(ExternalLoginConfirmationModel model)
+        public async ValueTask<Account> PostExternalLoginConfirmationAsync(ExternalLoginConfirmationRequest request)
         {
             string url = $"{AccountsRelativeUrl}/externalloginconfirmation";
-            return await PostAsync<ExternalLoginConfirmationModel, UserInfo>(url, model);
+            return await PostAsync<ExternalLoginConfirmationRequest, Account>(url, request);
         }
     }
 }

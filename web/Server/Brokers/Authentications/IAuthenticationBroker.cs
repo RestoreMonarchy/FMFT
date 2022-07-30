@@ -1,4 +1,5 @@
 ﻿using FMFT.Extensions.Authentication.Models;
+using System.Security.Claims;
 
 namespace FMFT.Web.Server.Brokers.Authentications
 {
@@ -9,6 +10,7 @@ namespace FMFT.Web.Server.Brokers.Authentications
         int AuthenticatedUserId { get; }
 
         ValueTask ChallengeExternalLoginAsync(string provider, string redirectUrl);
+        ClaimsPrincipal GetClaimsPrincipal();
         ValueTask<ExternalLoginInfo> GetExternalLoginInfoAsync();
         ValueTask SignInAsync(Dictionary<string, object> claimsDictionary, bool isPersistent, string authenticationMethod);
         ValueTask SignOutAsync();

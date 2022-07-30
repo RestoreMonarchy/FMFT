@@ -1,13 +1,13 @@
-﻿using FMFT.Web.Shared.Models.Users;
-using FMFT.Web.Shared.Models.Users.Models;
+﻿using FMFT.Web.Shared.Models.Accounts;
+using FMFT.Web.Shared.Models.Accounts.Requests;
 
 namespace FMFT.Web.Client.Brokers.APIs
 {
     public partial interface IAPIBroker
     {
-        ValueTask<UserInfo> GetAccountInfoAsync();
-        ValueTask<UserInfo> PostAccountLoginAsync(SignInUserWithPasswordModel model);
-        ValueTask<UserInfo> PostAccountRegisterAsync(RegisterUserWithPasswordModel model);
-        ValueTask<UserInfo> PostExternalLoginConfirmationAsync(ExternalLoginConfirmationModel model);
+        ValueTask<Account> GetAccountInfoAsync();
+        ValueTask<Account> PostAccountLoginAsync(SignInUserWithPasswordRequest request);
+        ValueTask<Account> PostAccountRegisterAsync(RegisterUserWithPasswordRequest request);
+        ValueTask<Account> PostExternalLoginConfirmationAsync(ExternalLoginConfirmationRequest request);
     }
 }

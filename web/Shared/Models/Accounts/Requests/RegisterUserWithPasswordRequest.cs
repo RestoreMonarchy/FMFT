@@ -1,6 +1,6 @@
-﻿namespace FMFT.Web.Shared.Models.Users.Models
+﻿namespace FMFT.Web.Shared.Models.Accounts.Requests
 {
-    public class RegisterUserWithPasswordModel
+    public class RegisterUserWithPasswordRequest
     {
         public string Email { get; set; }
         public string FirstName { get; set; }

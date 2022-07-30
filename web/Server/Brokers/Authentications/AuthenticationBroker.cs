@@ -26,6 +26,11 @@ namespace FMFT.Web.Server.Brokers.Authentications
             }
         }
 
+        public ClaimsPrincipal GetClaimsPrincipal()
+        {
+            return context.ClaimsPrincipal;
+        }
+
         public async ValueTask SignOutAsync()
         {
             await context.SignOutAsync();

@@ -1,4 +1,5 @@
 ﻿using FMFT.Web.Server.Services.Processings.Users;
+using FMFT.Web.Shared.Models.Accounts.Exceptions;
 using FMFT.Web.Shared.Models.Users;
 using FMFT.Web.Shared.Models.Users.Exceptions;
 using FMFT.Web.Shared.Models.Users.Models;
@@ -82,7 +83,7 @@ namespace FMFT.Web.Server.Controllers
             } catch (RegisterUserWithLoginValidationException)
             {
                 return Redirect("/Account/ExternalLoginConfirmation");
-            } catch (ExternalLoginInfoNotFoundException)
+            } catch (ExternalLoginNotFoundException)
             {
                 return Redirect("/Account/Login");
             } catch (UserEmailAlreadyExistsException)
@@ -107,7 +108,7 @@ namespace FMFT.Web.Server.Controllers
             } catch (UserLoginAlreadyExistsException)
             {
                 return Conflict();
-            } catch (ExternalLoginInfoNotFoundException)
+            } catch (ExternalLoginNotFoundException)
             {
                 return Unauthorized();
             } catch (RegisterUserWithLoginValidationException e)

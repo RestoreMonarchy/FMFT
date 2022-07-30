@@ -18,6 +18,7 @@ namespace FMFT.Extensions.Authentication
         }
 
         public bool IsAuthenticated => httpContext.User?.Identity?.IsAuthenticated ?? false;
+        public ClaimsPrincipal ClaimsPrincipal => httpContext.User;
 
         public string FindClaimValue(string claimType)
         {
@@ -89,7 +90,7 @@ namespace FMFT.Extensions.Authentication
                 || items == null 
                 || !items.ContainsKey(FMFTAuthenticationDefaults.LoginProviderKey))
             {
-                return null;
+                throw new ExternalNotAuthenticatedException();
             }
 
             string providerKey = auth.Principal.FindFirstValue(ClaimTypes.NameIdentifier);
