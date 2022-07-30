@@ -5,6 +5,7 @@ namespace FMFT.Web.Server.Services.Processings.Accounts
 {
     public interface IAccountProcessingService
     {
+        ValueTask ChallengeExternalLoginAsync(ChallengeExternalLoginParams @params);
         Account RetrieveAccount();
         ValueTask<ExternalLogin> RetrieveExternalLoginAsync();
         ValueTask SignInAccountAsync(SignInAccountParams @params);

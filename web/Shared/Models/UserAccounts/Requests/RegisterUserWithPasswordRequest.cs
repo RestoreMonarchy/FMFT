@@ -1,4 +1,4 @@
-﻿namespace FMFT.Web.Shared.Models.Accounts.Requests
+﻿namespace FMFT.Web.Shared.Models.UserAccounts.Requests
 {
     public class RegisterUserWithPasswordRequest
     {

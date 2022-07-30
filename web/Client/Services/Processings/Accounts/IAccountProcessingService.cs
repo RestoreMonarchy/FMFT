@@ -1,5 +1,4 @@
 ﻿using FMFT.Web.Shared.Models.Users;
-using FMFT.Web.Shared.Models.Users.Models;
 
 namespace FMFT.Web.Client.Services.Processings.Accounts
 {

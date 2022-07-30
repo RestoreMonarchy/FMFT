@@ -1,8 +1,8 @@
-﻿using FMFT.Web.Server.Services.Processings.Users;
+﻿using FMFT.Web.Server.Services.Processings.Accounts;
+using FMFT.Web.Server.Services.Processings.Users;
 using FMFT.Web.Shared.Models.Accounts.Exceptions;
 using FMFT.Web.Shared.Models.Users;
 using FMFT.Web.Shared.Models.Users.Exceptions;
-using FMFT.Web.Shared.Models.Users.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
@@ -13,18 +13,18 @@ namespace FMFT.Web.Server.Controllers
     [Route("[controller]")]
     public class AccountController : RESTFulController
     {
-        private readonly IUserProcessingService userService;
+        private readonly IAccountProcessingService accountService;
 
-        public AccountController(IUserProcessingService userService)
+        public AccountController(IAccountProcessingService accountService)
         {
-            this.userService = userService;
+            this.accountService = accountService;
         }
 
         [Authorize]
         [HttpGet("info")]
         public async ValueTask<IActionResult> Info()
         {
-            UserInfo userInfo = await userService.RetrieveAuthenticatedUserInfoAsync();
+            UserInfo userInfo = await accountService.RetrieveAuthenticatedUserInfoAsync();
             return Ok(userInfo);
         }
 
@@ -33,7 +33,7 @@ namespace FMFT.Web.Server.Controllers
         {
             try
             {
-                UserInfo userInfo = await userService.RegisterUserWithPasswordAsync(model);
+                UserInfo userInfo = await accountService.RegisterUserWithPasswordAsync(model);
                 return Ok(userInfo);
             } catch (UserPasswordInvalidException exception)
             {
@@ -52,7 +52,7 @@ namespace FMFT.Web.Server.Controllers
         {
             try
             {
-                UserInfo userInfo = await userService.SignInUserWithPasswordAsync(model);
+                UserInfo userInfo = await accountService.SignInUserWithPasswordAsync(model);
                 return Ok(userInfo);
             } catch (UserPasswordNotMatchException exception)
             {
@@ -63,14 +63,14 @@ namespace FMFT.Web.Server.Controllers
         [HttpGet("logout")]
         public async ValueTask<IActionResult> LogOut([FromQuery] string returnUrl = "/")
         {
-            await userService.SignOutUserAsync();
+            await accountService.SignOutUserAsync();
             return LocalRedirect(returnUrl);
         }
 
         [HttpPost("ExternalLogin")]
         public async ValueTask ExternalLogin([FromForm] string provider, [FromForm] string returnUrl = "/")
         {
-            await userService.ChallengeExternalLoginAsync(provider, returnUrl);
+            await accountService.ChallengeExternalLoginAsync(provider, returnUrl);
         }
 
         [HttpGet("ExternalLoginCallback")]
@@ -78,7 +78,7 @@ namespace FMFT.Web.Server.Controllers
         {
             try
             {
-                await userService.HandleExternalLoginCallbackAsync();
+                await accountService.HandleExternalLoginCallbackAsync();
                 return Redirect("/");
             } catch (RegisterUserWithLoginValidationException)
             {
@@ -100,7 +100,7 @@ namespace FMFT.Web.Server.Controllers
         {
             try
             {
-                UserInfo userInfo = await userService.ConfirmExternalLoginAsync(model);
+                UserInfo userInfo = await accountService.ConfirmExternalLoginAsync(model);
                 return Ok(userInfo);
             } catch (UserEmailAlreadyExistsException)
             {

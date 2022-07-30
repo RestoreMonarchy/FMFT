@@ -34,9 +34,9 @@ namespace FMFT.Web.Server.Services.Foundations.Accounts
             await authenticationBroker.SignOutAsync();
         }
 
-        public async ValueTask ChallengeExternalLoginAsync(string provider, string redirectUrl)
+        public async ValueTask ChallengeExternalLoginAsync(ChallengeExternalLoginParams @params)
         {
-            await authenticationBroker.ChallengeExternalLoginAsync(provider, redirectUrl);
+            await authenticationBroker.ChallengeExternalLoginAsync(@params.Provider, @params.RedirectUrl);
         }
 
         public async ValueTask<ExternalLogin> RetrieveExternalLoginAsync()

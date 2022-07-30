@@ -6,7 +6,7 @@ namespace FMFT.Web.Server.Services.Foundations.Accounts
 {
     public interface IAccountService
     {
-        ValueTask ChallengeExternalLoginAsync(string provider, string redirectUrl);
+        ValueTask ChallengeExternalLoginAsync(ChallengeExternalLoginParams @params);
         Account RetrieveAccount();
         ValueTask<ExternalLogin> RetrieveExternalLoginAsync();
         ValueTask SignInAccountAsync(SignInAccountParams @params);

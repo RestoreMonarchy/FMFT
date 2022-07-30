@@ -33,5 +33,10 @@ namespace FMFT.Web.Server.Services.Processings.Accounts
         {
             return await accountService.RetrieveExternalLoginAsync();
         }
+
+        public async ValueTask ChallengeExternalLoginAsync(ChallengeExternalLoginParams @params)
+        {
+            await accountService.ChallengeExternalLoginAsync(@params);
+        }
     }
 }
