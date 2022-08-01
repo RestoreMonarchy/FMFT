@@ -1,6 +1,7 @@
 ﻿using FMFT.Web.Server.Services.Processings.Accounts;
 using FMFT.Web.Server.Services.Processings.Users;
 using FMFT.Web.Shared.Models.Accounts;
+using FMFT.Web.Shared.Models.Accounts.Arguments;
 using FMFT.Web.Shared.Models.Accounts.Params;
 using FMFT.Web.Shared.Models.UserAccounts.Requests;
 using FMFT.Web.Shared.Models.Users;
@@ -61,6 +62,11 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
             return account;
         }
 
+        public async ValueTask SignOutAsync()
+        {
+            await accountService.SignOutAccountAsync();
+        }
+
         public async ValueTask<Account> HandleExternalLoginCallbackAsync()
         {
             ExternalLogin externalLogin = await accountService.RetrieveExternalLoginAsync();
@@ -71,7 +77,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
                 user = await userService.RetrieveUserByLoginAsync(externalLogin.ProviderName, externalLogin.ProviderKey);
             } catch (UserNotFoundException)
             {
-                RegisterUserWithLoginParams @params = new()
+                RegisterUserWithLoginParams registerParams = new()
                 {
                     Email = externalLogin.Account.Email,
                     FirstName = externalLogin.Account.FirstName,
@@ -82,28 +88,62 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
                     ProviderName = externalLogin.ProviderName
                 };
 
-                user = await userService.RegisterUserWithLoginAsync(@params);
+                user = await userService.RegisterUserWithLoginAsync(registerParams);
             }
 
             Account account = MapUserToAccount(user);
-            SignInAccountParams @signinAccountParams = new SignInAccountParams()
+            SignInAccountParams signinParams = new()
             {
                 Account = account,
                 AuthenticationMethod = externalLogin.ProviderName,
                 IsPersistent = true
             };
-            await accountService.SignInAccountAsync(signinAccountParams);
+            await accountService.SignInAccountAsync(signinParams);
             return account;
         }
 
         public async ValueTask ChallengeExternalLoginAsync(string provider, string returnUrl)
         {
-            ChallengeExternalLoginParams @params = new()
+            ChallengeExternalLoginArguments arguments = new()
             {
                 Provider = provider,
-                RedirectUrl = returnUrl
+                ReturnUrl = returnUrl
             };
-            await accountService.ChallengeExternalLoginAsync(@params);
+            await accountService.ChallengeExternalLoginAsync(arguments);
+        }
+
+        public async ValueTask<Account> ConfirmExternalLoginAsync(ConfirmExternalLoginRequest request)
+        {
+            ExternalLogin externalLogin = await accountService.RetrieveExternalLoginAsync();
+
+            RegisterUserWithLoginParams registerParams = new()
+            {
+                Email = request.Email,
+                FirstName = externalLogin.Account.FirstName,
+                LastName = externalLogin.Account.LastName,
+                Role = UserRole.Guest,
+                IsEmailConfirmed = false,
+                ProviderKey = externalLogin.ProviderKey,
+                ProviderName = externalLogin.ProviderName
+            };
+
+            User user = await userService.RegisterUserWithLoginAsync(registerParams);
+            Account account = MapUserToAccount(user);
+
+            SignInAccountParams signinParams = new()
+            {
+                Account = account,
+                AuthenticationMethod = externalLogin.ProviderName,
+                IsPersistent = true
+            };
+
+            await accountService.SignInAccountAsync(signinParams);
+            return account;
+        }
+
+        public Account RetrieveAccount()
+        {
+            return accountService.RetrieveAccount();
         }
     }
 }
