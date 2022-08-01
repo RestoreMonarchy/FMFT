@@ -1,6 +1,6 @@
 ﻿using FMFT.Extensions.Authentication.Models;
 using FMFT.Web.Shared.Models.Accounts;
-using FMFT.Web.Shared.Models.Users;
+using FMFT.Web.Shared.Models.Shared.Enums;
 using System.Security.Claims;
 
 namespace FMFT.Web.Server.Services.Foundations.Accounts
@@ -11,7 +11,7 @@ namespace FMFT.Web.Server.Services.Foundations.Accounts
         {
             return new()
             {
-                { ClaimTypes.NameIdentifier, account.Id },
+                { ClaimTypes.NameIdentifier, account.UserId },
                 { ClaimTypes.Name, account.Name },
                 { ClaimTypes.Email, account.Email },
                 { ClaimTypes.GivenName, account.FirstName },
@@ -24,7 +24,7 @@ namespace FMFT.Web.Server.Services.Foundations.Accounts
         {
             return new Account()
             {
-                Id = int.Parse(claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier)),
+                UserId = int.Parse(claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier)),
                 Name = claimsPrincipal.FindFirstValue(ClaimTypes.Name),
                 Email = claimsPrincipal.FindFirstValue(ClaimTypes.Email),
                 FirstName = claimsPrincipal.FindFirstValue(ClaimTypes.GivenName),

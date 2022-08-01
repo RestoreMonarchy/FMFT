@@ -9,7 +9,6 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
         ValueTask ChallengeExternalLoginAsync(string provider, string returnUrl);
         ValueTask<Account> ConfirmExternalLoginAsync(ConfirmExternalLoginRequest request);
         ValueTask<Account> HandleExternalLoginCallbackAsync();
-        RegisterUserWithLoginParams MapExternalLoginToRegisterUserWithLoginParams(ExternalLogin externalLogin);
         ValueTask<Account> RegisterWithPasswordAsync(RegisterWithPasswordRequest request);
         Account RetrieveAccount();
         ValueTask<Account> SignInWithPasswordAsync(SignInWithPasswordRequest request);

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FMFT.Web.Shared.Models.Users
+namespace FMFT.Web.Shared.Models.Shared.Enums
 {
     public enum UserRole
     {

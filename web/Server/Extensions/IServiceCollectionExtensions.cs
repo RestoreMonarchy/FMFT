@@ -14,7 +14,10 @@ using FMFT.Web.Server.Brokers.Urls;
 using FMFT.Extensions.Authentication.Constants;
 using FMFT.Extensions.Authentication.Extensions;
 using Microsoft.AspNetCore.Authentication;
-using FMFT.Web.Server.Services.Orchestrations.UserReservations;
+using FMFT.Web.Server.Services.Orchestrations.Reservations;
+using FMFT.Web.Server.Services.Foundations.Accounts;
+using FMFT.Web.Server.Services.Processings.Accounts;
+using FMFT.Web.Server.Services.Orchestrations.UserAccounts;
 
 namespace FMFT.Web.Server.Extensions
 {
@@ -73,6 +76,7 @@ namespace FMFT.Web.Server.Extensions
             services.AddTransient<IShowService, ShowService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IReservationService, ReservationService>();
+            services.AddTransient<IAccountService, AccountService>();
             return services;
         }
 
@@ -80,12 +84,14 @@ namespace FMFT.Web.Server.Extensions
         {
             services.AddTransient<IUserProcessingService, UserProcessingService>();
             services.AddTransient<IReservationProcessingService, ReservationProcessingService>();
+            services.AddTransient<IAccountProcessingService, AccountProcessingService>();
             return services;
         }
 
         public static IServiceCollection AddOrchestrations(this IServiceCollection services)
         {
-            services.AddTransient<IUserReservationOrchestrationService, UserReservationOrchestrationService>();
+            services.AddTransient<IReservationOrchestrationService, ReservationOrchestrationService>();
+            services.AddTransient<IUserAccountOrchestrationService, UserAccountOrchestrationService>();
             return services;
         }
 

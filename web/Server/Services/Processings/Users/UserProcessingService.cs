@@ -1,5 +1,6 @@
 ﻿using FMFT.Web.Server.Brokers.Encryptions;
 using FMFT.Web.Server.Services.Foundations.Users;
+using FMFT.Web.Shared.Models.Shared.Enums;
 using FMFT.Web.Shared.Models.Users;
 using FMFT.Web.Shared.Models.Users.Arguments;
 using FMFT.Web.Shared.Models.Users.Exceptions;

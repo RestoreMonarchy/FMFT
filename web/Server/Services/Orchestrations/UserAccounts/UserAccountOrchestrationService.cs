@@ -3,6 +3,7 @@ using FMFT.Web.Server.Services.Processings.Users;
 using FMFT.Web.Shared.Models.Accounts;
 using FMFT.Web.Shared.Models.Accounts.Arguments;
 using FMFT.Web.Shared.Models.Accounts.Params;
+using FMFT.Web.Shared.Models.Shared.Enums;
 using FMFT.Web.Shared.Models.UserAccounts.Requests;
 using FMFT.Web.Shared.Models.Users;
 using FMFT.Web.Shared.Models.Users.Arguments;

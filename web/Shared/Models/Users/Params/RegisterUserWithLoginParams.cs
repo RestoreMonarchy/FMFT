@@ -1,4 +1,6 @@
-﻿namespace FMFT.Web.Shared.Models.Users.Params
+﻿using FMFT.Web.Shared.Models.Shared.Enums;
+
+namespace FMFT.Web.Shared.Models.Users.Params
 {
     public class RegisterUserWithLoginParams
     {

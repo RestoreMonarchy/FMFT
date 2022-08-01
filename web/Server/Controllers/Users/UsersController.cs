@@ -1,4 +1,4 @@
-﻿using FMFT.Web.Server.Services.Orchestrations.UserReservations;
+﻿using FMFT.Web.Server.Services.Orchestrations.Reservations;
 using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
 
@@ -8,11 +8,11 @@ namespace FMFT.Web.Server.Controllers.Users
     [Route("api/[controller]")]
     public partial class UsersController : RESTFulController
     {
-        private readonly IUserReservationOrchestrationService userReservationService;
+        private readonly IReservationOrchestrationService reservatonService;
 
-        public UsersController(IUserReservationOrchestrationService userReservationService)
+        public UsersController(IReservationOrchestrationService reservationService)
         {
-            this.userReservationService = userReservationService;
+            this.reservatonService = reservationService;
         }
     }
 }

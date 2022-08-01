@@ -1,6 +1,6 @@
-﻿namespace FMFT.Web.Shared.Models.Reservations.Models
+﻿namespace FMFT.Web.Shared.Models.Reservations.Requests
 {
-    public class CreateReservationModel
+    public class CreateReservationRequest
     {
         public int ShowId { get; set; }
         public int SeatId { get; set; }

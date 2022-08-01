@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using FMFT.Web.Shared.Models.Shared.Enums;
+using System.Text.Json.Serialization;
 
 namespace FMFT.Web.Shared.Models.Users
 {

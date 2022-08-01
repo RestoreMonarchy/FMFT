@@ -2,7 +2,7 @@
 
 namespace FMFT.Web.Shared.Models.Accounts.Exceptions
 {
-    public class NotAuthorizedException : Exception
+    public class AccountNotAuthorizedException : Exception
     {
 
     }

@@ -10,7 +10,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
         {
             return new Account()
             {
-                Id = user.Id,
+                UserId = user.Id,
                 Name = string.Join(" ", user.FirstName, user.LastName),
                 Email = user.Email,
                 FirstName = user.FirstName,

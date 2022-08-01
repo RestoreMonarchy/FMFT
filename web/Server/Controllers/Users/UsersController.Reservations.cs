@@ -1,5 +1,5 @@
 ﻿using FMFT.Web.Shared.Models.Reservations.Exceptions;
-using FMFT.Web.Shared.Models.Reservations.Models;
+using FMFT.Web.Shared.Models.Reservations.Requests;
 using FMFT.Web.Shared.Models.Reservations;
 using FMFT.Web.Shared.Models.Users.Exceptions;
 using Microsoft.AspNetCore.Mvc;
@@ -9,13 +9,13 @@ namespace FMFT.Web.Server.Controllers.Users
     public partial class UsersController
     {
         [HttpPost("{userId}/reservations/create")]
-        public async ValueTask<IActionResult> CreateReservation(int userId, [FromBody] CreateReservationModel model)
+        public async ValueTask<IActionResult> CreateReservation(int userId, [FromBody] CreateReservationRequest request)
         {
-            model.UserId = userId;
+            request.UserId = userId;
 
             try
             {
-                Reservation reservation = await userReservationService.CreateReservationAsync(model);
+                Reservation reservation = await reservatonService.CreateReservationAsync(request);
                 return Ok(reservation);
             }
             catch (SeatAlreadyReservedException exception)
@@ -37,8 +37,7 @@ namespace FMFT.Web.Server.Controllers.Users
         {
             try
             {
-                IEnumerable<Reservation> reservations =
-                    await userReservationService.RetrieveReservationsByUserIdAsync(userId);
+                IEnumerable<Reservation> reservations = await reservatonService.RetrieveReservationsByUserIdAsync(userId);
                 return Ok(reservations);
             }
             catch (UserNotAuthorizedException exception)
