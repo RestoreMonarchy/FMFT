@@ -23,21 +23,6 @@ namespace FMFT.Web.Server.Services.Foundations.Users
             this.authenticationBroker = authenticationBroker;
         }
 
-        public bool IsUserAuthenticated()
-        {
-            return authenticationBroker.IsAuthenticated;
-        }
-
-        public int RetrieveAuthenticatedUserId()
-        {
-            if (authenticationBroker.IsNotAuthenticated)
-            {
-                throw new UserNotAuthenticatedException();
-            }
-
-            return authenticationBroker.AuthenticatedUserId;
-        }
-
         public async ValueTask<IEnumerable<User>> RetrieveAllUsersAsync()
         {
             return await storageBroker.SelectAllUsersAsync();
@@ -90,6 +75,10 @@ namespace FMFT.Web.Server.Services.Foundations.Users
             if (validationBroker.IsStringInvalid(@params.LastName, true, 255, 3))
             {
                 validationException.UpsertDataList("LastName", "Invalid");
+            }
+            if (validationBroker.IsPasswordInvalid(@params.PasswordText))
+            {
+                validationException.UpsertDataList("Password", "Invalid");
             }
 
             validationException.ThrowIfContainsErrors();

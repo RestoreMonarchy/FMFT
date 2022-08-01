@@ -16,5 +16,17 @@ namespace FMFT.Web.Shared.Models.Users
 
         [JsonIgnore]
         public string PasswordHash { get; set; }
+
+        public UserInfo ToUserInfo()
+        {
+            return new UserInfo()
+            {
+                Id = Id,
+                Email = Email,
+                FirstName = FirstName,
+                LastName = LastName,
+                Role = Role
+            };
+        }
     }
 }

@@ -1,23 +1,17 @@
 ﻿using FMFT.Web.Shared.Models.Users;
-using FMFT.Web.Shared.Models.Users.Models;
+using FMFT.Web.Shared.Models.Users.Arguments;
+using FMFT.Web.Shared.Models.Users.Params;
 
 namespace FMFT.Web.Server.Services.Processings.Users
 {
     public interface IUserProcessingService
     {
-        ValueTask ChallengeExternalLoginAsync(string provider, string redirectUrl);
-        ValueTask<User> RetrieveAuthenticatedUserAsync();
-        ValueTask<UserInfo> RetrieveAuthenticatedUserInfoAsync();
-        ValueTask HandleExternalLoginCallbackAsync();
-        ValueTask<UserInfo> ConfirmExternalLoginAsync(ExternalLoginConfirmationModel model);
-        ValueTask<UserInfo> RegisterUserWithPasswordAsync(RegisterUserWithPasswordModel model);
-        ValueTask<UserInfo> SignInUserWithPasswordAsync(SignInUserWithPasswordModel model);
-        ValueTask SignOutUserAsync();
-        bool IsUserAuthenticated();
-        int RetrieveAuthenticatedUserId();
-        ValueTask AuthorizeAuthenticatedUserByRolesAsync(params UserRole[] userRoles);
-        void AuthorizeAuthenticatedUser();
-        void AuthorizeAuthenticatedUserById(int userId);
-        ValueTask AuthorizeAuthenticatedUserByIdOrRolesAsync(int userId, params UserRole[] userRoles);
+        ValueTask<User> RetrieveUserByIdAsync(int userId);
+        ValueTask<User> RetrieveUserByLoginAsync(string providerName, string providerKey);
+        ValueTask<User> RetrieveUserByEmailAsync(string email);
+        ValueTask<IEnumerable<User>> RetrieveAllUsersAsync();
+        ValueTask<User> RetrieveUserByEmailAndPasswordAsync(string email, string passwordText);
+        ValueTask<User> RegisterUserWithPasswordAsync(RegisterUserWithPasswordArguments args);
+        ValueTask<User> RegisterUserWithLoginAsync(RegisterUserWithLoginParams @params);
     }
 }
