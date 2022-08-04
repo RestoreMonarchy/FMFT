@@ -1,8 +1,8 @@
 ﻿using FMFT.Web.Client.Brokers.APIs;
-using FMFT.Web.Shared.Models.Reservations;
-using FMFT.Web.Shared.Models.Reservations.Exceptions;
-using FMFT.Web.Shared.Models.Reservations.Models;
-using FMFT.Web.Shared.Models.Users.Exceptions;
+using FMFT.Web.Server.Models.Reservations;
+using FMFT.Web.Server.Models.Reservations.Exceptions;
+using FMFT.Web.Server.Models.Reservations.Models;
+using FMFT.Web.Server.Models.Users.Exceptions;
 using RESTFulSense.WebAssembly.Exceptions;
 
 namespace FMFT.Web.Client.Services.Foundations.Reservations

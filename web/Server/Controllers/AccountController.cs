@@ -1,11 +1,11 @@
 ﻿using FMFT.Web.Server.Services.Orchestrations.UserAccounts;
 using FMFT.Web.Server.Services.Processings.Accounts;
 using FMFT.Web.Server.Services.Processings.Users;
-using FMFT.Web.Shared.Models.Accounts;
-using FMFT.Web.Shared.Models.Accounts.Exceptions;
-using FMFT.Web.Shared.Models.UserAccounts.Requests;
-using FMFT.Web.Shared.Models.Users;
-using FMFT.Web.Shared.Models.Users.Exceptions;
+using FMFT.Web.Server.Models.Accounts;
+using FMFT.Web.Server.Models.Accounts.Exceptions;
+using FMFT.Web.Server.Models.UserAccounts.Requests;
+using FMFT.Web.Server.Models.Users;
+using FMFT.Web.Server.Models.Users.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;

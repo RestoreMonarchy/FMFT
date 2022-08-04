@@ -1,5 +1,5 @@
 ﻿using FMFT.Web.Client.Services.Views.Accounts;
-using FMFT.Web.Shared.Models.Users;
+using FMFT.Web.Server.Models.Users;
 using Microsoft.AspNetCore.Components;
 
 namespace FMFT.Web.Client.Views.Components.Accounts

@@ -1,7 +1,9 @@
 ﻿using FMFT.Web.Client.Brokers.Navigations;
+using FMFT.Web.Client.Models.Accounts;
+using FMFT.Web.Client.Models.Accounts.Requests;
 using FMFT.Web.Client.Services.Processings.Accounts;
-using FMFT.Web.Shared.Models.Users;
-using FMFT.Web.Shared.Models.Users.Models;
+using FMFT.Web.Server.Models.Users;
+using FMFT.Web.Server.Models.Users.Models;
 
 namespace FMFT.Web.Client.Services.Views.Accounts
 {
@@ -16,17 +18,17 @@ namespace FMFT.Web.Client.Services.Views.Accounts
             this.navigationBroker = navigationBroker;
         }
 
-        public UserInfo UserInfo 
-            => accountService.UserInfo;
+        public Account Account 
+            => accountService.Account;
 
-        public async ValueTask LoginAsync(SignInUserWithPasswordModel model) 
-            => await accountService.LoginAsync(model);
+        public async ValueTask LoginAsync(LogInWithPasswordRequest request) 
+            => await accountService.LoginAsync(request);
 
-        public async ValueTask RegisterAsync(RegisterUserWithPasswordModel model)
-            => await accountService.RegisterAsync(model);
+        public async ValueTask RegisterAsync(RegisterWithPasswordRequest request)
+            => await accountService.RegisterAsync(request);
 
-        public async ValueTask ConfirmExternalLoginAsync(ExternalLoginConfirmationModel model)
-            => await accountService.ConfirmExternalLoginAsync(model);
+        public async ValueTask ConfirmExternalLoginAsync(ConfirmExternalLoginRequest request)
+            => await accountService.ConfirmExternalLoginAsync(request);
 
         public void ForceLoadNavigateTo(string url)
             => navigationBroker.ForceLoadNavigateTo(url);

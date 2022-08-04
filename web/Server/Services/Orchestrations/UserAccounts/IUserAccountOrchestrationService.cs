@@ -1,6 +1,6 @@
-﻿using FMFT.Web.Shared.Models.Accounts;
-using FMFT.Web.Shared.Models.UserAccounts.Requests;
-using FMFT.Web.Shared.Models.Users.Params;
+﻿using FMFT.Web.Server.Models.Accounts;
+using FMFT.Web.Server.Models.UserAccounts.Requests;
+using FMFT.Web.Server.Models.Users.Params;
 
 namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
 {

@@ -1,5 +1,5 @@
-﻿using FMFT.Web.Shared.Models.Reservations;
-using FMFT.Web.Shared.Models.Reservations.Requests;
+﻿using FMFT.Web.Server.Models.Reservations;
+using FMFT.Web.Server.Models.Reservations.Requests;
 
 namespace FMFT.Web.Server.Services.Orchestrations.Reservations
 {

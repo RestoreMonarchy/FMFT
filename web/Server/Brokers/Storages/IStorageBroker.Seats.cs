@@ -1,4 +1,4 @@
-﻿using FMFT.Web.Shared.Models.Seats;
+﻿using FMFT.Web.Server.Models.Seats;
 
 namespace FMFT.Web.Server.Brokers.Storages
 {

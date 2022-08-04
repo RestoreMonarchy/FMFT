@@ -1,6 +1,6 @@
 ﻿using FMFT.Extensions.Authentication.Models;
-using FMFT.Web.Shared.Models.Accounts;
-using FMFT.Web.Shared.Models.Shared.Enums;
+using FMFT.Web.Server.Models.Accounts;
+using FMFT.Web.Shared.Enums;
 using System.Security.Claims;
 
 namespace FMFT.Web.Server.Services.Foundations.Accounts

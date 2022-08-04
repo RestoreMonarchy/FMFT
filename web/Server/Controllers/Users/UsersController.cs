@@ -8,11 +8,11 @@ namespace FMFT.Web.Server.Controllers.Users
     [Route("api/[controller]")]
     public partial class UsersController : RESTFulController
     {
-        private readonly IReservationOrchestrationService reservatonService;
+        private readonly IReservationOrchestrationService reservationService;
 
         public UsersController(IReservationOrchestrationService reservationService)
         {
-            this.reservatonService = reservationService;
+            this.reservationService = reservationService;
         }
     }
 }

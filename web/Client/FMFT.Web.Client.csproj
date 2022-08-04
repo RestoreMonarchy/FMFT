@@ -2,8 +2,19 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
+	<ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+
+  <ItemGroup>
+	<Using Remove="System.Collections" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Views\Components\UserReservations\**" />
+    <Content Remove="Views\Components\UserReservations\**" />
+    <EmbeddedResource Remove="Views\Components\UserReservations\**" />
+    <None Remove="Views\Components\UserReservations\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <Content Remove="C:\Users\Michal\.nuget\packages\prettyblazor\1.2.0\contentFiles\any\net5.0\License.txt" />
@@ -26,10 +37,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Shared\FMFT.Web.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\Components\UserReservations\" />
   </ItemGroup>
 
 </Project>

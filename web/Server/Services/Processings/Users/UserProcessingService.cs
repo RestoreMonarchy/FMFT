@@ -1,10 +1,10 @@
 ﻿using FMFT.Web.Server.Brokers.Encryptions;
 using FMFT.Web.Server.Services.Foundations.Users;
-using FMFT.Web.Shared.Models.Shared.Enums;
-using FMFT.Web.Shared.Models.Users;
-using FMFT.Web.Shared.Models.Users.Arguments;
-using FMFT.Web.Shared.Models.Users.Exceptions;
-using FMFT.Web.Shared.Models.Users.Params;
+using FMFT.Web.Shared.Enums;
+using FMFT.Web.Server.Models.Users;
+using FMFT.Web.Server.Models.Users.Arguments;
+using FMFT.Web.Server.Models.Users.Exceptions;
+using FMFT.Web.Server.Models.Users.Params;
 
 namespace FMFT.Web.Server.Services.Processings.Users
 {

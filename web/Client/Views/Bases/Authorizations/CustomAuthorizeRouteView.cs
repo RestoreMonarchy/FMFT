@@ -1,5 +1,5 @@
 ﻿using FMFT.Web.Client.Services.Processings.Accounts;
-using FMFT.Web.Shared.Attributes;
+using FMFT.Web.Server.Attributes;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 
@@ -21,7 +21,7 @@ namespace FMFT.Web.Client.Views.Bases.Authorizations
                 as CustomAuthorizeAttribute;
 
             if (authorizeAttribute != null && 
-                (!AccountService.IsAuthenticated || authorizeAttribute.IsNotAuthorized(AccountService.UserInfo.Role)))
+                (!AccountService.IsAuthenticated || authorizeAttribute.IsNotAuthorized(AccountService.Account.Role)))
             {
                 RenderContentInDefaultLayout(builder, NotAuthorized);
                 return;

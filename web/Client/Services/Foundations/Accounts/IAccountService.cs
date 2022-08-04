@@ -1,13 +1,13 @@
-﻿using FMFT.Web.Shared.Models.Users;
-using FMFT.Web.Shared.Models.Users.Models;
+﻿using FMFT.Web.Client.Models.Accounts;
+using FMFT.Web.Client.Models.Accounts.Requests;
 
 namespace FMFT.Web.Client.Services.Foundations.Accounts
 {
     public interface IAccountService
     {
-        ValueTask<UserInfo> ConfirmExternalLoginAsync(ExternalLoginConfirmationModel model);
-        ValueTask<UserInfo> LoginAsync(SignInUserWithPasswordModel model);
-        ValueTask<UserInfo> RegisterAsync(RegisterUserWithPasswordModel model);
-        ValueTask<UserInfo> RetrieveAccountInfoAsync();
+        ValueTask<Account> ConfirmExternalLoginAsync(ConfirmExternalLoginRequest request);
+        ValueTask<Account> LoginAsync(LogInWithPasswordRequest request);
+        ValueTask<Account> RegisterAsync(RegisterWithPasswordRequest request);
+        ValueTask<Account> RetrieveAccountAsync();
     }
 }

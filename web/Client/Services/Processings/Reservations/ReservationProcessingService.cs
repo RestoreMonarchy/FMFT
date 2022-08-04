@@ -1,6 +1,6 @@
 ﻿using FMFT.Web.Client.Services.Foundations.Reservations;
-using FMFT.Web.Shared.Models.Reservations;
-using FMFT.Web.Shared.Models.Reservations.Models;
+using FMFT.Web.Server.Models.Reservations;
+using FMFT.Web.Server.Models.Reservations.Models;
 
 namespace FMFT.Web.Client.Services.Processings.Reservations
 {

@@ -1,9 +1,9 @@
 ﻿using FMFT.Web.Server.Services.Orchestrations.Reservations;
 using FMFT.Web.Server.Services.Processings.Reservations;
-using FMFT.Web.Shared.Models.Reservations;
-using FMFT.Web.Shared.Models.Reservations.Exceptions;
-using FMFT.Web.Shared.Models.Reservations.Requests;
-using FMFT.Web.Shared.Models.Users.Exceptions;
+using FMFT.Web.Server.Models.Reservations;
+using FMFT.Web.Server.Models.Reservations.Exceptions;
+using FMFT.Web.Server.Models.Reservations.Requests;
+using FMFT.Web.Server.Models.Users.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
 

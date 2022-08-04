@@ -1,18 +1,17 @@
-﻿using FMFT.Web.Shared.Models.Users;
+﻿using FMFT.Web.Client.Models.Accounts;
+using FMFT.Web.Client.Models.Accounts.Requests;
 
 namespace FMFT.Web.Client.Services.Processings.Accounts
 {
     public interface IAccountProcessingService
     {
-        UserInfo UserInfo { get; }
+        Account Account { get; }
         bool IsAuthenticated { get; }
 
-        event Action UserInfoChanged;
+        event Action OnAccountChanged;
 
-        ValueTask ConfirmExternalLoginAsync(ExternalLoginConfirmationModel model);
-        ValueTask InitializeAsync();
-        ValueTask LoginAsync(SignInUserWithPasswordModel model);
-        ValueTask RegisterAsync(RegisterUserWithPasswordModel model);
-        ValueTask ReloadUserInfoAsync();
+        ValueTask ConfirmExternalLoginAsync(ConfirmExternalLoginRequest request);
+        ValueTask LoginAsync(LogInWithPasswordRequest request);
+        ValueTask RegisterAsync(RegisterWithPasswordRequest request);
     }
 }

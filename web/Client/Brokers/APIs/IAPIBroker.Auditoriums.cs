@@ -1,4 +1,4 @@
-﻿using FMFT.Web.Shared.Models.Auditoriums;
+﻿using FMFT.Web.Server.Models.Auditoriums;
 
 namespace FMFT.Web.Client.Brokers.APIs
 {

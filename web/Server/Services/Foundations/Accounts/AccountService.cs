@@ -1,9 +1,9 @@
 ﻿using FMFT.Extensions.Authentication.Models;
 using FMFT.Extensions.Authentication.Models.Exceptions;
 using FMFT.Web.Server.Brokers.Authentications;
-using FMFT.Web.Shared.Models.Accounts;
-using FMFT.Web.Shared.Models.Accounts.Exceptions;
-using FMFT.Web.Shared.Models.Accounts.Params;
+using FMFT.Web.Server.Models.Accounts;
+using FMFT.Web.Server.Models.Accounts.Exceptions;
+using FMFT.Web.Server.Models.Accounts.Params;
 using System.Security.Claims;
 
 namespace FMFT.Web.Server.Services.Foundations.Accounts

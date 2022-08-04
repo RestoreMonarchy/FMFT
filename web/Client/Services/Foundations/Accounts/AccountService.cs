@@ -1,7 +1,7 @@
 ﻿using FMFT.Web.Client.Brokers.APIs;
-using FMFT.Web.Shared.Models.Users;
-using FMFT.Web.Shared.Models.Users.Exceptions;
-using FMFT.Web.Shared.Models.Users.Models;
+using FMFT.Web.Client.Models.Accounts;
+using FMFT.Web.Client.Models.Accounts.Exceptions;
+using FMFT.Web.Client.Models.Accounts.Requests;
 using RESTFulSense.WebAssembly.Exceptions;
 
 namespace FMFT.Web.Client.Services.Foundations.Accounts
@@ -15,61 +15,61 @@ namespace FMFT.Web.Client.Services.Foundations.Accounts
             this.apiBroker = apiBroker;
         }
 
-        public async ValueTask<UserInfo> RetrieveAccountInfoAsync()
+        public async ValueTask<Account> RetrieveAccountAsync()
         {
             try
             {
-                UserInfo userInfo = await apiBroker.GetAccountInfoAsync();
-                return userInfo;
+                Account account = await apiBroker.GetAccountInfoAsync();
+                return account;
             } catch (HttpResponseUnauthorizedException)
             {
-                throw new UserNotAuthenticatedException();
+                throw new AccountNotAuthenticatedException();
             }
         }
 
-        public async ValueTask<UserInfo> LoginAsync(SignInUserWithPasswordModel model)
+        public async ValueTask<Account> LoginAsync(LogInWithPasswordRequest request)
         {
             try
             {
-                UserInfo userInfo = await apiBroker.PostAccountLoginAsync(model);
-                return userInfo;
+                Account account = await apiBroker.PostAccountLoginAsync(request);
+                return account;
             } catch (HttpResponseForbiddenException)
             {
-                throw new UserPasswordNotMatchException();
+                throw new AccountPasswordNotMatchException();
             }
         }
 
-        public async ValueTask<UserInfo> RegisterAsync(RegisterUserWithPasswordModel model)
+        public async ValueTask<Account> RegisterAsync(RegisterWithPasswordRequest request)
         {
             try
             {
-                UserInfo userInfo = await apiBroker.PostAccountRegisterAsync(model);
-                return userInfo;
+                Account account = await apiBroker.PostAccountRegisterAsync(request);
+                return account;
             }
             catch (HttpResponseBadRequestException exception)
             {
-                throw new RegisterUserWithPasswordValidationException(exception, exception.Data);
+                throw new AccountRegisterWithPasswordValidationException(exception, exception.Data);
             } catch (HttpResponseConflictException)
             {
-                throw new UserEmailAlreadyExistsException();
+                throw new AccountEmailAlreadyExistsException();
             }
         }
 
-        public async ValueTask<UserInfo> ConfirmExternalLoginAsync(ExternalLoginConfirmationModel model)
+        public async ValueTask<Account> ConfirmExternalLoginAsync(ConfirmExternalLoginRequest request)
         {
             try
             {
-                UserInfo userInfo = await apiBroker.PostExternalLoginConfirmationAsync(model);
-                return userInfo;
+                Account account = await apiBroker.PostConfirmExternalLoginAsync(request);
+                return account;
             } catch (HttpResponseConflictException)
             {
-                throw new UserEmailAlreadyExistsException();
+                throw new AccountEmailAlreadyExistsException();
             } catch (HttpResponseUnauthorizedException)
             {
-                throw new ExternalLoginInfoNotFoundException();
+                throw new AccountExternalLoginNotFoundException();
             } catch (HttpResponseBadRequestException exception)
             {
-                throw new RegisterUserWithLoginValidationException(exception, exception.Data);
+                throw new AccountRegisterWithLoginValidationException(exception, exception.Data);
             }
         }
     }

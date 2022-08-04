@@ -1,6 +1,6 @@
 ﻿using FMFT.Web.Server.Services.Foundations.Auditoriums;
-using FMFT.Web.Shared.Models.Auditoriums;
-using FMFT.Web.Shared.Models.Auditoriums.Exceptions;
+using FMFT.Web.Server.Models.Auditoriums;
+using FMFT.Web.Server.Models.Auditoriums.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
 

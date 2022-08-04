@@ -1,10 +1,10 @@
 ﻿using Dapper;
 using FMFT.Web.Server.Models.Database;
-using FMFT.Web.Shared.Models.Reservations;
-using FMFT.Web.Shared.Models.Reservations.Params;
-using FMFT.Web.Shared.Models.Seats;
-using FMFT.Web.Shared.Models.Shows;
-using FMFT.Web.Shared.Models.Users;
+using FMFT.Web.Server.Models.Reservations;
+using FMFT.Web.Server.Models.Reservations.Params;
+using FMFT.Web.Server.Models.Seats;
+using FMFT.Web.Server.Models.Shows;
+using FMFT.Web.Server.Models.Users;
 using System.Data;
 
 namespace FMFT.Web.Server.Brokers.Storages

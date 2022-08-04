@@ -1,5 +1,5 @@
 ﻿using Dapper;
-using FMFT.Web.Shared.Models.Shows;
+using FMFT.Web.Server.Models.Shows;
 
 namespace FMFT.Web.Server.Brokers.Storages
 {

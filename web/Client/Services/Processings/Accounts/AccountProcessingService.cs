@@ -1,7 +1,7 @@
-﻿using FMFT.Web.Client.Services.Foundations.Accounts;
-using FMFT.Web.Shared.Models.Users;
-using FMFT.Web.Shared.Models.Users.Exceptions;
-using FMFT.Web.Shared.Models.Users.Models;
+﻿using FMFT.Web.Client.Models.Accounts;
+using FMFT.Web.Client.Models.Accounts.Exceptions;
+using FMFT.Web.Client.Models.Accounts.Requests;
+using FMFT.Web.Client.Services.Foundations.Accounts;
 
 namespace FMFT.Web.Client.Services.Processings.Accounts
 {
@@ -14,53 +14,36 @@ namespace FMFT.Web.Client.Services.Processings.Accounts
             this.accountService = accountService;
         }
 
-        public UserInfo UserInfo { get; private set; }
-        public bool IsAuthenticated => UserInfo != null;
+        public Account Account { get; private set; }
+        public bool IsAuthenticated => Account != null;
+        public event Action OnAccountChanged;
 
-        public event Action UserInfoChanged;
-
-        public async ValueTask InitializeAsync()
+        public async ValueTask UpdateAccountAsync()
         {
-            await ReloadUserInfoAsync();
-        }
-
-        private void ChangeUserInfo(UserInfo userInfo)
-        {
-            UserInfo = userInfo;
-            UserInfoChanged?.Invoke();
-        }
-
-        public async ValueTask ReloadUserInfoAsync()
-        {
-            UserInfo userInfo;
             try
             {
-                userInfo = await accountService.RetrieveAccountInfoAsync();
-            }
-            catch (UserNotAuthenticatedException)
+                Account = await accountService.RetrieveAccountAsync();
+            } catch (AccountNotAuthenticatedException)
             {
-                userInfo = null;
+                Account = null;
             }
-
-            ChangeUserInfo(userInfo);
+            
+            OnAccountChanged.Invoke();
         }
 
-        public async ValueTask ConfirmExternalLoginAsync(ExternalLoginConfirmationModel model)
+        public async ValueTask ConfirmExternalLoginAsync(ConfirmExternalLoginRequest request)
         {
-            UserInfo userInfo = await accountService.ConfirmExternalLoginAsync(model);
-            ChangeUserInfo(userInfo);
+            await accountService.ConfirmExternalLoginAsync(request);
         }
 
-        public async ValueTask LoginAsync(SignInUserWithPasswordModel model)
+        public async ValueTask LoginAsync(LogInWithPasswordRequest request)
         {
-            UserInfo userInfo = await accountService.LoginAsync(model);
-            ChangeUserInfo(userInfo);
+            await accountService.LoginAsync(request);
         }
 
-        public async ValueTask RegisterAsync(RegisterUserWithPasswordModel model)
+        public async ValueTask RegisterAsync(RegisterWithPasswordRequest request)
         {
-            UserInfo userInfo = await accountService.RegisterAsync(model);
-            ChangeUserInfo(userInfo);
+            await accountService.RegisterAsync(request);
         }
     }
 }

@@ -1,7 +1,7 @@
-﻿using FMFT.Web.Shared.Models.Accounts;
-using FMFT.Web.Shared.Models.Accounts.Arguments;
-using FMFT.Web.Shared.Models.Accounts.Params;
-using FMFT.Web.Shared.Models.Shared.Enums;
+﻿using FMFT.Web.Server.Models.Accounts;
+using FMFT.Web.Server.Models.Accounts.Arguments;
+using FMFT.Web.Server.Models.Accounts.Params;
+using FMFT.Web.Shared.Enums;
 
 namespace FMFT.Web.Server.Services.Processings.Accounts
 {

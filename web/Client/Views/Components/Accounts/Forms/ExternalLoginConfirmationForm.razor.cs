@@ -1,11 +1,13 @@
-﻿using FMFT.Web.Client.Services.Views.Accounts;
+﻿using FMFT.Web.Client.Models.Accounts.Exceptions;
+using FMFT.Web.Client.Models.Accounts.Requests;
+using FMFT.Web.Client.Services.Views.Accounts;
 using FMFT.Web.Client.Views.Bases.Alerts;
 using FMFT.Web.Client.Views.Bases.Buttons;
 using FMFT.Web.Client.Views.Bases.Forms;
 using FMFT.Web.Client.Views.Bases.Inputs;
-using FMFT.Web.Shared.Models.Accounts.Exceptions;
-using FMFT.Web.Shared.Models.Users.Exceptions;
-using FMFT.Web.Shared.Models.Users.Models;
+using FMFT.Web.Server.Models.Accounts.Exceptions;
+using FMFT.Web.Server.Models.Users.Exceptions;
+using FMFT.Web.Server.Models.Users.Models;
 using Microsoft.AspNetCore.Components;
 
 namespace FMFT.Web.Client.Views.Components.Accounts.Forms
@@ -15,7 +17,7 @@ namespace FMFT.Web.Client.Views.Components.Accounts.Forms
         [Inject]
         public IAccountViewService AccountViewService { get; set; }
 
-        public ExternalLoginConfirmationModel Model { get; set; } = new();
+        public ConfirmExternalLoginRequest Request { get; set; } = new();
 
         public AlertGroupBase AlertGroup { get; set; }
         public AlertBase UserEmailAlreadyExistsAlert { get; set; }
@@ -34,13 +36,13 @@ namespace FMFT.Web.Client.Views.Components.Accounts.Forms
             try
             {
                 await Task.Delay(2000);
-                await AccountViewService.ConfirmExternalLoginAsync(Model);
+                await AccountViewService.ConfirmExternalLoginAsync(Request);
                 AccountViewService.ForceLoadNavigateTo("/");
             }
-            catch (UserEmailAlreadyExistsException)
+            catch (AccountEmailAlreadyExistsException)
             {
                 UserEmailAlreadyExistsAlert.Show();
-            } catch (ExternalLoginNotFoundException)
+            } catch (AccountExternalLoginNotFoundException)
             {
                 ExternalLoginNotFoundAlert.Show();
             }

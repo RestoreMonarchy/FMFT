@@ -1,6 +1,6 @@
 ﻿using FMFT.Extensions.Authentication.Models;
-using FMFT.Web.Shared.Models.Accounts;
-using FMFT.Web.Shared.Models.Accounts.Params;
+using FMFT.Web.Server.Models.Accounts;
+using FMFT.Web.Server.Models.Accounts.Params;
 
 namespace FMFT.Web.Server.Services.Foundations.Accounts
 {

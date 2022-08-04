@@ -1,6 +1,6 @@
 ﻿using FMFT.Web.Client.Brokers.APIs;
-using FMFT.Web.Shared.Models.Shows;
-using FMFT.Web.Shared.Models.Shows.Exceptions;
+using FMFT.Web.Server.Models.Shows;
+using FMFT.Web.Server.Models.Shows.Exceptions;
 using RESTFulSense.WebAssembly.Exceptions;
 
 namespace FMFT.Web.Client.Services.Foundations.Shows

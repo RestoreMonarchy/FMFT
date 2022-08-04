@@ -1,7 +1,7 @@
-﻿using FMFT.Web.Shared.Models.Auditoriums;
-using FMFT.Web.Shared.Models.Reservations;
-using FMFT.Web.Shared.Models.Reservations.Models;
-using FMFT.Web.Shared.Models.Shows;
+﻿using FMFT.Web.Server.Models.Auditoriums;
+using FMFT.Web.Server.Models.Reservations;
+using FMFT.Web.Server.Models.Reservations.Models;
+using FMFT.Web.Server.Models.Shows;
 
 namespace FMFT.Web.Client.Services.Views.Shows
 {

@@ -1,6 +1,6 @@
-﻿using FMFT.Web.Shared.Models.Users;
-using FMFT.Web.Shared.Models.Users.Arguments;
-using FMFT.Web.Shared.Models.Users.Params;
+﻿using FMFT.Web.Server.Models.Users;
+using FMFT.Web.Server.Models.Users.Arguments;
+using FMFT.Web.Server.Models.Users.Params;
 
 namespace FMFT.Web.Server.Services.Processings.Users
 {

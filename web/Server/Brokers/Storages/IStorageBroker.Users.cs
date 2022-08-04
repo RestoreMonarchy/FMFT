@@ -1,6 +1,6 @@
 ﻿using FMFT.Web.Server.Models.Database;
-using FMFT.Web.Shared.Models.Users;
-using FMFT.Web.Shared.Models.Users.Params;
+using FMFT.Web.Server.Models.Users;
+using FMFT.Web.Server.Models.Users.Params;
 
 namespace FMFT.Web.Server.Brokers.Storages
 {

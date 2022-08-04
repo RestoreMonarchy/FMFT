@@ -1,14 +1,14 @@
 ﻿using FMFT.Web.Server.Services.Processings.Accounts;
 using FMFT.Web.Server.Services.Processings.Users;
-using FMFT.Web.Shared.Models.Accounts;
-using FMFT.Web.Shared.Models.Accounts.Arguments;
-using FMFT.Web.Shared.Models.Accounts.Params;
-using FMFT.Web.Shared.Models.Shared.Enums;
-using FMFT.Web.Shared.Models.UserAccounts.Requests;
-using FMFT.Web.Shared.Models.Users;
-using FMFT.Web.Shared.Models.Users.Arguments;
-using FMFT.Web.Shared.Models.Users.Exceptions;
-using FMFT.Web.Shared.Models.Users.Params;
+using FMFT.Web.Server.Models.Accounts;
+using FMFT.Web.Server.Models.Accounts.Arguments;
+using FMFT.Web.Server.Models.Accounts.Params;
+using FMFT.Web.Shared.Enums;
+using FMFT.Web.Server.Models.UserAccounts.Requests;
+using FMFT.Web.Server.Models.Users;
+using FMFT.Web.Server.Models.Users.Arguments;
+using FMFT.Web.Server.Models.Users.Exceptions;
+using FMFT.Web.Server.Models.Users.Params;
 
 namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
 {

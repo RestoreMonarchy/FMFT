@@ -1,6 +1,6 @@
 ﻿using Dapper;
-using FMFT.Web.Shared.Models.Auditoriums;
-using FMFT.Web.Shared.Models.Seats;
+using FMFT.Web.Server.Models.Auditoriums;
+using FMFT.Web.Server.Models.Seats;
 
 namespace FMFT.Web.Server.Brokers.Storages
 {

@@ -1,6 +1,6 @@
 ﻿using FMFT.Web.Client.Brokers.APIs;
-using FMFT.Web.Shared.Models.Auditoriums;
-using FMFT.Web.Shared.Models.Auditoriums.Exceptions;
+using FMFT.Web.Server.Models.Auditoriums;
+using FMFT.Web.Server.Models.Auditoriums.Exceptions;
 using RESTFulSense.WebAssembly.Exceptions;
 
 namespace FMFT.Web.Client.Services.Foundations.Auditoriums

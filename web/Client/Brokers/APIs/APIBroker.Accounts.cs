@@ -1,5 +1,5 @@
-﻿using FMFT.Web.Shared.Models.Accounts;
-using FMFT.Web.Shared.Models.Accounts.Requests;
+﻿using FMFT.Web.Client.Models.Accounts;
+using FMFT.Web.Client.Models.Accounts.Requests;
 
 namespace FMFT.Web.Client.Brokers.APIs
 {
@@ -13,22 +13,22 @@ namespace FMFT.Web.Client.Brokers.APIs
             return await GetAsync<Account>(url);
         }
 
-        public async ValueTask<Account> PostAccountLoginAsync(SignInUserWithPasswordRequest request)
+        public async ValueTask<Account> PostAccountLoginAsync(LogInWithPasswordRequest request)
         {
             string url = $"{AccountsRelativeUrl}/login";
-            return await PostAsync<SignInUserWithPasswordRequest, Account>(url, request);
+            return await PostAsync<LogInWithPasswordRequest, Account>(url, request);
         }
 
-        public async ValueTask<Account> PostAccountRegisterAsync(RegisterUserWithPasswordRequest request)
+        public async ValueTask<Account> PostAccountRegisterAsync(RegisterWithPasswordRequest request)
         {
             string url = $"{AccountsRelativeUrl}/register";
-            return await PostAsync<RegisterUserWithPasswordRequest, Account>(url, request);
+            return await PostAsync<RegisterWithPasswordRequest, Account>(url, request);
         }
 
-        public async ValueTask<Account> PostExternalLoginConfirmationAsync(ExternalLoginConfirmationRequest request)
+        public async ValueTask<Account> PostConfirmExternalLoginAsync(ConfirmExternalLoginRequest request)
         {
             string url = $"{AccountsRelativeUrl}/externalloginconfirmation";
-            return await PostAsync<ExternalLoginConfirmationRequest, Account>(url, request);
+            return await PostAsync<ConfirmExternalLoginRequest, Account>(url, request);
         }
     }
 }

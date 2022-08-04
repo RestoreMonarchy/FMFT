@@ -1,5 +1,5 @@
 ﻿using FMFT.Web.Client.Services.Processings.Accounts;
-using FMFT.Web.Shared.Models.Users;
+using FMFT.Web.Server.Models.Users;
 using Microsoft.AspNetCore.Components;
 
 namespace FMFT.Web.Client.Views.Bases.Authorizations
@@ -24,7 +24,7 @@ namespace FMFT.Web.Client.Views.Bases.Authorizations
                 return false;
             }
 
-            if (Roles != null && !Roles.Contains(AccountService.UserInfo.Role))
+            if (Roles != null && !Roles.Contains(AccountService.Account.Role))
             {
                 return false;
             }

@@ -1,9 +1,0 @@
-﻿using Xeptions;
-
-namespace FMFT.Web.Shared.Models.Accounts.Exceptions
-{
-    public class AccountNotAuthorizedException : Exception
-    {
-
-    }
-}

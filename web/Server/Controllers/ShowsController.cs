@@ -1,6 +1,6 @@
 ﻿using FMFT.Web.Server.Services.Foundations.Shows;
-using FMFT.Web.Shared.Models.Shows;
-using FMFT.Web.Shared.Models.Shows.Exceptions;
+using FMFT.Web.Server.Models.Shows;
+using FMFT.Web.Server.Models.Shows.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
 

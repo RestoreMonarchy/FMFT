@@ -1,6 +1,6 @@
 ﻿using FMFT.Web.Server.Services.Foundations.Seats;
-using FMFT.Web.Shared.Models.Seats;
-using FMFT.Web.Shared.Models.Seats.Exceptions;
+using FMFT.Web.Server.Models.Seats;
+using FMFT.Web.Server.Models.Seats.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
 

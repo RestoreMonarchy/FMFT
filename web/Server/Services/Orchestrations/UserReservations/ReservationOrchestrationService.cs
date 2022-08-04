@@ -1,10 +1,10 @@
 ﻿using FMFT.Web.Server.Services.Processings.Accounts;
 using FMFT.Web.Server.Services.Processings.Reservations;
 using FMFT.Web.Server.Services.Processings.Users;
-using FMFT.Web.Shared.Models.Reservations;
-using FMFT.Web.Shared.Models.Reservations.Requests;
-using FMFT.Web.Shared.Models.Reservations.Params;
-using FMFT.Web.Shared.Models.Shared.Enums;
+using FMFT.Web.Server.Models.Reservations;
+using FMFT.Web.Server.Models.Reservations.Requests;
+using FMFT.Web.Server.Models.Reservations.Params;
+using FMFT.Web.Shared.Enums;
 
 namespace FMFT.Web.Server.Services.Orchestrations.Reservations
 {

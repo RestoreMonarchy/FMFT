@@ -1,7 +1,7 @@
 ﻿using FMFT.Web.Client.Services.Processings.Accounts;
 using FMFT.Web.Client.Services.Processings.Reservations;
-using FMFT.Web.Shared.Models.Reservations;
-using FMFT.Web.Shared.Models.Reservations.Models;
+using FMFT.Web.Server.Models.Reservations;
+using FMFT.Web.Server.Models.Reservations.Models;
 
 namespace FMFT.Web.Client.Services.Orchestrations.AccountReservations
 {
@@ -26,7 +26,7 @@ namespace FMFT.Web.Client.Services.Orchestrations.AccountReservations
 
         public async ValueTask<Reservation> CreateAccountReservationsAsync(CreateReservationModel model)
         {
-            int userId = accountService.UserInfo.Id;
+            int userId = accountService.Account.Id;
             model.UserId = userId;
             return await reservationService.CreateReservationAsync(model);
         }

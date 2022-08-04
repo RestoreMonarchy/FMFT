@@ -1,11 +1,11 @@
 ﻿using FMFT.Web.Client.Services.Views.Shows;
 using FMFT.Web.Client.Views.Bases.Alerts;
 using FMFT.Web.Client.Views.Bases.Buttons;
-using FMFT.Web.Shared.Models.Auditoriums;
-using FMFT.Web.Shared.Models.Reservations.Exceptions;
-using FMFT.Web.Shared.Models.Reservations.Models;
-using FMFT.Web.Shared.Models.Seats;
-using FMFT.Web.Shared.Models.Shows;
+using FMFT.Web.Server.Models.Auditoriums;
+using FMFT.Web.Server.Models.Reservations.Exceptions;
+using FMFT.Web.Server.Models.Reservations.Models;
+using FMFT.Web.Server.Models.Seats;
+using FMFT.Web.Server.Models.Shows;
 using Microsoft.AspNetCore.Components;
 
 namespace FMFT.Web.Client.Views.Components.Shows.Cards
