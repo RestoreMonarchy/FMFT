@@ -2,6 +2,7 @@
 using FMFT.Web.Client.Models.Accounts.Exceptions;
 using FMFT.Web.Client.Models.Accounts.Requests;
 using FMFT.Web.Client.Services.Foundations.Accounts;
+using FMFT.Web.Shared.Enums;
 
 namespace FMFT.Web.Client.Services.Processings.Accounts
 {
@@ -18,6 +19,15 @@ namespace FMFT.Web.Client.Services.Processings.Accounts
         public bool IsAuthenticated => Account != null;
         public event Action OnAccountChanged;
 
+        public Account RetrieveAccount() 
+        { 
+            if (Account == null)
+            {
+                throw new AccountNotAuthenticatedException();
+            }
+            return Account;
+        }
+
         public async ValueTask UpdateAccountAsync()
         {
             try
@@ -29,6 +39,33 @@ namespace FMFT.Web.Client.Services.Processings.Accounts
             }
             
             OnAccountChanged.Invoke();
+        }
+
+        public void AuthorizeAccountByUserId(int authorizedUserId)
+        {
+            Account account = RetrieveAccount();
+            if (account.UserId != authorizedUserId)
+            {
+                throw new AccountNotAuthorizedException();
+            }
+        }
+
+        public void AuthorizeAccountByRole(params UserRole[] authorizedRoles)
+        {
+            Account account = RetrieveAccount();
+            if (!authorizedRoles.Contains(account.Role))
+            {
+                throw new AccountNotAuthorizedException();
+            }
+        }
+
+        public void AuthorizeAccountByUserIdOrRoles(int authorizedUserId, params UserRole[] authorizedRoles)
+        {
+            Account account = RetrieveAccount();
+            if (authorizedUserId != account.UserId && !authorizedRoles.Contains(account.Role))
+            {
+                throw new AccountNotAuthorizedException();
+            }
         }
 
         public async ValueTask ConfirmExternalLoginAsync(ConfirmExternalLoginRequest request)

@@ -1,11 +1,10 @@
-﻿using FMFT.Web.Client.Services.Views.Accounts;
+﻿using FMFT.Web.Client.Models.Accounts.Exceptions;
+using FMFT.Web.Client.Models.Accounts.Requests;
+using FMFT.Web.Client.Services.Views.Accounts;
 using FMFT.Web.Client.Views.Bases.Alerts;
 using FMFT.Web.Client.Views.Bases.Buttons;
 using FMFT.Web.Client.Views.Bases.Forms;
 using FMFT.Web.Client.Views.Bases.Inputs;
-using FMFT.Web.Server.Models.Users.Exceptions;
-using FMFT.Web.Server.Models.Users.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 
 namespace FMFT.Web.Client.Views.Components.Accounts
@@ -15,7 +14,7 @@ namespace FMFT.Web.Client.Views.Components.Accounts
         [Inject]
         public IAccountViewService AccountViewService { get; set; }
 
-        public RegisterUserWithPasswordModel Model { get; set; } = new();
+        public RegisterWithPasswordRequest Request { get; set; } = new();
 
         public FormBase Form { get; set; }
         public ButtonBase SubmitButton { get; set; }
@@ -36,12 +35,12 @@ namespace FMFT.Web.Client.Views.Components.Accounts
             try
             {
                 await Task.Delay(2000);
-                await AccountViewService.RegisterAsync(Model);
+                await AccountViewService.RegisterAsync(Request);
                 AccountViewService.ForceLoadNavigateTo("/");
-            } catch (UserEmailAlreadyExistsException)
+            } catch (AccountEmailAlreadyExistsException)
             {
                 ConflictErrorAlert.Show();
-            } catch (RegisterUserWithPasswordValidationException exception)
+            } catch (AccountRegisterWithPasswordValidationException exception)
             {
                 BadRequestErrorAlert.Show();
             } finally

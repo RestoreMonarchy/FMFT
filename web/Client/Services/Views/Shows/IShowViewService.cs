@@ -1,15 +1,15 @@
-﻿using FMFT.Web.Server.Models.Auditoriums;
-using FMFT.Web.Server.Models.Reservations;
-using FMFT.Web.Server.Models.Reservations.Models;
-using FMFT.Web.Server.Models.Shows;
+﻿using FMFT.Web.Client.Models.Auditoriums;
+using FMFT.Web.Client.Models.Reservations;
+using FMFT.Web.Client.Models.Reservations.Requests;
+using FMFT.Web.Client.Models.Shows;
 
 namespace FMFT.Web.Client.Services.Views.Shows
 {
     public interface IShowViewService
     {
-        ValueTask<Reservation> CreateReservationAsync(CreateReservationModel model);
+        ValueTask<Reservation> CreateReservationAsync(CreateReservationRequest request);
         ValueTask<List<Show>> RetrieveAllShowsAsync();
-        ValueTask<Auditorium> RetrieveAuditoriumAsync(int auditoriumId);
+        ValueTask<Auditorium> RetrieveAuditoriumByIdAsync(int auditoriumId);
         ValueTask<Show> RetrieveShowByIdAsync(int showId);
     }
 }

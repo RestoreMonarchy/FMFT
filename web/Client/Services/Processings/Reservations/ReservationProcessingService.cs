@@ -1,6 +1,6 @@
-﻿using FMFT.Web.Client.Services.Foundations.Reservations;
-using FMFT.Web.Server.Models.Reservations;
-using FMFT.Web.Server.Models.Reservations.Models;
+﻿using FMFT.Web.Client.Models.Reservations;
+using FMFT.Web.Client.Models.Reservations.Requests;
+using FMFT.Web.Client.Services.Foundations.Reservations;
 
 namespace FMFT.Web.Client.Services.Processings.Reservations
 {
@@ -13,9 +13,14 @@ namespace FMFT.Web.Client.Services.Processings.Reservations
             this.reservationService = reservationService;
         }
 
-        public async ValueTask<Reservation> CreateReservationAsync(CreateReservationModel model)
+        public async ValueTask<Reservation> CreateReservationAsync(CreateReservationRequest request)
         {
-            return await reservationService.CreateReservationAsync(model);
+            return await reservationService.CreateReservationAsync(request);
+        }
+
+        public async ValueTask<IEnumerable<Reservation>> RetrieveReservationsByUserIdAsync(int userId)
+        {
+            return await reservationService.RetrieveReservationsByUserIdAsync(userId);
         }
     }
 }

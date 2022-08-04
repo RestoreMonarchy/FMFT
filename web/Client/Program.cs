@@ -11,9 +11,6 @@ using FMFT.Web.Client.Services.Views.Accounts;
 using FMFT.Web.Client.Services.Views.Shows;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Net.Http;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -37,7 +34,7 @@ builder.Services.AddScoped<IAccountViewService, AccountViewService>();
 
 WebAssemblyHost host = builder.Build();
 
-await host.Services.GetRequiredService<IAccountProcessingService>().InitializeAsync();
+await host.Services.GetRequiredService<IAccountProcessingService>().UpdateAccountAsync();
 
 await host.RunAsync();
 

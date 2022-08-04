@@ -1,8 +1,7 @@
 ﻿using FMFT.Web.Client.Brokers.APIs;
-using FMFT.Web.Server.Models.Reservations;
-using FMFT.Web.Server.Models.Reservations.Exceptions;
-using FMFT.Web.Server.Models.Reservations.Models;
-using FMFT.Web.Server.Models.Users.Exceptions;
+using FMFT.Web.Client.Models.Reservations;
+using FMFT.Web.Client.Models.Reservations.Exceptions;
+using FMFT.Web.Client.Models.Reservations.Requests;
 using RESTFulSense.WebAssembly.Exceptions;
 
 namespace FMFT.Web.Client.Services.Foundations.Reservations
@@ -34,7 +33,7 @@ namespace FMFT.Web.Client.Services.Foundations.Reservations
             return reservations;
         }
 
-        public async ValueTask<List<Reservation>> RetrieveUserReservationsAsync(int userId)
+        public async ValueTask<List<Reservation>> RetrieveReservationsByUserIdAsync(int userId)
         {
             try
             {
@@ -42,16 +41,15 @@ namespace FMFT.Web.Client.Services.Foundations.Reservations
                 return reservations;
             } catch (HttpResponseUnauthorizedException)
             {
-                // using Models.Users exception inside Reservation service
-                throw new UserNotAuthorizedException();
+                throw new ReservationUnauthorizedException();
             }
         }
 
-        public async ValueTask<Reservation> CreateReservationAsync(CreateReservationModel model)
+        public async ValueTask<Reservation> CreateReservationAsync(CreateReservationRequest request)
         {
             try
             {
-                Reservation reservation = await apiBroker.CreateReservationAsync(model);
+                Reservation reservation = await apiBroker.CreateReservationAsync(request);
                 return reservation;
             } catch (HttpResponseConflictException)
             {
@@ -61,8 +59,7 @@ namespace FMFT.Web.Client.Services.Foundations.Reservations
                 throw new UserAlreadyReservedException();
             } catch (HttpResponseUnauthorizedException)
             {
-                // using Models.Users exception inside Reservation service
-                throw new UserNotAuthorizedException();
+                throw new ReservationUnauthorizedException();
             }
         }
     }

@@ -1,10 +1,10 @@
-﻿using FMFT.Web.Client.Services.Views.Accounts;
+﻿using FMFT.Web.Client.Models.Accounts.Exceptions;
+using FMFT.Web.Client.Models.Accounts.Requests;
+using FMFT.Web.Client.Services.Views.Accounts;
 using FMFT.Web.Client.Views.Bases.Alerts;
 using FMFT.Web.Client.Views.Bases.Buttons;
 using FMFT.Web.Client.Views.Bases.Forms;
 using FMFT.Web.Client.Views.Bases.Inputs;
-using FMFT.Web.Server.Models.Users.Exceptions;
-using FMFT.Web.Server.Models.Users.Models;
 using Microsoft.AspNetCore.Components;
 
 namespace FMFT.Web.Client.Views.Components.Accounts.Forms
@@ -14,7 +14,7 @@ namespace FMFT.Web.Client.Views.Components.Accounts.Forms
         [Inject]
         public IAccountViewService AccountViewService { get; set; }
 
-        public SignInUserWithPasswordModel Model { get; set; } = new();
+        public LogInWithPasswordRequest Request { get; set; } = new();
 
         public FormBase Form { get; set; }
         public ButtonBase SubmitButton { get; set; }
@@ -34,9 +34,9 @@ namespace FMFT.Web.Client.Views.Components.Accounts.Forms
             try
             {
                 await Task.Delay(2000);
-                await AccountViewService.LoginAsync(Model);
+                await AccountViewService.LoginAsync(Request);
                 AccountViewService.ForceLoadNavigateTo("/");
-            } catch (UserPasswordNotMatchException)
+            } catch (AccountPasswordNotMatchException)
             {
                 UserPasswordNotMatchAlert.Show();
             } finally

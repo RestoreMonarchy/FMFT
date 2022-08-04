@@ -2,8 +2,6 @@
 using FMFT.Web.Client.Models.Accounts;
 using FMFT.Web.Client.Models.Accounts.Requests;
 using FMFT.Web.Client.Services.Processings.Accounts;
-using FMFT.Web.Server.Models.Users;
-using FMFT.Web.Server.Models.Users.Models;
 
 namespace FMFT.Web.Client.Services.Views.Accounts
 {

@@ -1,11 +1,11 @@
-﻿using FMFT.Web.Client.Services.Views.Shows;
+﻿using FMFT.Web.Client.Models.Auditoriums;
+using FMFT.Web.Client.Models.Reservations.Exceptions;
+using FMFT.Web.Client.Models.Reservations.Requests;
+using FMFT.Web.Client.Models.Seats;
+using FMFT.Web.Client.Models.Shows;
+using FMFT.Web.Client.Services.Views.Shows;
 using FMFT.Web.Client.Views.Bases.Alerts;
 using FMFT.Web.Client.Views.Bases.Buttons;
-using FMFT.Web.Server.Models.Auditoriums;
-using FMFT.Web.Server.Models.Reservations.Exceptions;
-using FMFT.Web.Server.Models.Reservations.Models;
-using FMFT.Web.Server.Models.Seats;
-using FMFT.Web.Server.Models.Shows;
 using Microsoft.AspNetCore.Components;
 
 namespace FMFT.Web.Client.Views.Components.Shows.Cards
@@ -38,7 +38,7 @@ namespace FMFT.Web.Client.Views.Components.Shows.Cards
             AlertGroup.HideAll();
             ReserveButton.StartSpinning();
 
-            CreateReservationModel model = new()
+            CreateReservationRequest model = new()
             {
                 ShowId = Show.Id,
                 SeatId = SelectedSeat.Id

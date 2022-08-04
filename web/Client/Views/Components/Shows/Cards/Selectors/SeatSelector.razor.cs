@@ -1,7 +1,7 @@
 ﻿using FMFT.Web.Client.Brokers.JSRuntimes;
+using FMFT.Web.Client.Models.Auditoriums;
+using FMFT.Web.Client.Models.Seats;
 using FMFT.Web.Client.Views.Bases.Buttons;
-using FMFT.Web.Server.Models.Auditoriums;
-using FMFT.Web.Server.Models.Seats;
 using Microsoft.AspNetCore.Components;
 
 namespace FMFT.Web.Client.Views.Components.Shows.Cards.Selectors

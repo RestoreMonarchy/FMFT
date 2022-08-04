@@ -1,5 +1,5 @@
-﻿using FMFT.Web.Server.Models.Auditoriums;
-using FMFT.Web.Server.Models.Shows;
+﻿using FMFT.Web.Client.Models.Auditoriums;
+using FMFT.Web.Client.Models.Shows;
 using Microsoft.AspNetCore.Components;
 
 namespace FMFT.Web.Client.Views.Components.Shows.Cards

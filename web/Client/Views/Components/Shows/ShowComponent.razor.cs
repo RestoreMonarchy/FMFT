@@ -1,9 +1,8 @@
-﻿using FMFT.Web.Client.Services.Foundations.Shows;
+﻿using FMFT.Web.Client.Models.Auditoriums;
+using FMFT.Web.Client.Models.Auditoriums.Exceptions;
+using FMFT.Web.Client.Models.Shows;
+using FMFT.Web.Client.Models.Shows.Exceptions;
 using FMFT.Web.Client.Services.Views.Shows;
-using FMFT.Web.Server.Models.Auditoriums;
-using FMFT.Web.Server.Models.Auditoriums.Exceptions;
-using FMFT.Web.Server.Models.Shows;
-using FMFT.Web.Server.Models.Shows.Exceptions;
 using Microsoft.AspNetCore.Components;
 
 namespace FMFT.Web.Client.Views.Components.Shows
@@ -26,7 +25,7 @@ namespace FMFT.Web.Client.Views.Components.Shows
             try
             {
                 Show = await ShowViewService.RetrieveShowByIdAsync(ShowId);
-                Auditorium = await ShowViewService.RetrieveAuditoriumAsync(Show.AuditoriumId);
+                Auditorium = await ShowViewService.RetrieveAuditoriumByIdAsync(Show.AuditoriumId);
             } catch (ShowNotFoundException e)
             {
                 Exception = e;

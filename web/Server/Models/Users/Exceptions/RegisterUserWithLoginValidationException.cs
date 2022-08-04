@@ -9,11 +9,5 @@ namespace FMFT.Web.Server.Models.Users.Exceptions
         {
 
         }
-
-        public RegisterUserWithLoginValidationException(Exception innerException, System.Collections.IDictionary data)
-            : base(message: "Invalid RegisterUserWithLogin model. Please correct the errors and try again.",
-                  innerException,
-                  data)
-        { }
     }
 }

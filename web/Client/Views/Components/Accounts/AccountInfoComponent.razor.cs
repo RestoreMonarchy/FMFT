@@ -1,5 +1,5 @@
-﻿using FMFT.Web.Client.Services.Views.Accounts;
-using FMFT.Web.Server.Models.Users;
+﻿using FMFT.Web.Client.Models.Accounts;
+using FMFT.Web.Client.Services.Views.Accounts;
 using Microsoft.AspNetCore.Components;
 
 namespace FMFT.Web.Client.Views.Components.Accounts
@@ -9,6 +9,6 @@ namespace FMFT.Web.Client.Views.Components.Accounts
         [Inject]
         public IAccountViewService AccountViewService { get; set; }
 
-        public UserInfo UserInfo => AccountViewService.UserInfo;
+        public Account Account => AccountViewService.Account;
     }
 }

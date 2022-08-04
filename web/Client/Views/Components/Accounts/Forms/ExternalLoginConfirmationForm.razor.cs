@@ -5,9 +5,6 @@ using FMFT.Web.Client.Views.Bases.Alerts;
 using FMFT.Web.Client.Views.Bases.Buttons;
 using FMFT.Web.Client.Views.Bases.Forms;
 using FMFT.Web.Client.Views.Bases.Inputs;
-using FMFT.Web.Server.Models.Accounts.Exceptions;
-using FMFT.Web.Server.Models.Users.Exceptions;
-using FMFT.Web.Server.Models.Users.Models;
 using Microsoft.AspNetCore.Components;
 
 namespace FMFT.Web.Client.Views.Components.Accounts.Forms

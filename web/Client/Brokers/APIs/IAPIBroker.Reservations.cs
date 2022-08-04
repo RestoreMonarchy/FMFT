@@ -1,5 +1,5 @@
-﻿using FMFT.Web.Server.Models.Reservations;
-using FMFT.Web.Server.Models.Reservations.Models;
+﻿using FMFT.Web.Client.Models.Reservations;
+using FMFT.Web.Client.Models.Reservations.Requests;
 
 namespace FMFT.Web.Client.Brokers.APIs
 {
@@ -7,7 +7,7 @@ namespace FMFT.Web.Client.Brokers.APIs
     {
         ValueTask<Reservation> GetReservationByIdAsync(int reservationId);
         ValueTask<List<Reservation>> GetAllReservationsAsync();
-        ValueTask<Reservation> CreateReservationAsync(CreateReservationModel model);
+        ValueTask<Reservation> CreateReservationAsync(CreateReservationRequest request);
         ValueTask<List<Reservation>> GetUserReservationsAsync(int userId);
     }
 }

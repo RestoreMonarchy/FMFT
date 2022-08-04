@@ -1,5 +1,5 @@
-﻿using FMFT.Web.Server.Models.Reservations;
-using FMFT.Web.Server.Models.Reservations.Models;
+﻿using FMFT.Web.Client.Models.Reservations;
+using FMFT.Web.Client.Models.Reservations.Requests;
 
 namespace FMFT.Web.Client.Brokers.APIs
 {
@@ -17,10 +17,10 @@ namespace FMFT.Web.Client.Brokers.APIs
             return await GetAsync<List<Reservation>>(ReservationsRelativeUrl);
         }
 
-        public async ValueTask<Reservation> CreateReservationAsync(CreateReservationModel model)
+        public async ValueTask<Reservation> CreateReservationAsync(CreateReservationRequest request)
         {
-            string url = $"api/users/{model.UserId}/reservations/create";
-            return await PostAsync<CreateReservationModel, Reservation>(url, model);
+            string url = $"api/users/{request.UserId}/reservations/create";
+            return await PostAsync<CreateReservationRequest, Reservation>(url, request);
         }
 
         public async ValueTask<List<Reservation>> GetUserReservationsAsync(int userId)

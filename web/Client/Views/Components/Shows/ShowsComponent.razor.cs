@@ -1,5 +1,5 @@
-﻿using FMFT.Web.Client.Services.Views.Shows;
-using FMFT.Web.Server.Models.Shows;
+﻿using FMFT.Web.Client.Models.Shows;
+using FMFT.Web.Client.Services.Views.Shows;
 using Microsoft.AspNetCore.Components;
 
 namespace FMFT.Web.Client.Views.Components.Shows

@@ -1,4 +1,4 @@
-﻿using FMFT.Web.Server.Models.Shows;
+﻿using FMFT.Web.Client.Models.Shows;
 
 namespace FMFT.Web.Client.Services.Foundations.Shows
 {

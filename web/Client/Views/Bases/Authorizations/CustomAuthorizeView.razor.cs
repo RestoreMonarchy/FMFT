@@ -1,5 +1,6 @@
-﻿using FMFT.Web.Client.Services.Processings.Accounts;
-using FMFT.Web.Server.Models.Users;
+﻿using FMFT.Web.Client.Models.Accounts;
+using FMFT.Web.Client.Services.Processings.Accounts;
+using FMFT.Web.Shared.Enums;
 using Microsoft.AspNetCore.Components;
 
 namespace FMFT.Web.Client.Views.Bases.Authorizations
@@ -7,7 +8,7 @@ namespace FMFT.Web.Client.Views.Bases.Authorizations
     public partial class CustomAuthorizeView
     {
         [Parameter]
-        public RenderFragment<UserInfo> Authorized { get; set; }
+        public RenderFragment<Account> Authorized { get; set; }
         [Parameter]
         public RenderFragment NotAuthorized { get; set; }
         [Parameter]

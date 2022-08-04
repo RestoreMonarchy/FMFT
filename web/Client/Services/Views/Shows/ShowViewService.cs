@@ -1,11 +1,10 @@
-﻿using FMFT.Web.Client.Services.Foundations.Auditoriums;
+﻿using FMFT.Web.Client.Models.Auditoriums;
+using FMFT.Web.Client.Models.Reservations;
+using FMFT.Web.Client.Models.Reservations.Requests;
+using FMFT.Web.Client.Models.Shows;
+using FMFT.Web.Client.Services.Foundations.Auditoriums;
 using FMFT.Web.Client.Services.Foundations.Reservations;
 using FMFT.Web.Client.Services.Foundations.Shows;
-using FMFT.Web.Client.Services.Processings.Accounts;
-using FMFT.Web.Server.Models.Auditoriums;
-using FMFT.Web.Server.Models.Reservations;
-using FMFT.Web.Server.Models.Reservations.Models;
-using FMFT.Web.Server.Models.Shows;
 
 namespace FMFT.Web.Client.Services.Views.Shows
 {
@@ -34,14 +33,14 @@ namespace FMFT.Web.Client.Services.Views.Shows
             return await showService.RetrieveShowByIdAsync(showId);
         }
 
-        public async ValueTask<Auditorium> RetrieveAuditoriumAsync(int auditoriumId)
+        public async ValueTask<Auditorium> RetrieveAuditoriumByIdAsync(int auditoriumId)
         {
             return await auditoriumService.RetrieveAuditoriumByIdAsync(auditoriumId);
         }
 
-        public async ValueTask<Reservation> CreateReservationAsync(CreateReservationModel model)
+        public async ValueTask<Reservation> CreateReservationAsync(CreateReservationRequest request)
         {
-            return await reservationService.CreateReservationAsync(model);
+            return await reservationService.CreateReservationAsync(request);
         }
     }
 }
