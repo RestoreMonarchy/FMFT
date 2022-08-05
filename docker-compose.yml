@@ -1,13 +1,18 @@
 version: '3'
 services:
   mssql-server:
-    image: "mcr.microsoft.com/mssql/server"
+    user: root
+    image: "mcr.microsoft.com/mssql/server:2019-latest"
     environment:
       ACCEPT_EULA: "Y"
       SA_PASSWORD: "Password!123"
       MSSQL_PID: "Express"
+      TZ: Europe/Warsaw
     ports:
-      - "14340:1433"
+      - "14331:1433"
+    volumes:
+      - /var/data/FMMT/mssql-server:/var/opt/mssql/data
+      - /var/sqlbackups/FMFT:/var/sqlbackups
   database:
     build:  
       context: .
@@ -16,16 +21,18 @@ services:
         CONNECTION_STRING: "Server=mssql-server;Database=FMFT;Uid=sa;Password=Password!123"
     depends_on:
       - mssql-server
-  shearlegs-web:
-    build:
+  fmft-web:
         context: .
+    build:
         dockerfile: ./docker/web/Dockerfile
     ports:
       - "6255:80"
-    depends_on: 
-      - mssql-server
-      - database
+    depends_on:
+      database:
+        condition: service_completed_successfully
     environment:
-      ConnectionStrings__Default: "Server=mssql-server;Database=FMFT;Uid=sa;Password=Password!123"
-      AuthenticationTypes__Default: "true"
-      AuthenticationTypes__Windows: "false"
+      ASPNETCORE_ENVIRONMENT: Production
+      TZ: Europe/Warsaw
+    volumes:
+      - /var/configs/FMFT/serverconfig.json:/app/appsettings.Production.json
+      - /var/configs/FMFT/clientconfig.json:/app/wwwroot/appsettings.json
