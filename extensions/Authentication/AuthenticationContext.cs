@@ -18,7 +18,16 @@ namespace FMFT.Extensions.Authentication
         }
 
         public bool IsAuthenticated => httpContext.User?.Identity?.IsAuthenticated ?? false;
-        public ClaimsPrincipal ClaimsPrincipal => httpContext.User;
+        public ClaimsPrincipal ClaimsPrincipal 
+        { 
+            get
+            {
+                if (!IsAuthenticated)
+                    throw new NotAuthenticatedException();
+
+                return httpContext.User;
+            } 
+        }
 
         public string FindClaimValue(string claimType)
         {

@@ -38,7 +38,7 @@ namespace FMFT.Web.Client.Services.Processings.Accounts
                 Account = null;
             }
             
-            OnAccountChanged.Invoke();
+            OnAccountChanged?.Invoke();
         }
 
         public void AuthorizeAccountByUserId(int authorizedUserId)
