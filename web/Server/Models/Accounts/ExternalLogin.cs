@@ -4,6 +4,6 @@
     {
         public string ProviderName { get; set; }
         public string ProviderKey { get; set; }
-        public Account Account { get; set; }
+        public ExternalAccount Account { get; set; }
     }
 }

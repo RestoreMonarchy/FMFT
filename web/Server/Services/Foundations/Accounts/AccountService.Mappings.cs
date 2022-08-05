@@ -33,11 +33,23 @@ namespace FMFT.Web.Server.Services.Foundations.Accounts
             };
         }
 
+        private ExternalAccount MapClaimsPrincipalToExternalAccount(ClaimsPrincipal claimsPrincipal)
+        {
+            return new ExternalAccount()
+            {
+                ProviderKey = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier),
+                Name = claimsPrincipal.FindFirstValue(ClaimTypes.Name),
+                Email = claimsPrincipal.FindFirstValue(ClaimTypes.Email),
+                FirstName = claimsPrincipal.FindFirstValue(ClaimTypes.GivenName),
+                LastName = claimsPrincipal.FindFirstValue(ClaimTypes.Surname)
+            };
+        }
+
         private ExternalLogin MapExternalLoginInfoToExternalLogin(ExternalLoginInfo externalLoginInfo)
         {
             return new ExternalLogin()
             {
-                Account = MapClaimsPrincipalToAccount(externalLoginInfo.Principal),
+                Account = MapClaimsPrincipalToExternalAccount(externalLoginInfo.Principal),
                 ProviderName = externalLoginInfo.ProviderName,
                 ProviderKey = externalLoginInfo.ProviderKey
             };
