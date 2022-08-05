@@ -27,7 +27,7 @@ namespace FMFT.Web.Client.Services.Orchestrations.AccountReservations
             return await reservationService.RetrieveReservationsByUserIdAsync(account.UserId);
         }
 
-        public async ValueTask<Reservation> CreateAccountReservationAsync(CreateReservationArguments arguments)
+        public async ValueTask<Reservation> CreateAccountReservationAsync(CreateAccountReservationArguments arguments)
         {
             Account account = accountService.RetrieveAccount();
 

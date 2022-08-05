@@ -1,4 +1,5 @@
-﻿using FMFT.Web.Client.Models.Auditoriums;
+﻿using FMFT.Web.Client.Models.AccountReservations.Arguments;
+using FMFT.Web.Client.Models.Auditoriums;
 using FMFT.Web.Client.Models.Reservations.Exceptions;
 using FMFT.Web.Client.Models.Reservations.Requests;
 using FMFT.Web.Client.Models.Seats;
@@ -25,6 +26,7 @@ namespace FMFT.Web.Client.Views.Components.Shows.Cards
         public AlertGroupBase AlertGroup { get; set; }
         public AlertBase SeatAlreadyReservedAlert { get; set; }
         public AlertBase UserAlreadyReservedAlert { get; set; }
+        public AlertBase ReservationSuccessAlert { get; set; }
 
         public ButtonBase ReserveButton { get; set; }
 
@@ -38,7 +40,7 @@ namespace FMFT.Web.Client.Views.Components.Shows.Cards
             AlertGroup.HideAll();
             ReserveButton.StartSpinning();
 
-            CreateReservationRequest model = new()
+            CreateAccountReservationArguments arguments = new()
             {
                 ShowId = Show.Id,
                 SeatId = SelectedSeat.Id
@@ -46,7 +48,8 @@ namespace FMFT.Web.Client.Views.Components.Shows.Cards
 
             try
             {
-                await ShowViewService.CreateReservationAsync(model);
+                await ShowViewService.CreateAccountReservationAsync(arguments);
+                ReservationSuccessAlert.Show();
             } catch (SeatAlreadyReservedException)
             {
                 SeatAlreadyReservedAlert.Show();

@@ -6,7 +6,9 @@ using FMFT.Web.Client.Services.Foundations.Accounts;
 using FMFT.Web.Client.Services.Foundations.Auditoriums;
 using FMFT.Web.Client.Services.Foundations.Reservations;
 using FMFT.Web.Client.Services.Foundations.Shows;
+using FMFT.Web.Client.Services.Orchestrations.AccountReservations;
 using FMFT.Web.Client.Services.Processings.Accounts;
+using FMFT.Web.Client.Services.Processings.Reservations;
 using FMFT.Web.Client.Services.Views.Accounts;
 using FMFT.Web.Client.Services.Views.Shows;
 using Microsoft.AspNetCore.Components.Web;
@@ -28,6 +30,9 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
 
 builder.Services.AddScoped<IAccountProcessingService, AccountProcessingService>();
+builder.Services.AddScoped<IReservationProcessingService, ReservationProcessingService>();
+
+builder.Services.AddScoped<IAccountReservationOrchestrationService, AccountReservationOrchestrationService>();
 
 builder.Services.AddScoped<IShowViewService, ShowViewService>();
 builder.Services.AddScoped<IAccountViewService, AccountViewService>();

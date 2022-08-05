@@ -62,6 +62,9 @@
             <AlertBase @ref="UserAlreadyReservedAlert" Class="alert-danger">
                 You have already reserved a seat for this show
             </AlertBase>
+            <AlertBase @ref="ReservationSuccessAlert" Class="alert-success">
+                Successfully created a reservation for seat [@SelectedSeat.Row, @SelectedSeat.Number]!
+            </AlertBase>
         </AlertGroupBase>
 
         <CustomAuthorizeView>

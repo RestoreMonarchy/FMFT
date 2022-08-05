@@ -1,10 +1,12 @@
-﻿using FMFT.Web.Client.Models.Auditoriums;
+﻿using FMFT.Web.Client.Models.AccountReservations.Arguments;
+using FMFT.Web.Client.Models.Auditoriums;
 using FMFT.Web.Client.Models.Reservations;
 using FMFT.Web.Client.Models.Reservations.Requests;
 using FMFT.Web.Client.Models.Shows;
 using FMFT.Web.Client.Services.Foundations.Auditoriums;
 using FMFT.Web.Client.Services.Foundations.Reservations;
 using FMFT.Web.Client.Services.Foundations.Shows;
+using FMFT.Web.Client.Services.Orchestrations.AccountReservations;
 
 namespace FMFT.Web.Client.Services.Views.Shows
 {
@@ -12,15 +14,15 @@ namespace FMFT.Web.Client.Services.Views.Shows
     {
         private readonly IShowService showService;
         private readonly IAuditoriumService auditoriumService;
-        private readonly IReservationService reservationService;
+        private readonly IAccountReservationOrchestrationService accountReservationService;
 
         public ShowViewService(IShowService showService,
             IAuditoriumService auditoriumService,
-            IReservationService reservationService)
+            IAccountReservationOrchestrationService accountReservationService)
         {
             this.showService = showService;
             this.auditoriumService = auditoriumService;
-            this.reservationService = reservationService;
+            this.accountReservationService = accountReservationService;
         }
 
         public async ValueTask<List<Show>> RetrieveAllShowsAsync()
@@ -38,9 +40,9 @@ namespace FMFT.Web.Client.Services.Views.Shows
             return await auditoriumService.RetrieveAuditoriumByIdAsync(auditoriumId);
         }
 
-        public async ValueTask<Reservation> CreateReservationAsync(CreateReservationRequest request)
+        public async ValueTask<Reservation> CreateAccountReservationAsync(CreateAccountReservationArguments arguments)
         {
-            return await reservationService.CreateReservationAsync(request);
+            return await accountReservationService.CreateAccountReservationAsync(arguments);
         }
     }
 }
