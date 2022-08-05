@@ -29,7 +29,8 @@ namespace FMFT.Web.Server.Services.Foundations.Accounts
                 Email = claimsPrincipal.FindFirstValue(ClaimTypes.Email),
                 FirstName = claimsPrincipal.FindFirstValue(ClaimTypes.GivenName),
                 LastName = claimsPrincipal.FindFirstValue(ClaimTypes.Surname),
-                Role = Enum.Parse<UserRole>(claimsPrincipal.FindFirstValue(ClaimTypes.Role))
+                Role = Enum.Parse<UserRole>(claimsPrincipal.FindFirstValue(ClaimTypes.Role)),
+                AuthenticationMethod = claimsPrincipal.FindFirstValue(ClaimTypes.AuthenticationMethod)
             };
         }
 
