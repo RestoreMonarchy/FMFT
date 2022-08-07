@@ -19,7 +19,7 @@ services:
         CONNECTION_STRING: "Server=mssql-server;Database=FMFT;Uid=sa;Password=Password!123"
     depends_on:
       - mssql-server
-  fmft-web:     
+  web:     
     build:
         context: .
         dockerfile: ./docker/web/Dockerfile
