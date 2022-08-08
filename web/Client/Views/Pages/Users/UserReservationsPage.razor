@@ -1,0 +1,15 @@
+﻿@page "/users/{UserId:int}/reservations"
+
+<Breadcrumb>
+    <BreadcrumbItem Link="/">
+        Home
+    </BreadcrumbItem>
+    <BreadcrumbItem>
+        @UserId
+    </BreadcrumbItem>
+    <BreadcrumbItem Active="true">
+        Reservations
+    </BreadcrumbItem>
+</Breadcrumb>
+
+<UserReservationsComponent UserId="@UserId" />

@@ -29,7 +29,7 @@ namespace FMFT.Web.Client.Shared.Navbars.Items
                 return false;
             }
 
-            if (CurrentLocation.StartsWith(location, StringComparison.OrdinalIgnoreCase))
+            if (CurrentLocation.EndsWith(location, StringComparison.OrdinalIgnoreCase))
             {
                 return true;
             }

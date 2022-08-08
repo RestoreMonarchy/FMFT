@@ -18,7 +18,7 @@ namespace FMFT.Web.Client.Services.Processings.Reservations
             return await reservationService.CreateReservationAsync(request);
         }
 
-        public async ValueTask<IEnumerable<Reservation>> RetrieveReservationsByUserIdAsync(int userId)
+        public async ValueTask<List<Reservation>> RetrieveReservationsByUserIdAsync(int userId)
         {
             return await reservationService.RetrieveReservationsByUserIdAsync(userId);
         }

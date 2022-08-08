@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace FMFT.Web.Client.Views.Pages
+namespace FMFT.Web.Client.Views.Pages.Users
 {
     public partial class UserReservationPage
     {

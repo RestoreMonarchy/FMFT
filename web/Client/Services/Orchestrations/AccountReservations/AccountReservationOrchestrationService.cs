@@ -20,7 +20,7 @@ namespace FMFT.Web.Client.Services.Orchestrations.AccountReservations
             this.reservationService = reservationService;
         }
 
-        public async ValueTask<IEnumerable<Reservation>> RetrieveAccountReservationsAsync()
+        public async ValueTask<List<Reservation>> RetrieveAccountReservationsAsync()
         {
             Account account = accountService.RetrieveAccount();
 

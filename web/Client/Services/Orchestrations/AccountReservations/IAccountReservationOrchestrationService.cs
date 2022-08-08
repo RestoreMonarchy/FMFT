@@ -6,6 +6,6 @@ namespace FMFT.Web.Client.Services.Orchestrations.AccountReservations
     public interface IAccountReservationOrchestrationService
     {
         ValueTask<Reservation> CreateAccountReservationAsync(CreateAccountReservationArguments arguments);
-        ValueTask<IEnumerable<Reservation>> RetrieveAccountReservationsAsync();
+        ValueTask<List<Reservation>> RetrieveAccountReservationsAsync();
     }
 }

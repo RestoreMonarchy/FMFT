@@ -1,0 +1,32 @@
+﻿<LoadingView State="Reservations">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Show</th>
+                <th scope="col">Row</th>
+                <th scope="col">Number</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <Iterations Items="Reservations">
+                <tr>
+                    <th scope="row">
+                        <a href="/reservations/@context.Id">
+                            @context.Id
+                        </a>
+                    </th>
+                    <td>
+                        <a href="/shows/@context.Show.Id">
+                            @context.Show.Name
+                        </a>
+                    </td>
+                    <td>@context.Seat.Row</td>
+                    <td>@context.Seat.Number</td>
+                    <td>@context.Status</td>
+                </tr>
+            </Iterations>
+        </tbody>
+    </table>
+</LoadingView>
