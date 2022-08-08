@@ -9,8 +9,8 @@ using RESTFulSense.Controllers;
 
 namespace FMFT.Web.Server.Controllers
 {
-    [Route("api")]
     [ApiController]
+    [Route("api/[controller]")]
     public class ReservationsController : RESTFulController
     {
         private readonly IReservationProcessingService reservationService;
@@ -20,14 +20,14 @@ namespace FMFT.Web.Server.Controllers
             this.reservationService = reservationService;
         }
 
-        [HttpGet("reservations")]
+        [HttpGet]
         public async ValueTask<IActionResult> GetAllReservations()
         {
             IEnumerable<Reservation> reservations = await reservationService.RetrieveAllReservationsAsync();
             return Ok(reservations);
         }
 
-        [HttpGet("reservations/{reservationId}")]
+        [HttpGet("{reservationId}")]
         public async ValueTask<IActionResult> GetReservation(int reservationId)
         {
             try

@@ -38,6 +38,7 @@ else
 }
 
 app.UseHttpsRedirection();
+app.UseForwardedHeaders();
 
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
