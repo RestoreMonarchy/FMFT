@@ -1,5 +1,6 @@
 ﻿<LoadingView State="Reservations">
-    <table class="table table-bordered">
+    <table class="table table-bordered caption-top">
+        <caption>List of your reservations</caption>
         <thead>
             <tr>
                 <th scope="col">#</th>
@@ -10,10 +11,10 @@
             </tr>
         </thead>
         <tbody>
-            <Iterations Items="Reservations">
+            <Iterations Items="Reservations.OrderByDescending(x => x.CreateDate)">
                 <tr>
                     <th scope="row">
-                        <a href="/reservations/@context.Id">
+                        <a href="/account/reservations/@context.Id">
                             @context.Id
                         </a>
                     </th>

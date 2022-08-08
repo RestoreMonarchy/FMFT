@@ -22,5 +22,15 @@ namespace FMFT.Web.Client.Services.Processings.Reservations
         {
             return await reservationService.RetrieveReservationsByUserIdAsync(userId);
         }
+
+        public async ValueTask<Reservation> RetrieveReservationByIdAsync(int reservationId)
+        {
+            return await reservationService.RetrieveReservationByIdAsync(reservationId);
+        }
+
+        public async ValueTask<List<Reservation>> RetrieveAllReservationsAsync()
+        {
+            return await reservationService.RetrieveAllReservationsAsync();
+        }
     }
 }
