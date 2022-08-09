@@ -1,5 +1,7 @@
 ﻿using Dapper;
+using FMFT.Web.Server.Models.Database;
 using FMFT.Web.Server.Models.Shows;
+using FMFT.Web.Server.Models.Shows.Params;
 
 namespace FMFT.Web.Server.Brokers.Storages
 {
@@ -15,6 +17,18 @@ namespace FMFT.Web.Server.Brokers.Storages
         {
             const string sql = "SELECT * FROM dbo.Shows;";
             return await connection.QueryAsync<Show>(sql);
+        }
+
+        public async ValueTask<StoredProcedureResult<Show>> ExecuteAddShowAsync(AddShowParams @params)
+        {
+            const string sql = "dbo.AddShow";
+            return await QueryStoredProcedureSingleResultAsync<Show>(sql, @params);
+        }
+
+        public async ValueTask<StoredProcedureResult<Show>> ExecuteUpdateShowAsync(UpdateShowParams @params)
+        {
+            const string sql = "dbo.UpdateShow";
+            return await QueryStoredProcedureSingleResultAsync<Show>(sql, @params);
         }
     }
 }

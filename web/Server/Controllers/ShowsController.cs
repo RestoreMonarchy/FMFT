@@ -3,6 +3,7 @@ using FMFT.Web.Server.Models.Shows;
 using FMFT.Web.Server.Models.Shows.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
+using FMFT.Web.Server.Models.Shows.Params;
 
 namespace FMFT.Web.Server.Controllers
 {
@@ -34,6 +35,42 @@ namespace FMFT.Web.Server.Controllers
             } catch (ShowNotFoundException)
             {
                 return NotFound();
+            }
+        }
+
+        [HttpPost]
+        public async ValueTask<IActionResult> PostShow([FromBody] AddShowParams @params)
+        {
+            try
+            {
+                Show show = await showService.AddShowAsync(@params);
+                return Ok(show);
+            } catch (AuditoriumNotExistsException)
+            {
+                return Conflict();
+            } catch (AddShowValidationException exception)
+            {
+                return BadRequest(exception);
+            }
+        }
+
+        [HttpPut]
+        public async ValueTask<IActionResult> PutShow([FromBody] UpdateShowParams @params)
+        {
+            try
+            {
+                Show show = await showService.ModifyShowAsync(@params);
+                return Ok(show);
+            }
+            catch (AuditoriumNotExistsException)
+            {
+                return Conflict();
+            } catch (ShowNotFoundException)
+            {
+                return NotFound();
+            } catch (UpdateShowValidationException exception)
+            {
+                return BadRequest(exception);
             }
         }
     }

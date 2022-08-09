@@ -1,9 +1,8 @@
-﻿namespace FMFT.Web.Server.Models.Shows
+﻿namespace FMFT.Web.Server.Models.Shows.Params
 {
-    public class Show
+    public class AddShowParams
     {
-        public int Id { get; set; }
-        public string ShortName { get; set; }
+        public string PublicId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTimeOffset StartDateTime { get; set; }

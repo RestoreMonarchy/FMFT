@@ -2,6 +2,8 @@
 using FMFT.Web.Server.Models.Auditoriums;
 using FMFT.Web.Server.Models.Users;
 using FMFT.Web.Server.Models.Users.Params;
+using FMFT.Web.Server.Models.Shows;
+using FMFT.Web.Server.Models.Shows.Params;
 
 namespace FMFT.Web.Server.Brokers.Storages
 {
@@ -9,5 +11,7 @@ namespace FMFT.Web.Server.Brokers.Storages
     {
         ValueTask<Auditorium> SelectAuditoriumByIdAsync(int auditoriumId);
         ValueTask<IEnumerable<Auditorium>> SelectAllAuditoriumsAsync();
+        ValueTask<StoredProcedureResult<Show>> ExecuteAddShowAsync(AddShowParams @params);
+        ValueTask<StoredProcedureResult<Show>> ExecuteUpdateShowAsync(UpdateShowParams @params);
     }
 }
