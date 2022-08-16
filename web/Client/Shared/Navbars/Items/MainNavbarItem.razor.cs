@@ -1,5 +1,6 @@
 ﻿using FMFT.Web.Client.Brokers.Navigations;
 using Microsoft.AspNetCore.Components;
+using System.Diagnostics;
 
 namespace FMFT.Web.Client.Shared.Navbars.Items
 {
@@ -7,6 +8,8 @@ namespace FMFT.Web.Client.Shared.Navbars.Items
     {
         [Parameter]
         public string Location { get; set; }
+        [Parameter]
+        public bool StartsWith { get; set; }
         [Parameter]
         public RenderFragment ChildContent { get; set; }
 
@@ -29,12 +32,16 @@ namespace FMFT.Web.Client.Shared.Navbars.Items
                 return false;
             }
 
-            if (CurrentLocation.EndsWith(location, StringComparison.OrdinalIgnoreCase))
-            {
-                return true;
-            }
+            Console.WriteLine("CurrentLocation:" + CurrentLocation);
+            Console.WriteLine("Location: " + location);
 
-            return false;
+            if (StartsWith)
+            {
+                return CurrentLocation.StartsWith(location, StringComparison.OrdinalIgnoreCase);
+            } else
+            {
+                return CurrentLocation.Equals(location, StringComparison.OrdinalIgnoreCase);
+            }
         }
 
         protected string GetActiveClass()

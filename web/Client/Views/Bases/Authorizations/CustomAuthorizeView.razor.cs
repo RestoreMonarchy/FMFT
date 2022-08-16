@@ -13,7 +13,24 @@ namespace FMFT.Web.Client.Views.Bases.Authorizations
         public RenderFragment NotAuthorized { get; set; }
         [Parameter]
         public IEnumerable<UserRole> Roles { get; set; }
+        [Parameter]
+        public UserRole? Role { get; set; }
 
+        private IEnumerable<UserRole> roles
+        {
+            get
+            {
+                if (Roles == null && Role == null)
+                    return null;
+
+                List<UserRole> roles = Roles?.ToList() ?? new List<UserRole>();
+
+                if (Role.HasValue)
+                    roles.Add(Role.Value);
+
+                return roles;
+            }
+        }
 
         [Inject]
         public IAccountProcessingService AccountService { get; set; }
@@ -25,7 +42,7 @@ namespace FMFT.Web.Client.Views.Bases.Authorizations
                 return false;
             }
 
-            if (Roles != null && !Roles.Contains(AccountService.Account.Role))
+            if (roles != null && !roles.Contains(AccountService.Account.Role))
             {
                 return false;
             }

@@ -16,9 +16,24 @@
                 <MainNavbarItem Location="/tickets">
                     Tickets
                 </MainNavbarItem>
-                <MainNavbarItem Location="/shows">
+                <MainNavbarItem Location="/shows" StartsWith="true">
                     Shows
                 </MainNavbarItem>
+                <CustomAuthorizeView Role="UserRole.Admin">
+                    <Authorized>
+                        <MainNavbarDropdown Value="Admin">
+                            <MainNavbarDropdownItem Location="/admin/shows">
+                                Shows
+                            </MainNavbarDropdownItem>
+                            <MainNavbarDropdownItem Location="/admin/reservations">
+                                Reservations
+                            </MainNavbarDropdownItem>
+                            <MainNavbarDropdownItem Location="/admin/users">
+                                Users
+                            </MainNavbarDropdownItem>
+                        </MainNavbarDropdown>
+                    </Authorized>
+                </CustomAuthorizeView>                
             </ul>
             <ul class="navbar-nav">
                 <CustomAuthorizeView>
