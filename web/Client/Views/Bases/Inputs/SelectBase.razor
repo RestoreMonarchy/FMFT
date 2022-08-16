@@ -1,0 +1,8 @@
+﻿@inherits InputBase
+
+<select class="form-control @Class"
+    @bind="Value"
+    @oninput="OnValueChanged"
+    disabled="@IsDisabled">
+    @ChildContent
+</select>

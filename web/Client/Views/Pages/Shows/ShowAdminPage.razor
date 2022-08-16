@@ -1,4 +1,4 @@
-﻿@page "/admin/shows"
+﻿@page "/admin/shows/{ShowId:int}"
 @using FMFT.Web.Client.Views.Components.Shows
 
 <Breadcrumb>
@@ -8,9 +8,12 @@
     <BreadcrumbItem>
         Admin
     </BreadcrumbItem>
-    <BreadcrumbItem Active="true">
+    <BreadcrumbItem Link="/admin/shows">
         Shows
+    </BreadcrumbItem>
+    <BreadcrumbItem Active="true">
+        @ShowId
     </BreadcrumbItem>
 </Breadcrumb>
 
-<ShowsAdminComponent />
+<ShowAdminComponent ShowId="ShowId" />

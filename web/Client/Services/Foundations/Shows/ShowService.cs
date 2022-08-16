@@ -1,4 +1,5 @@
 ﻿using FMFT.Web.Client.Brokers.APIs;
+using FMFT.Web.Client.Models.Auditoriums.Exceptions;
 using FMFT.Web.Client.Models.Shows;
 using FMFT.Web.Client.Models.Shows.Exceptions;
 using FMFT.Web.Client.Models.Shows.Params;
@@ -63,8 +64,18 @@ namespace FMFT.Web.Client.Services.Foundations.Shows
                 AuditoriumId = @params.AuditoriumId
             };
 
-            Show show = await apiBroker.PutShowAsync(request);
-            return show;
+            try
+            {
+                Show show = await apiBroker.PutShowAsync(request);
+                return show;
+            } catch (HttpResponseConflictException)
+            {
+                throw new AuditoriumNotFoundException();
+            } catch (HttpResponseNotFoundException)
+            {
+                throw new ShowNotFoundException();
+            }
+            
         }
     }
 }

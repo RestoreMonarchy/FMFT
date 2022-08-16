@@ -1,0 +1,15 @@
+﻿@using FMFT.Web.Client.Models.Auditoriums.Exceptions
+@using FMFT.Web.Client.Models.Shows.Exceptions
+@using FMFT.Web.Client.Views.Components.Shows.Forms
+
+<Condition Evaluation="Exception is not ShowNotFoundException">
+    <Match>
+        <LoadingView State="Show">
+            <EditShowForm Show="Show" Auditoriums="Auditoriums" />
+        </LoadingView>
+        
+    </Match>
+    <NotMatch>
+        Show could not be found
+    </NotMatch>
+</Condition>

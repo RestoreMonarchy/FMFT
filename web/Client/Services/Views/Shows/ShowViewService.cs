@@ -44,6 +44,11 @@ namespace FMFT.Web.Client.Services.Views.Shows
             return await showService.UpdateShowAsync(@params);
         }
 
+        public async ValueTask<List<Auditorium>> RetrieveAllAuditoriumsAsync()
+        {
+            return await auditoriumService.RetrieveAllAuditoriumsAsync();
+        }
+
         public async ValueTask<Auditorium> RetrieveAuditoriumByIdAsync(int auditoriumId)
         {
             return await auditoriumService.RetrieveAuditoriumByIdAsync(auditoriumId);
