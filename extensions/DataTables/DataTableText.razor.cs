@@ -23,5 +23,7 @@ namespace FMFT.Extensions.DataTables
         public RenderFragment AscendingIcon { get; set; }
         [Parameter]
         public RenderFragment NoIcon { get; set; }
+        [Parameter]
+        public RenderFragment LoadingBar { get; set; }
     }
 }

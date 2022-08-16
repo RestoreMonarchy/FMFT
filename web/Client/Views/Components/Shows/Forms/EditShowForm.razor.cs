@@ -1,6 +1,7 @@
 ﻿using FMFT.Web.Client.Models.Auditoriums;
 using FMFT.Web.Client.Models.Auditoriums.Exceptions;
 using FMFT.Web.Client.Models.Shows;
+using FMFT.Web.Client.Models.Shows.Exceptions;
 using FMFT.Web.Client.Models.Shows.Params;
 using FMFT.Web.Client.Services.Views.Accounts;
 using FMFT.Web.Client.Services.Views.Shows;
@@ -27,11 +28,14 @@ namespace FMFT.Web.Client.Views.Components.Shows.Forms
 
         public AlertGroupBase AlertGroup { get; set; }
         public AlertBase AuditoriumNotFoundAlert { get; set; }
+        public AlertBase ShowNotFoundAlert { get; set; }
+        public AlertBase ValidationAlert { get; set; }
         public AlertBase SuccessAlert { get; set; }
 
         public FormBase Form { get; set; }
         public TextInputBase PublicIdInput { get; set; }
         public TextInputBase NameInput { get; set; }
+        public TextareaInputBase DescriptionInput { get; set; }
         public ButtonBase SubmitButton { get; set; }
 
         protected override void OnParametersSet()
@@ -61,6 +65,12 @@ namespace FMFT.Web.Client.Views.Components.Shows.Forms
             } catch (AuditoriumNotFoundException)
             {
                 AuditoriumNotFoundAlert.Show();
+            } catch (ShowNotFoundException)
+            {
+                AuditoriumNotFoundAlert.Show();
+            } catch (UpdateShowValidationException)
+            {
+                ValidationAlert.Show();
             }
 
             Form.EnableAll();

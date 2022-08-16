@@ -65,7 +65,7 @@ namespace FMFT.Web.Server.Services.Foundations.Shows
 
         public async ValueTask<Show> ModifyShowAsync(UpdateShowParams @params)
         {
-            AddShowValidationException validationException = new();
+            UpdateShowValidationException validationException = new();
             if (validationBroker.IsStringInvalid(@params.PublicId, true, 255))
             {
                 validationException.UpsertDataList("PublicId", "Invalid");

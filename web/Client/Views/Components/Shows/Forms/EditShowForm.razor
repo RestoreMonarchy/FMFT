@@ -2,6 +2,12 @@
     <AlertBase @ref="AuditoriumNotFoundAlert" Class="alert-danger">
         Selected auditorium does not exist
     </AlertBase>
+    <AlertBase @ref="ShowNotFoundAlert" Class="alert-danger">
+        The show you are trying to update does not exist
+    </AlertBase>
+    <AlertBase @ref="ValidationAlert" Class="alert-danger">
+        Validation error
+    </AlertBase>
     <AlertBase @ref="SuccessAlert" Class="alert-success">
         Successfully updated the show!
     </AlertBase>
@@ -11,16 +17,15 @@
 
     <div class="mb-2">
         <span class="form-label">Public Id</span>
-        <TextInputBase @ref="PublicIdInput" @bind-Value="Params.PublicId" Class="form-control" />
+        <TextInputBase @ref="PublicIdInput" @bind-Value="Params.PublicId" />
     </div>
     <div class="mb-2">
         <span class="form-label">Name</span>
-        <TextInputBase @ref="NameInput" @bind-Value="Params.Name" Class="form-control" />
+        <TextInputBase @ref="NameInput" @bind-Value="Params.Name" />
     </div>
     <div class="mb-2">
         <span class="form-label">Auditorium</span>
         <SelectBase @bind-Value="Params.AuditoriumId">
-            <option value="333">asds</option>
             <Iterations Items="Auditoriums">
                 <option value="@context.Id">
                     @context.Name
@@ -28,9 +33,23 @@
             </Iterations>
         </SelectBase>
     </div>
+    <div class="mb-2">
+        <span class="form-label">Description</span>
+        <TextareaInputBase @ref="DescriptionInput" @bind-Value="Params.Description" />
+    </div>
+    <div class="row">
+        <div class="col-md mb-2">
+            <span class="form-label">Start Date Time</span>
+            <input type="datetime" class="form-control" @bind="Params.StartDateTime" />
+        </div>
+        <div class="col-md mb-2">
+            <span class="form-label">End Date Time</span>
+            <input type="datetime" class="form-control" @bind="Params.EndDateTime" />
+        </div>
+    </div>
     <div>
-        <ButtonBase @ref="SubmitButton" Class="btn btn-primary text-start" OnClick="SubmitUpdateShowAsync">
-            Update
+        <ButtonBase @ref="SubmitButton" Class="btn btn-primary" OnClick="SubmitUpdateShowAsync">
+            Update Show
         </ButtonBase>
     </div>
 </FormBase>

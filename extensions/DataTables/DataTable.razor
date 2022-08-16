@@ -86,12 +86,15 @@
     </table>
     @if (isLoading)
     {
-        <ProgressBar />
+        @Text.LoadingBar
     }
 }
 else
 {
-    <ProgressBar />
+    if (Text != null) 
+    {
+        @Text.LoadingBar
+    }        
 }
 
 <CascadingValue Value="this" Name="DataTable">

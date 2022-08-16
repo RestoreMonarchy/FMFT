@@ -74,8 +74,10 @@ namespace FMFT.Web.Client.Services.Foundations.Shows
             } catch (HttpResponseNotFoundException)
             {
                 throw new ShowNotFoundException();
+            } catch (HttpResponseBadRequestException exception)
+            {
+                throw new UpdateShowValidationException(exception, exception.Data);
             }
-            
         }
     }
 }
