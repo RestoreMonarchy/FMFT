@@ -28,12 +28,12 @@ namespace FMFT.Web.Client.Brokers.APIs
             await apiClient.PostContentWithNoResponseAsync(relativeUrl, content);
         }
 
-        //private async ValueTask<T> PostAsync<T>(string relativeUrl, T content)
-        //{
-        //    return await apiClient.PostContentAsync<T>(relativeUrl, content);
-        //}
+        private async ValueTask<TResult> PutAsync<TContent, TResult>(string relativeUrl, TContent content)
+        {
+            return await apiClient.PutContentAsync<TContent, TResult>(relativeUrl, content);
+        }
 
-        private async ValueTask<T> PutAsync<T>(string relativeUrl, T content)
+        private async ValueTask<T> PutContentWithNoResponseAsync<T>(string relativeUrl, T content)
         {
             return await apiClient.PutContentAsync<T>(relativeUrl, content);
         }

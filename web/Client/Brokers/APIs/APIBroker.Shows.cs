@@ -1,4 +1,5 @@
 ﻿using FMFT.Web.Client.Models.Shows;
+using FMFT.Web.Client.Models.Shows.Requests;
 
 namespace FMFT.Web.Client.Brokers.APIs
 {
@@ -14,6 +15,16 @@ namespace FMFT.Web.Client.Brokers.APIs
         public async ValueTask<List<Show>> GetAllShowsAsync()
         {
             return await GetAsync<List<Show>>(ShowsRelativeUrl);
+        }
+
+        public async ValueTask<Show> PostShowAsync(PostShowRequest request)
+        {
+            return await PostAsync<PostShowRequest, Show>(ShowsRelativeUrl, request);
+        }
+
+        public async ValueTask<Show> PutShowAsync(PutShowRequest request)
+        {
+            return await PutAsync<PutShowRequest, Show>(ShowsRelativeUrl, request);
         }
     }
 }

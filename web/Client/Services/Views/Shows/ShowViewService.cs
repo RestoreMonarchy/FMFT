@@ -1,10 +1,9 @@
 ﻿using FMFT.Web.Client.Models.AccountReservations.Arguments;
 using FMFT.Web.Client.Models.Auditoriums;
 using FMFT.Web.Client.Models.Reservations;
-using FMFT.Web.Client.Models.Reservations.Requests;
 using FMFT.Web.Client.Models.Shows;
+using FMFT.Web.Client.Models.Shows.Params;
 using FMFT.Web.Client.Services.Foundations.Auditoriums;
-using FMFT.Web.Client.Services.Foundations.Reservations;
 using FMFT.Web.Client.Services.Foundations.Shows;
 using FMFT.Web.Client.Services.Orchestrations.AccountReservations;
 
@@ -33,6 +32,16 @@ namespace FMFT.Web.Client.Services.Views.Shows
         public async ValueTask<Show> RetrieveShowByIdAsync(int showId)
         {
             return await showService.RetrieveShowByIdAsync(showId);
+        }
+
+        public async ValueTask<Show> AddShowAsync(AddShowParams @params)
+        {
+            return await showService.AddShowAsync(@params);
+        }
+
+        public async ValueTask<Show> UpdateShowAsync(UpdateShowParams @params)
+        {
+            return await showService.UpdateShowAsync(@params);
         }
 
         public async ValueTask<Auditorium> RetrieveAuditoriumByIdAsync(int auditoriumId)
