@@ -36,6 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\extensions\DataTables\FMFT.Extensions.DataTables.csproj" />
     <ProjectReference Include="..\Shared\FMFT.Web.Shared.csproj" />
   </ItemGroup>
 

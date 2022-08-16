@@ -1,0 +1,99 @@
+﻿@typeparam TItem
+
+@if (Data != null)
+{
+    <div class="d-md-flex align-items-center">
+        <div class="mb-2">
+            @if (Title != null)
+            {
+                @if (Title.ChildContent != null)
+                {
+                    <div>@Title.GetRenderFragment()</div>
+                } else
+                {
+                    <div class="fs-5">@Title.GetValue()</div>
+                }
+            }
+        </div>
+        <div class="ms-auto mb-2">
+            <div class="input-group">
+                <span class="input-group-text" id="inputGroup-sizing-default">@Text.SearchText</span>
+                <input type="text" class="form-control" @oninput="OnInputSearch" placeholder=@Text.SearchPlaceholder>
+            </div>
+        </div>
+    </div>
+    <table class="table table-bordered">
+        <thead>
+            <tr class="table-active">
+                @foreach (DataTableColumn<TItem> column in Columns)
+                {
+                    if (column.IsOrderable)
+                    {
+                        <th class="text-nowrap" style="cursor: pointer;" @onclick="() => OrderBy(column)">
+                            @column.Name
+                            <span>
+                                @if (CurrentOrder.Column == column)
+                                {
+                                    @if (CurrentOrder.Asc)
+                                    {
+                                        @Text.AscendingIcon
+                                    }
+                                    else
+                                    {
+                                        @Text.DescendingIcon
+                                    }
+                                }
+                                else
+                                {
+                                    @Text.NoIcon
+                                    
+                                }
+                            </span>                        
+                        </th>
+                    } else
+                    {
+                        <th class="text-nowrap">
+                            @column.Name
+                        </th>
+                    }                    
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @if (!isLoading)
+            {
+                @foreach (TItem item in Items)
+                {
+                    <tr>
+                        @foreach (DataTableColumn<TItem> column in Columns)
+                        {
+                            if (column.ChildContent == null)
+                            {
+                                <td class="@column.Class">
+                                    @column.GetValue(item)
+                                </td>
+                            } else
+                            {
+                                <td class="@column.Class">
+                                    @column.GetRenderFragment(item)
+                                </td>
+                            }
+                        }
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    @if (isLoading)
+    {
+        <ProgressBar />
+    }
+}
+else
+{
+    <ProgressBar />
+}
+
+<CascadingValue Value="this" Name="DataTable">
+    @ChildContent
+</CascadingValue>

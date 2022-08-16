@@ -32,9 +32,6 @@ namespace FMFT.Web.Client.Shared.Navbars.Items
                 return false;
             }
 
-            Console.WriteLine("CurrentLocation:" + CurrentLocation);
-            Console.WriteLine("Location: " + location);
-
             if (StartsWith)
             {
                 return CurrentLocation.StartsWith(location, StringComparison.OrdinalIgnoreCase);

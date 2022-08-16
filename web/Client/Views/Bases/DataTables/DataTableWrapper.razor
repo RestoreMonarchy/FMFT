@@ -1,0 +1,21 @@
+﻿@using FMFT.Extensions.DataTables
+@typeparam TItem
+
+<DataTable TItem="TItem" Data="Data">
+    <DataTableText TItem="TItem" 
+        SearchPlaceholder="Start typing...">
+        <SearchText>
+            Search
+        </SearchText>
+        <AscendingIcon>
+            <i class="bi bi-caret-up"></i>
+        </AscendingIcon>
+        <DescendingIcon>
+            <i class="bi bi-caret-down"></i>
+        </DescendingIcon>
+        <NoIcon>
+            <i class="bi bi-caret-down" style="opacity: 0;"></i>
+        </NoIcon>
+    </DataTableText>
+    @ChildContent
+</DataTable>

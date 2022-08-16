@@ -1,0 +1,27 @@
+﻿@using FMFT.Extensions.DataTables
+@using FMFT.Web.Client.Models.Shows
+@using FMFT.Web.Client.Views.Bases.DataTables
+
+<DataTableWrapper TItem="Show" Data="Shows">
+    <DataTableTitle TItem="Show">
+        <div class="d-flex align-items-center">
+            Shows
+        </div>
+    </DataTableTitle>
+    <DataTableColumn TItem="Show" Name="Id" Field="x => x.Id" 
+        IsSearchable="true" 
+        SearchType="ESearchType.Exact" 
+        >
+        <a href="/admin/shows/@context.Id" class="fw-bold">
+            SHW#@context.Id
+        </a>
+    </DataTableColumn>
+    <DataTableColumn TItem="Show" Name="PublicId" Field="x => x.PublicId" 
+        IsSearchable="true"
+        SearchType="ESearchType.Contains"
+        />
+    <DataTableColumn TItem="Show" Name="Name" Field="x => x.Name" 
+        IsSearchable="true"
+        SearchType="ESearchType.Contains"
+        />
+</DataTableWrapper>
