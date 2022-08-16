@@ -9,7 +9,10 @@
 
         public bool IsStringValid(string value, bool required, int maxLength, int minLength = 0)
         {
-            if (string.IsNullOrEmpty(value) && required)
+            if (!required)
+                return true;
+
+            if (string.IsNullOrEmpty(value))
                 return false;
 
             if (value.Length < minLength)

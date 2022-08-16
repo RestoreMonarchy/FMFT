@@ -11,6 +11,7 @@ namespace FMFT.Web.Client.Services.Views.Shows
     {
         ValueTask<Show> AddShowAsync(AddShowParams @params);
         ValueTask<Reservation> CreateAccountReservationAsync(CreateAccountReservationArguments arguments);
+        void NavigateTo(string url);
         ValueTask<List<Auditorium>> RetrieveAllAuditoriumsAsync();
         ValueTask<List<Show>> RetrieveAllShowsAsync();
         ValueTask<Auditorium> RetrieveAuditoriumByIdAsync(int auditoriumId);

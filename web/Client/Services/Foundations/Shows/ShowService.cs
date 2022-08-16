@@ -47,8 +47,19 @@ namespace FMFT.Web.Client.Services.Foundations.Shows
                 AuditoriumId = @params.AuditoriumId
             };
 
-            Show show = await apiBroker.PostShowAsync(request);
-            return show;
+            try
+            {
+                Show show = await apiBroker.PostShowAsync(request);
+                return show;
+            }
+            catch (HttpResponseConflictException)
+            {
+                throw new AuditoriumNotFoundException();
+            }
+            catch (HttpResponseBadRequestException exception)
+            {
+                throw new AddShowValidationException(exception, exception.Data);
+            }            
         }
 
         public async ValueTask<Show> UpdateShowAsync(UpdateShowParams @params)

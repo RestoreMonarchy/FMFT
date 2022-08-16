@@ -1,4 +1,5 @@
-﻿using FMFT.Web.Client.Models.AccountReservations.Arguments;
+﻿using FMFT.Web.Client.Brokers.Navigations;
+using FMFT.Web.Client.Models.AccountReservations.Arguments;
 using FMFT.Web.Client.Models.Auditoriums;
 using FMFT.Web.Client.Models.Reservations;
 using FMFT.Web.Client.Models.Shows;
@@ -14,14 +15,17 @@ namespace FMFT.Web.Client.Services.Views.Shows
         private readonly IShowService showService;
         private readonly IAuditoriumService auditoriumService;
         private readonly IAccountReservationOrchestrationService accountReservationService;
+        private readonly INavigationBroker navigationBroker;
 
         public ShowViewService(IShowService showService,
             IAuditoriumService auditoriumService,
-            IAccountReservationOrchestrationService accountReservationService)
+            IAccountReservationOrchestrationService accountReservationService,
+            INavigationBroker navigationBroker)
         {
             this.showService = showService;
             this.auditoriumService = auditoriumService;
             this.accountReservationService = accountReservationService;
+            this.navigationBroker = navigationBroker;
         }
 
         public async ValueTask<List<Show>> RetrieveAllShowsAsync()
@@ -57,6 +61,11 @@ namespace FMFT.Web.Client.Services.Views.Shows
         public async ValueTask<Reservation> CreateAccountReservationAsync(CreateAccountReservationArguments arguments)
         {
             return await accountReservationService.CreateAccountReservationAsync(arguments);
+        }
+
+        public void NavigateTo(string url)
+        {
+            navigationBroker.NavigateTo(url);
         }
     }
 }
