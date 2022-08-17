@@ -1,5 +1,5 @@
-﻿using FMFT.Web.Client.Attributes;
-using FMFT.Web.Client.Services.Processings.Accounts;
+﻿using FMFT.Web.Client.Services.Processings.Accounts;
+using FMFT.Web.Shared.Attributes;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 

@@ -4,6 +4,8 @@ using FMFT.Web.Server.Models.Shows.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
 using FMFT.Web.Server.Models.Shows.Params;
+using FMFT.Web.Server.Models.Accounts.Exceptions;
+using FMFT.Web.Server.Services.Orchestrations.AccountShows;
 
 namespace FMFT.Web.Server.Controllers
 {
@@ -11,17 +13,17 @@ namespace FMFT.Web.Server.Controllers
     [Route("api/[controller]")]
     public class ShowsController : RESTFulController
     {
-        private readonly IShowService showService;
+        private readonly IAccountShowOrchestrationService accountShowService;
 
-        public ShowsController(IShowService showService)
+        public ShowsController(IAccountShowOrchestrationService accountShowService)
         {
-            this.showService = showService;
+            this.accountShowService = accountShowService;
         }
 
         [HttpGet]
         public async ValueTask<IActionResult> GetShows()
         {
-            IEnumerable<Show> shows = await showService.RetrieveAllShowsAsync();
+            IEnumerable<Show> shows = await accountShowService.RetrieveAllShowsAsync();
             return Ok(shows);
         }
 
@@ -30,7 +32,7 @@ namespace FMFT.Web.Server.Controllers
         {
             try
             {
-                Show show = await showService.RetrieveShowByIdAsync(showId);
+                Show show = await accountShowService.RetrieveShowByIdAsync(showId);
                 return Ok(show);
             } catch (ShowNotFoundException)
             {
@@ -43,7 +45,7 @@ namespace FMFT.Web.Server.Controllers
         {
             try
             {
-                Show show = await showService.AddShowAsync(@params);
+                Show show = await accountShowService.AddShowAsync(@params);
                 return Ok(show);
             } catch (AuditoriumNotExistsException exception)
             {
@@ -51,6 +53,9 @@ namespace FMFT.Web.Server.Controllers
             } catch (AddShowValidationException exception)
             {
                 return BadRequest(exception);
+            } catch (AccountNotAuthorizedException exception)
+            {
+                return Unauthorized(exception);
             }
         }
 
@@ -59,7 +64,7 @@ namespace FMFT.Web.Server.Controllers
         {
             try
             {
-                Show show = await showService.ModifyShowAsync(@params);
+                Show show = await accountShowService.ModifyShowAsync(@params);
                 return Ok(show);
             }
             catch (AuditoriumNotExistsException exception)
@@ -71,6 +76,9 @@ namespace FMFT.Web.Server.Controllers
             } catch (UpdateShowValidationException exception)
             {
                 return BadRequest(exception);
+            } catch (AccountNotAuthorizedException exception)
+            {
+                return Unauthorized(exception);
             }
         }
     }

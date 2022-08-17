@@ -18,6 +18,8 @@ using FMFT.Web.Server.Services.Orchestrations.Reservations;
 using FMFT.Web.Server.Services.Foundations.Accounts;
 using FMFT.Web.Server.Services.Processings.Accounts;
 using FMFT.Web.Server.Services.Orchestrations.UserAccounts;
+using FMFT.Web.Server.Services.Processings.Shows;
+using FMFT.Web.Server.Services.Orchestrations.AccountShows;
 
 namespace FMFT.Web.Server.Extensions
 {
@@ -85,6 +87,7 @@ namespace FMFT.Web.Server.Extensions
             services.AddTransient<IUserProcessingService, UserProcessingService>();
             services.AddTransient<IReservationProcessingService, ReservationProcessingService>();
             services.AddTransient<IAccountProcessingService, AccountProcessingService>();
+            services.AddTransient<IShowProcessingService, ShowProcessingService>();
             return services;
         }
 
@@ -92,6 +95,7 @@ namespace FMFT.Web.Server.Extensions
         {
             services.AddTransient<IReservationOrchestrationService, ReservationOrchestrationService>();
             services.AddTransient<IUserAccountOrchestrationService, UserAccountOrchestrationService>();
+            services.AddTransient<IAccountShowOrchestrationService, AccountShowOrchestrationService>();
             return services;
         }
 

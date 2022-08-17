@@ -19,6 +19,17 @@ namespace FMFT.Web.Server.Services.Processings.Accounts
             this.urlBroker = urlBroker;
         }
 
+        public void AuthorizeAccount()
+        {
+            try
+            {
+                RetrieveAccount();
+            } catch (AccountNotAuthenticatedException)
+            {
+                throw new AccountNotAuthorizedException();
+            }            
+        }
+
         public void AuthorizeAccountByUserId(int authorizedUserId)
         {
             Account account = RetrieveAccount();

@@ -15,5 +15,6 @@ namespace FMFT.Web.Server.Services.Processings.Accounts
         ValueTask<ExternalLogin> RetrieveExternalLoginAsync();
         ValueTask SignInAccountAsync(SignInAccountParams @params);
         ValueTask SignOutAccountAsync();
+        void AuthorizeAccount();
     }
 }

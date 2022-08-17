@@ -1,6 +1,6 @@
 ﻿using FMFT.Web.Shared.Enums;
 
-namespace FMFT.Web.Client.Attributes
+namespace FMFT.Web.Shared.Attributes
 {   
     public class CustomAuthorizeAttribute : Attribute
     {

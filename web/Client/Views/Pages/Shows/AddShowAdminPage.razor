@@ -1,5 +1,6 @@
 ﻿@page "/admin/shows/add"
 @using FMFT.Web.Client.Views.Components.Shows
+@attribute [CustomAuthorize(UserRole.Admin)]
 
 <Breadcrumb>
     <BreadcrumbItem Link="/">
