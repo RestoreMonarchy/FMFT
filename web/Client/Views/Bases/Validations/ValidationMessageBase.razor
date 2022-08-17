@@ -1,0 +1,18 @@
+﻿<Condition Evaluation="IsEnabled">
+    <Match>        
+        <Condition Evaluation="ChildContent is not null">
+            <Match>
+                <span class="small text-danger">
+                    @ChildContent
+                </span>
+            </Match>
+            <NotMatch>
+                <ul class="list-unstyled text-danger small">
+                    <Iterations Items="Errors">
+                        <li>@context</li>
+                    </Iterations>
+                </ul>                
+            </NotMatch>
+        </Condition>
+    </Match>
+</Condition>

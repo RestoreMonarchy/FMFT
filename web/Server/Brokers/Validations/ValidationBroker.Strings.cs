@@ -9,16 +9,15 @@
 
         public bool IsStringValid(string value, bool required, int maxLength, int minLength = 0)
         {
-            if (!required)
-                return true;
-
-            if (string.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(value) && required)
                 return false;
 
-            if (value.Length < minLength)
+            int length = value?.Length ?? 0;
+
+            if (length < minLength)
                 return false;
 
-            if (value.Length > maxLength)
+            if (length > maxLength)
                 return false;
 
             return true;

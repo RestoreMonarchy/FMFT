@@ -18,10 +18,12 @@
     <div class="mb-2">
         <span class="form-label">Public Id</span>
         <TextInputBase @ref="PublicIdInput" @bind-Value="Params.PublicId" />
+        <ValidationMessageBase Key="@nameof(Params.PublicId)" />
     </div>
     <div class="mb-2">
         <span class="form-label">Name</span>
         <TextInputBase @ref="NameInput" @bind-Value="Params.Name" />
+        <ValidationMessageBase Key="@nameof(Params.Name)" />
     </div>
     <div class="mb-2">
         <span class="form-label">Auditorium</span>
@@ -32,19 +34,23 @@
                 </option>
             </Iterations>
         </SelectBase>
+        <ValidationMessageBase Key="@nameof(Params.AuditoriumId)" />
     </div>
     <div class="mb-2">
         <span class="form-label">Description</span>
         <TextareaInputBase @ref="DescriptionInput" @bind-Value="Params.Description" />
+        <ValidationMessageBase Key="@nameof(Params.Description)" />
     </div>
     <div class="row">
         <div class="col-md mb-2">
             <span class="form-label">Start Date Time</span>
-            <input type="datetime" class="form-control" @bind="Params.StartDateTime" />
+            <input type="datetime-local" class="form-control" @bind="Params.StartDateTime" />
+            <ValidationMessageBase Key="@nameof(Params.StartDateTime)" />
         </div>
         <div class="col-md mb-2">
             <span class="form-label">End Date Time</span>
-            <input type="datetime" class="form-control" @bind="Params.EndDateTime" />
+            <input type="datetime-local" class="form-control" @bind="Params.EndDateTime" />
+            <ValidationMessageBase Key="@nameof(Params.EndDateTime)" />
         </div>
     </div>
     <div>

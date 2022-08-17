@@ -54,6 +54,7 @@ namespace FMFT.Web.Client.Views.Components.Shows.Forms
 
         public async Task SubmitUpdateShowAsync()
         {
+            Form.ClearValidations();
             Form.DisableAll();
             AlertGroup.HideAll();
             SubmitButton.StartSpinning();
@@ -68,9 +69,10 @@ namespace FMFT.Web.Client.Views.Components.Shows.Forms
             } catch (ShowNotFoundException)
             {
                 AuditoriumNotFoundAlert.Show();
-            } catch (UpdateShowValidationException)
+            } catch (UpdateShowValidationException exception)
             {
                 ValidationAlert.Show();
+                Form.HandleValidationXeption(exception);
             }
 
             Form.EnableAll();
