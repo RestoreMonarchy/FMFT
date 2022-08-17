@@ -32,11 +32,12 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.5" PrivateAssets="all" />
     <PackageReference Include="PrettyBlazor" Version="1.2.0" />
-    <PackageReference Include="RESTFulSense.WebAssembly" Version="1.0.0" />
+    <PackageReference Include="Xeption" Version="2.4.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\extensions\DataTables\FMFT.Extensions.DataTables.csproj" />
+    <ProjectReference Include="..\..\external\RESTFulSense.WebAssembly\RESTFulSense.WebAssembly.csproj" />
     <ProjectReference Include="..\Shared\FMFT.Web.Shared.csproj" />
   </ItemGroup>
 

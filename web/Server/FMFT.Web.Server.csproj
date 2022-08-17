@@ -11,7 +11,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="6.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="6.0.5" />
-    <PackageReference Include="RESTFulSense" Version="2.4.0" />
+    <PackageReference Include="RESTFulSense" Version="2.7.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
   </ItemGroup>
 

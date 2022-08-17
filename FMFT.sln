@@ -21,6 +21,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FMFT.Web.Shared", "web\Shar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FMFT.Extensions.DataTables", "extensions\DataTables\FMFT.Extensions.DataTables.csproj", "{E74A9EAE-2EB5-4109-B941-A11F3AFAE36C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "external", "external", "{326C3CBE-52EB-4C07-8FB9-71445804200B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RESTFulSense.WebAssembly", "external\RESTFulSense.WebAssembly\RESTFulSense.WebAssembly.csproj", "{A0E688DB-48FC-450C-A787-845947E7A91C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +57,10 @@ Global
 		{E74A9EAE-2EB5-4109-B941-A11F3AFAE36C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E74A9EAE-2EB5-4109-B941-A11F3AFAE36C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E74A9EAE-2EB5-4109-B941-A11F3AFAE36C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0E688DB-48FC-450C-A787-845947E7A91C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0E688DB-48FC-450C-A787-845947E7A91C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0E688DB-48FC-450C-A787-845947E7A91C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0E688DB-48FC-450C-A787-845947E7A91C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +72,7 @@ Global
 		{D498CFF9-A818-45B6-91A9-D46B17D5D7B3} = {A7DBB44D-AE92-4CA3-B5F4-D55C422CC8EF}
 		{33FEF99C-DC6D-43D7-B845-83CD68C48964} = {87642E47-A7F6-4390-ABFB-355CFB8DDA6A}
 		{E74A9EAE-2EB5-4109-B941-A11F3AFAE36C} = {A7DBB44D-AE92-4CA3-B5F4-D55C422CC8EF}
+		{A0E688DB-48FC-450C-A787-845947E7A91C} = {326C3CBE-52EB-4C07-8FB9-71445804200B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {81FEE0D1-B373-4D86-8197-E4065AEF25AD}
