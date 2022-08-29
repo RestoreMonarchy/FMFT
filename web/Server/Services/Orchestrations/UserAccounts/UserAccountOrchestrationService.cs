@@ -23,6 +23,18 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
             this.userService = userService;
         }
 
+        public async ValueTask<IEnumerable<User>> RetrieveAllUsersAsync()
+        {
+            accountService.AuthorizeAccountByRole(UserRole.Admin);
+            return await userService.RetrieveAllUsersAsync();
+        }
+
+        public async ValueTask<User> RetrieveUserByIdAsync(int userId)
+        {
+            accountService.AuthorizeAccountByUserIdOrRoles(userId, UserRole.Admin);
+            return await userService.RetrieveUserByIdAsync(userId);
+        }
+
         public async ValueTask<Account> RegisterWithPasswordAsync(RegisterWithPasswordRequest request)
         {
             RegisterUserWithPasswordArguments args = new() 

@@ -21,13 +21,7 @@ namespace FMFT.Web.Server.Services.Processings.Accounts
 
         public void AuthorizeAccount()
         {
-            try
-            {
-                RetrieveAccount();
-            } catch (AccountNotAuthenticatedException)
-            {
-                throw new AccountNotAuthorizedException();
-            }            
+            RetrieveAccount();
         }
 
         public void AuthorizeAccountByUserId(int authorizedUserId)
