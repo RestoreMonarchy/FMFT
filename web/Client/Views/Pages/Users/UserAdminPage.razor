@@ -1,5 +1,5 @@
-﻿@page "/admin/shows/{ShowId:int}"
-@using FMFT.Web.Client.Views.Components.Shows
+﻿@page "/admin/users/{UserId:int}"
+@using FMFT.Web.Client.Views.Components.Users
 @attribute [CustomAuthorize(UserRole.Admin)]
 
 <Breadcrumb>
@@ -9,12 +9,11 @@
     <BreadcrumbItem>
         Admin
     </BreadcrumbItem>
-    <BreadcrumbItem Link="/admin/shows">
-        Shows
+    <BreadcrumbItem Link="/admin/users">
+        Users
     </BreadcrumbItem>
     <BreadcrumbItem Active="true">
-        SHW#@ShowId
+        USR#@UserId
     </BreadcrumbItem>
 </Breadcrumb>
 
-<ShowAdminComponent ShowId="ShowId" />

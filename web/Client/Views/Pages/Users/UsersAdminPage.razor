@@ -1,0 +1,17 @@
+﻿@page "/admin/users"
+@using FMFT.Web.Client.Views.Components.Users
+@attribute [CustomAuthorize(UserRole.Admin)]
+
+<Breadcrumb>
+    <BreadcrumbItem Link="/">
+        Home
+    </BreadcrumbItem>
+    <BreadcrumbItem>
+        Admin
+    </BreadcrumbItem>
+    <BreadcrumbItem Active="true">
+        Users
+    </BreadcrumbItem>    
+</Breadcrumb>
+
+<UsersAdminComponent />

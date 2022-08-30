@@ -1,0 +1,26 @@
+﻿@using FMFT.Extensions.DataTables
+@using FMFT.Web.Client.Models.Users
+@using FMFT.Web.Client.Views.Bases.DataTables
+
+
+<DataTableWrapper TItem="User" Data="Users">
+    <DataTableTitle TItem="User">
+        Users (@context.Data.Count())
+    </DataTableTitle>
+    <DataTableColumn TItem="User" Name="Id" Field="x => x.Id" 
+        IsSearchable="true" 
+        SearchType="ESearchType.Exact" 
+        >
+        <a href="/admin/users/@context.Id" class="fw-bold">
+            USR#@context.Id
+        </a>
+    </DataTableColumn>
+    <DataTableColumn TItem="User" Name="Email" Field="x => x.Email" 
+        IsSearchable="true"
+        SearchType="ESearchType.Contains"
+        />
+    <DataTableColumn TItem="User" Name="Full Name" Field="x => x.FullName()" 
+        IsSearchable="true"
+        SearchType="ESearchType.Contains"
+        />
+</DataTableWrapper>

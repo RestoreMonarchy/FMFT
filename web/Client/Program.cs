@@ -6,12 +6,14 @@ using FMFT.Web.Client.Services.Foundations.Accounts;
 using FMFT.Web.Client.Services.Foundations.Auditoriums;
 using FMFT.Web.Client.Services.Foundations.Reservations;
 using FMFT.Web.Client.Services.Foundations.Shows;
+using FMFT.Web.Client.Services.Foundations.Users;
 using FMFT.Web.Client.Services.Orchestrations.AccountReservations;
 using FMFT.Web.Client.Services.Processings.Accounts;
 using FMFT.Web.Client.Services.Processings.Reservations;
 using FMFT.Web.Client.Services.Views.AccountReservations;
 using FMFT.Web.Client.Services.Views.Accounts;
 using FMFT.Web.Client.Services.Views.Shows;
+using FMFT.Web.Client.Services.Views.Users;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
@@ -29,6 +31,7 @@ builder.Services.AddScoped<IShowService, ShowService>();
 builder.Services.AddScoped<IAuditoriumService, AuditoriumService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddScoped<IAccountProcessingService, AccountProcessingService>();
 builder.Services.AddScoped<IReservationProcessingService, ReservationProcessingService>();
@@ -38,6 +41,7 @@ builder.Services.AddScoped<IAccountReservationOrchestrationService, AccountReser
 builder.Services.AddScoped<IShowViewService, ShowViewService>();
 builder.Services.AddScoped<IAccountViewService, AccountViewService>();
 builder.Services.AddScoped<IAccountReservationViewService, AccountReservationViewService>();
+builder.Services.AddScoped<IUserViewService, UserViewService>();
 
 WebAssemblyHost host = builder.Build();
 
