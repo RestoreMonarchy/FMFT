@@ -9,6 +9,7 @@ using FMFT.Web.Client.Views.Bases.Buttons;
 using FMFT.Web.Client.Views.Bases.Forms;
 using FMFT.Web.Client.Views.Bases.Inputs;
 using Microsoft.AspNetCore.Components;
+using FMFT.Web.Shared.Extensions;
 
 namespace FMFT.Web.Client.Views.Components.Shows.Forms
 {
@@ -33,12 +34,15 @@ namespace FMFT.Web.Client.Views.Components.Shows.Forms
         public TextareaInputBase DescriptionInput { get; set; }
         public ButtonBase SubmitButton { get; set; }
 
+        private string calendarStartDate = DateTime.Now.TruncateToMinuteStart().ToString("s");
+        private string calendarEndDate = DateTime.Now.AddMonths(12).TruncateToMinuteStart().ToString("s");
+
         protected override void OnParametersSet()
         {
             Params = new AddShowParams()
             {
-                StartDateTime = DateTimeOffset.Now,
-                EndDateTime = DateTimeOffset.Now.AddHours(3),
+                StartDateTime = DateTimeOffset.Now.TruncateToMinuteStart(),
+                EndDateTime = DateTimeOffset.Now.AddHours(3).TruncateToMinuteStart(),
                 AuditoriumId = Auditoriums?.FirstOrDefault()?.Id ?? 0
             };
         }
