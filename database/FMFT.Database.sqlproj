@@ -73,6 +73,7 @@
     <Build Include="dbo\procedures\CreateReservation.sql" />
     <Build Include="dbo\procedures\AddShow.sql" />
     <Build Include="dbo\procedures\UpdateShow.sql" />
+    <Build Include="dbo\procedures\UpdateUserRole.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FMFT.Database.publish.xml" />

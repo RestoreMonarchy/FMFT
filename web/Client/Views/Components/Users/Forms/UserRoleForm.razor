@@ -1,0 +1,24 @@
+﻿<AlertGroupBase @ref="AlertGroup">
+    <AlertBase @ref="UserNotFoundAlert" Class="alert-danger">
+        User not found
+    </AlertBase>
+    <AlertBase @ref="UserRoleAlreadyExistsAlert" Class="alert-danger">
+        User already has this role
+    </AlertBase>
+    <AlertBase @ref="SuccessAlert" Class="alert-success">
+        Successfully updated this user role!
+    </AlertBase>
+</AlertGroupBase>
+
+<FormBase @ref="Form">
+
+    <div class="mb-2">
+        <label class="form-label">Role</label>
+        <SelectEnumBase @ref="RoleSelect" TEnum="UserRole" @bind-Value="Request.Role" />
+    </div>
+    <div>
+        <ButtonBase @ref="SubmitButton" Class="btn btn-sm btn-primary" OnClick="SubmitUpdateRoleAsync">
+            Update User Role
+        </ButtonBase>
+    </div>
+</FormBase>

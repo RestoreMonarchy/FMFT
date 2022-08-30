@@ -29,6 +29,25 @@ namespace FMFT.Web.Server.Brokers.Storages
             return p.Get<int>("@ReturnValue");
         }
 
+        private async ValueTask<StoredProcedureResult> ExecuteStoredProcedureAsync(
+            string storedProcedureName, 
+            dynamic parameters)
+        {
+            DynamicParameters p = StoredProcedureParameters(parameters);
+
+            await connection.ExecuteAsync(
+                sql: storedProcedureName,
+                param: p,
+                commandType: CommandType.StoredProcedure);
+
+            StoredProcedureResult result = new()
+            {
+                ReturnValue = GetReturnValue(p),
+            };
+
+            return result;
+        }
+
         private async ValueTask<StoredProcedureResult<T>> QueryStoredProcedureSingleResultAsync<T>(
             string storedProcedureName,
             dynamic parameters)

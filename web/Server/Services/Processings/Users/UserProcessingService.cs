@@ -75,5 +75,10 @@ namespace FMFT.Web.Server.Services.Processings.Users
         {
             return await userService.RegisterUserWithLoginAsync(@params);
         }
+
+        public async ValueTask UpdateUserRoleAsync(UpdateUserRoleParams @params)
+        {
+            await userService.UpdateUserRoleAsync(@params);
+        }
     }
 }

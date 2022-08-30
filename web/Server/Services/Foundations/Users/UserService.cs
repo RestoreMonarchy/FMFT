@@ -130,5 +130,20 @@ namespace FMFT.Web.Server.Services.Foundations.Users
 
             return result.Result;
         }
+
+        public async ValueTask UpdateUserRoleAsync(UpdateUserRoleParams @params)
+        {
+            StoredProcedureResult result = await storageBroker.UpdateUserRoleAsync(@params);
+
+            if (result.ReturnValue == 1)
+            {
+                throw new UserNotFoundException();
+            }
+
+            if (result.ReturnValue == 2)
+            {
+                throw new UserRoleAlreadyExistsException();
+            }
+        }
     }
 }

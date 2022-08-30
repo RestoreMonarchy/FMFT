@@ -1,4 +1,5 @@
 ﻿using FMFT.Web.Client.Models.Users;
+using FMFT.Web.Client.Models.Users.Requests;
 
 namespace FMFT.Web.Client.Brokers.APIs
 {
@@ -15,6 +16,12 @@ namespace FMFT.Web.Client.Brokers.APIs
         {
             string url = $"{UsersRelativeUrl}/{userId}";
             return await GetAsync<User>(url);
+        }
+
+        public async ValueTask UpdateUserRoleAsync(UpdateUserRoleRequest request)
+        {
+            string url = $"{UsersRelativeUrl}/{request.UserId}/updaterole";
+            await PostContentWithNoResponseAsync(url, request);
         }
     }
 }

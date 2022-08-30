@@ -154,6 +154,12 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
             return account;
         }
 
+        public async ValueTask UpdateUserRoleAsync(UpdateUserRoleParams @params)
+        {
+            accountService.AuthorizeAccountByRole(UserRole.Admin);
+            await userService.UpdateUserRoleAsync(@params);
+        }
+
         public Account RetrieveAccount()
         {
             return accountService.RetrieveAccount();

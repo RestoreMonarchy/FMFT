@@ -1,5 +1,6 @@
 ﻿using FMFT.Web.Client.Models.Reservations;
 using FMFT.Web.Client.Models.Users;
+using FMFT.Web.Client.Models.Users.Requests;
 using FMFT.Web.Client.Services.Foundations.Reservations;
 using FMFT.Web.Client.Services.Foundations.Users;
 
@@ -24,6 +25,11 @@ namespace FMFT.Web.Client.Services.Views.Users
         public async ValueTask<User> RetrieveUserByIdAsync(int userId)
         {
             return await userService.RetrieveUserByIdAsync(userId);
+        }
+
+        public async ValueTask UpdateUserRoleAsync(UpdateUserRoleRequest request)
+        {
+            await userService.UpdateUserRoleAsync(request);
         }
 
         public async ValueTask<List<Reservation>> RetrieveReservationsByUserIdAsync(int userId)

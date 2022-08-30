@@ -13,5 +13,6 @@ namespace FMFT.Web.Server.Services.Processings.Users
         ValueTask<User> RetrieveUserByEmailAndPasswordAsync(string email, string passwordText);
         ValueTask<User> RegisterUserWithPasswordAsync(RegisterUserWithPasswordArguments args);
         ValueTask<User> RegisterUserWithLoginAsync(RegisterUserWithLoginParams @params);
+        ValueTask UpdateUserRoleAsync(UpdateUserRoleParams @params);
     }
 }

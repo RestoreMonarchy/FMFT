@@ -1,6 +1,7 @@
 ﻿using FMFT.Web.Server.Models.Accounts.Exceptions;
 using FMFT.Web.Server.Models.Users;
 using FMFT.Web.Server.Models.Users.Exceptions;
+using FMFT.Web.Server.Models.Users.Params;
 using FMFT.Web.Server.Services.Orchestrations.Reservations;
 using FMFT.Web.Server.Services.Orchestrations.UserAccounts;
 using Microsoft.AspNetCore.Mvc;
@@ -53,6 +54,29 @@ namespace FMFT.Web.Server.Controllers.Users
             } catch (AccountNotAuthenticatedException exception)
             {
                 return Unauthorized(exception);
+            }
+        }
+
+        [HttpPost("{userId}/updaterole")]
+        public async ValueTask<IActionResult> UpdateUserRole(int userId, UpdateUserRoleParams @params)
+        {
+            try
+            {
+                @params.UserId = userId;
+                await userAccountService.UpdateUserRoleAsync(@params);
+                return Ok();
+            } catch (UserNotAuthenticatedException exception)
+            {
+                return Unauthorized(exception);
+            } catch (UserNotAuthorizedException exception)
+            {
+                return Forbidden(exception);
+            } catch (UserNotFoundException exception)
+            {
+                return NotFound(exception);
+            } catch (UserRoleAlreadyExistsException exception)
+            {
+                return Conflict(exception);
             }
         }
     }

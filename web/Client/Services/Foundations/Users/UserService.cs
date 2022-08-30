@@ -1,6 +1,7 @@
 ﻿using FMFT.Web.Client.Brokers.APIs;
 using FMFT.Web.Client.Models.Users;
 using FMFT.Web.Client.Models.Users.Exceptions;
+using FMFT.Web.Client.Models.Users.Requests;
 using RESTFulSense.WebAssembly.Exceptions;
 
 namespace FMFT.Web.Client.Services.Foundations.Users
@@ -28,6 +29,20 @@ namespace FMFT.Web.Client.Services.Foundations.Users
             {
                 throw new UserNotFoundException();
             }            
+        }
+
+        public async ValueTask UpdateUserRoleAsync(UpdateUserRoleRequest request)
+        {
+            try
+            {
+                await apiBroker.UpdateUserRoleAsync(request);
+            } catch (HttpResponseNotFoundException)
+            {
+                throw new UserNotFoundException();
+            } catch (HttpResponseConflictException)
+            {
+                throw new UserRoleAlreadyExistsException();
+            }
         }
     }
 }
