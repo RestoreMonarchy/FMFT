@@ -50,6 +50,19 @@ namespace FMFT.Web.Server.Services.Foundations.Shows
             {
                 validationException.UpsertDataList("Description", "Description must not exceed 4000 characters");
             }
+            if (validationBroker.IsStartDateTimeInvalid(@params.StartDateTime))
+            {
+                validationException.UpsertDataList("StartDateTime", "StartDateTime must not be from the past");
+            }
+            if (validationBroker.IsDateTimeInOneYearRangeInvalid(@params.EndDateTime))
+            {
+                validationException.UpsertDataList("EndDateTime", "EndDateTime must not be later than one year in the future");
+            }
+            if (validationBroker.IsDateTimeRangeInvalid(@params.StartDateTime, @params.EndDateTime))
+            {
+                validationException.UpsertDataList("StartDateTime", "StartDateTime must be earlier than EndDateTime");
+                validationException.UpsertDataList("EndDateTime", "EndDateTime must be later than StartDateTime");
+            }
 
             validationException.ThrowIfContainsErrors();
 
@@ -77,6 +90,19 @@ namespace FMFT.Web.Server.Services.Foundations.Shows
             if (validationBroker.IsStringInvalid(@params.Description, false, 4000))
             {
                 validationException.UpsertDataList("Description", "Description must not exceed 4000 characters");
+            }
+            if (validationBroker.IsStartDateTimeInvalid(@params.StartDateTime))
+            {
+                validationException.UpsertDataList("StartDateTime", "StartDateTime must not be from the past");
+            }
+            if (validationBroker.IsDateTimeInOneYearRangeInvalid(@params.EndDateTime))
+            {
+                validationException.UpsertDataList("EndDateTime", "EndDateTime must not be later than one year in the future");
+            }
+            if (validationBroker.IsDateTimeRangeInvalid(@params.StartDateTime, @params.EndDateTime))
+            {
+                validationException.UpsertDataList("StartDateTime", "StartDateTime must be earlier than EndDateTime");
+                validationException.UpsertDataList("EndDateTime", "EndDateTime must be later than StartDateTime");
             }
 
             validationException.ThrowIfContainsErrors();

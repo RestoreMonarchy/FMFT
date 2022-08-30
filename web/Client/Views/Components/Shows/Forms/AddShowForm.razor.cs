@@ -41,7 +41,7 @@ namespace FMFT.Web.Client.Views.Components.Shows.Forms
         {
             Params = new AddShowParams()
             {
-                StartDateTime = DateTimeOffset.Now.TruncateToMinuteStart(),
+                StartDateTime = DateTimeOffset.Now.AddHours(1).TruncateToMinuteStart(),
                 EndDateTime = DateTimeOffset.Now.AddHours(3).TruncateToMinuteStart(),
                 AuditoriumId = Auditoriums?.FirstOrDefault()?.Id ?? 0
             };
