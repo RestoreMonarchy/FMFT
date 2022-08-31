@@ -49,5 +49,23 @@ namespace FMFT.Web.Server.Services.Orchestrations.AccountReservations
 
             return reservations;
         }
+
+        public async ValueTask<IEnumerable<Reservation>> RetrieveAllReservationsAsync()
+        {
+            accountService.AuthorizeAccountByRole(UserRole.Admin);
+
+            IEnumerable<Reservation> reservations = await reservationService.RetrieveAllReservationsAsync();
+
+            return reservations;
+        }
+
+        public async ValueTask<Reservation> RetrieveReservationByIdAsync(int reservationId)
+        {
+            Reservation reservation = await reservationService.RetrieveReservationByIdAsync(reservationId);
+
+            accountService.AuthorizeAccountByUserIdOrRoles(reservation.User.Id, UserRole.Admin);
+
+            return reservation;
+        }
     }
 }

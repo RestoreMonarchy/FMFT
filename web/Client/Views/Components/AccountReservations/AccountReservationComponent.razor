@@ -1,92 +1,22 @@
-﻿<LoadingView State="Auditorium">
-    <ul class="list-group mb-2">
-        <li class="list-group-item disabled" aria-disabled="true">Reservation</li>
-        <li class="list-group-item">
-            <span class="fw-bold">
-                ID: 
-            </span>
-            <span>
-                @Reservation.Id
-            </span>
-        </li>        
-        <li class="list-group-item">
-            <span class="fw-bold">
-                Create Date: 
-            </span>
-            <span>
-                @Reservation.CreateDate
-            </span>
-        </li>
-        <li class="list-group-item">
-            <span class="fw-bold">
-                Status
-            </span>
-            <span>
-                @Reservation.Status
-            </span>
-        </li>
-        <li class="list-group-item">
-            <span class="fw-bold">
-                Full Name:
-            </span>
-            <span>
-                @Reservation.User.FirstName @Reservation.User.LastName
-            </span>
-        </li>        
-    </ul>
-    <ul class="list-group mb-2">
-        <li class="list-group-item disabled" aria-disabled="true">Show</li>
-        <li class="list-group-item">
-            <span class="fw-bold">
-                Name:
-            </span>
-            <span>
-                @Reservation.Show.Name
-            </span>
-        </li>
-        <li class="list-group-item">
-            <span class="fw-bold">
-                Date:
-            </span>
-            <span>
-                @Reservation.Show.StartDateTime.LocalDateTime.ToLongDateString()
-            </span>
-        </li>
-        <li class="list-group-item">
-            <span class="fw-bold">
-                Start Time:
-            </span>
-            <span>
-                @Reservation.Show.StartDateTime.LocalDateTime.ToLongTimeString()
-            </span>
-        </li> 
-    </ul>
+﻿@using FMFT.Web.Client.Models.Reservations.Exceptions
+@using FMFT.Web.Client.Views.Components.AccountReservations.Cards
 
-    <ul class="list-group mb-2">
-        <li class="list-group-item disabled" aria-disabled="true">Seat</li>
-        <li class="list-group-item">
-            <span class="fw-bold">
-                Auditorium:
-            </span>
-            <span>
-                @Auditorium.Name
-            </span>
-        </li>
-        <li class="list-group-item">
-            <span class="fw-bold">
-                Row:
-            </span>
-            <span>
-                @Reservation.Seat.Row
-            </span>
-        </li>
-        <li class="list-group-item">
-            <span class="fw-bold">
-                Number
-            </span>
-            <span>
-                @Reservation.Seat.Number
-            </span>
-        </li> 
-    </ul>
-</LoadingView>
+<Condition Evaluation="Exception is null">
+    <Match>
+        <LoadingView State="Auditorium">
+            <ReservationCard Reservation="Reservation" Auditorium="Auditorium" />
+        </LoadingView>
+    </Match>
+    <NotMatch>
+        <Condition Evaluation="Exception is ReservationUnauthorizedException">
+            <Match>
+                You are not authorized to view this reservation
+            </Match>
+        </Condition>
+        <Condition Evaluation="Exception is ReservationNotFoundException">
+            <Match>
+                Reservation could not be found
+            </Match>
+        </Condition>
+    </NotMatch>
+</Condition>

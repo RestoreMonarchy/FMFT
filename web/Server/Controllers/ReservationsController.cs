@@ -1,9 +1,7 @@
-﻿using FMFT.Web.Server.Services.Orchestrations.AccountReservations;
-using FMFT.Web.Server.Services.Processings.Reservations;
+﻿using FMFT.Web.Server.Models.Accounts.Exceptions;
 using FMFT.Web.Server.Models.Reservations;
 using FMFT.Web.Server.Models.Reservations.Exceptions;
-using FMFT.Web.Server.Models.Reservations.Requests;
-using FMFT.Web.Server.Models.Users.Exceptions;
+using FMFT.Web.Server.Services.Orchestrations.AccountReservations;
 using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
 
@@ -13,18 +11,27 @@ namespace FMFT.Web.Server.Controllers
     [Route("api/[controller]")]
     public class ReservationsController : RESTFulController
     {
-        private readonly IReservationProcessingService reservationService;
+        private readonly IAccountReservationOrchestrationService accountReservationService;
 
-        public ReservationsController(IReservationProcessingService reservationService)
+        public ReservationsController(IAccountReservationOrchestrationService accountReservationService)
         {
-            this.reservationService = reservationService;
+            this.accountReservationService = accountReservationService;
         }
 
         [HttpGet]
         public async ValueTask<IActionResult> GetAllReservations()
         {
-            IEnumerable<Reservation> reservations = await reservationService.RetrieveAllReservationsAsync();
-            return Ok(reservations);
+            try
+            {
+                IEnumerable<Reservation> reservations = await accountReservationService.RetrieveAllReservationsAsync();
+                return Ok(reservations);
+            } catch (AccountNotAuthenticatedException exception)
+            {
+                return Unauthorized(exception);
+            } catch (AccountNotAuthorizedException exception)
+            {
+                return Forbidden(exception);
+            }            
         }
 
         [HttpGet("{reservationId}")]
@@ -32,12 +39,18 @@ namespace FMFT.Web.Server.Controllers
         {
             try
             {
-                Reservation reservation = await reservationService.RetrieveReservationByIdAsync(reservationId);
+                Reservation reservation = await accountReservationService.RetrieveReservationByIdAsync(reservationId);
                 return Ok(reservation);
-            } catch (ReservationNotFoundException e)
+            } catch (ReservationNotFoundException exception)
             {
-                return NotFound(e);
-            }            
+                return NotFound(exception);
+            } catch (AccountNotAuthenticatedException exception)
+            {
+                return Unauthorized(exception);
+            } catch (AccountNotAuthorizedException exception)
+            {
+                return Forbidden(exception);
+            }
         }
     }
 }

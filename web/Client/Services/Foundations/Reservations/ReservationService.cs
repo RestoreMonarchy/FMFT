@@ -24,7 +24,10 @@ namespace FMFT.Web.Client.Services.Foundations.Reservations
             } catch (HttpResponseNotFoundException)
             {
                 throw new ReservationNotFoundException();
-            }            
+            } catch (HttpResponseForbiddenException)
+            {
+                throw new ReservationUnauthorizedException();
+            }
         }
 
         public async ValueTask<List<Reservation>> RetrieveAllReservationsAsync()
