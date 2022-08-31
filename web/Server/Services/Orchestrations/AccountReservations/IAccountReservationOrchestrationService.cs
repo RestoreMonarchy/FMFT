@@ -1,11 +1,12 @@
 ﻿using FMFT.Web.Server.Models.Reservations;
 using FMFT.Web.Server.Models.Reservations.Requests;
 
-namespace FMFT.Web.Server.Services.Orchestrations.Reservations
+namespace FMFT.Web.Server.Services.Orchestrations.AccountReservations
 {
-    public interface IReservationOrchestrationService
+    public interface IAccountReservationOrchestrationService
     {
         ValueTask<Reservation> CreateReservationAsync(CreateReservationRequest request);
+        ValueTask<IEnumerable<Reservation>> RetrieveReservationsByShowIdAsync(int showId);
         ValueTask<IEnumerable<Reservation>> RetrieveReservationsByUserIdAsync(int userId);
     }
 }

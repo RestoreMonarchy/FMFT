@@ -2,7 +2,7 @@
 using FMFT.Web.Server.Models.Users;
 using FMFT.Web.Server.Models.Users.Exceptions;
 using FMFT.Web.Server.Models.Users.Params;
-using FMFT.Web.Server.Services.Orchestrations.Reservations;
+using FMFT.Web.Server.Services.Orchestrations.AccountReservations;
 using FMFT.Web.Server.Services.Orchestrations.UserAccounts;
 using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
@@ -14,9 +14,9 @@ namespace FMFT.Web.Server.Controllers.Users
     public partial class UsersController : RESTFulController
     {
         private readonly IUserAccountOrchestrationService userAccountService;
-        private readonly IReservationOrchestrationService reservationService;
+        private readonly IAccountReservationOrchestrationService reservationService;
 
-        public UsersController(IReservationOrchestrationService reservationService, IUserAccountOrchestrationService userAccountService)
+        public UsersController(IAccountReservationOrchestrationService reservationService, IUserAccountOrchestrationService userAccountService)
         {
             this.reservationService = reservationService;
             this.userAccountService = userAccountService;

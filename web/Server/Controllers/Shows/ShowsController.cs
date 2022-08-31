@@ -6,18 +6,21 @@ using RESTFulSense.Controllers;
 using FMFT.Web.Server.Models.Shows.Params;
 using FMFT.Web.Server.Models.Accounts.Exceptions;
 using FMFT.Web.Server.Services.Orchestrations.AccountShows;
+using FMFT.Web.Server.Services.Orchestrations.AccountReservations;
 
-namespace FMFT.Web.Server.Controllers
+namespace FMFT.Web.Server.Controllers.Shows
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ShowsController : RESTFulController
+    public partial class ShowsController : RESTFulController
     {
         private readonly IAccountShowOrchestrationService accountShowService;
+        private readonly IAccountReservationOrchestrationService accountReservationService;
 
-        public ShowsController(IAccountShowOrchestrationService accountShowService)
+        public ShowsController(IAccountShowOrchestrationService accountShowService, IAccountReservationOrchestrationService accountReservationService)
         {
             this.accountShowService = accountShowService;
+            this.accountReservationService = accountReservationService;
         }
 
         [HttpGet]
@@ -34,7 +37,8 @@ namespace FMFT.Web.Server.Controllers
             {
                 Show show = await accountShowService.RetrieveShowByIdAsync(showId);
                 return Ok(show);
-            } catch (ShowNotFoundException)
+            }
+            catch (ShowNotFoundException)
             {
                 return NotFound();
             }
@@ -47,13 +51,16 @@ namespace FMFT.Web.Server.Controllers
             {
                 Show show = await accountShowService.AddShowAsync(@params);
                 return Ok(show);
-            } catch (AuditoriumNotExistsException exception)
+            }
+            catch (AuditoriumNotExistsException exception)
             {
                 return Conflict(exception);
-            } catch (AddShowValidationException exception)
+            }
+            catch (AddShowValidationException exception)
             {
                 return BadRequest(exception);
-            } catch (AccountNotAuthorizedException exception)
+            }
+            catch (AccountNotAuthorizedException exception)
             {
                 return Unauthorized(exception);
             }
@@ -70,13 +77,16 @@ namespace FMFT.Web.Server.Controllers
             catch (AuditoriumNotExistsException exception)
             {
                 return Conflict(exception);
-            } catch (ShowNotFoundException exception)
+            }
+            catch (ShowNotFoundException exception)
             {
                 return NotFound(exception);
-            } catch (UpdateShowValidationException exception)
+            }
+            catch (UpdateShowValidationException exception)
             {
                 return BadRequest(exception);
-            } catch (AccountNotAuthorizedException exception)
+            }
+            catch (AccountNotAuthorizedException exception)
             {
                 return Unauthorized(exception);
             }

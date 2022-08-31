@@ -39,10 +39,12 @@ namespace FMFT.Web.Server.Controllers.Users
             {
                 IEnumerable<Reservation> reservations = await reservationService.RetrieveReservationsByUserIdAsync(userId);
                 return Ok(reservations);
-            }
-            catch (UserNotAuthorizedException exception)
+            } catch (UserNotAuthenticatedException exception)
             {
                 return Unauthorized(exception);
+            } catch (UserNotAuthorizedException exception)
+            {
+                return Forbidden(exception);
             }
         }
     }

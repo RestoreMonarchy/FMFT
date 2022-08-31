@@ -1,19 +1,18 @@
-﻿using FMFT.Web.Server.Services.Processings.Accounts;
-using FMFT.Web.Server.Services.Processings.Reservations;
-using FMFT.Web.Server.Services.Processings.Users;
-using FMFT.Web.Server.Models.Reservations;
-using FMFT.Web.Server.Models.Reservations.Requests;
+﻿using FMFT.Web.Server.Models.Reservations;
 using FMFT.Web.Server.Models.Reservations.Params;
+using FMFT.Web.Server.Models.Reservations.Requests;
+using FMFT.Web.Server.Services.Processings.Accounts;
+using FMFT.Web.Server.Services.Processings.Reservations;
 using FMFT.Web.Shared.Enums;
 
-namespace FMFT.Web.Server.Services.Orchestrations.Reservations
+namespace FMFT.Web.Server.Services.Orchestrations.AccountReservations
 {
-    public class ReservationOrchestrationService : IReservationOrchestrationService
+    public class AccountReservationOrchestrationService : IAccountReservationOrchestrationService
     {
         private readonly IAccountProcessingService accountService;
         private readonly IReservationProcessingService reservationService;
 
-        public ReservationOrchestrationService(IAccountProcessingService accountService, IReservationProcessingService reservationService)
+        public AccountReservationOrchestrationService(IAccountProcessingService accountService, IReservationProcessingService reservationService)
         {
             this.accountService = accountService;
             this.reservationService = reservationService;
@@ -38,6 +37,15 @@ namespace FMFT.Web.Server.Services.Orchestrations.Reservations
             accountService.AuthorizeAccountByUserIdOrRoles(userId, UserRole.Admin);
 
             IEnumerable<Reservation> reservations = await reservationService.RetrieveReservationsByUserIdAsync(userId);
+
+            return reservations;
+        }
+
+        public async ValueTask<IEnumerable<Reservation>> RetrieveReservationsByShowIdAsync(int showId)
+        {
+            accountService.AuthorizeAccountByRole(UserRole.Admin);
+
+            IEnumerable<Reservation> reservations = await reservationService.RetrieveReservationsByShowIdAsync(showId);
 
             return reservations;
         }

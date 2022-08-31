@@ -13,7 +13,7 @@ using FMFT.Web.Server.Services.Foundations.Shows;
 using FMFT.Web.Server.Services.Foundations.Users;
 using FMFT.Web.Server.Services.Implementations.Cookies;
 using FMFT.Web.Server.Services.Orchestrations.AccountShows;
-using FMFT.Web.Server.Services.Orchestrations.Reservations;
+using FMFT.Web.Server.Services.Orchestrations.AccountReservations;
 using FMFT.Web.Server.Services.Orchestrations.UserAccounts;
 using FMFT.Web.Server.Services.Processings.Accounts;
 using FMFT.Web.Server.Services.Processings.Reservations;
@@ -93,7 +93,7 @@ namespace FMFT.Web.Server.Extensions
 
         public static IServiceCollection AddOrchestrations(this IServiceCollection services)
         {
-            services.AddTransient<IReservationOrchestrationService, ReservationOrchestrationService>();
+            services.AddTransient<IAccountReservationOrchestrationService, AccountReservationOrchestrationService>();
             services.AddTransient<IUserAccountOrchestrationService, UserAccountOrchestrationService>();
             services.AddTransient<IAccountShowOrchestrationService, AccountShowOrchestrationService>();
             return services;
