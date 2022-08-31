@@ -1,0 +1,35 @@
+﻿<div class="card">
+    <div class="card-header">
+        Information
+    </div>
+    <div>
+        <table class="table mb-0">
+            <tbody>
+                <tr>
+                    <td>ID</td>
+                    <td>RSV#@Reservation.Id</td>
+                </tr>
+                <tr>
+                    <td>Show</td>
+                    <td>@Reservation.Show.Name (@Reservation.Show.PublicId)</td>
+                </tr>
+                <tr>
+                    <td>User</td>
+                    <td>@Reservation.User.FullName() (@Reservation.User.Email)</td>
+                </tr>
+                <tr>
+                    <td>Seat</td>
+                    <td>[@Reservation.Seat.Row, @Reservation.Seat.Number] (@Auditorium.Name)</td>
+                </tr>
+                <tr>
+                    <td>Date & Time</td>
+                    <td>@Reservation.Show.StartDateString() (~@Reservation.Show.DurationString())</td>
+                </tr>
+                <tr>
+                    <td>Status</td>
+                    <td>@Reservation.Status</td>
+                </tr>
+            </tbody>
+        </table>        
+    </div>
+</div>

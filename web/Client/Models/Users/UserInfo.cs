@@ -9,5 +9,7 @@ namespace FMFT.Web.Client.Models.Users
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public UserRole Role { get; set; }
+
+        public string FullName() => string.Join(' ', FirstName, LastName);
     }
 }

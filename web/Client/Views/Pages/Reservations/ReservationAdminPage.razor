@@ -1,0 +1,20 @@
+﻿@page "/admin/reservations/{ReservationId:int}"
+@using FMFT.Web.Client.Views.Components.Reservations
+@attribute [CustomAuthorize(UserRole.Admin)]
+
+<Breadcrumb>
+    <BreadcrumbItem Link="/">
+        Home
+    </BreadcrumbItem>
+    <BreadcrumbItem>
+        Admin
+    </BreadcrumbItem>
+    <BreadcrumbItem Link="/admin/reservations">
+        Reservations
+    </BreadcrumbItem>
+    <BreadcrumbItem Active="true">
+        RSV#@ReservationId
+    </BreadcrumbItem>
+</Breadcrumb>
+
+<ReservationAdminComponent ReservationId="ReservationId" />

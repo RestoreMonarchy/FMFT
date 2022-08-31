@@ -1,4 +1,6 @@
-﻿namespace FMFT.Web.Client.Models.Shows
+﻿using System.Text;
+
+namespace FMFT.Web.Client.Models.Shows
 {
     public class Show
     {
@@ -9,5 +11,20 @@
         public DateTimeOffset StartDateTime { get; set; }
         public DateTimeOffset EndDateTime { get; set; }
         public int AuditoriumId { get; set; }
+
+        public TimeSpan Duration() => EndDateTime.Subtract(StartDateTime);
+
+        public string DurationString()
+        {
+            TimeSpan duration = Duration();
+            StringBuilder sb = new();
+            if (duration.Hours > 0)
+                sb.Append($"{duration.Hours}h ");
+            
+            sb.Append($"{duration.Minutes}m");
+            return sb.ToString();
+        }
+        public string StartDateString() => StartDateTime.LocalDateTime.ToString("f");
+        public string EndDateString() => EndDateTime.LocalDateTime.ToString("f");
     }
 }
