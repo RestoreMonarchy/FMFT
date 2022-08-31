@@ -12,6 +12,7 @@ using FMFT.Web.Client.Services.Processings.Accounts;
 using FMFT.Web.Client.Services.Processings.Reservations;
 using FMFT.Web.Client.Services.Views.AccountReservations;
 using FMFT.Web.Client.Services.Views.Accounts;
+using FMFT.Web.Client.Services.Views.Reservations;
 using FMFT.Web.Client.Services.Views.Shows;
 using FMFT.Web.Client.Services.Views.Users;
 using Microsoft.AspNetCore.Components.Web;
@@ -42,6 +43,7 @@ builder.Services.AddScoped<IShowViewService, ShowViewService>();
 builder.Services.AddScoped<IAccountViewService, AccountViewService>();
 builder.Services.AddScoped<IAccountReservationViewService, AccountReservationViewService>();
 builder.Services.AddScoped<IUserViewService, UserViewService>();
+builder.Services.AddScoped<IReservationViewService, ReservationViewService>();
 
 WebAssemblyHost host = builder.Build();
 

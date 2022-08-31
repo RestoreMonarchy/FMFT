@@ -1,0 +1,34 @@
+﻿@using FMFT.Extensions.DataTables
+@using FMFT.Web.Client.Models.Reservations
+@using FMFT.Web.Client.Views.Bases.DataTables
+
+<DataTableWrapper TItem="Reservation" Data="Reservations">
+    <DataTableTitle TItem="Reservation">
+        Reservations (@context.Items.Count())
+    </DataTableTitle>
+    <DataTableColumn TItem="Reservation" Name="Id" Field="x => x.Id"
+            IsSearchable="true"
+            SearchType="ESearchType.Exact">
+        <a href="/admin/reservations/@context.Id" class="fw-bold">
+            RSV#@context.Id
+        </a>
+    </DataTableColumn>
+    <DataTableColumn TItem="Reservation" Name="User" Field="x => x.User.Email"
+                     IsSearchable="true"
+                     SearchType="ESearchType.Contains">
+        <a href="/admin/users/@context.User.Id" class="text-decoration-none">
+            @context.User.Email
+        </a>
+    </DataTableColumn>
+    <DataTableColumn TItem="Reservation" Name="Show" Field="x => x.Show.PublicId"
+            IsSearchable="true"
+            SearchType="ESearchType.Contains">
+        <a href="/admin/shows/@context.Show.Id" class="text-decoration-none">
+            @context.Show.PublicId
+        </a>
+    </DataTableColumn>
+    
+    <DataTableColumn TItem="Reservation" Name="Status" Field="x => x.Status.ToString()"
+            IsSearchable="true"
+            SearchType="ESearchType.Contains" />
+</DataTableWrapper>
