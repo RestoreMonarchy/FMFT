@@ -5,7 +5,14 @@
 <Condition Evaluation="Exception is null">
     <Match>
         <LoadingView State="Reservation">
-            <ReservationInfoCard Reservation="Reservation" Auditorium="Auditorium" />
+            <div class="mb-3">
+                <ReservationInfoCard Reservation="Reservation" Auditorium="Auditorium" />
+            </div>
+            <div>
+                <ReservationActionsCard>
+                    wip
+                </ReservationActionsCard>
+            </div>
         </LoadingView>
     </Match>
     <NotMatch>
