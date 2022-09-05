@@ -13,45 +13,35 @@ namespace FMFT.Web.Server.Brokers.Storages
     {
         public async ValueTask<Reservation> SelectReservationByIdAsync(int reservationId)
         {
-            const string sql = @"SELECT r.*, s.*, se.*, u.* FROM dbo.Reservations r
-                JOIN dbo.Shows s ON s.Id = r.ShowId
-                JOIN dbo.Seats se ON se.Id = r.SeatId
-                JOIN dbo.Users u ON u.Id = r.UserId
-                WHERE r.Id = @reservationId;";
-
-            return await QueryReservationAsync(sql, new { reservationId });
+            GetReservationParams @params = new()
+            {
+                ReservationId = reservationId
+            };
+            return await GetReservationAsync(@params);
         }
 
         public async ValueTask<IEnumerable<Reservation>> SelectAllReservationsAsync()
         {
-            const string sql = @"SELECT r.*, s.*, se.*, u.* FROM dbo.Reservations r
-                JOIN dbo.Shows s ON s.Id = r.ShowId
-                JOIN dbo.Seats se ON se.Id = r.SeatId
-                JOIN dbo.Users u ON u.Id = r.UserId;";
-
-            return await QueryReservationsAsync(sql);
+            GetReservationParams @params = new();
+            return await GetReservationsAsync(@params);
         }
 
         public async ValueTask<IEnumerable<Reservation>> SelectReservationsByUserIdAsync(int userId)
         {
-            const string sql = @"SELECT r.*, s.*, se.*, u.* FROM dbo.Reservations r
-                JOIN dbo.Shows s ON s.Id = r.ShowId
-                JOIN dbo.Seats se ON se.Id = r.SeatId
-                JOIN dbo.Users u ON u.Id = r.UserId
-                WHERE r.UserId = @userId;";
-
-            return await QueryReservationsAsync(sql, new { userId });
+            GetReservationParams @params = new()
+            {
+                UserId = userId
+            };
+            return await GetReservationsAsync(@params);
         }
 
         public async ValueTask<IEnumerable<Reservation>> SelectReservationsByShowIdAsync(int showId)
         {
-            const string sql = @"SELECT r.*, s.*, se.*, u.* FROM dbo.Reservations r
-                JOIN dbo.Shows s ON s.Id = r.ShowId
-                JOIN dbo.Seats se ON se.Id = r.SeatId
-                JOIN dbo.Users u ON u.Id = r.UserId
-                WHERE r.ShowId = @showId;";
-
-            return await QueryReservationsAsync(sql, new { showId });
+            GetReservationParams @params = new()
+            {
+                ShowId = showId
+            };
+            return await GetReservationsAsync(@params);
         }
 
         public async ValueTask<StoredProcedureResult<Reservation>> CreateReservationAsync(
@@ -66,29 +56,54 @@ namespace FMFT.Web.Server.Brokers.Storages
             return result;
         }
 
+        public async ValueTask<StoredProcedureResult<Reservation>> UpdateReservationStatusAsync(UpdateReservationStatusParams @params)
+        {
+            const string sql = "dbo.UpdateReservationStatus";
+            StoredProcedureResult<Reservation> result = new();
+            DynamicParameters parameters = StoredProcedureParameters(@params);
+
+            result.Result = await QueryReservationAsync(sql, parameters, CommandType.StoredProcedure);
+            result.ReturnValue = GetReturnValue(parameters);
+            return result;
+        }
+        
+        public async ValueTask<Reservation> GetReservationAsync(GetReservationParams @params)
+        {
+            IEnumerable<Reservation> reservations = await GetReservationsAsync(@params);
+            return reservations.FirstOrDefault();
+        }
+
+        private async ValueTask<IEnumerable<Reservation>> GetReservationsAsync(GetReservationParams @params)
+        {
+            const string sql = "dbo.GetReservations";
+            return await QueryReservationsAsync(sql, @params, CommandType.StoredProcedure);
+        }
+
         private async ValueTask<Reservation> QueryReservationAsync(string sql, object param = null, CommandType? commandType = null)
         {
             Reservation reservation = null;
 
-            await connection.QueryAsync<Reservation, Show, Seat, UserInfo, Reservation>(sql, (r, s, se, u) => 
+            await connection.QueryAsync<Reservation, Show, Seat, UserInfo, UserInfo, Reservation>(sql, (r, s, se, u, au) => 
             {
                 reservation = r;
                 reservation.Show = s;
                 reservation.Seat = se;
                 reservation.User = u;
+                reservation.AdminUser = au;
                 return null;
             }, param, commandType: commandType);
 
             return reservation;
         }
 
-        private async ValueTask<IEnumerable<Reservation>> QueryReservationsAsync(string sql, object param = null)
+        private async ValueTask<IEnumerable<Reservation>> QueryReservationsAsync(string sql, object param = null, CommandType? commandType = null)
         {
-            return await connection.QueryAsync<Reservation, Show, Seat, UserInfo, Reservation>(sql, (r, s, se, u) =>
+            return await connection.QueryAsync<Reservation, Show, Seat, UserInfo, UserInfo, Reservation>(sql, (r, s, se, u, au) =>
             {
                 r.Show = s;
                 r.Seat = se;
                 r.User = u;
+                r.AdminUser = au;
                 return r;
             }, param);
         }

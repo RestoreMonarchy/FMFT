@@ -8,10 +8,12 @@ namespace FMFT.Web.Server.Models.Reservations
     {
         public int Id { get; set; }
         public ReservationStatus Status { get; set; }
-        public DateTime CreateDate { get; set; }
+        public DateTimeOffset CreateDate { get; set; }
+        public DateTimeOffset? UpdateStatusDate { get; set; }
 
         public Show Show { get; set; }
         public Seat Seat { get; set; }
         public UserInfo User { get; set; }
+        public UserInfo AdminUser { get; set; }
     }
 }

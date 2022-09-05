@@ -24,12 +24,6 @@ BEGIN
 		SET @id = SCOPE_IDENTITY();
 	END;
 
-	SELECT r.*, s.*, se.*, u.* 
-	FROM dbo.Reservations r
-	JOIN dbo.Shows s ON s.Id = r.ShowId
-	JOIN dbo.Seats se ON se.Id = r.SeatId
-	JOIN dbo.Users u ON u.Id = r.UserId
-	WHERE r.Id = @id;
-
+	EXEC dbo.GetReservations @ReservationId = @id;
 	RETURN @ret;
 END;
