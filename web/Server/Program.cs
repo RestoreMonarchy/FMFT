@@ -21,6 +21,8 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddFMFTAuthentication(configuration);
 
+builder.Services.AddSwaggerGen();
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
@@ -38,6 +40,8 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseWebAssemblyDebugging();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 else
 {

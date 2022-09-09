@@ -42,5 +42,10 @@ namespace FMFT.Web.Server.Services.Processings.Reservations
         {
             return await reservationService.CreateReservationAsync(@params);
         }
+
+        public async ValueTask<Reservation> UpdateReservationStatusAsync(UpdateReservationStatusParams @params)
+        {
+            return await reservationService.UpdateReservationStatusAsync(@params);
+        }
     }
 }

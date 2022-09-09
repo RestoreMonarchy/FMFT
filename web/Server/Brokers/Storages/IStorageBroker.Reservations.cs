@@ -11,5 +11,6 @@ namespace FMFT.Web.Server.Brokers.Storages
         ValueTask<IEnumerable<Reservation>> SelectReservationsByShowIdAsync(int showId);
         ValueTask<Reservation> SelectReservationByIdAsync(int reservationId);
         ValueTask<StoredProcedureResult<Reservation>> CreateReservationAsync(CreateReservationParams @params);
+        ValueTask<StoredProcedureResult<Reservation>> UpdateReservationStatusAsync(UpdateReservationStatusParams @params);
     }
 }

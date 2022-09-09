@@ -10,5 +10,6 @@ namespace FMFT.Web.Server.Services.Foundations.Reservations
         ValueTask<Reservation> RetrieveReservationByIdAsync(int reservationId);
         ValueTask<IEnumerable<Reservation>> RetrieveReservationsByShowIdAsync(int showId);
         ValueTask<IEnumerable<Reservation>> RetrieveReservationsByUserIdAsync(int userId);
+        ValueTask<Reservation> UpdateReservationStatusAsync(UpdateReservationStatusParams @params);
     }
 }

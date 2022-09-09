@@ -1,4 +1,5 @@
-﻿using FMFT.Web.Server.Models.Reservations;
+﻿using FMFT.Web.Server.Models.Accounts;
+using FMFT.Web.Server.Models.Reservations;
 using FMFT.Web.Server.Models.Reservations.Params;
 using FMFT.Web.Server.Models.Reservations.Requests;
 using FMFT.Web.Server.Services.Processings.Accounts;
@@ -30,6 +31,23 @@ namespace FMFT.Web.Server.Services.Orchestrations.AccountReservations
             accountService.AuthorizeAccountByUserIdOrRoles(@params.UserId, UserRole.Admin);
 
             return await reservationService.CreateReservationAsync(@params);
+        }
+
+        public async ValueTask<Reservation> UpdateReservationStatusAsync(UpdateReservationStatusRequest request)
+        {
+            accountService.AuthorizeAccountByRole(UserRole.Admin);
+
+            Account account = accountService.RetrieveAccount();
+
+            UpdateReservationStatusParams @params = new()
+            {
+                ReservationId = request.ReservationId,
+                ReservationStatus = request.Status,
+                UpdateStatusDate = DateTimeOffset.Now,
+                AdminUserId = account.UserId
+            };
+
+            return await reservationService.UpdateReservationStatusAsync(@params);
         }
 
         public async ValueTask<IEnumerable<Reservation>> RetrieveReservationsByUserIdAsync(int userId)

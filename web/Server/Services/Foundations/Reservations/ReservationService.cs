@@ -57,5 +57,17 @@ namespace FMFT.Web.Server.Services.Foundations.Reservations
 
             return result.Result;
         }
+
+        public async ValueTask<Reservation> UpdateReservationStatusAsync(UpdateReservationStatusParams @params)
+        {
+            StoredProcedureResult<Reservation> result = await storageBroker.UpdateReservationStatusAsync(@params);
+
+            if (result.ReturnValue == 1)
+            {
+                throw new ReservationNotFoundException();
+            }
+
+            return result.Result;
+        }
     }
 }

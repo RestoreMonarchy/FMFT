@@ -1,10 +1,10 @@
-﻿namespace FMFT.Web.Server.Models.Reservations
+﻿namespace FMFT.Web.Shared.Enums
 {
     public enum ReservationStatus
     {
-        Pending,
-        Confirmed,
-        Declined,
-        Canceled
+        WaitingForAdminReview = 0,
+        Approved = 1,
+        Rejected = 2,
+        Canceled = 3
     }
 }

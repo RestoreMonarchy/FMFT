@@ -1,6 +1,7 @@
 ﻿using FMFT.Web.Client.Models.Seats;
 using FMFT.Web.Client.Models.Shows;
 using FMFT.Web.Client.Models.Users;
+using FMFT.Web.Shared.Enums;
 
 namespace FMFT.Web.Client.Models.Reservations
 {

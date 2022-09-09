@@ -105,7 +105,7 @@ namespace FMFT.Web.Server.Brokers.Storages
                 r.User = u;
                 r.AdminUser = au;
                 return r;
-            }, param);
+            }, param, commandType: commandType);
         }
     }
 }
