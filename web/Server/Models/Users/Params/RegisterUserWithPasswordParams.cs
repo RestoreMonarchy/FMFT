@@ -9,6 +9,5 @@ namespace FMFT.Web.Server.Models.Users.Params
         public string LastName { get; set; }
         public UserRole Role { get; set; }
         public string PasswordHash { get; set; }
-        public string PasswordText { get; set; }
     }
 }

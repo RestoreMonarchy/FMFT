@@ -5,6 +5,7 @@ using FMFT.Web.Server.Models.Users;
 using FMFT.Web.Server.Models.Users.Arguments;
 using FMFT.Web.Server.Models.Users.Exceptions;
 using FMFT.Web.Server.Models.Users.Params;
+using FMFT.Web.Server.Brokers.Validations;
 
 namespace FMFT.Web.Server.Services.Processings.Users
 {
@@ -18,7 +19,7 @@ namespace FMFT.Web.Server.Services.Processings.Users
             this.userService = userService;
             this.encryptionBroker = encryptionBroker;
         }
-        
+
         public async ValueTask<User> RetrieveUserByIdAsync(int userId)
         {
             return await userService.RetrieveUserByIdAsync(userId);
@@ -58,17 +59,7 @@ namespace FMFT.Web.Server.Services.Processings.Users
 
         public async ValueTask<User> RegisterUserWithPasswordAsync(RegisterUserWithPasswordArguments args)
         {
-            RegisterUserWithPasswordParams @params = new()
-            {
-                Email = args.Email,
-                FirstName = args.FirstName,
-                LastName = args.LastName,
-                Role = UserRole.Guest,
-                PasswordHash = encryptionBroker.HashPassword(args.PasswordText),
-                PasswordText = args.PasswordText
-            };
-
-            return await userService.RegisterUserWithPasswordAsync(@params);
+            return await userService.RegisterUserWithPasswordAsync(args);
         }
 
         public async ValueTask<User> RegisterUserWithLoginAsync(RegisterUserWithLoginParams @params)

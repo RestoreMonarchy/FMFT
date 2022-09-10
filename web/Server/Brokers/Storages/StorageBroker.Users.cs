@@ -38,14 +38,7 @@ namespace FMFT.Web.Server.Brokers.Storages
             RegisterUserWithPasswordParams @params)
         {
             const string sql = "dbo.RegisterUserWithPassword";
-            return await QueryStoredProcedureSingleResultAsync<User>(sql, new 
-            { 
-                @params.Email,
-                @params.Role,
-                @params.FirstName,
-                @params.LastName,
-                @params.PasswordHash,
-            });
+            return await QueryStoredProcedureSingleResultAsync<User>(sql, @params);
         }
 
         public async ValueTask<StoredProcedureResult<User>> RegisterUserWithLoginAsync(

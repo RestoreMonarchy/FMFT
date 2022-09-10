@@ -30,11 +30,12 @@ namespace FMFT.Web.Client.Views.Components.Accounts
         public async Task SubmitRegisterAsync()
         {
             AlertGroup.HideAll();
-            Form.DisableAll();
+            Form.ClearValidations();
+            Form.DisableAll();            
             SubmitButton.StartSpinning();
+
             try
             {
-                await Task.Delay(2000);
                 await AccountViewService.RegisterAsync(Request);
                 AccountViewService.ForceLoadNavigateTo("/");
             } catch (AccountEmailAlreadyExistsException)
@@ -42,6 +43,7 @@ namespace FMFT.Web.Client.Views.Components.Accounts
                 ConflictErrorAlert.Show();
             } catch (AccountRegisterWithPasswordValidationException exception)
             {
+                Form.HandleValidationXeption(exception);
                 BadRequestErrorAlert.Show();
             } finally
             {

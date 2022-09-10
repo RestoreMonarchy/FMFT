@@ -1,10 +1,13 @@
 ﻿using FMFT.Web.Server.Brokers.Authentications;
+using FMFT.Web.Server.Brokers.Encryptions;
 using FMFT.Web.Server.Brokers.Storages;
 using FMFT.Web.Server.Brokers.Validations;
 using FMFT.Web.Server.Models.Database;
 using FMFT.Web.Server.Models.Users;
+using FMFT.Web.Server.Models.Users.Arguments;
 using FMFT.Web.Server.Models.Users.Exceptions;
 using FMFT.Web.Server.Models.Users.Params;
+using FMFT.Web.Shared.Enums;
 
 namespace FMFT.Web.Server.Services.Foundations.Users
 {
@@ -12,15 +15,15 @@ namespace FMFT.Web.Server.Services.Foundations.Users
     {
         private readonly IStorageBroker storageBroker;
         private readonly IValidationBroker validationBroker;
-        private readonly IAuthenticationBroker authenticationBroker;
+        private readonly IEncryptionBroker encryptionBroker;
 
-        public UserService(IStorageBroker storageBroker, 
-            IValidationBroker validationBroker, 
-            IAuthenticationBroker authenticationBroker)
+        public UserService(IStorageBroker storageBroker,
+            IValidationBroker validationBroker,
+            IEncryptionBroker encryptionBroker)
         {
             this.storageBroker = storageBroker;
             this.validationBroker = validationBroker;
-            this.authenticationBroker = authenticationBroker;
+            this.encryptionBroker = encryptionBroker;
         }
 
         public async ValueTask<IEnumerable<User>> RetrieveAllUsersAsync()
@@ -61,27 +64,36 @@ namespace FMFT.Web.Server.Services.Foundations.Users
             return user;
         }
 
-        public async ValueTask<User> RegisterUserWithPasswordAsync(RegisterUserWithPasswordParams @params)
+        public async ValueTask<User> RegisterUserWithPasswordAsync(RegisterUserWithPasswordArguments args)
         {
             RegisterUserWithPasswordValidationException validationException = new();
-            if (validationBroker.IsEmailInvalid(@params.Email))
+            if (validationBroker.IsEmailInvalid(args.Email))
             {
-                validationException.UpsertDataList("Email", "Invalid");
+                validationException.UpsertDataList("Email", "Email is required and must be valid");
             }
-            if (validationBroker.IsStringInvalid(@params.FirstName, true, 255, 3))
+            if (validationBroker.IsStringInvalid(args.FirstName, true, 255, 3))
             {
-                validationException.UpsertDataList("FirstName", "Invalid");
+                validationException.UpsertDataList("FirstName", "First name is required and must be at least 3 characters long");
             }
-            if (validationBroker.IsStringInvalid(@params.LastName, true, 255, 3))
+            if (validationBroker.IsStringInvalid(args.LastName, true, 255, 3))
             {
-                validationException.UpsertDataList("LastName", "Invalid");
+                validationException.UpsertDataList("LastName", "Last name is required and must be at least 3 characters long");
             }
-            if (validationBroker.IsPasswordInvalid(@params.PasswordText))
+            if (validationBroker.IsPasswordInvalid(args.PasswordText))
             {
-                validationException.UpsertDataList("Password", "Invalid");
+                validationException.UpsertDataList("PasswordText", "Password must be at least 8 characters long");
             }
 
             validationException.ThrowIfContainsErrors();
+
+            RegisterUserWithPasswordParams @params = new()
+            {
+                Email = args.Email,
+                FirstName = args.FirstName,
+                LastName = args.LastName,
+                Role = UserRole.Guest,
+                PasswordHash = encryptionBroker.HashPassword(args.PasswordText)
+            };
 
             StoredProcedureResult<User> result = await storageBroker.RegisterUserWithPasswordAsync(@params);
             if (result.ReturnValue == 1)
@@ -97,15 +109,15 @@ namespace FMFT.Web.Server.Services.Foundations.Users
             RegisterUserWithLoginValidationException validationException = new();
             if (validationBroker.IsEmailInvalid(@params.Email))
             {
-                validationException.UpsertDataList("Email", "Invalid");
+                validationException.UpsertDataList("Email", "Email is required and must be valid");
             }
             if (validationBroker.IsStringInvalid(@params.FirstName, true, 255, 3))
             {
-                validationException.UpsertDataList("FirstName", "Invalid");
+                validationException.UpsertDataList("FirstName", "First name is required and must be at least 3 characters long");
             }
             if (validationBroker.IsStringInvalid(@params.LastName, true, 255, 3))
             {
-                validationException.UpsertDataList("LastName", "Invalid");
+                validationException.UpsertDataList("LastName", "Last name is required and must be at least 3 characters long");
             }
             if (validationBroker.IsStringInvalid(@params.ProviderName, true, 255, 0))
             {
