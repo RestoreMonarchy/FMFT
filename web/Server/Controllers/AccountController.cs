@@ -62,6 +62,9 @@ namespace FMFT.Web.Server.Controllers
             } catch (UserPasswordNotMatchException exception)
             {
                 return Forbidden(exception);
+            } catch (UserNotFoundException exception)
+            {
+                return Forbidden(exception);
             }
         }
 

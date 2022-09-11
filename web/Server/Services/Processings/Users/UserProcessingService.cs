@@ -44,11 +44,6 @@ namespace FMFT.Web.Server.Services.Processings.Users
         {
             User user = await RetrieveUserByEmailAsync(email);
 
-            if (user == null)
-            {
-                throw new UserNotFoundException();
-            }
-
             if (!encryptionBroker.VerifyPassword(passwordText, user.PasswordHash))
             {
                 throw new UserPasswordNotMatchException();
