@@ -11,3 +11,12 @@ ERR008 | User not found
 ERR009 | User password not match exception
 ERR010 | User already has this role set
 ERR011 | User already has this culture set
+ERR012 | Add Show validation problem
+ERR013 | Update Show validation problem
+ERR014 | Show not found
+ERR015 | Show auditorium does not exist
+ERR016 | Seat not found
+ERR017 | Reservation not found
+ERR018 | Seat is already reserved
+ERR019 | User already created a reservation
+ERR020 | Auditorium not found

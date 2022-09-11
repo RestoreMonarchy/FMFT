@@ -70,7 +70,7 @@ namespace FMFT.Web.Server.Services.Foundations.Shows
 
             if (result.ReturnValue == 1)
             {
-                throw new AuditoriumNotExistsException();
+                throw new ShowAuditoriumNotExistsException();
             }
 
             return result.Result;
@@ -111,7 +111,7 @@ namespace FMFT.Web.Server.Services.Foundations.Shows
 
             if (result.ReturnValue == 1)
             {
-                throw new AuditoriumNotExistsException();
+                throw new ShowAuditoriumNotExistsException();
             }
 
             if (result.ReturnValue == 2)

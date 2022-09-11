@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Xeptions;
 
 namespace FMFT.Web.Server.Models.Seats.Exceptions
 {
-    public class SeatNotFoundException : Exception
+    public class SeatNotFoundException : Xeption
     {
+        public SeatNotFoundException() 
+            : base("ERR016: Seat not found")
+        {
+
+        }
     }
 }
