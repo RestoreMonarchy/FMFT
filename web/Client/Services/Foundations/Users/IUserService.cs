@@ -7,6 +7,7 @@ namespace FMFT.Web.Client.Services.Foundations.Users
     {
         ValueTask<List<User>> RetrieveAllUsersAsync();
         ValueTask<User> RetrieveUserByIdAsync(int userId);
+        ValueTask UpdateUserCultureAsync(UpdateUserCultureRequest request);
         ValueTask UpdateUserRoleAsync(UpdateUserRoleRequest request);
     }
 }

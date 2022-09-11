@@ -23,5 +23,11 @@ namespace FMFT.Web.Client.Brokers.APIs
             string url = $"{UsersRelativeUrl}/{request.UserId}/updaterole";
             await PostContentWithNoResponseAsync(url, request);
         }
+
+        public async ValueTask UpdateUserCultureAsync(UpdateUserCultureRequest request)
+        {
+            string url = $"{UsersRelativeUrl}/{request.UserId}/updateculture";
+            await PostContentWithNoResponseAsync(url, request);
+        }
     }
 }

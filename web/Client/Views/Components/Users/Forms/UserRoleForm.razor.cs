@@ -58,7 +58,7 @@ namespace FMFT.Web.Client.Views.Components.Users.Forms
             {
                 UserNotFoundAlert.Show();
             }
-            catch (UserRoleAlreadyExistsException)
+            catch (UserRoleAlreadyExistException)
             {
                 UserRoleAlreadyExistsAlert.Show();
             }

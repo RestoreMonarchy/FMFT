@@ -1,4 +1,5 @@
 ﻿@using FMFT.Web.Client.Shared.Navbars.Items
+@using FMFT.Web.Client.Views.Components.UserAccounts
 
 <nav class="navbar navbar-expand-lg bg-light border-bottom border-1">
     <div class="container">
@@ -33,6 +34,9 @@
                 </CustomAuthorizeView>                
             </ul>
             <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <CultureSelectComponent />
+                </li>
                 <CustomAuthorizeView>
                     <Authorized>
                         <MainNavbarDropdown Value="@context.FirstName">

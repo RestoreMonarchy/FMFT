@@ -41,7 +41,21 @@ namespace FMFT.Web.Client.Services.Foundations.Users
                 throw new UserNotFoundException();
             } catch (HttpResponseConflictException)
             {
-                throw new UserRoleAlreadyExistsException();
+                throw new UserRoleAlreadyExistException();
+            }
+        }
+
+        public async ValueTask UpdateUserCultureAsync(UpdateUserCultureRequest request)
+        {
+            try
+            {
+                await apiBroker.UpdateUserCultureAsync(request);
+            } catch (HttpResponseNotFoundException)
+            {
+                throw new UserNotFoundException();
+            } catch (HttpResponseConflictException)
+            {
+                throw new UserCultureAlreadyExistException();
             }
         }
     }
