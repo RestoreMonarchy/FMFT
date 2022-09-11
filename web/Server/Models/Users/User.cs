@@ -10,6 +10,7 @@ namespace FMFT.Web.Server.Models.Users
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public UserRole Role { get; set; }
+        public CultureId CultureId { get; set; }
         public bool IsEmailConfirmed { get; set; }
         public DateTimeOffset? ConfirmEmailSendDate { get; set; }
         public DateTime CreateDate { get; set; }

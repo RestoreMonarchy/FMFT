@@ -1,6 +1,5 @@
 ﻿using FMFT.Web.Server.Models.Accounts;
 using FMFT.Web.Server.Models.Users;
-using FMFT.Web.Server.Models.Users.Params;
 
 namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
 {
@@ -15,7 +14,8 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
                 Email = user.Email,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Role = user.Role
+                Role = user.Role,
+                CultureId = user.CultureId
             };
         }
     }

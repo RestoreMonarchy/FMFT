@@ -76,6 +76,7 @@
     <Build Include="dbo\procedures\UpdateUserRole.sql" />
     <Build Include="dbo\procedures\UpdateReservationStatus.sql" />
     <Build Include="dbo\procedures\GetReservations.sql" />
+    <Build Include="dbo\procedures\UpdateUserCulture.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FMFT.Database.publish.xml" />

@@ -10,6 +10,7 @@ namespace FMFT.Web.Server.Models.Accounts
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public UserRole Role { get; set; }
+        public CultureId CultureId { get; set; }
         public string AuthenticationMethod { get; set; }
     }
 }

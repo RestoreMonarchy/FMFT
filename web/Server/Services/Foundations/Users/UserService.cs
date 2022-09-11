@@ -157,5 +157,20 @@ namespace FMFT.Web.Server.Services.Foundations.Users
                 throw new UserRoleAlreadyExistsException();
             }
         }
+
+        public async ValueTask UpdateUserCultureAsync(UpdateUserCultureParams @params)
+        {
+            StoredProcedureResult result = await storageBroker.UpdateUserCultureAsync(@params);
+
+            if (result.ReturnValue == 1)
+            {
+                throw new UserNotFoundException();
+            }
+
+            if (result.ReturnValue == 2)
+            {
+                throw new UserCultureAlreadyExistsException();
+            }
+        }
     }
 }

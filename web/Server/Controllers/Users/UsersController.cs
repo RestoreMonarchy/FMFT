@@ -65,16 +65,43 @@ namespace FMFT.Web.Server.Controllers.Users
                 @params.UserId = userId;
                 await userAccountService.UpdateUserRoleAsync(@params);
                 return Ok();
-            } catch (UserNotAuthenticatedException exception)
+            } catch (AccountNotAuthenticatedException exception)
             {
                 return Unauthorized(exception);
-            } catch (UserNotAuthorizedException exception)
+            } catch (AccountNotAuthorizedException exception)
             {
                 return Forbidden(exception);
             } catch (UserNotFoundException exception)
             {
                 return NotFound(exception);
             } catch (UserRoleAlreadyExistsException exception)
+            {
+                return Conflict(exception);
+            }
+        }
+
+        [HttpPost("{userId}/updateculture")]
+        public async ValueTask<IActionResult> UpdateUserCulture(int userId, UpdateUserCultureParams @params)
+        {
+            try
+            {
+                @params.UserId = userId;
+                await userAccountService.UpdateUserCultureAsync(@params);
+                return Ok();
+            }
+            catch (AccountNotAuthenticatedException exception)
+            {
+                return Unauthorized(exception);
+            }
+            catch (AccountNotAuthorizedException exception)
+            {
+                return Forbidden(exception);
+            }
+            catch (UserNotFoundException exception)
+            {
+                return NotFound(exception);
+            }
+            catch (UserCultureAlreadyExistsException exception)
             {
                 return Conflict(exception);
             }

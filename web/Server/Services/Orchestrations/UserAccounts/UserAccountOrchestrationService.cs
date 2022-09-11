@@ -160,6 +160,12 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
             await userService.UpdateUserRoleAsync(@params);
         }
 
+        public async ValueTask UpdateUserCultureAsync(UpdateUserCultureParams @params)
+        {
+            accountService.AuthorizeAccountByUserId(@params.UserId);
+            await userService.UpdateUserCultureAsync(@params);
+        }
+
         public Account RetrieveAccount()
         {
             return accountService.RetrieveAccount();

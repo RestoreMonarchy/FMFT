@@ -53,5 +53,11 @@ namespace FMFT.Web.Server.Brokers.Storages
             const string sql = "dbo.UpdateUserRole";
             return await ExecuteStoredProcedureAsync(sql, @params);
         }
+
+        public async ValueTask<StoredProcedureResult> UpdateUserCultureAsync(UpdateUserCultureParams @params)
+        {
+            const string sql = "dbo.UpdateUserCulture";
+            return await ExecuteStoredProcedureAsync(sql, @params);
+        }
     }
 }

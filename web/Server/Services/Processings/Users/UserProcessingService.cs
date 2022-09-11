@@ -71,5 +71,10 @@ namespace FMFT.Web.Server.Services.Processings.Users
         {
             await userService.UpdateUserRoleAsync(@params);
         }
+
+        public async ValueTask UpdateUserCultureAsync(UpdateUserCultureParams @params)
+        {
+            await userService.UpdateUserCultureAsync(@params);
+        }
     }
 }
