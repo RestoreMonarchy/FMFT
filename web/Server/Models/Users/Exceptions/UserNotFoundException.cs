@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Xeptions;
 
 namespace FMFT.Web.Server.Models.Users.Exceptions
 {
-    public class UserNotFoundException : Exception
+    public class UserNotFoundException : Xeption
     {
+        public UserNotFoundException()
+            : base("ERR008: User not found")
+        {
+
+        }
     }
 }

@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Xeptions;
 
 namespace FMFT.Web.Server.Models.Users.Exceptions
 {
-    public class UserLoginAlreadyExistsException : Exception
+    public class UserLoginAlreadyExistsException : Xeption
     {
+        public UserLoginAlreadyExistsException() 
+            : base("ERR007: User with this external login already exists")
+        {
+
+        }
     }
 }

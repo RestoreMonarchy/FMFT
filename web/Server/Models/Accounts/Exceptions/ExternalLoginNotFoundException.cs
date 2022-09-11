@@ -2,5 +2,10 @@
 {
     public class ExternalLoginNotFoundException : Exception
     {
+        public ExternalLoginNotFoundException()
+            : base("ERR003: External login not found")
+        {
+
+        }
     }
 }

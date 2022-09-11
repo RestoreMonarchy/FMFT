@@ -3,7 +3,7 @@
     public class UserPasswordNotMatchException : Exception
     {
         public UserPasswordNotMatchException()
-            : base("Invalid email or password")
+            : base("ERR009: User password not match")
         {
 
         }

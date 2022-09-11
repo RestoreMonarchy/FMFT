@@ -3,6 +3,7 @@ using FMFT.Web.Server.Models.Reservations.Requests;
 using FMFT.Web.Server.Models.Reservations;
 using FMFT.Web.Server.Models.Users.Exceptions;
 using Microsoft.AspNetCore.Mvc;
+using FMFT.Web.Server.Models.Accounts.Exceptions;
 
 namespace FMFT.Web.Server.Controllers.Users
 {
@@ -24,9 +25,12 @@ namespace FMFT.Web.Server.Controllers.Users
             }
             catch (UserAlreadyReservedException exception)
             {
-                return Forbidden(exception);
+                return Conflict(exception);
             }
-            catch (UserNotAuthorizedException exception)
+            catch (AccountNotAuthorizedException exception)
+            {
+                return Forbidden(exception);
+            } catch (AccountNotAuthenticatedException exception)
             {
                 return Unauthorized(exception);
             }
@@ -39,10 +43,10 @@ namespace FMFT.Web.Server.Controllers.Users
             {
                 IEnumerable<Reservation> reservations = await reservationService.RetrieveReservationsByUserIdAsync(userId);
                 return Ok(reservations);
-            } catch (UserNotAuthenticatedException exception)
+            } catch (AccountNotAuthenticatedException exception)
             {
                 return Unauthorized(exception);
-            } catch (UserNotAuthorizedException exception)
+            } catch (AccountNotAuthorizedException exception)
             {
                 return Forbidden(exception);
             }
