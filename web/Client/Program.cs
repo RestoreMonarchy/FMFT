@@ -1,8 +1,11 @@
+using Blazored.LocalStorage;
 using FluentAssertions.Common;
 using FMFT.Web.Client;
 using FMFT.Web.Client.Brokers.APIs;
 using FMFT.Web.Client.Brokers.JSRuntimes;
+using FMFT.Web.Client.Brokers.Localizations;
 using FMFT.Web.Client.Brokers.Navigations;
+using FMFT.Web.Client.Brokers.Storages;
 using FMFT.Web.Client.Services.Foundations.Accounts;
 using FMFT.Web.Client.Services.Foundations.Auditoriums;
 using FMFT.Web.Client.Services.Foundations.Reservations;
@@ -26,11 +29,15 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
+builder.Services.AddBlazoredLocalStorage();
+
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
 builder.Services.AddScoped<INavigationBroker, NavigationBroker>();
 builder.Services.AddScoped<IJSRuntimeBroker, JSRuntimeBroker>();
 builder.Services.AddScoped<IAPIBroker, APIBroker>();
+builder.Services.AddScoped<IStorageBroker, StorageBroker>();
+builder.Services.AddScoped<ILocalizationBroker, LocalizationBroker>();
 
 builder.Services.AddScoped<IShowService, ShowService>();
 builder.Services.AddScoped<IAuditoriumService, AuditoriumService>();
@@ -54,8 +61,7 @@ builder.Services.AddScoped<IUserAccountViewService, UserAccountViewService>();
 
 WebAssemblyHost host = builder.Build();
 
-await host.Services.GetRequiredService<IAccountProcessingService>().UpdateAccountAsync();
+BeforeStartup beforeStartup = new(host);
+await beforeStartup.ExecuteAsync();
 
 await host.RunAsync();
-
-
