@@ -15,57 +15,9 @@ namespace FMFT.Web.Client.Services.Processings.Accounts
             this.accountService = accountService;
         }
 
-        public Account Account { get; private set; }
-        public bool IsAuthenticated => Account != null;
-        public event Action OnAccountChanged;
-
-        public Account RetrieveAccount() 
-        { 
-            if (Account == null)
-            {
-                throw new AccountNotAuthenticatedException();
-            }
-            return Account;
-        }
-
-        public async ValueTask UpdateAccountAsync()
+        public async ValueTask<Account> RetrieveAccountAsync()
         {
-            try
-            {
-                Account = await accountService.RetrieveAccountAsync();
-            } catch (AccountNotAuthenticatedException)
-            {
-                Account = null;
-            }
-            
-            OnAccountChanged?.Invoke();
-        }
-
-        public void AuthorizeAccountByUserId(int authorizedUserId)
-        {
-            Account account = RetrieveAccount();
-            if (account.UserId != authorizedUserId)
-            {
-                throw new AccountNotAuthorizedException();
-            }
-        }
-
-        public void AuthorizeAccountByRole(params UserRole[] authorizedRoles)
-        {
-            Account account = RetrieveAccount();
-            if (!authorizedRoles.Contains(account.Role))
-            {
-                throw new AccountNotAuthorizedException();
-            }
-        }
-
-        public void AuthorizeAccountByUserIdOrRoles(int authorizedUserId, params UserRole[] authorizedRoles)
-        {
-            Account account = RetrieveAccount();
-            if (authorizedUserId != account.UserId && !authorizedRoles.Contains(account.Role))
-            {
-                throw new AccountNotAuthorizedException();
-            }
+            return await accountService.RetrieveAccountAsync();
         }
 
         public async ValueTask ConfirmExternalLoginAsync(ConfirmExternalLoginRequest request)

@@ -1,21 +1,20 @@
 ﻿using FMFT.Web.Client.Models.Accounts;
-using FMFT.Web.Client.Services.Views.UserAccounts;
+using FMFT.Web.Client.Services.Views.UserAccountCultures;
 using FMFT.Web.Shared.Enums;
 using Microsoft.AspNetCore.Components;
 
-namespace FMFT.Web.Client.Views.Components.UserAccounts
+namespace FMFT.Web.Client.Views.Components.UserAccountCultures
 {
     public partial class CultureSelectComponent
     {
         [Inject]
-        public IUserAccountViewService UserAccountViewService { get; set; }
+        public IUserAccountCultureViewService UserAccountViewService { get; set; }
 
         public CultureId CultureId { get; set; }
 
-        protected override void OnInitialized()
+        protected override async void OnInitialized()
         {
-            Account account = UserAccountViewService.RetrieveAccount();
-            CultureId = account.CultureId;
+            CultureId = await UserAccountViewService.RetrieveCultureIdAsync();
         }
 
         public IEnumerable<CultureId> AvailableCultures => Enum.GetValues<CultureId>();

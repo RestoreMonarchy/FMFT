@@ -1,4 +1,7 @@
-﻿using FMFT.Web.Client.Services.Processings.Accounts;
+﻿using FMFT.Web.Client.Models.Accounts;
+using FMFT.Web.Client.Models.Accounts.Exceptions;
+using FMFT.Web.Client.Services.Processings.Accounts;
+using FMFT.Web.Client.Services.Processings.AccountStores;
 using FMFT.Web.Shared.Attributes;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
@@ -8,7 +11,7 @@ namespace FMFT.Web.Client.Views.Bases.Authorizations
     public class CustomAuthorizeRouteView : RouteView
     {
         [Inject]
-        public IAccountProcessingService AccountService { get; set; }
+        public IAccountStoreProcessingService AccountStoreService { get; set; }
 
         [Parameter]
         public RenderFragment NotAuthorized { get; set; }
@@ -20,14 +23,25 @@ namespace FMFT.Web.Client.Views.Bases.Authorizations
                 .FirstOrDefault() 
                 as CustomAuthorizeAttribute;
 
-            if (authorizeAttribute != null && 
-                (!AccountService.IsAuthenticated || authorizeAttribute.IsNotAuthorized(AccountService.Account.Role)))
+            if (authorizeAttribute == null)
             {
-                RenderContentInDefaultLayout(builder, NotAuthorized);
+                base.Render(builder);
                 return;
             }
 
-            base.Render(builder);
+            try
+            {
+                Account account = AccountStoreService.RetrieveAccount();
+                if (authorizeAttribute.IsAuthorized(account.Role))
+                {
+                    base.Render(builder);
+                    return;
+                }
+            } catch (AccountNotAuthenticatedException)
+            {
+
+            }
+            RenderContentInDefaultLayout(builder, NotAuthorized);            
         }
 
         private void RenderContentInDefaultLayout(RenderTreeBuilder builder, RenderFragment content)

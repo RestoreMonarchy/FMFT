@@ -1,23 +1,24 @@
 ﻿using FMFT.Web.Client.Brokers.Navigations;
 using FMFT.Web.Client.Models.Accounts;
 using FMFT.Web.Client.Models.Accounts.Requests;
+using FMFT.Web.Client.Services.Orchestrations.Accounts;
 using FMFT.Web.Client.Services.Processings.Accounts;
 
 namespace FMFT.Web.Client.Services.Views.Accounts
 {
     public class AccountViewService : IAccountViewService
     {
-        private readonly IAccountProcessingService accountService;
+        private readonly IAccountOrchestrationService accountService;
         private readonly INavigationBroker navigationBroker;
 
-        public AccountViewService(IAccountProcessingService accountService, INavigationBroker navigationBroker)
+        public AccountViewService(IAccountOrchestrationService accountService, INavigationBroker navigationBroker)
         {
             this.accountService = accountService;
             this.navigationBroker = navigationBroker;
         }
 
         public Account Account 
-            => accountService.Account;
+            => accountService.RetrieveAccountStore();
 
         public async ValueTask LoginAsync(LogInWithPasswordRequest request) 
             => await accountService.LoginAsync(request);

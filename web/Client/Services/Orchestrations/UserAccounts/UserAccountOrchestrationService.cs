@@ -1,5 +1,7 @@
 ﻿using FMFT.Web.Client.Models.Accounts;
+using FMFT.Web.Client.Models.Accounts.Exceptions;
 using FMFT.Web.Client.Services.Processings.Accounts;
+using FMFT.Web.Client.Services.Processings.AccountStores;
 using FMFT.Web.Client.Services.Processings.Users;
 using FMFT.Web.Shared.Enums;
 
@@ -8,22 +10,26 @@ namespace FMFT.Web.Client.Services.Orchestrations.UserAccounts
     public class UserAccountOrchestrationService : IUserAccountOrchestrationService
     {
         private readonly IUserProcessingService userService;
-        private readonly IAccountProcessingService accountService;
+        private readonly IAccountStoreProcessingService accountStoreService;
 
-        public UserAccountOrchestrationService(IUserProcessingService userService, IAccountProcessingService accountService)
+        public UserAccountOrchestrationService(IUserProcessingService userService, IAccountStoreProcessingService accountStoreService)
         {
             this.userService = userService;
-            this.accountService = accountService;
+            this.accountStoreService = accountStoreService;
         }
 
-        public Account RetrieveAccount()
+        public Account RetrieveAccountStore()
         {
-            return accountService.RetrieveAccount();
+            return accountStoreService.RetrieveAccount();
         }
 
         public async ValueTask UpdateAccountCultureAsync(CultureId cultureId)
         {
-            Account account = accountService.RetrieveAccount();
+            Account account = RetrieveAccountStore();
+            if (account == null)
+            {
+                throw new AccountNotAuthenticatedException();
+            }
             await userService.UpdateUserCultureAsync(account.UserId, cultureId);
         }
     }

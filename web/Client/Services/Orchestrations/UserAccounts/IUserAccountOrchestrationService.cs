@@ -5,7 +5,7 @@ namespace FMFT.Web.Client.Services.Orchestrations.UserAccounts
 {
     public interface IUserAccountOrchestrationService
     {
-        Account RetrieveAccount();
+        Account RetrieveAccountStore();
         ValueTask UpdateAccountCultureAsync(CultureId cultureId);
     }
 }

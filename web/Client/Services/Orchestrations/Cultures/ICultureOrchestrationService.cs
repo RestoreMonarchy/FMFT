@@ -1,8 +1,8 @@
 ﻿using FMFT.Web.Shared.Enums;
 
-namespace FMFT.Web.Client.Services.Foundations.Cultures
+namespace FMFT.Web.Client.Services.Orchestrations.Cultures
 {
-    public interface ICultureService
+    public interface ICultureOrchestrationService
     {
         ValueTask<CultureId> RetrieveCultureIdAsync();
         ValueTask UpdateCultureIdAsync(CultureId cultureId);

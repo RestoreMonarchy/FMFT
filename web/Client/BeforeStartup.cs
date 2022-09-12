@@ -1,4 +1,6 @@
-﻿using FMFT.Web.Client.Services.Processings.Accounts;
+﻿using FMFT.Web.Client.Brokers.Loggings;
+using FMFT.Web.Client.Models.Accounts.Exceptions;
+using FMFT.Web.Client.Services.Orchestrations.Accounts;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 namespace FMFT.Web.Client
@@ -15,10 +17,19 @@ namespace FMFT.Web.Client
         private IConfiguration Configuration => host.Configuration;
         private IServiceProvider Services => host.Services;
 
+        // This method works as an exposer
         public async ValueTask ExecuteAsync()
         {
-            IAccountProcessingService accountService = Services.GetRequiredService<IAccountProcessingService>();
-            await accountService.UpdateAccountAsync();
+            ILoggingBroker loggingBroker = Services.GetRequiredService<ILoggingBroker>();
+            IAccountOrchestrationService accountOrchestrationService = Services.GetRequiredService<IAccountOrchestrationService>();
+            
+            try
+            {
+                await accountOrchestrationService.UpdateAccountStoreAsync();
+            } catch (AccountNotAuthenticatedException)
+            {
+                loggingBroker.LogInformation("Not authenticated on the web API");
+            }            
         }
     }
 }

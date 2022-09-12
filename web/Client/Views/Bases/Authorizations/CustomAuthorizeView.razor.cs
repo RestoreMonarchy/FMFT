@@ -1,5 +1,7 @@
 ﻿using FMFT.Web.Client.Models.Accounts;
+using FMFT.Web.Client.Models.Accounts.Exceptions;
 using FMFT.Web.Client.Services.Processings.Accounts;
+using FMFT.Web.Client.Services.Processings.AccountStores;
 using FMFT.Web.Shared.Enums;
 using Microsoft.AspNetCore.Components;
 
@@ -33,16 +35,29 @@ namespace FMFT.Web.Client.Views.Bases.Authorizations
         }
 
         [Inject]
-        public IAccountProcessingService AccountService { get; set; }
+        public IAccountStoreProcessingService AccountStoreService { get; set; }
+
+        public Account Account { get; set; }
+
+        protected override void OnInitialized()
+        {
+            try
+            {
+                Account = AccountStoreService.RetrieveAccount();
+            } catch (AccountNotAuthenticatedException)
+            {
+                Account = null;
+            }            
+        }
 
         public bool IsAuthorized()
         {
-            if (!AccountService.IsAuthenticated)
+            if (Account == null)
             {
                 return false;
             }
 
-            if (roles != null && !roles.Contains(AccountService.Account.Role))
+            if (roles != null && !roles.Contains(Account.Role))
             {
                 return false;
             }
