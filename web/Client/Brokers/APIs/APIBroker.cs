@@ -7,9 +7,13 @@ namespace FMFT.Web.Client.Brokers.APIs
         private readonly HttpClient httpClient;
         private readonly IRESTFulApiFactoryClient apiClient;        
 
-        public APIBroker(HttpClient httpClient)
+        public APIBroker(IConfiguration configuration)
         {
-            this.httpClient = httpClient;
+            httpClient = new HttpClient
+            {
+                BaseAddress = new Uri(configuration["APIUrl"])
+            };
+
             apiClient = GetApiClient();
         }
 

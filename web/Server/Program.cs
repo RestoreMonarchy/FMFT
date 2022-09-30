@@ -3,6 +3,7 @@ using FMFT.Extensions.Authentication.Constants;
 using FMFT.Web.Server.Extensions;
 using FMFT.Web.Server.Services.Implementations.Cookies;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,14 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin();
+    });
+});
 
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {
@@ -53,7 +62,8 @@ else
 app.UseHttpsRedirection();
 app.UseForwardedHeaders();
 
-app.UseBlazorFrameworkFiles();
+app.UseCors();
+
 app.UseStaticFiles();
 
 app.UseRouting();
@@ -64,7 +74,5 @@ app.UseAuthorization();
 app.MapRazorPages();
 
 app.MapControllers();
-
-app.MapFallbackToFile("index.html");
 
 app.Run();
