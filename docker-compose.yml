@@ -1,6 +1,7 @@
 version: '3'
 services:
   mssql-server:
+    restart: always
     user: root
     image: "mcr.microsoft.com/mssql/server:2019-latest"
     environment:
@@ -19,7 +20,8 @@ services:
         CONNECTION_STRING: "Server=mssql-server;Database=FMFT;Uid=sa;Password=Password!123"
     depends_on:
       - mssql-server
-  web:     
+  web:
+    restart: always
     build:
         context: .
         dockerfile: ./docker/web/Dockerfile
