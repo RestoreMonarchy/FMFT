@@ -88,7 +88,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
             try
             {
                 user = await userService.RetrieveUserByLoginAsync(externalLogin.ProviderName, externalLogin.ProviderKey);
-            } catch (UserNotFoundException)
+            } catch (NotFoundUserException)
             {
                 RegisterUserWithLoginParams registerParams = new()
                 {

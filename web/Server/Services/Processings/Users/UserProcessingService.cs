@@ -46,7 +46,7 @@ namespace FMFT.Web.Server.Services.Processings.Users
 
             if (!encryptionBroker.VerifyPassword(passwordText, user.PasswordHash))
             {
-                throw new UserPasswordNotMatchException();
+                throw new NotMatchUserPasswordException();
             }
 
             return user;

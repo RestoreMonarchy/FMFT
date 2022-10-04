@@ -1,5 +1,6 @@
-﻿using FMFT.Web.Server.Brokers.Authentications;
+﻿using FMFT.Extensions.Exceptions;
 using FMFT.Web.Server.Brokers.Encryptions;
+using FMFT.Web.Server.Brokers.Loggings;
 using FMFT.Web.Server.Brokers.Storages;
 using FMFT.Web.Server.Brokers.Validations;
 using FMFT.Web.Server.Models.Database;
@@ -11,166 +12,147 @@ using FMFT.Web.Shared.Enums;
 
 namespace FMFT.Web.Server.Services.Foundations.Users
 {
-    public class UserService : IUserService
+    public partial class UserService : IUserService
     {
         private readonly IStorageBroker storageBroker;
         private readonly IValidationBroker validationBroker;
         private readonly IEncryptionBroker encryptionBroker;
+        private readonly IExceptionWrapper exceptionWrapper;
+        private readonly ILoggingBroker loggingBroker;
 
         public UserService(IStorageBroker storageBroker,
             IValidationBroker validationBroker,
-            IEncryptionBroker encryptionBroker)
+            IEncryptionBroker encryptionBroker,
+            ILoggingBroker loggingBroker)
         {
             this.storageBroker = storageBroker;
             this.validationBroker = validationBroker;
             this.encryptionBroker = encryptionBroker;
-        }
+            this.loggingBroker = loggingBroker;
 
-        public async ValueTask<IEnumerable<User>> RetrieveAllUsersAsync()
-        {
-            return await storageBroker.SelectAllUsersAsync();
-        }
-
-        public async ValueTask<User> RetrieveUserByIdAsync(int userId)
-        {
-            User user = await storageBroker.SelectUserByIdAsync(userId);
-            if (user == null)
+            exceptionWrapper = new ExceptionWrapper()
             {
-                throw new UserNotFoundException();
-            }
-
-            return user;
-        }
-
-        public async ValueTask<User> RetrieveUserByEmailAsync(string email)
-        {
-            User user = await storageBroker.SelectUserByEmailAsync(email);
-            if (user == null)
-            {
-                throw new UserNotFoundException();
-            }
-
-            return user;
-        }
-
-        public async ValueTask<User> RetrieveUserByLoginAsync(string providerName, string providerKey)
-        {
-            User user = await storageBroker.SelectUserByLoginAsync(providerName, providerKey);
-            if (user == null)
-            {
-                throw new UserNotFoundException();
-            }
-
-            return user;
-        }
-
-        public async ValueTask<User> RegisterUserWithPasswordAsync(RegisterUserWithPasswordArguments args)
-        {
-            RegisterUserWithPasswordValidationException validationException = new();
-            if (validationBroker.IsEmailInvalid(args.Email))
-            {
-                validationException.UpsertDataList("Email", "Email is required and must be valid");
-            }
-            if (validationBroker.IsStringInvalid(args.FirstName, true, 255, 3))
-            {
-                validationException.UpsertDataList("FirstName", "First name is required and must be at least 3 characters long");
-            }
-            if (validationBroker.IsStringInvalid(args.LastName, true, 255, 3))
-            {
-                validationException.UpsertDataList("LastName", "Last name is required and must be at least 3 characters long");
-            }
-            if (validationBroker.IsPasswordInvalid(args.PasswordText))
-            {
-                validationException.UpsertDataList("PasswordText", "Password must be at least 8 characters long");
-            }
-
-            validationException.ThrowIfContainsErrors();
-
-            RegisterUserWithPasswordParams @params = new()
-            {
-                Email = args.Email,
-                FirstName = args.FirstName,
-                LastName = args.LastName,
-                Role = UserRole.Guest,
-                PasswordHash = encryptionBroker.HashPassword(args.PasswordText)
+                ServiceExceptionFactory = (e) => CreateAndLogServiceException(e),
+                ServiceValidationExceptionFactory = (e) => CreateAndLogValidationException(e),
+                DependencyExceptionFactory = (e) => CreateAndLogDependencyException(e),
+                DependencyValidationExceptionFactory = (e) => CreateAndLogDependencyValidationException(e)
             };
-
-            StoredProcedureResult<User> result = await storageBroker.RegisterUserWithPasswordAsync(@params);
-            if (result.ReturnValue == 1)
-            {
-                throw new UserEmailAlreadyExistsException();
-            }
-
-            return result.Result;
         }
 
-        public async ValueTask<User> RegisterUserWithLoginAsync(RegisterUserWithLoginParams @params)
-        {
-            RegisterUserWithLoginValidationException validationException = new();
-            if (validationBroker.IsEmailInvalid(@params.Email))
+        public ValueTask<IEnumerable<User>> RetrieveAllUsersAsync()
+            => TryCatch(async () => 
             {
-                validationException.UpsertDataList("Email", "Email is required and must be valid");
-            }
-            if (validationBroker.IsStringInvalid(@params.FirstName, true, 255, 3))
-            {
-                validationException.UpsertDataList("FirstName", "First name is required and must be at least 3 characters long");
-            }
-            if (validationBroker.IsStringInvalid(@params.LastName, true, 255, 3))
-            {
-                validationException.UpsertDataList("LastName", "Last name is required and must be at least 3 characters long");
-            }
-            if (validationBroker.IsStringInvalid(@params.ProviderName, true, 255, 0))
-            {
-                validationException.UpsertDataList("LoginProvider", "Invalid");
-            }
-            if (validationBroker.IsStringInvalid(@params.ProviderKey, true, 255, 0))
-            {
-                validationException.UpsertDataList("ProviderKey", "Invalid");
-            }
+                return await storageBroker.SelectAllUsersAsync();
+            });
 
-            validationException.ThrowIfContainsErrors();
-
-            StoredProcedureResult<User> result = await storageBroker.RegisterUserWithLoginAsync(@params);
-            if (result.ReturnValue == 1)
+        public ValueTask<User> RetrieveUserByIdAsync(int userId)
+            => TryCatch(async () =>
             {
-                throw new UserEmailAlreadyExistsException();
-            }
-            if (result.ReturnValue == 2)
+                User user = await storageBroker.SelectUserByIdAsync(userId);
+                if (user == null)
+                {
+                    throw new NotFoundUserException();
+                }
+
+                return user;
+            });
+
+        public ValueTask<User> RetrieveUserByEmailAsync(string email)
+            => TryCatch(async () => 
             {
-                throw new UserLoginAlreadyExistsException();
-            }
+                User user = await storageBroker.SelectUserByEmailAsync(email);
+                if (user == null)
+                {
+                    throw new NotFoundUserException();
+                }
 
-            return result.Result;
-        }
+                return user;
+            });
 
-        public async ValueTask UpdateUserRoleAsync(UpdateUserRoleParams @params)
-        {
-            StoredProcedureResult result = await storageBroker.UpdateUserRoleAsync(@params);
-
-            if (result.ReturnValue == 1)
+        public ValueTask<User> RetrieveUserByLoginAsync(string providerName, string providerKey)
+            => TryCatch(async () => 
             {
-                throw new UserNotFoundException();
-            }
+                User user = await storageBroker.SelectUserByLoginAsync(providerName, providerKey);
+                if (user == null)
+                {
+                    throw new NotFoundUserException();
+                }
 
-            if (result.ReturnValue == 2)
+                return user;
+            });
+
+        public ValueTask<User> RegisterUserWithPasswordAsync(RegisterUserWithPasswordArguments args)
+            => TryCatch(async () =>
             {
-                throw new UserRoleAlreadyExistsException();
-            }
-        }
+                ValidateRegisterUserWithPasswordArgs(args);
 
-        public async ValueTask UpdateUserCultureAsync(UpdateUserCultureParams @params)
-        {
-            StoredProcedureResult result = await storageBroker.UpdateUserCultureAsync(@params);
+                RegisterUserWithPasswordParams @params = new()
+                {
+                    Email = args.Email,
+                    FirstName = args.FirstName,
+                    LastName = args.LastName,
+                    Role = UserRole.Guest,
+                    PasswordHash = encryptionBroker.HashPassword(args.PasswordText)
+                };
 
-            if (result.ReturnValue == 1)
+                StoredProcedureResult<User> result = await storageBroker.RegisterUserWithPasswordAsync(@params);
+                if (result.ReturnValue == 1)
+                {
+                    throw new AlreadyExistsUserEmailException();
+                }
+
+                return result.Result;
+            });
+
+
+        public ValueTask<User> RegisterUserWithLoginAsync(RegisterUserWithLoginParams @params)
+            => TryCatch(async () =>
             {
-                throw new UserNotFoundException();
-            }
+                ValidateRegisterUserWithLoginParams(@params);
 
-            if (result.ReturnValue == 2)
+                StoredProcedureResult<User> result = await storageBroker.RegisterUserWithLoginAsync(@params);
+                if (result.ReturnValue == 1)
+                {
+                    throw new AlreadyExistsUserEmailException();
+                }
+                if (result.ReturnValue == 2)
+                {
+                    throw new AlreadyExistsUserExternalLoginException();
+                }
+
+                return result.Result;
+            });
+
+        public ValueTask UpdateUserRoleAsync(UpdateUserRoleParams @params)
+         => TryCatch(async () =>
+         {
+             StoredProcedureResult result = await storageBroker.UpdateUserRoleAsync(@params);
+
+             if (result.ReturnValue == 1)
+             {
+                 throw new NotFoundUserException();
+             }
+
+             if (result.ReturnValue == 2)
+             {
+                 throw new AlreadyExistsUserRoleException();
+             }
+         });
+
+        public ValueTask UpdateUserCultureAsync(UpdateUserCultureParams @params)
+            => TryCatch(async () =>
             {
-                throw new UserCultureAlreadyExistsException();
-            }
-        }
+                StoredProcedureResult result = await storageBroker.UpdateUserCultureAsync(@params);
+
+                if (result.ReturnValue == 1)
+                {
+                    throw new NotFoundUserException();
+                }
+
+                if (result.ReturnValue == 2)
+                {
+                    throw new AlreadyExistsUserCultureException();
+                }
+            });
     }
 }

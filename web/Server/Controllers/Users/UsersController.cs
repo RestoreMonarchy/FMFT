@@ -45,7 +45,7 @@ namespace FMFT.Web.Server.Controllers.Users
             {
                 User user = await userAccountService.RetrieveUserByIdAsync(userId);
                 return Ok(user);
-            } catch (UserNotFoundException exception)
+            } catch (NotFoundUserException exception)
             {
                 return NotFound(exception);
             } catch (AccountNotAuthorizedException exception)
@@ -71,10 +71,10 @@ namespace FMFT.Web.Server.Controllers.Users
             } catch (AccountNotAuthorizedException exception)
             {
                 return Forbidden(exception);
-            } catch (UserNotFoundException exception)
+            } catch (NotFoundUserException exception)
             {
                 return NotFound(exception);
-            } catch (UserRoleAlreadyExistsException exception)
+            } catch (AlreadyExistsUserRoleException exception)
             {
                 return Conflict(exception);
             }
@@ -97,11 +97,11 @@ namespace FMFT.Web.Server.Controllers.Users
             {
                 return Forbidden(exception);
             }
-            catch (UserNotFoundException exception)
+            catch (NotFoundUserException exception)
             {
                 return NotFound(exception);
             }
-            catch (UserCultureAlreadyExistsException exception)
+            catch (AlreadyExistsUserCultureException exception)
             {
                 return Conflict(exception);
             }

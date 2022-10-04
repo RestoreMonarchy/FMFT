@@ -46,7 +46,7 @@ namespace FMFT.Web.Server.Controllers
             } catch (RegisterUserWithPasswordValidationException exception)
             {
                 return BadRequest(exception);
-            } catch (UserEmailAlreadyExistsException)
+            } catch (AlreadyExistsUserEmailException)
             {
                 return Conflict();
             }
@@ -59,10 +59,10 @@ namespace FMFT.Web.Server.Controllers
             {
                 Account account = await userAccountService.SignInWithPasswordAsync(request);
                 return Ok(account);
-            } catch (UserPasswordNotMatchException exception)
+            } catch (NotMatchUserPasswordException exception)
             {
                 return Forbidden(exception);
-            } catch (UserNotFoundException exception)
+            } catch (NotFoundUserException exception)
             {
                 return Forbidden(exception);
             }
@@ -94,10 +94,10 @@ namespace FMFT.Web.Server.Controllers
             } catch (ExternalLoginNotFoundException)
             {
                 return Redirect("/Account/Login");
-            } catch (UserEmailAlreadyExistsException)
+            } catch (AlreadyExistsUserEmailException)
             {
                 return Redirect("/Account/Login");
-            } catch (UserLoginAlreadyExistsException)
+            } catch (AlreadyExistsUserExternalLoginException)
             {
                 return Redirect("/Account/Login");
             }
@@ -110,10 +110,10 @@ namespace FMFT.Web.Server.Controllers
             {
                 Account account = await userAccountService.ConfirmExternalLoginAsync(request);
                 return Ok(account);
-            } catch (UserEmailAlreadyExistsException)
+            } catch (AlreadyExistsUserEmailException)
             {
                 return Conflict();
-            } catch (UserLoginAlreadyExistsException)
+            } catch (AlreadyExistsUserExternalLoginException)
             {
                 return Conflict();
             } catch (ExternalLoginNotFoundException)
