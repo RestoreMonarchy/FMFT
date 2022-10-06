@@ -27,10 +27,10 @@ namespace FMFT.Web.Server.Controllers.Users
             {
                 return Conflict(exception);
             }
-            catch (AccountNotAuthorizedException exception)
+            catch (NotAuthorizedAccountProcessingException exception)
             {
                 return Forbidden(exception);
-            } catch (AccountNotAuthenticatedException exception)
+            } catch (NotAuthenticatedAccountException exception)
             {
                 return Unauthorized(exception);
             }
@@ -43,10 +43,10 @@ namespace FMFT.Web.Server.Controllers.Users
             {
                 IEnumerable<Reservation> reservations = await reservationService.RetrieveReservationsByUserIdAsync(userId);
                 return Ok(reservations);
-            } catch (AccountNotAuthenticatedException exception)
+            } catch (NotAuthenticatedAccountException exception)
             {
                 return Unauthorized(exception);
-            } catch (AccountNotAuthorizedException exception)
+            } catch (NotAuthorizedAccountProcessingException exception)
             {
                 return Forbidden(exception);
             }

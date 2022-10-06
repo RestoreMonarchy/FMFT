@@ -32,14 +32,14 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
         public ValueTask<IEnumerable<User>> RetrieveAllUsersAsync()
             => TryCatch(async () =>
             {
-                accountService.AuthorizeAccountByRole(UserRole.Admin);
+                await accountService.AuthorizeAccountByRoleAsync(UserRole.Admin);
                 return await userService.RetrieveAllUsersAsync();
             });
 
         public ValueTask<User> RetrieveUserByIdAsync(int userId)
             => TryCatch(async () =>
             {
-                accountService.AuthorizeAccountByUserIdOrRoles(userId, UserRole.Admin);
+                await accountService.AuthorizeAccountByUserIdOrRolesAsync(userId, UserRole.Admin);
                 return await userService.RetrieveUserByIdAsync(userId);
             });
 
@@ -80,8 +80,8 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
                     AuthenticationMethod = null,
                     IsPersistent = request.IsPersistent
                 };
-
                 await accountService.SignInAccountAsync(@params);
+                
                 return account;
             });
 
@@ -101,7 +101,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
                 {
                     user = await userService.RetrieveUserByLoginAsync(externalLogin.ProviderName, externalLogin.ProviderKey);
                 }
-                catch (NotFoundUserException)
+                catch (UserProcessingDependencyValidationException exception) when (exception.InnerException is NotFoundUserException)
                 {
                     RegisterUserWithLoginParams registerParams = new()
                     {
@@ -173,20 +173,21 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
         public ValueTask UpdateUserRoleAsync(UpdateUserRoleParams @params)
             => TryCatch(async () =>
             {
-                accountService.AuthorizeAccountByRole(UserRole.Admin);
+                await accountService.AuthorizeAccountByRoleAsync(UserRole.Admin);
                 await userService.UpdateUserRoleAsync(@params);
             });
 
         public ValueTask UpdateUserCultureAsync(UpdateUserCultureParams @params)
             => TryCatch(async () =>
             {
-                accountService.AuthorizeAccountByUserId(@params.UserId);
+                await accountService.AuthorizeAccountByUserIdAsync(@params.UserId);
                 await userService.UpdateUserCultureAsync(@params);
             });
 
-        public Account RetrieveAccount()
-        {
-            return accountService.RetrieveAccount();
-        }
+        public ValueTask<Account> RetrieveAccountAsync()
+            => TryCatch(async () =>
+            {
+                return await accountService.RetrieveAccountAsync();
+            });
     }
 }

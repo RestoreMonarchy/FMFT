@@ -60,7 +60,7 @@ namespace FMFT.Web.Server.Controllers.Shows
             {
                 return BadRequest(exception);
             }
-            catch (AccountNotAuthorizedException exception)
+            catch (NotAuthorizedAccountProcessingException exception)
             {
                 return Unauthorized(exception);
             }
@@ -86,7 +86,7 @@ namespace FMFT.Web.Server.Controllers.Shows
             {
                 return BadRequest(exception);
             }
-            catch (AccountNotAuthorizedException exception)
+            catch (NotAuthorizedAccountProcessingException exception)
             {
                 return Unauthorized(exception);
             }

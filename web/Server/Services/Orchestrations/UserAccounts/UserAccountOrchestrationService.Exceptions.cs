@@ -1,4 +1,5 @@
-﻿using FMFT.Web.Server.Models.UserAccounts.Exceptions;
+﻿using FMFT.Web.Server.Models.Accounts.Exceptions;
+using FMFT.Web.Server.Models.UserAccounts.Exceptions;
 using FMFT.Web.Server.Models.Users.Exceptions;
 
 namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
@@ -36,22 +37,26 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
 
         private Exception WrapException(Exception exception)
         {
-            if (exception is UserProcessingValidationException || exception is UserProcessingDependencyValidationException)
+            if (exception is UserProcessingValidationException 
+                or UserProcessingDependencyValidationException
+                or AccountProcessingValidationException
+                or AccountProcessingDependencyValidationException)
             {
                 Exception innerException = exception.InnerException;
 
                 return CreateAndLogDependencyValidationException(innerException);
             }
-            else if (exception is UserProcessingServiceException || exception is UserProcessingDependencyException)
+            if (exception is UserProcessingServiceException 
+                or UserProcessingDependencyException 
+                or AccountProcessingServiceException 
+                or AccountProcessingDependencyException)
             {
                 Exception innerException = exception.InnerException;
 
                 return CreateAndLogDependencyException(innerException);
             }
-            else
-            {
-                return CreateAndLogServiceException(exception);
-            }
+
+            return CreateAndLogServiceException(exception);
         }
 
         private Exception CreateAndLogValidationException(Exception exception)

@@ -9,6 +9,7 @@ using FMFT.Web.Server.Models.Users.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
+using FMFT.Web.Server.Models.UserAccounts.Exceptions;
 
 namespace FMFT.Web.Server.Controllers
 {
@@ -24,15 +25,17 @@ namespace FMFT.Web.Server.Controllers
         }
 
         [HttpGet("info")]
-        public IActionResult Info()
+        public async ValueTask<IActionResult> Info()
         {
             try
             {
-                Account account = userAccountService.RetrieveAccount();
+                Account account = await userAccountService.RetrieveAccountAsync();
                 return Ok(account);
-            } catch (AccountNotAuthenticatedException exception)
+            } catch (UserAccountOrchestrationDependencyValidationException exception) when (exception.InnerException is NotAuthenticatedAccountException)
             {
-                return Unauthorized(exception);
+                Exception innerException = exception.InnerException;
+
+                return Unauthorized(innerException);
             }
         }
 
@@ -91,7 +94,7 @@ namespace FMFT.Web.Server.Controllers
             } catch (RegisterUserWithLoginValidationException)
             {
                 return Redirect("/Account/ExternalLoginConfirmation");
-            } catch (ExternalLoginNotFoundException)
+            } catch (NotFoundExternalLoginException)
             {
                 return Redirect("/Account/Login");
             } catch (AlreadyExistsUserEmailException)
@@ -116,7 +119,7 @@ namespace FMFT.Web.Server.Controllers
             } catch (AlreadyExistsUserExternalLoginException)
             {
                 return Conflict();
-            } catch (ExternalLoginNotFoundException)
+            } catch (NotFoundExternalLoginException)
             {
                 return Unauthorized();
             } catch (RegisterUserWithLoginValidationException e)

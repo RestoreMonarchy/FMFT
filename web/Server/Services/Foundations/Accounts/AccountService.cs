@@ -1,8 +1,7 @@
 ﻿using FMFT.Extensions.Authentication.Models;
-using FMFT.Extensions.Authentication.Models.Exceptions;
 using FMFT.Web.Server.Brokers.Authentications;
+using FMFT.Web.Server.Brokers.Loggings;
 using FMFT.Web.Server.Models.Accounts;
-using FMFT.Web.Server.Models.Accounts.Exceptions;
 using FMFT.Web.Server.Models.Accounts.Params;
 using System.Security.Claims;
 
@@ -11,50 +10,49 @@ namespace FMFT.Web.Server.Services.Foundations.Accounts
     public partial class AccountService : IAccountService
     {
         private readonly IAuthenticationBroker authenticationBroker;
+        private readonly ILoggingBroker loggingBroker;
 
-        public AccountService(IAuthenticationBroker authenticationBroker)
+        public AccountService(IAuthenticationBroker authenticationBroker, ILoggingBroker loggingBroker)
         {
             this.authenticationBroker = authenticationBroker;
+            this.loggingBroker = loggingBroker;
         }
 
-        public Account RetrieveAccount()
-        {
-            try
+        public ValueTask<Account> RetrieveAccountAsync()
+            => TryCatch(() =>
             {
                 ClaimsPrincipal claimsPrincipal = authenticationBroker.GetClaimsPrincipal();
-                return MapClaimsPrincipalToAccount(claimsPrincipal);
-            } catch (NotAuthenticatedException)
+                Account account = MapClaimsPrincipalToAccount(claimsPrincipal);
+                
+                return ValueTask.FromResult(account);
+            });
+
+        public ValueTask SignOutAccountAsync()
+            => TryCatch(async () =>
             {
-                throw new AccountNotAuthenticatedException();
-            }            
-        }
+                await authenticationBroker.SignOutAsync();
+            });
 
-        public async ValueTask SignOutAccountAsync()
-        {
-            await authenticationBroker.SignOutAsync();
-        }
+        public ValueTask ChallengeExternalLoginAsync(ChallengeExternalLoginParams @params)
+            => TryCatch(async () =>
+            {
+                await authenticationBroker.ChallengeExternalLoginAsync(@params.Provider, @params.RedirectUrl);
+            });
 
-        public async ValueTask ChallengeExternalLoginAsync(ChallengeExternalLoginParams @params)
-        {
-            await authenticationBroker.ChallengeExternalLoginAsync(@params.Provider, @params.RedirectUrl);
-        }
-
-        public async ValueTask<ExternalLogin> RetrieveExternalLoginAsync()
-        {
-            try
+        public ValueTask<ExternalLogin> RetrieveExternalLoginAsync()
+            => TryCatch(async () => 
             {
                 ExternalLoginInfo externalLoginInfo = await authenticationBroker.GetExternalLoginInfoAsync();
-                return MapExternalLoginInfoToExternalLogin(externalLoginInfo);
-            } catch (ExternalNotAuthenticatedException)
-            {
-                throw new ExternalLoginNotFoundException();
-            }
-        }
+                ExternalLogin externalLogin = MapExternalLoginInfoToExternalLogin(externalLoginInfo);
 
-        public async ValueTask SignInAccountAsync(SignInAccountParams @params)
-        {
-            Dictionary<string, object> claims = MapAccountToDictionary(@params.Account);
-            await authenticationBroker.SignInAsync(claims, @params.IsPersistent, @params.AuthenticationMethod);
-        }
+                return externalLogin;
+            });
+
+        public ValueTask SignInAccountAsync(SignInAccountParams @params)
+            => TryCatch(async () =>
+            {
+                Dictionary<string, object> claims = MapAccountToDictionary(@params.Account);
+                await authenticationBroker.SignInAsync(claims, @params.IsPersistent, @params.AuthenticationMethod);
+            });
     }
 }

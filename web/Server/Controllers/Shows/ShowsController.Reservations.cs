@@ -15,11 +15,11 @@ namespace FMFT.Web.Server.Controllers.Shows
                 IEnumerable<Reservation> reservations = await accountReservationService.RetrieveReservationsByShowIdAsync(showId);
                 return Ok(reservations);
             }
-            catch (AccountNotAuthenticatedException exception)
+            catch (NotAuthenticatedAccountException exception)
             {
                 return Unauthorized(exception);
             }
-            catch (AccountNotAuthorizedException exception)
+            catch (NotAuthorizedAccountProcessingException exception)
             {
                 return Forbidden(exception);
             }

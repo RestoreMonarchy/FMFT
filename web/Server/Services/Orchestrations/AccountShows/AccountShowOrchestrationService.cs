@@ -19,13 +19,13 @@ namespace FMFT.Web.Server.Services.Orchestrations.AccountShows
 
         public async ValueTask<Show> AddShowAsync(AddShowParams @params)
         {
-            accountService.AuthorizeAccountByRole(UserRole.Admin);
+            accountService.AuthorizeAccountByRoleAsync(UserRole.Admin);
             return await showService.AddShowAsync(@params);
         }
 
         public async ValueTask<Show> ModifyShowAsync(UpdateShowParams @params)
         {
-            accountService.AuthorizeAccountByRole(UserRole.Admin);
+            accountService.AuthorizeAccountByRoleAsync(UserRole.Admin);
             return await showService.ModifyShowAsync(@params);
         }
 

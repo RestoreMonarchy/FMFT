@@ -1,9 +1,11 @@
-﻿using FMFT.Web.Server.Brokers.Loggings;
+﻿using FMFT.Extensions.Authentication.Models.Exceptions;
+using FMFT.Extensions.Exceptions;
+using FMFT.Web.Server.Models.Accounts.Exceptions;
 using FMFT.Web.Server.Models.Users.Exceptions;
 
-namespace FMFT.Web.Server.Services.Processings.Users
+namespace FMFT.Web.Server.Services.Foundations.Accounts
 {
-    public partial class UserProcessingService
+    public partial class AccountService
     {
         private delegate ValueTask<T> ReturningDelegate<T>();
         private delegate ValueTask ReturningDelegate();
@@ -36,29 +38,26 @@ namespace FMFT.Web.Server.Services.Processings.Users
 
         private Exception WrapException(Exception exception)
         {
-            if (exception is UserValidationException || exception is UserDependencyValidationException)
+            // Map dependency exceptions
+            if (exception is ExternalNotAuthenticatedException)
             {
-                Exception innerException = exception.InnerException;
+                Exception innerException = new NotFoundExternalLoginException();
 
                 return CreateAndLogDependencyValidationException(innerException);
-            } 
-            if (exception is UserServiceException || exception is UserDependencyException)
-            {
-                Exception innerException = exception.InnerException;
-
-                return CreateAndLogDependencyException(innerException);
-            } 
-            if (exception is NotMatchPasswordUserProcessingException)
-            {
-                return CreateAndLogValidationException(exception);
             }
+            if (exception is NotAuthenticatedException) 
+            {
+                Exception innerException = new NotAuthenticatedAccountException();
+
+                return CreateAndLogDependencyValidationException(innerException);
+            }            
 
             return CreateAndLogServiceException(exception);
         }
 
         private Exception CreateAndLogValidationException(Exception exception)
         {
-            Exception userValidationException = new UserProcessingValidationException(exception);
+            Exception userValidationException = new AccountValidationException(exception);
             loggingBroker.LogError(userValidationException);
 
             return userValidationException;
@@ -66,7 +65,7 @@ namespace FMFT.Web.Server.Services.Processings.Users
 
         private Exception CreateAndLogDependencyException(Exception exception)
         {
-            Exception userDependencyException = new UserProcessingDependencyException(exception);
+            Exception userDependencyException = new AccountDependencyException(exception);
             loggingBroker.LogError(userDependencyException);
 
             return userDependencyException;
@@ -74,7 +73,7 @@ namespace FMFT.Web.Server.Services.Processings.Users
 
         private Exception CreateAndLogDependencyValidationException(Exception exception)
         {
-            Exception userDependencyValidationException = new UserProcessingDependencyValidationException(exception);
+            Exception userDependencyValidationException = new AccountDependencyValidationException(exception);
             loggingBroker.LogError(userDependencyValidationException);
 
             return userDependencyValidationException;
@@ -82,7 +81,7 @@ namespace FMFT.Web.Server.Services.Processings.Users
 
         private Exception CreateAndLogServiceException(Exception exception)
         {
-            Exception userServiceException = new UserProcessingServiceException(exception);
+            Exception userServiceException = new AccountServiceException(exception);
             loggingBroker.LogError(userServiceException);
 
             return userServiceException;

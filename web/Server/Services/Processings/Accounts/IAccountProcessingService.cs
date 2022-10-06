@@ -7,14 +7,14 @@ namespace FMFT.Web.Server.Services.Processings.Accounts
 {
     public interface IAccountProcessingService
     {
-        void AuthorizeAccountByUserId(int authorizedUserId);
-        void AuthorizeAccountByUserIdOrRoles(int authorizedUserId, params UserRole[] authorizedRoles);
-        void AuthorizeAccountByRole(params UserRole[] authorizedRoles);
+        ValueTask AuthorizeAccountByUserIdAsync(int authorizedUserId);
+        ValueTask AuthorizeAccountByUserIdOrRolesAsync(int authorizedUserId, params UserRole[] authorizedRoles);
+        ValueTask AuthorizeAccountByRoleAsync(params UserRole[] authorizedRoles);
         ValueTask ChallengeExternalLoginAsync(ChallengeExternalLoginArguments arguments);
-        Account RetrieveAccount();
+        ValueTask<Account> RetrieveAccountAsync();
         ValueTask<ExternalLogin> RetrieveExternalLoginAsync();
         ValueTask SignInAccountAsync(SignInAccountParams @params);
         ValueTask SignOutAccountAsync();
-        void AuthorizeAccount();
+        ValueTask AuthorizeAccountAsync();
     }
 }

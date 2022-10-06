@@ -29,10 +29,10 @@ namespace FMFT.Web.Server.Controllers.Users
             {
                 IEnumerable<User> users = await userAccountService.RetrieveAllUsersAsync();
                 return Ok(users);
-            } catch (AccountNotAuthorizedException exception)
+            } catch (NotAuthorizedAccountProcessingException exception)
             {
                 return Forbidden(exception);
-            } catch (AccountNotAuthenticatedException exception)
+            } catch (NotAuthenticatedAccountException exception)
             {
                 return Unauthorized(exception);
             }
@@ -48,10 +48,10 @@ namespace FMFT.Web.Server.Controllers.Users
             } catch (NotFoundUserException exception)
             {
                 return NotFound(exception);
-            } catch (AccountNotAuthorizedException exception)
+            } catch (NotAuthorizedAccountProcessingException exception)
             {
                 return Forbidden(exception);
-            } catch (AccountNotAuthenticatedException exception)
+            } catch (NotAuthenticatedAccountException exception)
             {
                 return Unauthorized(exception);
             }
@@ -65,10 +65,10 @@ namespace FMFT.Web.Server.Controllers.Users
                 @params.UserId = userId;
                 await userAccountService.UpdateUserRoleAsync(@params);
                 return Ok();
-            } catch (AccountNotAuthenticatedException exception)
+            } catch (NotAuthenticatedAccountException exception)
             {
                 return Unauthorized(exception);
-            } catch (AccountNotAuthorizedException exception)
+            } catch (NotAuthorizedAccountProcessingException exception)
             {
                 return Forbidden(exception);
             } catch (NotFoundUserException exception)
@@ -89,11 +89,11 @@ namespace FMFT.Web.Server.Controllers.Users
                 await userAccountService.UpdateUserCultureAsync(@params);
                 return Ok();
             }
-            catch (AccountNotAuthenticatedException exception)
+            catch (NotAuthenticatedAccountException exception)
             {
                 return Unauthorized(exception);
             }
-            catch (AccountNotAuthorizedException exception)
+            catch (NotAuthorizedAccountProcessingException exception)
             {
                 return Forbidden(exception);
             }

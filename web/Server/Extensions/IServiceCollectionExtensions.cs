@@ -20,6 +20,7 @@ using FMFT.Web.Server.Services.Processings.Reservations;
 using FMFT.Web.Server.Services.Processings.Shows;
 using FMFT.Web.Server.Services.Processings.Users;
 using Microsoft.AspNetCore.Authentication;
+using FMFT.Web.Server.Brokers.Loggings;
 
 namespace FMFT.Web.Server.Extensions
 {
@@ -68,6 +69,7 @@ namespace FMFT.Web.Server.Extensions
             services.AddScoped<IEncryptionBroker, EncryptionBroker>();
             services.AddScoped<IValidationBroker, ValidationBroker>();
             services.AddScoped<IUrlBroker, UrlBroker>();
+            services.AddScoped<ILoggingBroker, LoggingBroker>();
             return services;
         }
 

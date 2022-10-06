@@ -2,9 +2,9 @@
 
 namespace FMFT.Web.Server.Models.Accounts.Exceptions
 {
-    public class AccountNotAuthenticatedException : Xeption
+    public class NotAuthenticatedAccountException : Xeption
     {
-        public AccountNotAuthenticatedException() 
+        public NotAuthenticatedAccountException() 
             : base("ERR001: Account not authenticated")
         {
 

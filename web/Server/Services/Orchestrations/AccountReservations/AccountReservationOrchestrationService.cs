@@ -28,16 +28,16 @@ namespace FMFT.Web.Server.Services.Orchestrations.AccountReservations
                 UserId = request.UserId
             };
 
-            accountService.AuthorizeAccountByUserIdOrRoles(@params.UserId, UserRole.Admin);
+            await accountService.AuthorizeAccountByUserIdOrRolesAsync(@params.UserId, UserRole.Admin);
 
             return await reservationService.CreateReservationAsync(@params);
         }
 
         public async ValueTask<Reservation> UpdateReservationStatusAsync(UpdateReservationStatusRequest request)
         {
-            accountService.AuthorizeAccountByRole(UserRole.Admin);
+            await accountService.AuthorizeAccountByRoleAsync(UserRole.Admin);
 
-            Account account = accountService.RetrieveAccount();
+            Account account = await accountService.RetrieveAccountAsync();
 
             UpdateReservationStatusParams @params = new()
             {
@@ -52,7 +52,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.AccountReservations
 
         public async ValueTask<IEnumerable<Reservation>> RetrieveReservationsByUserIdAsync(int userId)
         {
-            accountService.AuthorizeAccountByUserIdOrRoles(userId, UserRole.Admin);
+            await accountService.AuthorizeAccountByUserIdOrRolesAsync(userId, UserRole.Admin);
 
             IEnumerable<Reservation> reservations = await reservationService.RetrieveReservationsByUserIdAsync(userId);
 
@@ -61,7 +61,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.AccountReservations
 
         public async ValueTask<IEnumerable<Reservation>> RetrieveReservationsByShowIdAsync(int showId)
         {
-            accountService.AuthorizeAccountByRole(UserRole.Admin);
+            await accountService.AuthorizeAccountByRoleAsync(UserRole.Admin);
 
             IEnumerable<Reservation> reservations = await reservationService.RetrieveReservationsByShowIdAsync(showId);
 
@@ -70,7 +70,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.AccountReservations
 
         public async ValueTask<IEnumerable<Reservation>> RetrieveAllReservationsAsync()
         {
-            accountService.AuthorizeAccountByRole(UserRole.Admin);
+            await accountService.AuthorizeAccountByRoleAsync(UserRole.Admin);
 
             IEnumerable<Reservation> reservations = await reservationService.RetrieveAllReservationsAsync();
 
@@ -81,7 +81,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.AccountReservations
         {
             Reservation reservation = await reservationService.RetrieveReservationByIdAsync(reservationId);
 
-            accountService.AuthorizeAccountByUserIdOrRoles(reservation.User.Id, UserRole.Admin);
+            await accountService.AuthorizeAccountByUserIdOrRolesAsync(reservation.User.Id, UserRole.Admin);
 
             return reservation;
         }

@@ -5,6 +5,7 @@ using FMFT.Web.Server.Models.Accounts.Arguments;
 using FMFT.Web.Server.Models.Accounts.Exceptions;
 using FMFT.Web.Server.Models.Accounts.Params;
 using FMFT.Web.Shared.Enums;
+using FMFT.Web.Server.Brokers.Loggings;
 
 namespace FMFT.Web.Server.Services.Processings.Accounts
 {
@@ -12,77 +13,88 @@ namespace FMFT.Web.Server.Services.Processings.Accounts
     {
         private readonly IAccountService accountService;
         private readonly IUrlBroker urlBroker;
+        private readonly ILoggingBroker loggingBroker;
 
-        public AccountProcessingService(IAccountService accountService, IUrlBroker urlBroker)
+        public AccountProcessingService(IAccountService accountService, IUrlBroker urlBroker, ILoggingBroker loggingBroker)
         {
             this.accountService = accountService;
             this.urlBroker = urlBroker;
+            this.loggingBroker = loggingBroker;
         }
 
-        public void AuthorizeAccount()
-        {
-            RetrieveAccount();
-        }
-
-        public void AuthorizeAccountByUserId(int authorizedUserId)
-        {
-            Account account = RetrieveAccount();
-            if (account.UserId != authorizedUserId)
+        public ValueTask AuthorizeAccountAsync()
+            => TryCatch(async () =>
             {
-                throw new AccountNotAuthorizedException();
-            }
-        }
+                await RetrieveAccountAsync();
+            });
 
-        public void AuthorizeAccountByRole(params UserRole[] authorizedRoles)
-        {
-            Account account = RetrieveAccount();
-            if (!authorizedRoles.Contains(account.Role))
+        public ValueTask AuthorizeAccountByUserIdAsync(int authorizedUserId)
+            => TryCatch(async () =>
             {
-                throw new AccountNotAuthorizedException();
-            }
-        }
+                Account account = await RetrieveAccountAsync();
+                if (account.UserId != authorizedUserId)
+                {
+                    throw new NotAuthorizedAccountProcessingException();
+                }
+            });
 
-        public void AuthorizeAccountByUserIdOrRoles(int authorizedUserId, params UserRole[] authorizedRoles)
-        {
-            Account account = RetrieveAccount();
-            if (authorizedUserId != account.UserId && !authorizedRoles.Contains(account.Role))
+        public ValueTask AuthorizeAccountByRoleAsync(params UserRole[] authorizedRoles)
+            => TryCatch(async () =>
             {
-                throw new AccountNotAuthorizedException();
-            }
-        }
+                Account account = await RetrieveAccountAsync();
+                if (!authorizedRoles.Contains(account.Role))
+                {
+                    throw new NotAuthorizedAccountProcessingException();
+                }
+            });
 
-        public Account RetrieveAccount()
-        {
-            return accountService.RetrieveAccount();
-        }
-
-        public async ValueTask SignOutAccountAsync()
-        {
-            await accountService.SignOutAccountAsync();
-        }
-
-        public async ValueTask SignInAccountAsync(SignInAccountParams @params)
-        {
-            await accountService.SignInAccountAsync(@params);
-        }
-
-        public async ValueTask<ExternalLogin> RetrieveExternalLoginAsync()
-        {
-            return await accountService.RetrieveExternalLoginAsync();
-        }
-
-        public async ValueTask ChallengeExternalLoginAsync(ChallengeExternalLoginArguments arguments)
-        {
-            ChallengeExternalLoginParams @params = new()
+        public ValueTask AuthorizeAccountByUserIdOrRolesAsync(int authorizedUserId, params UserRole[] authorizedRoles)
+            => TryCatch(async () =>
             {
-                Provider = arguments.Provider,
-                RedirectUrl = urlBroker.Action("ExternalLoginCallback", "Account", 
-                new 
-                { 
-                    returnUrl = arguments.ReturnUrl 
+                Account account = await RetrieveAccountAsync();
+                if (authorizedUserId != account.UserId && !authorizedRoles.Contains(account.Role))
+                {
+                    throw new NotAuthorizedAccountProcessingException();
+                }
+            });
+
+        public ValueTask<Account> RetrieveAccountAsync()
+            => TryCatch(async () =>
+            {
+                return await accountService.RetrieveAccountAsync();
+            });
+
+        public ValueTask SignOutAccountAsync()
+            => TryCatch(async () =>
+            {
+                await accountService.SignOutAccountAsync();
+            });
+
+        public ValueTask SignInAccountAsync(SignInAccountParams @params)
+            => TryCatch(async () =>
+            {
+                await accountService.SignInAccountAsync(@params);
+            });
+
+        public ValueTask<ExternalLogin> RetrieveExternalLoginAsync()
+            => TryCatch(async () =>
+            {
+                return await accountService.RetrieveExternalLoginAsync();
+            });
+
+        public ValueTask ChallengeExternalLoginAsync(ChallengeExternalLoginArguments arguments)
+            => TryCatch(async () =>
+            {
+                ChallengeExternalLoginParams @params = new()
+                {
+                    Provider = arguments.Provider,
+                    RedirectUrl = urlBroker.Action("ExternalLoginCallback", "Account",
+                new
+                {
+                    returnUrl = arguments.ReturnUrl
                 })
-            };
-            await accountService.ChallengeExternalLoginAsync(@params);
-        }
+                };
+                await accountService.ChallengeExternalLoginAsync(@params);
+            });
     }
 }
