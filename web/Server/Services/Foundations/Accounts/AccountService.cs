@@ -52,6 +52,7 @@ namespace FMFT.Web.Server.Services.Foundations.Accounts
             => TryCatch(async () =>
             {
                 Dictionary<string, object> claims = MapAccountToDictionary(@params.Account);
+
                 await authenticationBroker.SignInAsync(claims, @params.IsPersistent, @params.AuthenticationMethod);
             });
     }

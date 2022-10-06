@@ -1,15 +1,11 @@
-﻿using FMFT.Web.Server.Services.Orchestrations.UserAccounts;
-using FMFT.Web.Server.Services.Processings.Accounts;
-using FMFT.Web.Server.Services.Processings.Users;
-using FMFT.Web.Server.Models.Accounts;
+﻿using FMFT.Web.Server.Models.Accounts;
 using FMFT.Web.Server.Models.Accounts.Exceptions;
+using FMFT.Web.Server.Models.UserAccounts.Exceptions;
 using FMFT.Web.Server.Models.UserAccounts.Requests;
-using FMFT.Web.Server.Models.Users;
 using FMFT.Web.Server.Models.Users.Exceptions;
-using Microsoft.AspNetCore.Authorization;
+using FMFT.Web.Server.Services.Orchestrations.UserAccounts;
 using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
-using FMFT.Web.Server.Models.UserAccounts.Exceptions;
 
 namespace FMFT.Web.Server.Controllers
 {
@@ -70,13 +66,20 @@ namespace FMFT.Web.Server.Controllers
             try
             {
                 Account account = await userAccountService.SignInWithPasswordAsync(request);
+                
                 return Ok(account);
-            } catch (NotMatchPasswordUserProcessingException exception)
+            } catch (UserAccountOrchestrationDependencyValidationException exception) 
+                when (exception.InnerException is NotMatchPasswordUserProcessingException)
             {
-                return Forbidden(exception);
-            } catch (NotFoundUserException exception)
+                Exception innerException = exception.InnerException;
+
+                return Forbidden(innerException);
+            } catch (UserAccountOrchestrationDependencyValidationException exception)
+                when (exception.InnerException is NotFoundUserException)
             {
-                return Forbidden(exception);
+                Exception innerException = exception.InnerException;
+
+                return Forbidden(innerException);
             }
         }
 
