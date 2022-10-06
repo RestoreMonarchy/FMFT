@@ -1,9 +1,7 @@
-﻿using FMFT.Extensions.Exceptions.Attributes;
-using Xeptions;
+﻿using Xeptions;
 
 namespace FMFT.Web.Server.Models.Users.Exceptions
 {
-    [WrapWithServiceValidationException]
     public class RegisterUserWithLoginValidationException : Xeption
     {
         public RegisterUserWithLoginValidationException() 

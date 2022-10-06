@@ -1,9 +1,7 @@
-﻿using FMFT.Extensions.Exceptions.Attributes;
-using Xeptions;
+﻿using Xeptions;
 
 namespace FMFT.Web.Server.Models.Users.Exceptions
 {
-    [WrapWithDependencyValidationException]
     public class AlreadyExistsUserRoleException : Xeption
     {
         public AlreadyExistsUserRoleException()

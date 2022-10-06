@@ -1,4 +1,4 @@
-﻿using FMFT.Extensions.Exceptions;
+﻿using FMFT.Extensions.TheStandard;
 using FMFT.Web.Server.Brokers.Encryptions;
 using FMFT.Web.Server.Brokers.Loggings;
 using FMFT.Web.Server.Brokers.Storages;
@@ -12,12 +12,11 @@ using FMFT.Web.Shared.Enums;
 
 namespace FMFT.Web.Server.Services.Foundations.Users
 {
-    public partial class UserService : IUserService
+    public partial class UserService : TheStandardService, IUserService
     {
         private readonly IStorageBroker storageBroker;
         private readonly IValidationBroker validationBroker;
         private readonly IEncryptionBroker encryptionBroker;
-        private readonly IExceptionWrapper exceptionWrapper;
         private readonly ILoggingBroker loggingBroker;
 
         public UserService(IStorageBroker storageBroker,
@@ -29,14 +28,6 @@ namespace FMFT.Web.Server.Services.Foundations.Users
             this.validationBroker = validationBroker;
             this.encryptionBroker = encryptionBroker;
             this.loggingBroker = loggingBroker;
-
-            exceptionWrapper = new ExceptionWrapper()
-            {
-                ServiceExceptionFactory = (e) => CreateAndLogServiceException(e),
-                ServiceValidationExceptionFactory = (e) => CreateAndLogValidationException(e),
-                DependencyExceptionFactory = (e) => CreateAndLogDependencyException(e),
-                DependencyValidationExceptionFactory = (e) => CreateAndLogDependencyValidationException(e)
-            };
         }
 
         public ValueTask<IEnumerable<User>> RetrieveAllUsersAsync()

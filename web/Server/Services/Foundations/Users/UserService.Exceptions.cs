@@ -5,42 +5,23 @@ namespace FMFT.Web.Server.Services.Foundations.Users
 {
     public partial class UserService
     {
-        private delegate ValueTask<T> ReturningDelegate<T>();
-        private delegate ValueTask ReturningDelegate();
-
-        private async ValueTask TryCatch(ReturningDelegate function)
+        protected override Exception WrapException(Exception exception)
         {
-            try
+            if (exception is NotFoundUserException 
+                or RegisterUserWithLoginValidationException
+                or RegisterUserWithPasswordValidationException)
             {
-                await function();
-            } catch (Exception exception)
-            {
-                Exception wrappedException = WrapException(exception);
-                throw wrappedException;
+                return CreateAndLogValidationException(exception);
             }
-        }
-
-        private async ValueTask<T> TryCatch<T>(ReturningDelegate<T> function)
-        {
-            try
+            if (exception is AlreadyExistsUserCultureException 
+                or AlreadyExistsUserEmailException 
+                or AlreadyExistsUserExternalLoginException 
+                or AlreadyExistsUserRoleException)
             {
-                return await function();
-            } catch (Exception exception)
-            {
-                Exception wrappedException = WrapException(exception);
-                throw wrappedException;
-            }
-        }
-
-        private Exception WrapException(Exception exception)
-        {
-            Exception wrappedException = exceptionWrapper.WrapException(exception);
-            if (wrappedException == exception)
-            {
-                wrappedException = CreateAndLogServiceException(exception);
+                return CreateAndLogDependencyValidationException(exception);
             }
 
-            return wrappedException;
+            return CreateAndLogServiceException(exception);
         }
 
         private Exception CreateAndLogValidationException(Exception exception)
@@ -54,7 +35,7 @@ namespace FMFT.Web.Server.Services.Foundations.Users
         private Exception CreateAndLogDependencyException(Exception exception)
         {
             Exception userDependencyException = new UserDependencyException(exception);
-            loggingBroker.LogError(userDependencyException);
+            loggingBroker.LogCritical(userDependencyException);
 
             return userDependencyException;
         }

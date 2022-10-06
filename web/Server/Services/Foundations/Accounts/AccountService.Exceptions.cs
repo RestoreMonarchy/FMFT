@@ -1,5 +1,5 @@
 ﻿using FMFT.Extensions.Authentication.Models.Exceptions;
-using FMFT.Extensions.Exceptions;
+using FMFT.Extensions.TheStandard;
 using FMFT.Web.Server.Models.Accounts.Exceptions;
 using FMFT.Web.Server.Models.Users.Exceptions;
 
