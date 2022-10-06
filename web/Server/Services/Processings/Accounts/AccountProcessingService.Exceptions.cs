@@ -1,53 +1,22 @@
-﻿using FMFT.Extensions.Authentication.Models.Exceptions;
-using FMFT.Web.Server.Models.Accounts.Exceptions;
-using FMFT.Web.Server.Models.Users.Exceptions;
+﻿using FMFT.Web.Server.Models.Accounts.Exceptions;
 
 namespace FMFT.Web.Server.Services.Processings.Accounts
 {
     public partial class AccountProcessingService
     {
-        private delegate ValueTask<T> ReturningDelegate<T>();
-        private delegate ValueTask ReturningDelegate();
-
-        private async ValueTask TryCatch(ReturningDelegate function)
-        {
-            try
-            {
-                await function();
-            }
-            catch (Exception exception)
-            {
-                Exception wrappedException = WrapException(exception);
-                throw wrappedException;
-            }
-        }
-
-        private async ValueTask<T> TryCatch<T>(ReturningDelegate<T> function)
-        {
-            try
-            {
-                return await function();
-            }
-            catch (Exception exception)
-            {
-                Exception wrappedException = WrapException(exception);
-                throw wrappedException;
-            }
-        }
-
-        private Exception WrapException(Exception exception)
+        protected override Exception WrapException(Exception exception)
         {
             if (exception is NotAuthorizedAccountProcessingException)
             {
                 return CreateAndLogValidationException(exception);
             }
-            if (exception is AccountValidationException || exception is AccountDependencyValidationException)
+            if (exception is AccountValidationException or AccountDependencyValidationException)
             {
                 Exception innerException = exception.InnerException;
 
                 return CreateAndLogDependencyValidationException(innerException);
             }
-            if (exception is AccountServiceException || exception is AccountDependencyValidationException)
+            if (exception is AccountServiceException or AccountDependencyValidationException)
             {
                 Exception innerException = exception.InnerException;
 

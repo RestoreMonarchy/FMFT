@@ -6,10 +6,11 @@ using FMFT.Web.Server.Models.Accounts.Exceptions;
 using FMFT.Web.Server.Models.Accounts.Params;
 using FMFT.Web.Shared.Enums;
 using FMFT.Web.Server.Brokers.Loggings;
+using FMFT.Extensions.Exceptions;
 
 namespace FMFT.Web.Server.Services.Processings.Accounts
 {
-    public partial class AccountProcessingService : IAccountProcessingService
+    public partial class AccountProcessingService : TheStandardService, IAccountProcessingService
     {
         private readonly IAccountService accountService;
         private readonly IUrlBroker urlBroker;
