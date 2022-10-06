@@ -30,8 +30,10 @@ namespace FMFT.Web.Server.Controllers
             try
             {
                 Account account = await userAccountService.RetrieveAccountAsync();
+
                 return Ok(account);
-            } catch (UserAccountOrchestrationDependencyValidationException exception) when (exception.InnerException is NotAuthenticatedAccountException)
+            } catch (UserAccountOrchestrationDependencyValidationException exception) 
+                when (exception.InnerException is NotAuthenticatedAccountException)
             {
                 Exception innerException = exception.InnerException;
 
@@ -45,13 +47,20 @@ namespace FMFT.Web.Server.Controllers
             try
             {
                 Account account = await userAccountService.RegisterWithPasswordAsync(request);
+
                 return Ok(account);
-            } catch (RegisterUserWithPasswordValidationException exception)
+            } catch (UserAccountOrchestrationDependencyValidationException exception)
+                when (exception.InnerException is RegisterUserWithPasswordValidationException)
             {
-                return BadRequest(exception);
-            } catch (AlreadyExistsUserEmailException)
+                Exception innerException = exception.InnerException;
+
+                return BadRequest(innerException);
+            } catch (UserAccountOrchestrationDependencyValidationException exception)
+                when (exception.InnerException is AlreadyExistsEmailUserException)
             {
-                return Conflict();
+                Exception innerException = exception.InnerException;
+
+                return Conflict(innerException);
             }
         } 
 
@@ -97,7 +106,7 @@ namespace FMFT.Web.Server.Controllers
             } catch (NotFoundExternalLoginException)
             {
                 return Redirect("/Account/Login");
-            } catch (AlreadyExistsUserEmailException)
+            } catch (AlreadyExistsEmailUserException)
             {
                 return Redirect("/Account/Login");
             } catch (AlreadyExistsUserExternalLoginException)
@@ -113,7 +122,7 @@ namespace FMFT.Web.Server.Controllers
             {
                 Account account = await userAccountService.ConfirmExternalLoginAsync(request);
                 return Ok(account);
-            } catch (AlreadyExistsUserEmailException)
+            } catch (AlreadyExistsEmailUserException)
             {
                 return Conflict();
             } catch (AlreadyExistsUserExternalLoginException)

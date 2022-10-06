@@ -89,7 +89,7 @@ namespace FMFT.Web.Server.Services.Foundations.Users
                 StoredProcedureResult<User> result = await storageBroker.RegisterUserWithPasswordAsync(@params);
                 if (result.ReturnValue == 1)
                 {
-                    throw new AlreadyExistsUserEmailException();
+                    throw new AlreadyExistsEmailUserException();
                 }
 
                 return result.Result;
@@ -104,7 +104,7 @@ namespace FMFT.Web.Server.Services.Foundations.Users
                 StoredProcedureResult<User> result = await storageBroker.RegisterUserWithLoginAsync(@params);
                 if (result.ReturnValue == 1)
                 {
-                    throw new AlreadyExistsUserEmailException();
+                    throw new AlreadyExistsEmailUserException();
                 }
                 if (result.ReturnValue == 2)
                 {

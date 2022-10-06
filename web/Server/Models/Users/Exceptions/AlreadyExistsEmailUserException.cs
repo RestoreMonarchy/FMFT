@@ -2,9 +2,9 @@
 
 namespace FMFT.Web.Server.Models.Users.Exceptions
 {
-    public class AlreadyExistsUserEmailException : Xeption
+    public class AlreadyExistsEmailUserException : Xeption
     {
-        public AlreadyExistsUserEmailException() 
+        public AlreadyExistsEmailUserException() 
             : base("ERR006: User with this email already exists")
         {
 

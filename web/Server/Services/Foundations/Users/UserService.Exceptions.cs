@@ -14,7 +14,7 @@ namespace FMFT.Web.Server.Services.Foundations.Users
                 return CreateAndLogValidationException(exception);
             }
             if (exception is AlreadyExistsUserCultureException 
-                or AlreadyExistsUserEmailException 
+                or AlreadyExistsEmailUserException 
                 or AlreadyExistsUserExternalLoginException 
                 or AlreadyExistsUserRoleException)
             {
