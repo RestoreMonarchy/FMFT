@@ -3,9 +3,9 @@
 namespace FMFT.Web.Server.Models.Users.Exceptions
 {
     [WrapWithServiceValidationException]
-    public class NotMatchUserPasswordException : Exception
+    public class NotMatchPasswordUserProcessingException : Exception
     {
-        public NotMatchUserPasswordException()
+        public NotMatchPasswordUserProcessingException()
             : base("ERR009: Invalid user credentials")
         {
 

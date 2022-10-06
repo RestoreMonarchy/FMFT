@@ -1,11 +1,10 @@
 ﻿using FMFT.Web.Server.Brokers.Encryptions;
-using FMFT.Web.Server.Services.Foundations.Users;
-using FMFT.Web.Shared.Enums;
+using FMFT.Web.Server.Brokers.Loggings;
 using FMFT.Web.Server.Models.Users;
 using FMFT.Web.Server.Models.Users.Arguments;
 using FMFT.Web.Server.Models.Users.Exceptions;
 using FMFT.Web.Server.Models.Users.Params;
-using FMFT.Web.Server.Brokers.Validations;
+using FMFT.Web.Server.Services.Foundations.Users;
 
 namespace FMFT.Web.Server.Services.Processings.Users
 {
@@ -13,63 +12,74 @@ namespace FMFT.Web.Server.Services.Processings.Users
     {
         private readonly IUserService userService;
         private readonly IEncryptionBroker encryptionBroker;
+        private readonly ILoggingBroker loggingBroker;
 
-        public UserProcessingService(IUserService userService, IEncryptionBroker encryptionBroker)
+        public UserProcessingService(IUserService userService, IEncryptionBroker encryptionBroker, ILoggingBroker loggingBroker)
         {
             this.userService = userService;
             this.encryptionBroker = encryptionBroker;
+            this.loggingBroker = loggingBroker;
         }
 
-        public async ValueTask<User> RetrieveUserByIdAsync(int userId)
-        {
-            return await userService.RetrieveUserByIdAsync(userId);
-        }
-
-        public async ValueTask<User> RetrieveUserByLoginAsync(string providerName, string providerKey)
-        {
-            return await userService.RetrieveUserByLoginAsync(providerName, providerKey);
-        }
-
-        public async ValueTask<User> RetrieveUserByEmailAsync(string email)
-        {
-            return await userService.RetrieveUserByEmailAsync(email);
-        }
-
-        public async ValueTask<IEnumerable<User>> RetrieveAllUsersAsync()
-        {
-            return await userService.RetrieveAllUsersAsync();
-        }
-
-        public async ValueTask<User> RetrieveUserByEmailAndPasswordAsync(string email, string passwordText)
-        {
-            User user = await RetrieveUserByEmailAsync(email);
-
-            if (!encryptionBroker.VerifyPassword(passwordText, user.PasswordHash))
+        public ValueTask<User> RetrieveUserByIdAsync(int userId)
+            => TryCatch(async () =>
             {
-                throw new NotMatchUserPasswordException();
-            }
+                return await userService.RetrieveUserByIdAsync(userId);
+            });
 
-            return user;
-        }
+        public ValueTask<User> RetrieveUserByLoginAsync(string providerName, string providerKey)
+            => TryCatch(async () =>
+            {
+                return await userService.RetrieveUserByLoginAsync(providerName, providerKey);
+            });
 
-        public async ValueTask<User> RegisterUserWithPasswordAsync(RegisterUserWithPasswordArguments args)
-        {
-            return await userService.RegisterUserWithPasswordAsync(args);
-        }
+        public ValueTask<User> RetrieveUserByEmailAsync(string email)
+            => TryCatch(async () =>
+            {
+                return await userService.RetrieveUserByEmailAsync(email);
+            });
 
-        public async ValueTask<User> RegisterUserWithLoginAsync(RegisterUserWithLoginParams @params)
-        {
-            return await userService.RegisterUserWithLoginAsync(@params);
-        }
+        public ValueTask<IEnumerable<User>> RetrieveAllUsersAsync()
+            => TryCatch(async () =>
+            {
+                return await userService.RetrieveAllUsersAsync();
+            });
 
-        public async ValueTask UpdateUserRoleAsync(UpdateUserRoleParams @params)
-        {
-            await userService.UpdateUserRoleAsync(@params);
-        }
+        public ValueTask<User> RetrieveUserByEmailAndPasswordAsync(string email, string passwordText)
+            => TryCatch(async () =>
+            {
+                User user = await RetrieveUserByEmailAsync(email);
 
-        public async ValueTask UpdateUserCultureAsync(UpdateUserCultureParams @params)
-        {
-            await userService.UpdateUserCultureAsync(@params);
-        }
+                if (!encryptionBroker.VerifyPassword(passwordText, user.PasswordHash))
+                {
+                    throw new NotMatchPasswordUserProcessingException();
+                }
+
+                return user;
+            });
+
+        public ValueTask<User> RegisterUserWithPasswordAsync(RegisterUserWithPasswordArguments args)
+            => TryCatch(async () =>
+            {
+                return await userService.RegisterUserWithPasswordAsync(args);
+            });
+
+        public ValueTask<User> RegisterUserWithLoginAsync(RegisterUserWithLoginParams @params)
+            => TryCatch(async () =>
+            {
+                return await userService.RegisterUserWithLoginAsync(@params);
+            });
+
+        public ValueTask UpdateUserRoleAsync(UpdateUserRoleParams @params)
+            => TryCatch(async () => 
+            {
+                await userService.UpdateUserRoleAsync(@params);
+            });
+
+        public ValueTask UpdateUserCultureAsync(UpdateUserCultureParams @params)
+            => TryCatch(async () =>
+            {
+                await userService.UpdateUserCultureAsync(@params);
+            });
     }
 }

@@ -59,7 +59,7 @@ namespace FMFT.Web.Server.Controllers
             {
                 Account account = await userAccountService.SignInWithPasswordAsync(request);
                 return Ok(account);
-            } catch (NotMatchUserPasswordException exception)
+            } catch (NotMatchPasswordUserProcessingException exception)
             {
                 return Forbidden(exception);
             } catch (NotFoundUserException exception)
