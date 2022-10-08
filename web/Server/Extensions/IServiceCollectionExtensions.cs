@@ -56,7 +56,6 @@ namespace FMFT.Web.Server.Extensions
                         ValidateLifetime = false,
                         ValidateIssuerSigningKey = true
                     };
-                    options.EventsType = typeof(CustomCookieAuthenticationEvents);
                 })
                 .AddCookie(FMFTAuthenticationDefaults.ExternalScheme, o =>
                 {

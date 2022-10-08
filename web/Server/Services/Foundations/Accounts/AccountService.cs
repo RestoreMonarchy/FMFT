@@ -4,6 +4,7 @@ using FMFT.Web.Server.Brokers.Loggings;
 using FMFT.Web.Server.Models.Accounts;
 using FMFT.Web.Server.Models.Accounts.Params;
 using System.Security.Claims;
+using System.Security.Principal;
 
 namespace FMFT.Web.Server.Services.Foundations.Accounts
 {
@@ -25,6 +26,14 @@ namespace FMFT.Web.Server.Services.Foundations.Accounts
                 Account account = MapClaimsPrincipalToAccount(claimsPrincipal);
                 
                 return ValueTask.FromResult(account);
+            });
+
+        public ValueTask<string> CreateTokenAsync(Account account)
+            => TryCatch(() =>
+            {
+                Dictionary<string, object> claimsDict = MapAccountToDictionary(account);
+                string token = authenticationBroker.CreateToken(claimsDict);
+                return ValueTask.FromResult(token);
             });
 
         public ValueTask SignOutAccountAsync()

@@ -16,5 +16,6 @@ namespace FMFT.Web.Server.Services.Processings.Accounts
         ValueTask SignInAccountAsync(SignInAccountParams @params);
         ValueTask SignOutAccountAsync();
         ValueTask AuthorizeAccountAsync();
+        ValueTask<string> CreateTokenAsync(Account account);
     }
 }

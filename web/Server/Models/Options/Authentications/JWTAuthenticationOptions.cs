@@ -17,6 +17,8 @@ namespace FMFT.Web.Server.Models.Options.Authentications
         public string Audience { get; set; }
         public string Key { get; set; }
 
+        public string Algorithm { get; } = SecurityAlgorithms.RsaSha256Signature;
+
         [JsonIgnore]
         public byte[] KeyBytes => Encoding.UTF8.GetBytes(Key);
         [JsonIgnore]

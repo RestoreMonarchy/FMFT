@@ -65,6 +65,12 @@ namespace FMFT.Web.Server.Services.Processings.Accounts
                 return await accountService.RetrieveAccountAsync();
             });
 
+        public ValueTask<string> CreateTokenAsync(Account account)
+            => TryCatch(async () =>
+            {
+                return await accountService.CreateTokenAsync(account);
+            });
+
         public ValueTask SignOutAccountAsync()
             => TryCatch(async () =>
             {

@@ -80,6 +80,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
                     AuthenticationMethod = null,
                     IsPersistent = request.IsPersistent
                 };
+
                 await accountService.SignInAccountAsync(@params);
                 
                 return account;

@@ -5,11 +5,8 @@ namespace FMFT.Web.Server.Brokers.Authentications
 {
     public interface IAuthenticationBroker
     {
-        bool IsAuthenticated { get; }
-        bool IsNotAuthenticated { get; }
-        int AuthenticatedUserId { get; }
-
         ValueTask ChallengeExternalLoginAsync(string provider, string redirectUrl);
+        string CreateToken(Dictionary<string, object> claimsDict);
         ClaimsPrincipal GetClaimsPrincipal();
         ValueTask<ExternalLoginInfo> GetExternalLoginInfoAsync();
         ValueTask SignInAsync(Dictionary<string, object> claimsDictionary, bool isPersistent, string authenticationMethod);

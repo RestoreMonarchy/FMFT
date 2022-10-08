@@ -1,29 +1,35 @@
 ﻿using FMFT.Extensions.Authentication;
 using FMFT.Extensions.Authentication.Models;
-using Microsoft.AspNetCore.Authentication;
+using FMFT.Web.Server.Models.Options.Authentications;
+using Microsoft.Extensions.Options;
 using System.Security.Claims;
 
 namespace FMFT.Web.Server.Brokers.Authentications
 {
     public class AuthenticationBroker : IAuthenticationBroker
     {
+        private readonly HttpContext httpContext;
+        private readonly JWTAuthenticationOptions options;
         private readonly AuthenticationContext context;
 
-        public AuthenticationBroker(IHttpContextAccessor httpContextAccessor)
+        public AuthenticationBroker(IHttpContextAccessor httpContextAccessor, IOptions<JWTAuthenticationOptions> options)
         {
-            context = new AuthenticationContext(httpContextAccessor.HttpContext);
+            this.httpContext = httpContextAccessor.HttpContext;
+            this.options = options.Value;
+            this.context = GetAuthenticationContext();            
         }
 
-        public bool IsAuthenticated => context.IsAuthenticated;
-        public bool IsNotAuthenticated => !IsAuthenticated;
-
-        public int AuthenticatedUserId
+        private AuthenticationContext GetAuthenticationContext()
         {
-            get
+            JWTOptions jwtOptions = new()
             {
-                string userIdString = context.FindClaimValue(ClaimTypes.NameIdentifier);
-                return Convert.ToInt32(userIdString);
-            }
+                Issuer = options.Issuer,
+                Audience = options.Audience,
+                Key = options.SymmetricSecurityKey,
+                Algorithm = options.Algorithm
+            };
+
+            return new AuthenticationContext(httpContext, jwtOptions);
         }
 
         public ClaimsPrincipal GetClaimsPrincipal()
@@ -31,34 +37,35 @@ namespace FMFT.Web.Server.Brokers.Authentications
             return context.ClaimsPrincipal;
         }
 
-        public async ValueTask SignOutAsync()
+        public string CreateToken(Dictionary<string, object> claimsDict)
         {
-            await context.SignOutAsync();
+            List<Claim> claims = DictionaryToClaims(claimsDict);
+            return context.CreateToken(claims, DateTime.Now.AddMinutes(15));            
         }
 
-        public async ValueTask SignInAsync(
-            Dictionary<string, object> claimsDictionary, 
-            bool isPersistent, 
-            string authenticationMethod)
+        private List<Claim> DictionaryToClaims(Dictionary<string, object> claimsDict)
         {
-            List<Claim> claims = DictionaryToClaims(claimsDictionary);
-
-            await context.SignInAsync(claims, isPersistent, authenticationMethod);
+            return claimsDict.Select(x => new Claim(x.Key, x.Value.ToString())).ToList();
         }
 
-        public async ValueTask ChallengeExternalLoginAsync(string provider, string redirectUrl)
+        public ValueTask ChallengeExternalLoginAsync(string provider, string redirectUrl)
         {
-            await context.ChallengeExternalLoginAsync(provider, redirectUrl);
+            throw new NotImplementedException();
         }
 
-        public async ValueTask<ExternalLoginInfo> GetExternalLoginInfoAsync()
+        public ValueTask<ExternalLoginInfo> GetExternalLoginInfoAsync()
         {
-            return await context.GetExternalLoginInfoAsync();
+            throw new NotImplementedException();
         }
 
-        private List<Claim> DictionaryToClaims(Dictionary<string, object> claims)
+        public ValueTask SignInAsync(Dictionary<string, object> claimsDictionary, bool isPersistent, string authenticationMethod)
         {
-            return claims.Select(x => new Claim(x.Key, x.Value.ToString())).ToList();
+            throw new NotImplementedException();
+        }
+
+        public ValueTask SignOutAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }

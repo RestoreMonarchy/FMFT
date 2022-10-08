@@ -5,16 +5,43 @@ using FMFT.Extensions.Authentication.Models.Exceptions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
+using System.Security.Principal;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
 
 namespace FMFT.Extensions.Authentication
 {
     public class AuthenticationContext
     {
         private readonly HttpContext httpContext;
+        private readonly JWTOptions options;
+        private readonly SigningCredentials signingCredentials;
 
-        public AuthenticationContext(HttpContext httpContext)
+        public AuthenticationContext(HttpContext httpContext, JWTOptions options)
         {
             this.httpContext = httpContext;
+            this.options = options;
+
+            signingCredentials = new(options.Key, options.Algorithm);
+        }
+
+        public string CreateToken(IList<Claim> claims, DateTime expireDate)
+        {
+            JwtSecurityTokenHandler tokenHandler = new();
+
+            ClaimsIdentity identity = new(claims);
+
+            SecurityToken token = tokenHandler.CreateJwtSecurityToken(new SecurityTokenDescriptor
+            {
+                Audience = options.Audience,
+                Issuer = options.Issuer,
+                SigningCredentials = signingCredentials,
+                Expires = expireDate.ToUniversalTime(),
+                Subject = identity
+            });
+
+            return tokenHandler.WriteToken(token);
         }
 
         public bool IsAuthenticated => httpContext.User?.Identity?.IsAuthenticated ?? false;
