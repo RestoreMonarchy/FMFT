@@ -5,7 +5,6 @@ using FMFT.Web.Server.Brokers.Storages;
 using FMFT.Web.Server.Brokers.Validations;
 using FMFT.Web.Server.Models.Database;
 using FMFT.Web.Server.Models.Users;
-using FMFT.Web.Server.Models.Users.Arguments;
 using FMFT.Web.Server.Models.Users.Exceptions;
 using FMFT.Web.Server.Models.Users.Params;
 using FMFT.Web.Shared.Enums;
@@ -72,7 +71,7 @@ namespace FMFT.Web.Server.Services.Foundations.Users
                 return user;
             });
 
-        public ValueTask<User> RegisterUserWithPasswordAsync(RegisterUserWithPasswordArguments args)
+        public ValueTask<User> RegisterUserWithPasswordAsync(RegisterUserWithPasswordProcessingParams args)
             => TryCatch(async () =>
             {
                 ValidateRegisterUserWithPasswordArgs(args);

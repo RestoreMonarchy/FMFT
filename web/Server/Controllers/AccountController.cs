@@ -42,9 +42,9 @@ namespace FMFT.Web.Server.Controllers
         {
             try
             {
-                Account account = await userAccountService.RegisterWithPasswordAsync(request);
+                string token = await userAccountService.RegisterWithPasswordAsync(request);
 
-                return Ok(account);
+                return Ok(token);
             } catch (UserAccountOrchestrationDependencyValidationException exception)
                 when (exception.InnerException is RegisterUserWithPasswordValidationException)
             {
@@ -65,9 +65,9 @@ namespace FMFT.Web.Server.Controllers
         {
             try
             {
-                Account account = await userAccountService.SignInWithPasswordAsync(request);
+                string token = await userAccountService.SignInWithPasswordAsync(request);
                 
-                return Ok(account);
+                return Ok(token);
             } catch (UserAccountOrchestrationDependencyValidationException exception) 
                 when (exception.InnerException is NotMatchPasswordUserProcessingException)
             {
@@ -81,63 +81,6 @@ namespace FMFT.Web.Server.Controllers
 
                 return Forbidden(innerException);
             }
-        }
-
-        [HttpGet("logout")]
-        public async ValueTask<IActionResult> LogOut([FromQuery] string returnUrl = "/")
-        {
-            await userAccountService.SignOutAsync();
-            return LocalRedirect(returnUrl);
-        }
-
-        [HttpPost("ExternalLogin")]
-        public async ValueTask ExternalLogin([FromForm] string provider, [FromForm] string returnUrl = "/")
-        {
-            await userAccountService.ChallengeExternalLoginAsync(provider, returnUrl);
-        }
-
-        [HttpGet("ExternalLoginCallback")]
-        public async ValueTask<IActionResult> ExternalLoginCallback()
-        {
-            try
-            {
-                await userAccountService.HandleExternalLoginCallbackAsync();
-                return Redirect("/");
-            } catch (RegisterUserWithLoginValidationException)
-            {
-                return Redirect("/Account/ExternalLoginConfirmation");
-            } catch (NotFoundExternalLoginException)
-            {
-                return Redirect("/Account/Login");
-            } catch (AlreadyExistsEmailUserException)
-            {
-                return Redirect("/Account/Login");
-            } catch (AlreadyExistsUserExternalLoginException)
-            {
-                return Redirect("/Account/Login");
-            }
-        }
-
-        [HttpPost("ExternalLoginConfirmation")]
-        public async ValueTask<IActionResult> ExternalLoginConfirmation([FromBody] ConfirmExternalLoginRequest request)
-        {
-            try
-            {
-                Account account = await userAccountService.ConfirmExternalLoginAsync(request);
-                return Ok(account);
-            } catch (AlreadyExistsEmailUserException)
-            {
-                return Conflict();
-            } catch (AlreadyExistsUserExternalLoginException)
-            {
-                return Conflict();
-            } catch (NotFoundExternalLoginException)
-            {
-                return Unauthorized();
-            } catch (RegisterUserWithLoginValidationException e)
-            {
-                return BadRequest(e);
-            }            
         }
     }
 }

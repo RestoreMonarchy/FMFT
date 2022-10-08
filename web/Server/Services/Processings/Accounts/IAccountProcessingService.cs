@@ -10,12 +10,7 @@ namespace FMFT.Web.Server.Services.Processings.Accounts
         ValueTask AuthorizeAccountByUserIdAsync(int authorizedUserId);
         ValueTask AuthorizeAccountByUserIdOrRolesAsync(int authorizedUserId, params UserRole[] authorizedRoles);
         ValueTask AuthorizeAccountByRoleAsync(params UserRole[] authorizedRoles);
-        ValueTask ChallengeExternalLoginAsync(ChallengeExternalLoginArguments arguments);
         ValueTask<Account> RetrieveAccountAsync();
-        ValueTask<ExternalLogin> RetrieveExternalLoginAsync();
-        ValueTask SignInAccountAsync(SignInAccountParams @params);
-        ValueTask SignOutAccountAsync();
-        ValueTask AuthorizeAccountAsync();
-        ValueTask<string> CreateTokenAsync(Account account);
+        ValueTask<string> CreateTokenAsync(CreateTokenParams @params);
     }
 }

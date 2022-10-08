@@ -1,5 +1,4 @@
-﻿using FMFT.Web.Server.Models.Users.Arguments;
-using FMFT.Web.Server.Models.Users.Exceptions;
+﻿using FMFT.Web.Server.Models.Users.Exceptions;
 using FMFT.Web.Server.Models.Users.Params;
 
 namespace FMFT.Web.Server.Services.Foundations.Users
@@ -33,7 +32,7 @@ namespace FMFT.Web.Server.Services.Foundations.Users
             validationException.ThrowIfContainsErrors();
         }
 
-        private void ValidateRegisterUserWithPasswordArgs(RegisterUserWithPasswordArguments args)
+        private void ValidateRegisterUserWithPasswordArgs(RegisterUserWithPasswordProcessingParams args)
         {
             RegisterUserWithPasswordValidationException validationException = new();
             if (validationBroker.IsEmailInvalid(args.Email))

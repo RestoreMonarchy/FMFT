@@ -23,5 +23,9 @@
     <ProjectReference Include="..\Shared\FMFT.Web.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\Users\Arguments\" />
+  </ItemGroup>
+
 
 </Project>

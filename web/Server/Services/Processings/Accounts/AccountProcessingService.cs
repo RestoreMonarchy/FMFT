@@ -1,12 +1,11 @@
-﻿using FMFT.Web.Server.Brokers.Urls;
-using FMFT.Web.Server.Services.Foundations.Accounts;
+﻿using FMFT.Extensions.TheStandard;
+using FMFT.Web.Server.Brokers.Loggings;
+using FMFT.Web.Server.Brokers.Urls;
 using FMFT.Web.Server.Models.Accounts;
-using FMFT.Web.Server.Models.Accounts.Arguments;
 using FMFT.Web.Server.Models.Accounts.Exceptions;
 using FMFT.Web.Server.Models.Accounts.Params;
+using FMFT.Web.Server.Services.Foundations.Accounts;
 using FMFT.Web.Shared.Enums;
-using FMFT.Web.Server.Brokers.Loggings;
-using FMFT.Extensions.TheStandard;
 
 namespace FMFT.Web.Server.Services.Processings.Accounts
 {
@@ -65,43 +64,10 @@ namespace FMFT.Web.Server.Services.Processings.Accounts
                 return await accountService.RetrieveAccountAsync();
             });
 
-        public ValueTask<string> CreateTokenAsync(Account account)
+        public ValueTask<string> CreateTokenAsync(CreateTokenParams @params)
             => TryCatch(async () =>
             {
-                return await accountService.CreateTokenAsync(account);
-            });
-
-        public ValueTask SignOutAccountAsync()
-            => TryCatch(async () =>
-            {
-                await accountService.SignOutAccountAsync();
-            });
-
-        public ValueTask SignInAccountAsync(SignInAccountParams @params)
-            => TryCatch(async () =>
-            {
-                await accountService.SignInAccountAsync(@params);
-            });
-
-        public ValueTask<ExternalLogin> RetrieveExternalLoginAsync()
-            => TryCatch(async () =>
-            {
-                return await accountService.RetrieveExternalLoginAsync();
-            });
-
-        public ValueTask ChallengeExternalLoginAsync(ChallengeExternalLoginArguments arguments)
-            => TryCatch(async () =>
-            {
-                ChallengeExternalLoginParams @params = new()
-                {
-                    Provider = arguments.Provider,
-                    RedirectUrl = urlBroker.Action("ExternalLoginCallback", "Account",
-                new
-                {
-                    returnUrl = arguments.ReturnUrl
-                })
-                };
-                await accountService.ChallengeExternalLoginAsync(@params);
+                return await accountService.CreateTokenAsync(@params);
             });
     }
 }

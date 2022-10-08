@@ -6,11 +6,7 @@ namespace FMFT.Web.Server.Services.Foundations.Accounts
 {
     public interface IAccountService
     {
-        ValueTask ChallengeExternalLoginAsync(ChallengeExternalLoginParams @params);
-        ValueTask<string> CreateTokenAsync(Account account);
+        ValueTask<string> CreateTokenAsync(CreateTokenParams @params);
         ValueTask<Account> RetrieveAccountAsync();
-        ValueTask<ExternalLogin> RetrieveExternalLoginAsync();
-        ValueTask SignInAccountAsync(SignInAccountParams @params);
-        ValueTask SignOutAccountAsync();
     }
 }

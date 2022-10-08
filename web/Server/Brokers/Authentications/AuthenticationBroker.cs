@@ -47,25 +47,5 @@ namespace FMFT.Web.Server.Brokers.Authentications
         {
             return claimsDict.Select(x => new Claim(x.Key, x.Value.ToString())).ToList();
         }
-
-        public ValueTask ChallengeExternalLoginAsync(string provider, string redirectUrl)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ValueTask<ExternalLoginInfo> GetExternalLoginInfoAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public ValueTask SignInAsync(Dictionary<string, object> claimsDictionary, bool isPersistent, string authenticationMethod)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ValueTask SignOutAsync()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

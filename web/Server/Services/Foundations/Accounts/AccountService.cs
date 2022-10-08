@@ -1,10 +1,8 @@
-﻿using FMFT.Extensions.Authentication.Models;
-using FMFT.Web.Server.Brokers.Authentications;
+﻿using FMFT.Web.Server.Brokers.Authentications;
 using FMFT.Web.Server.Brokers.Loggings;
 using FMFT.Web.Server.Models.Accounts;
 using FMFT.Web.Server.Models.Accounts.Params;
 using System.Security.Claims;
-using System.Security.Principal;
 
 namespace FMFT.Web.Server.Services.Foundations.Accounts
 {
@@ -28,41 +26,12 @@ namespace FMFT.Web.Server.Services.Foundations.Accounts
                 return ValueTask.FromResult(account);
             });
 
-        public ValueTask<string> CreateTokenAsync(Account account)
+        public ValueTask<string> CreateTokenAsync(CreateTokenParams @params)
             => TryCatch(() =>
             {
-                Dictionary<string, object> claimsDict = MapAccountToDictionary(account);
+                Dictionary<string, object> claimsDict = MapAccountToDictionary(@params.Account);
                 string token = authenticationBroker.CreateToken(claimsDict);
                 return ValueTask.FromResult(token);
-            });
-
-        public ValueTask SignOutAccountAsync()
-            => TryCatch(async () =>
-            {
-                await authenticationBroker.SignOutAsync();
-            });
-
-        public ValueTask ChallengeExternalLoginAsync(ChallengeExternalLoginParams @params)
-            => TryCatch(async () =>
-            {
-                await authenticationBroker.ChallengeExternalLoginAsync(@params.Provider, @params.RedirectUrl);
-            });
-
-        public ValueTask<ExternalLogin> RetrieveExternalLoginAsync()
-            => TryCatch(async () => 
-            {
-                ExternalLoginInfo externalLoginInfo = await authenticationBroker.GetExternalLoginInfoAsync();
-                ExternalLogin externalLogin = MapExternalLoginInfoToExternalLogin(externalLoginInfo);
-
-                return externalLogin;
-            });
-
-        public ValueTask SignInAccountAsync(SignInAccountParams @params)
-            => TryCatch(async () =>
-            {
-                Dictionary<string, object> claims = MapAccountToDictionary(@params.Account);
-
-                await authenticationBroker.SignInAsync(claims, @params.IsPersistent, @params.AuthenticationMethod);
             });
     }
 }

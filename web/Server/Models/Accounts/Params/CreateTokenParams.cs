@@ -1,6 +1,6 @@
 ﻿namespace FMFT.Web.Server.Models.Accounts.Params
 {
-    public class SignInAccountParams
+    public class CreateTokenParams
     {
         public Account Account { get; set; }
         public bool IsPersistent { get; set; }

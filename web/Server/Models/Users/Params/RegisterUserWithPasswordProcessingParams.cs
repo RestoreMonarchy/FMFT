@@ -1,6 +1,6 @@
-﻿namespace FMFT.Web.Server.Models.Users.Arguments
+﻿namespace FMFT.Web.Server.Models.Users.Params
 {
-    public class RegisterUserWithPasswordArguments
+    public class RegisterUserWithPasswordProcessingParams
     {
         public string Email { get; set; }
         public string FirstName { get; set; }

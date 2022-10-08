@@ -1,5 +1,4 @@
 ﻿using FMFT.Web.Server.Models.Users;
-using FMFT.Web.Server.Models.Users.Arguments;
 using FMFT.Web.Server.Models.Users.Params;
 
 namespace FMFT.Web.Server.Services.Processings.Users
@@ -11,7 +10,7 @@ namespace FMFT.Web.Server.Services.Processings.Users
         ValueTask<User> RetrieveUserByEmailAsync(string email);
         ValueTask<IEnumerable<User>> RetrieveAllUsersAsync();
         ValueTask<User> RetrieveUserByEmailAndPasswordAsync(string email, string passwordText);
-        ValueTask<User> RegisterUserWithPasswordAsync(RegisterUserWithPasswordArguments args);
+        ValueTask<User> RegisterUserWithPasswordAsync(RegisterUserWithPasswordProcessingParams args);
         ValueTask<User> RegisterUserWithLoginAsync(RegisterUserWithLoginParams @params);
         ValueTask UpdateUserRoleAsync(UpdateUserRoleParams @params);
         ValueTask UpdateUserCultureAsync(UpdateUserCultureParams @params);
