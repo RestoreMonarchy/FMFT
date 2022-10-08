@@ -38,7 +38,8 @@ namespace FMFT.Extensions.Authentication
                 Issuer = options.Issuer,
                 SigningCredentials = signingCredentials,
                 Expires = expireDate.ToUniversalTime(),
-                Subject = identity
+                Subject = identity,
+                CompressionAlgorithm = options.Algorithm
             });
 
             return tokenHandler.WriteToken(token);
