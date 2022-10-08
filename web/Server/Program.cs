@@ -1,9 +1,5 @@
-using FMFT.Extensions.Authentication.Extensions;
-using FMFT.Extensions.Authentication.Constants;
 using FMFT.Web.Server.Extensions;
-using FMFT.Web.Server.Services.Implementations.Cookies;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Cors.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +16,7 @@ builder.Services.AddImplementations();
 
 builder.Services.AddHttpContextAccessor();
 
+builder.Services.AddFMFTOptions(configuration);
 builder.Services.AddFMFTAuthentication(configuration);
 
 builder.Services.AddSwaggerGen();
