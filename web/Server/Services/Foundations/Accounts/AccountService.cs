@@ -29,8 +29,7 @@ namespace FMFT.Web.Server.Services.Foundations.Accounts
         public ValueTask<string> CreateTokenAsync(CreateTokenParams @params)
             => TryCatch(() =>
             {
-                Dictionary<string, object> claimsDict = MapAccountToDictionary(@params.Account);
-                string token = authenticationBroker.CreateToken(claimsDict);
+                string token = authenticationBroker.CreateToken(@params.Account);
                 return ValueTask.FromResult(token);
             });
     }

@@ -25,8 +25,7 @@ namespace FMFT.Web.Server.Brokers.Authentications
             {
                 Issuer = options.Issuer,
                 Audience = options.Audience,
-                Key = options.SymmetricSecurityKey,
-                Algorithm = options.Algorithm
+                Key = options.KeyBytes
             };
 
             return new AuthenticationContext(httpContext, jwtOptions);
@@ -37,15 +36,9 @@ namespace FMFT.Web.Server.Brokers.Authentications
             return context.ClaimsPrincipal;
         }
 
-        public string CreateToken(Dictionary<string, object> claimsDict)
+        public string CreateToken<T>(T payload)
         {
-            List<Claim> claims = DictionaryToClaims(claimsDict);
-            return context.CreateToken(claims, DateTime.Now.AddMinutes(15));            
-        }
-
-        private List<Claim> DictionaryToClaims(Dictionary<string, object> claimsDict)
-        {
-            return claimsDict.Select(x => new Claim(x.Key, x.Value.ToString())).ToList();
+            return context.CreateToken(payload, TimeSpan.FromMinutes(15));            
         }
     }
 }

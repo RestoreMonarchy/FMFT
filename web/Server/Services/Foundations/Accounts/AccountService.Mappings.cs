@@ -11,12 +11,12 @@ namespace FMFT.Web.Server.Services.Foundations.Accounts
         {
             return new()
             {
-                { ClaimTypes.NameIdentifier, account.UserId },
-                { ClaimTypes.Name, account.Name },
-                { ClaimTypes.Email, account.Email },
-                { ClaimTypes.GivenName, account.FirstName },
-                { ClaimTypes.Surname, account.LastName },
-                { ClaimTypes.Role, account.Role }
+                { "userId", account.UserId },
+                { "name", account.Name },
+                { "email", account.Email },
+                { "firstName", account.FirstName },
+                { "lastName", account.LastName },
+                { "role", account.Role }
             };
         }
 

@@ -6,6 +6,7 @@ using FMFT.Web.Client.Brokers.Localizations;
 using FMFT.Web.Client.Brokers.Loggings;
 using FMFT.Web.Client.Brokers.MemoryStorages;
 using FMFT.Web.Client.Brokers.Navigations;
+using FMFT.Web.Client.Brokers.SecurityTokens;
 using FMFT.Web.Client.Brokers.Storages;
 using FMFT.Web.Client.Services.Coordinations.UserAccountCultures;
 using FMFT.Web.Client.Services.Foundations.Accounts;
@@ -46,6 +47,7 @@ builder.Services.AddScoped<IStorageBroker, StorageBroker>();
 builder.Services.AddScoped<ILocalizationBroker, LocalizationBroker>();
 builder.Services.AddScoped<IMemoryStorageBroker, MemoryStorageBroker>();
 builder.Services.AddScoped<ILoggingBroker, LoggingBroker>();
+builder.Services.AddScoped<ISecurityTokenBroker, SecurityTokenBroker>();
 
 builder.Services.AddScoped<IShowService, ShowService>();
 builder.Services.AddScoped<IAuditoriumService, AuditoriumService>();

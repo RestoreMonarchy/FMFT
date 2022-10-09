@@ -5,7 +5,7 @@ namespace FMFT.Web.Server.Brokers.Authentications
 {
     public interface IAuthenticationBroker
     {
-        string CreateToken(Dictionary<string, object> claimsDict);
+        string CreateToken<T>(T payload);
         ClaimsPrincipal GetClaimsPrincipal();
     }
 }

@@ -44,19 +44,6 @@ namespace FMFT.Web.Server.Extensions
             FacebookAuthenticationOptions facebookOptions = FacebookAuthenticationOptions.FromConfiguration(configuration);
 
             AuthenticationBuilder authenticationBuilder = services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters()
-                    {
-                        ValidIssuer = jwtOptions.Issuer,
-                        ValidAudience = jwtOptions.Audience,
-                        IssuerSigningKey = jwtOptions.SymmetricSecurityKey,
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateLifetime = false,
-                        ValidateIssuerSigningKey = true
-                    };
-                })
                 .AddCookie(FMFTAuthenticationDefaults.ExternalScheme, o =>
                 {
                     o.Cookie.Name = FMFTAuthenticationDefaults.ExternalScheme;
