@@ -31,14 +31,14 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
         public ValueTask<IEnumerable<User>> RetrieveAllUsersAsync()
             => TryCatch(async () =>
             {
-                await AuthorizeUserAccountByRoleAsync(UserRole.Admin);
+                await AuthorizeUserAccountByRolePrivateAsync(UserRole.Admin);
                 return await userService.RetrieveAllUsersAsync();
             });
 
         public ValueTask<User> RetrieveUserByIdAsync(int userId)
             => TryCatch(async () =>
             {
-                await AuthorizeUserAccountByUserIdOrRolesAsync(userId, UserRole.Admin);
+                await AuthorizeUserAccountByUserIdOrRolesPrivateAsync(userId, UserRole.Admin);
                 return await userService.RetrieveUserByIdAsync(userId);
             });
 
@@ -85,25 +85,30 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
         public ValueTask UpdateUserRoleAsync(UpdateUserRoleParams @params)
             => TryCatch(async () =>
             {
-                await AuthorizeUserAccountByRoleAsync(UserRole.Admin);
+                await AuthorizeUserAccountByRolePrivateAsync(UserRole.Admin);
                 await userService.UpdateUserRoleAsync(@params);
             });
 
         public ValueTask UpdateUserCultureAsync(UpdateUserCultureParams @params)
             => TryCatch(async () =>
             {
-                await AuthorizeAccountByUserIdAsync(@params.UserId);
+                await accountService.AuthorizeAccountByUserIdAsync(@params.UserId);
                 await userService.UpdateUserCultureAsync(@params);
             });
 
         public ValueTask<UserAccount> RetrieveUserAccountAsync()
             => TryCatch(async () =>
             {
-                UserAccount userAccount = new();
-                userAccount.Account = await RetrieveAccountAsync();
-                userAccount.User = await RetrieveUserByIdAsync(userAccount.Account.UserId);
-                return userAccount;
+                return await RetrieveUserAccountPrivateAsync();
             });
+
+        private async ValueTask<UserAccount> RetrieveUserAccountPrivateAsync()
+        {
+            UserAccount userAccount = new();
+            userAccount.Account = await accountService.RetrieveAccountAsync();
+            userAccount.User = await userService.RetrieveUserByIdAsync(userAccount.Account.UserId);
+            return userAccount;
+        }
 
         public ValueTask AuthorizeAccountAsync()
             => TryCatch(async () =>
@@ -120,24 +125,34 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
         public ValueTask AuthorizeUserAccountByRoleAsync(params UserRole[] authorizedRoles)
             => TryCatch(async () =>
             {
-                UserAccount userAccount = await RetrieveUserAccountAsync();
-
-                if (!authorizedRoles.Contains(userAccount.User.Role))
-                {
-                    throw new NotAuthorizedUserAccountOrchestrationException();
-                }
+                await AuthorizeUserAccountByRolePrivateAsync(authorizedRoles);
             });
+
+        private async ValueTask AuthorizeUserAccountByRolePrivateAsync(params UserRole[] authorizedRoles)
+        {
+            UserAccount userAccount = await RetrieveUserAccountPrivateAsync();
+
+            if (!authorizedRoles.Contains(userAccount.User.Role))
+            {
+                throw new NotAuthorizedUserAccountOrchestrationException();
+            }
+        }
 
         public ValueTask AuthorizeUserAccountByUserIdOrRolesAsync(int userId, params UserRole[] authorizedRoles)
         => TryCatch(async () =>
         {
-            UserAccount userAccount = await RetrieveUserAccountAsync();
+            await AuthorizeUserAccountByUserIdOrRolesPrivateAsync(userId, authorizedRoles);
+        });
+
+        private async Task AuthorizeUserAccountByUserIdOrRolesPrivateAsync(int userId, params UserRole[] authorizedRoles)
+        {
+            UserAccount userAccount = await RetrieveUserAccountPrivateAsync();
 
             if (userAccount.User.Id != userId && !authorizedRoles.Contains(userAccount.User.Role))
             {
                 throw new NotAuthorizedUserAccountOrchestrationException();
             }
-        });
+        }
 
         public ValueTask<Account> RetrieveAccountAsync()
             => TryCatch(async () =>

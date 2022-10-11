@@ -1,5 +1,6 @@
 ﻿using FMFT.Web.Server.Models.Accounts;
 using FMFT.Web.Server.Models.Accounts.Exceptions;
+using FMFT.Web.Server.Models.UserAccounts;
 using FMFT.Web.Server.Models.UserAccounts.Exceptions;
 using FMFT.Web.Server.Models.UserAccounts.Requests;
 using FMFT.Web.Server.Models.Users.Exceptions;
@@ -29,6 +30,24 @@ namespace FMFT.Web.Server.Controllers
 
                 return Ok(account);
             } catch (UserAccountOrchestrationDependencyValidationException exception) 
+                when (exception.InnerException is NotAuthenticatedAccountException)
+            {
+                Exception innerException = exception.InnerException;
+
+                return Unauthorized(innerException);
+            }
+        }
+
+        [HttpGet("user")]
+        public async ValueTask<IActionResult> UserAccount()
+        {
+            try
+            {
+                UserAccount userAccount = await userAccountService.RetrieveUserAccountAsync();
+
+                return Ok(userAccount.User);
+            }
+            catch (UserAccountOrchestrationDependencyValidationException exception)
                 when (exception.InnerException is NotAuthenticatedAccountException)
             {
                 Exception innerException = exception.InnerException;
