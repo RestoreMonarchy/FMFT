@@ -25,7 +25,6 @@ namespace FMFT.Extensions.Authentication
 
         public string CreateToken<T>(T payload, TimeSpan expireTime)
         {
-            
             JwtEncoder encoder = new(algorithm);
 
             string token = encoder.Encode(payload, expireTime);
@@ -48,7 +47,6 @@ namespace FMFT.Extensions.Authentication
 
             JwtDecoder decoder = new(algorithm);
 
-            // Decode and verify, you can check the result.
             T payloadObj;
             DecodeResult result = decoder.TryDecode(token, out payloadObj);
 

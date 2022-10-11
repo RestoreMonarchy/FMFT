@@ -1,5 +1,8 @@
 using FMFT.Web.Server.Extensions;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +22,37 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddFMFTOptions(configuration);
 builder.Services.AddFMFTAuthentication(configuration);
 
-builder.Services.AddSwaggerGen();
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddSwaggerGen(options => 
+    {
+        options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+        {
+            Description = "Please insert JWT with Bearer into field",
+            In = ParameterLocation.Header,
+            Name = "Authorization",
+            Type = SecuritySchemeType.ApiKey
+        });
+
+        OpenApiSecurityScheme securityScheme = new OpenApiSecurityScheme
+        {
+            Reference = new OpenApiReference
+            {
+                Type = ReferenceType.SecurityScheme,
+                Id = "Bearer"
+            }
+        };
+
+        OpenApiSecurityRequirement securityRequirement = new()
+        {
+            { securityScheme, Array.Empty<string>() }
+        };
+
+        options.AddSecurityRequirement(securityRequirement);
+    });    
+}
+
+
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();

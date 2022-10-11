@@ -4,7 +4,7 @@ using FMFT.Web.Server.Models.Accounts.Exceptions;
 
 namespace FMFT.Web.Server.Services.Foundations.Accounts
 {
-    public partial class AccountService : TheStandardService
+    public partial class AccountService
     {
         protected override Exception WrapException(Exception exception)
         {

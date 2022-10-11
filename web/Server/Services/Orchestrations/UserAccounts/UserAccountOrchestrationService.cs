@@ -1,6 +1,5 @@
 ﻿using FMFT.Web.Server.Brokers.Loggings;
 using FMFT.Web.Server.Models.Accounts;
-using FMFT.Web.Server.Models.Accounts.Exceptions;
 using FMFT.Web.Server.Models.Accounts.Params;
 using FMFT.Web.Server.Models.UserAccounts;
 using FMFT.Web.Server.Models.UserAccounts.Exceptions;

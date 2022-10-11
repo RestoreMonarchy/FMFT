@@ -1,11 +1,12 @@
-﻿using FMFT.Web.Server.Brokers.Authentications;
+﻿using FMFT.Extensions.TheStandard;
+using FMFT.Web.Server.Brokers.Authentications;
 using FMFT.Web.Server.Brokers.Loggings;
 using FMFT.Web.Server.Models.Accounts;
 using FMFT.Web.Server.Models.Accounts.Params;
 
 namespace FMFT.Web.Server.Services.Foundations.Accounts
 {
-    public partial class AccountService : IAccountService
+    public partial class AccountService : TheStandardService, IAccountService
     {
         private readonly IAuthenticationBroker authenticationBroker;
         private readonly ILoggingBroker loggingBroker;
