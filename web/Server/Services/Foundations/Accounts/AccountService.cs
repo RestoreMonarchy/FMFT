@@ -2,7 +2,6 @@
 using FMFT.Web.Server.Brokers.Loggings;
 using FMFT.Web.Server.Models.Accounts;
 using FMFT.Web.Server.Models.Accounts.Params;
-using System.Security.Claims;
 
 namespace FMFT.Web.Server.Services.Foundations.Accounts
 {
@@ -20,9 +19,8 @@ namespace FMFT.Web.Server.Services.Foundations.Accounts
         public ValueTask<Account> RetrieveAccountAsync()
             => TryCatch(() =>
             {
-                ClaimsPrincipal claimsPrincipal = authenticationBroker.GetClaimsPrincipal();
-                Account account = MapClaimsPrincipalToAccount(claimsPrincipal);
-                
+
+                Account account = authenticationBroker.GetTokenPayload<Account>();
                 return ValueTask.FromResult(account);
             });
 

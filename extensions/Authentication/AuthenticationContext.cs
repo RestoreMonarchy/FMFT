@@ -3,8 +3,8 @@ using FMFT.Extensions.Authentication.Models.Exceptions;
 using LitJWT;
 using LitJWT.Algorithms;
 using Microsoft.AspNetCore.Http;
-using System.Security.Claims;
-using System.Security.Cryptography;
+using Microsoft.Extensions.Primitives;
+using Microsoft.Net.Http.Headers;
 
 namespace FMFT.Extensions.Authentication
 {
@@ -13,33 +13,51 @@ namespace FMFT.Extensions.Authentication
         private readonly HttpContext httpContext;
         private readonly JWTOptions options;
 
+        private readonly IJwtAlgorithm algorithm;
+
         public AuthenticationContext(HttpContext httpContext, JWTOptions options)
         {
             this.httpContext = httpContext;
             this.options = options;
+
+            algorithm = new HS256Algorithm(options.Key);
         }
 
         public string CreateToken<T>(T payload, TimeSpan expireTime)
         {
-            byte[] key = options.Key;
-
-            HS256Algorithm algorithm = new(key);
+            
             JwtEncoder encoder = new(algorithm);
 
             string token = encoder.Encode(payload, expireTime);
             return token;
         }
 
-        public bool IsAuthenticated => httpContext.User?.Identity?.IsAuthenticated ?? false;
-        public ClaimsPrincipal ClaimsPrincipal 
-        { 
-            get
+        public string RetrieveToken()
+        {
+            if (httpContext.Request.Headers.TryGetValue(HeaderNames.Authorization, out StringValues token))
             {
-                if (!IsAuthenticated)
-                    throw new NotAuthenticatedException();
+                return token.ToString();
+            }
 
-                return httpContext.User;
-            } 
-        }   
+            throw new MissingAuthorizationHeaderException();
+        }
+
+        public T GetTokenPayload<T>()
+        {
+            string token = RetrieveToken();
+
+            JwtDecoder decoder = new(algorithm);
+
+            // Decode and verify, you can check the result.
+            T payloadObj;
+            DecodeResult result = decoder.TryDecode(token, out payloadObj);
+
+            if (result == DecodeResult.Success)
+            {
+                return payloadObj;
+            }
+
+            throw new InvalidAuthenticationTokenException($"Invalid jwt token. Result: {result}");
+        } 
     }
 }

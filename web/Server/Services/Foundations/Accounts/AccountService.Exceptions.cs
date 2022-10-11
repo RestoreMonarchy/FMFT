@@ -1,51 +1,15 @@
 ﻿using FMFT.Extensions.Authentication.Models.Exceptions;
 using FMFT.Extensions.TheStandard;
 using FMFT.Web.Server.Models.Accounts.Exceptions;
-using FMFT.Web.Server.Models.Users.Exceptions;
 
 namespace FMFT.Web.Server.Services.Foundations.Accounts
 {
-    public partial class AccountService
+    public partial class AccountService : TheStandardService
     {
-        private delegate ValueTask<T> ReturningDelegate<T>();
-        private delegate ValueTask ReturningDelegate();
-
-        private async ValueTask TryCatch(ReturningDelegate function)
-        {
-            try
-            {
-                await function();
-            }
-            catch (Exception exception)
-            {
-                Exception wrappedException = WrapException(exception);
-                throw wrappedException;
-            }
-        }
-
-        private async ValueTask<T> TryCatch<T>(ReturningDelegate<T> function)
-        {
-            try
-            {
-                return await function();
-            }
-            catch (Exception exception)
-            {
-                Exception wrappedException = WrapException(exception);
-                throw wrappedException;
-            }
-        }
-
-        private Exception WrapException(Exception exception)
+        protected override Exception WrapException(Exception exception)
         {
             // Map dependency exceptions
-            if (exception is ExternalNotAuthenticatedException)
-            {
-                Exception innerException = new NotFoundExternalLoginException();
-
-                return CreateAndLogDependencyValidationException(innerException);
-            }
-            if (exception is NotAuthenticatedException) 
+            if (exception is MissingAuthorizationHeaderException or InvalidAuthenticationTokenException) 
             {
                 Exception innerException = new NotAuthenticatedAccountException();
 

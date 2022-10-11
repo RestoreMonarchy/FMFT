@@ -9,13 +9,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
         {
             return new Account()
             {
-                UserId = user.Id,
-                Name = string.Join(" ", user.FirstName, user.LastName),
-                Email = user.Email,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Role = user.Role,
-                CultureId = user.CultureId
+                UserId = user.Id
             };
         }
     }

@@ -1,21 +1,16 @@
-﻿using FMFT.Web.Server.Models.Accounts;
-using FMFT.Web.Server.Models.Reservations;
+﻿using FMFT.Web.Server.Models.Reservations;
 using FMFT.Web.Server.Models.Reservations.Params;
 using FMFT.Web.Server.Models.Reservations.Requests;
-using FMFT.Web.Server.Services.Processings.Accounts;
 using FMFT.Web.Server.Services.Processings.Reservations;
-using FMFT.Web.Shared.Enums;
 
-namespace FMFT.Web.Server.Services.Orchestrations.AccountReservations
+namespace FMFT.Web.Server.Services.Orchestrations.Reservations
 {
-    public class AccountReservationOrchestrationService : IAccountReservationOrchestrationService
+    public class ReservationOrchestrationService : IReservationOrchestrationService
     {
-        private readonly IAccountProcessingService accountService;
         private readonly IReservationProcessingService reservationService;
 
-        public AccountReservationOrchestrationService(IAccountProcessingService accountService, IReservationProcessingService reservationService)
+        public ReservationOrchestrationService(IReservationProcessingService reservationService)
         {
-            this.accountService = accountService;
             this.reservationService = reservationService;
         }
 
@@ -28,23 +23,21 @@ namespace FMFT.Web.Server.Services.Orchestrations.AccountReservations
                 UserId = request.UserId
             };
 
-            await accountService.AuthorizeAccountByUserIdOrRolesAsync(@params.UserId, UserRole.Admin);
+            //await accountService.AuthorizeAccountByUserIdOrRolesAsync(@params.UserId, UserRole.Admin);
 
             return await reservationService.CreateReservationAsync(@params);
         }
 
         public async ValueTask<Reservation> UpdateReservationStatusAsync(UpdateReservationStatusRequest request)
         {
-            await accountService.AuthorizeAccountByRoleAsync(UserRole.Admin);
-
-            Account account = await accountService.RetrieveAccountAsync();
+            //await accountService.AuthorizeAccountByRoleAsync(UserRole.Admin);
 
             UpdateReservationStatusParams @params = new()
             {
                 ReservationId = request.ReservationId,
                 ReservationStatus = request.Status,
                 UpdateStatusDate = DateTimeOffset.Now,
-                AdminUserId = account.UserId
+                //AdminUserId = account.UserId
             };
 
             return await reservationService.UpdateReservationStatusAsync(@params);
@@ -52,7 +45,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.AccountReservations
 
         public async ValueTask<IEnumerable<Reservation>> RetrieveReservationsByUserIdAsync(int userId)
         {
-            await accountService.AuthorizeAccountByUserIdOrRolesAsync(userId, UserRole.Admin);
+            //await accountService.AuthorizeAccountByUserIdOrRolesAsync(userId, UserRole.Admin);
 
             IEnumerable<Reservation> reservations = await reservationService.RetrieveReservationsByUserIdAsync(userId);
 
@@ -61,7 +54,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.AccountReservations
 
         public async ValueTask<IEnumerable<Reservation>> RetrieveReservationsByShowIdAsync(int showId)
         {
-            await accountService.AuthorizeAccountByRoleAsync(UserRole.Admin);
+            //await accountService.AuthorizeAccountByRoleAsync(UserRole.Admin);
 
             IEnumerable<Reservation> reservations = await reservationService.RetrieveReservationsByShowIdAsync(showId);
 
@@ -70,7 +63,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.AccountReservations
 
         public async ValueTask<IEnumerable<Reservation>> RetrieveAllReservationsAsync()
         {
-            await accountService.AuthorizeAccountByRoleAsync(UserRole.Admin);
+            //await accountService.AuthorizeAccountByRoleAsync(UserRole.Admin);
 
             IEnumerable<Reservation> reservations = await reservationService.RetrieveAllReservationsAsync();
 
@@ -81,7 +74,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.AccountReservations
         {
             Reservation reservation = await reservationService.RetrieveReservationByIdAsync(reservationId);
 
-            await accountService.AuthorizeAccountByUserIdOrRolesAsync(reservation.User.Id, UserRole.Admin);
+            //await accountService.AuthorizeAccountByUserIdOrRolesAsync(reservation.User.Id, UserRole.Admin);
 
             return reservation;
         }

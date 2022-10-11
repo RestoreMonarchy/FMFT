@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
 using FMFT.Web.Server.Models.Shows.Params;
 using FMFT.Web.Server.Models.Accounts.Exceptions;
-using FMFT.Web.Server.Services.Orchestrations.AccountShows;
-using FMFT.Web.Server.Services.Orchestrations.AccountReservations;
+using FMFT.Web.Server.Services.Orchestrations.Shows;
+using FMFT.Web.Server.Services.Orchestrations.Reservations;
 
 namespace FMFT.Web.Server.Controllers.Shows
 {
@@ -14,10 +14,10 @@ namespace FMFT.Web.Server.Controllers.Shows
     [Route("api/[controller]")]
     public partial class ShowsController : RESTFulController
     {
-        private readonly IAccountShowOrchestrationService accountShowService;
-        private readonly IAccountReservationOrchestrationService accountReservationService;
+        private readonly IShowOrchestrationService accountShowService;
+        private readonly IReservationOrchestrationService accountReservationService;
 
-        public ShowsController(IAccountShowOrchestrationService accountShowService, IAccountReservationOrchestrationService accountReservationService)
+        public ShowsController(IShowOrchestrationService accountShowService, IReservationOrchestrationService accountReservationService)
         {
             this.accountShowService = accountShowService;
             this.accountReservationService = accountReservationService;

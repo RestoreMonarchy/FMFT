@@ -2,7 +2,6 @@
 using FMFT.Extensions.Authentication.Models;
 using FMFT.Web.Server.Models.Options.Authentications;
 using Microsoft.Extensions.Options;
-using System.Security.Claims;
 
 namespace FMFT.Web.Server.Brokers.Authentications
 {
@@ -23,17 +22,15 @@ namespace FMFT.Web.Server.Brokers.Authentications
         {
             JWTOptions jwtOptions = new()
             {
-                Issuer = options.Issuer,
-                Audience = options.Audience,
                 Key = options.KeyBytes
             };
 
             return new AuthenticationContext(httpContext, jwtOptions);
         }
 
-        public ClaimsPrincipal GetClaimsPrincipal()
+        public T GetTokenPayload<T>()
         {
-            return context.ClaimsPrincipal;
+            return context.GetTokenPayload<T>();
         }
 
         public string CreateToken<T>(T payload)

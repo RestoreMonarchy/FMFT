@@ -2,7 +2,7 @@
 using FMFT.Web.Server.Models.Reservations;
 using FMFT.Web.Server.Models.Reservations.Exceptions;
 using FMFT.Web.Server.Models.Reservations.Requests;
-using FMFT.Web.Server.Services.Orchestrations.AccountReservations;
+using FMFT.Web.Server.Services.Orchestrations.Reservations;
 using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
 
@@ -12,9 +12,9 @@ namespace FMFT.Web.Server.Controllers
     [Route("api/[controller]")]
     public class ReservationsController : RESTFulController
     {
-        private readonly IAccountReservationOrchestrationService accountReservationService;
+        private readonly IReservationOrchestrationService accountReservationService;
 
-        public ReservationsController(IAccountReservationOrchestrationService accountReservationService)
+        public ReservationsController(IReservationOrchestrationService accountReservationService)
         {
             this.accountReservationService = accountReservationService;
         }

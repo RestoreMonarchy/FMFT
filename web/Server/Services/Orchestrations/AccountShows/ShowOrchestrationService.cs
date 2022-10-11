@@ -1,31 +1,25 @@
 ﻿using FMFT.Web.Server.Models.Shows;
 using FMFT.Web.Server.Models.Shows.Params;
-using FMFT.Web.Server.Services.Processings.Accounts;
 using FMFT.Web.Server.Services.Processings.Shows;
-using FMFT.Web.Shared.Enums;
 
-namespace FMFT.Web.Server.Services.Orchestrations.AccountShows
+namespace FMFT.Web.Server.Services.Orchestrations.Shows
 {
-    public class AccountShowOrchestrationService : IAccountShowOrchestrationService
+    public class ShowOrchestrationService : IShowOrchestrationService
     {
-        private readonly IAccountProcessingService accountService;
         private readonly IShowProcessingService showService;
 
-        public AccountShowOrchestrationService(IAccountProcessingService accountService, IShowProcessingService showService)
+        public ShowOrchestrationService(IShowProcessingService showService)
         {
-            this.accountService = accountService;
             this.showService = showService;
         }
 
         public async ValueTask<Show> AddShowAsync(AddShowParams @params)
         {
-            accountService.AuthorizeAccountByRoleAsync(UserRole.Admin);
             return await showService.AddShowAsync(@params);
         }
 
         public async ValueTask<Show> ModifyShowAsync(UpdateShowParams @params)
         {
-            accountService.AuthorizeAccountByRoleAsync(UserRole.Admin);
             return await showService.ModifyShowAsync(@params);
         }
 
