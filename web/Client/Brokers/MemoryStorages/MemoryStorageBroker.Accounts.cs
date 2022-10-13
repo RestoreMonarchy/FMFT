@@ -6,12 +6,12 @@ namespace FMFT.Web.Client.Brokers.MemoryStorages
     {
         private const string AccountKey = "Account";
 
-        public Account GetAccount()
+        public UserAccount GetAccount()
         {
-            return GetValue<Account>(AccountKey);
+            return GetValue<UserAccount>(AccountKey);
         }
 
-        public void SetAccount(Account account)
+        public void SetAccount(UserAccount account)
         {
             SetValue(AccountKey, account);
         }

@@ -35,7 +35,7 @@ namespace FMFT.Web.Server.Brokers.Authentications
 
         public string CreateToken<T>(T payload)
         {
-            return context.CreateToken(payload, TimeSpan.FromMinutes(15));            
+            return context.CreateToken(payload, TimeSpan.FromDays(7));            
         }
     }
 }

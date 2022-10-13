@@ -16,7 +16,7 @@ namespace FMFT.Web.Client.Services.Orchestrations.Accounts
             this.accountStoreService = accountStoreService;
         }
 
-        public Account RetrieveAccountStore()
+        public UserAccount RetrieveAccountStore()
         {
             return accountStoreService.RetrieveAccount();
         }
@@ -32,7 +32,7 @@ namespace FMFT.Web.Client.Services.Orchestrations.Accounts
 
         public async ValueTask UpdateAccountStoreAsync()
         {
-            Account account = await accountService.RetrieveAccountAsync();
+            UserAccount account = await accountService.RetrieveAccountAsync();
             accountStoreService.UpdateAccount(account);
         }
     }

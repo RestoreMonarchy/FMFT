@@ -5,7 +5,7 @@ namespace FMFT.Web.Client.Services.Coordinations.UserAccountCultures
 {
     public interface IUserAccountCultureCoordinationService
     {
-        Account RetrieveAccountStore();
+        UserAccount RetrieveAccountStore();
         ValueTask<CultureId> RetrieveCultureIdAsync();
         ValueTask SyncUserAccountCulturesAsync();
         ValueTask UpdateCultureAsync(CultureId cultureId);

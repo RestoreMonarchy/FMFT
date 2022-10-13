@@ -5,7 +5,7 @@ namespace FMFT.Web.Client.Services.Views.Accounts
 {
     public interface IAccountViewService
     {
-        Account Account { get; }
+        UserAccount Account { get; }
 
         ValueTask ConfirmExternalLoginAsync(ConfirmExternalLoginRequest request);
         void ForceLoadNavigateTo(string url);

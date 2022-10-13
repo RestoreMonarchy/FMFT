@@ -31,7 +31,7 @@ namespace FMFT.Web.Client.Views.Bases.Authorizations
 
             try
             {
-                Account account = AccountStoreService.RetrieveAccount();
+                UserAccount account = AccountStoreService.RetrieveAccount();
                 if (authorizeAttribute.IsAuthorized(account.Role))
                 {
                     base.Render(builder);

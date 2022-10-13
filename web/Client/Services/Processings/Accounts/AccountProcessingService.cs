@@ -15,14 +15,9 @@ namespace FMFT.Web.Client.Services.Processings.Accounts
             this.accountService = accountService;
         }
 
-        public async ValueTask<Account> RetrieveAccountAsync()
+        public async ValueTask<UserAccount> RetrieveAccountAsync()
         {
             return await accountService.RetrieveAccountAsync();
-        }
-
-        public async ValueTask ConfirmExternalLoginAsync(ConfirmExternalLoginRequest request)
-        {
-            await accountService.ConfirmExternalLoginAsync(request);
         }
 
         public async ValueTask LoginAsync(LogInWithPasswordRequest request)

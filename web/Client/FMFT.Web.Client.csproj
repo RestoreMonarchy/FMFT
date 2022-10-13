@@ -39,6 +39,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\extensions\DataTables\FMFT.Extensions.DataTables.csproj" />
+    <ProjectReference Include="..\..\extensions\TheStandard\FMFT.Extensions.TheStandard.csproj" />
     <ProjectReference Include="..\..\external\RESTFulSense.WebAssembly\RESTFulSense.WebAssembly.csproj" />
     <ProjectReference Include="..\Shared\FMFT.Web.Shared.csproj" />
   </ItemGroup>

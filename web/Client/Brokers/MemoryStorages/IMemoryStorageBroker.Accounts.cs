@@ -4,7 +4,7 @@ namespace FMFT.Web.Client.Brokers.MemoryStorages
 {
     public partial interface IMemoryStorageBroker
     {
-        Account GetAccount();
-        void SetAccount(Account account);
+        UserAccount GetAccount();
+        void SetAccount(UserAccount account);
     }
 }

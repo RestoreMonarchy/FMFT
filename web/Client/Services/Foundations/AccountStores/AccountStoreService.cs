@@ -13,13 +13,13 @@ namespace FMFT.Web.Client.Services.Foundations.AccountStores
             this.memoryStorageBroker = memoryStorageBroker;
         }
 
-        public Account RetrieveAccount()
+        public UserAccount RetrieveAccount()
         {
-            Account account = memoryStorageBroker.GetAccount();
+            UserAccount account = memoryStorageBroker.GetAccount();
             return account;
         }
 
-        public void UpdateAccount(Account account)
+        public void UpdateAccount(UserAccount account)
         {
             memoryStorageBroker.SetAccount(account);
         } 

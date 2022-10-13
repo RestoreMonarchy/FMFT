@@ -21,6 +21,9 @@ namespace FMFT.Web.Client
         public async ValueTask ExecuteAsync()
         {
             ILoggingBroker loggingBroker = Services.GetRequiredService<ILoggingBroker>();
+
+            Configuration["AccountToken"] = "account_token";
+
             IAccountOrchestrationService accountOrchestrationService = Services.GetRequiredService<IAccountOrchestrationService>();
             
             try

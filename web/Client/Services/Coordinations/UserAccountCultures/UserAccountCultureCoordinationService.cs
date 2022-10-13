@@ -19,7 +19,7 @@ namespace FMFT.Web.Client.Services.Coordinations.UserAccountCultures
         public async ValueTask SyncUserAccountCulturesAsync()
         {
             CultureId cultureId = await cultureService.RetrieveCultureIdAsync();
-            Account account = userAccountService.RetrieveAccountStore();
+            UserAccount account = userAccountService.RetrieveAccountStore();
             if (account != null && account.CultureId != cultureId)
             {
                 await userAccountService.UpdateAccountCultureAsync(cultureId);
@@ -30,14 +30,14 @@ namespace FMFT.Web.Client.Services.Coordinations.UserAccountCultures
         {
             await cultureService.UpdateCultureIdAsync(cultureId);
 
-            Account account = RetrieveAccountStore();
+            UserAccount account = RetrieveAccountStore();
             if (account != null)
             {
                 await userAccountService.UpdateAccountCultureAsync(cultureId);
             }            
         }
 
-        public Account RetrieveAccountStore()
+        public UserAccount RetrieveAccountStore()
         {
             return userAccountService.RetrieveAccountStore();
         }

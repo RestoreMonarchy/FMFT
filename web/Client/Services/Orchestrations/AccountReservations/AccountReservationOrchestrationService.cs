@@ -23,14 +23,14 @@ namespace FMFT.Web.Client.Services.Orchestrations.AccountReservations
 
         public async ValueTask<List<Reservation>> RetrieveAccountReservationsAsync()
         {
-            Account account = accountStoreService.RetrieveAccount();
+            UserAccount account = accountStoreService.RetrieveAccount();
 
             return await reservationService.RetrieveReservationsByUserIdAsync(account.UserId);
         }
 
         public async ValueTask<Reservation> CreateAccountReservationAsync(CreateAccountReservationArguments arguments)
         {
-            Account account = accountStoreService.RetrieveAccount();
+            UserAccount account = accountStoreService.RetrieveAccount();
 
             CreateReservationRequest request = new()
             {

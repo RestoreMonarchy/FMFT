@@ -2,6 +2,7 @@
 using FMFT.Web.Client.Models.Accounts;
 using FMFT.Web.Client.Models.Accounts.Exceptions;
 using FMFT.Web.Client.Models.Accounts.Requests;
+using FMFT.Web.Client.Models.AccountTokens;
 using RESTFulSense.WebAssembly.Exceptions;
 
 namespace FMFT.Web.Client.Services.Foundations.Accounts
@@ -15,11 +16,12 @@ namespace FMFT.Web.Client.Services.Foundations.Accounts
             this.apiBroker = apiBroker;
         }
 
-        public async ValueTask<Account> RetrieveAccountAsync()
+        public async ValueTask<UserAccount> RetrieveAccountAsync()
         {
             try
             {
-                Account account = await apiBroker.GetAccountInfoAsync();
+                UserAccount account = await apiBroker.GetUserAccountAsync();
+
                 return account;
             } catch (HttpResponseUnauthorizedException)
             {
@@ -27,24 +29,26 @@ namespace FMFT.Web.Client.Services.Foundations.Accounts
             }
         }
 
-        public async ValueTask<Account> LoginAsync(LogInWithPasswordRequest request)
+        public async ValueTask<AccountToken> LoginAsync(LogInWithPasswordRequest request)
         {
             try
             {
-                Account account = await apiBroker.PostAccountLoginAsync(request);
-                return account;
+                AccountToken accountToken = await apiBroker.PostAccountLoginAsync(request);
+
+                return accountToken;
             } catch (HttpResponseForbiddenException)
             {
                 throw new AccountPasswordNotMatchException();
             }
         }
 
-        public async ValueTask<Account> RegisterAsync(RegisterWithPasswordRequest request)
+        public async ValueTask<AccountToken> RegisterAsync(RegisterWithPasswordRequest request)
         {
             try
             {
-                Account account = await apiBroker.PostAccountRegisterAsync(request);
-                return account;
+                AccountToken accountToken = await apiBroker.PostAccountRegisterAsync(request);
+
+                return accountToken;
             }
             catch (HttpResponseBadRequestException exception)
             {
@@ -52,24 +56,6 @@ namespace FMFT.Web.Client.Services.Foundations.Accounts
             } catch (HttpResponseConflictException)
             {
                 throw new AccountEmailAlreadyExistsException();
-            }
-        }
-
-        public async ValueTask<Account> ConfirmExternalLoginAsync(ConfirmExternalLoginRequest request)
-        {
-            try
-            {
-                Account account = await apiBroker.PostConfirmExternalLoginAsync(request);
-                return account;
-            } catch (HttpResponseConflictException)
-            {
-                throw new AccountEmailAlreadyExistsException();
-            } catch (HttpResponseUnauthorizedException)
-            {
-                throw new AccountExternalLoginNotFoundException();
-            } catch (HttpResponseBadRequestException exception)
-            {
-                throw new AccountRegisterWithLoginValidationException(exception, exception.Data);
             }
         }
     }

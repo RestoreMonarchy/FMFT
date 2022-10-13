@@ -3,7 +3,6 @@
     public class CreateTokenParams
     {
         public Account Account { get; set; }
-        public bool IsPersistent { get; set; }
         public string AuthenticationMethod { get; set; }
     }
 }

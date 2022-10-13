@@ -12,12 +12,12 @@ namespace FMFT.Web.Client.Services.Processings.AccountStores
             this.accountStoreService = accountStoreService;
         }
 
-        public Account RetrieveAccount()
+        public UserAccount RetrieveAccount()
         {
             return accountStoreService.RetrieveAccount();
         }
 
-        public void UpdateAccount(Account account)
+        public void UpdateAccount(UserAccount account)
         {
             accountStoreService.UpdateAccount(account);
         }

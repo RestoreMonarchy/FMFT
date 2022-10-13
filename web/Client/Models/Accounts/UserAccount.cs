@@ -2,15 +2,16 @@
 
 namespace FMFT.Web.Client.Models.Accounts
 {
-    public class Account
+    public class UserAccount
     {
-        public int UserId { get; set; }
-        public string Name { get; set; }
+        public int Id { get; set; }
         public string Email { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public UserRole Role { get; set; }
         public CultureId CultureId { get; set; }
-        public string AuthenticationMethod { get; set; }
+        public bool IsEmailConfirmed { get; set; }
+        public DateTimeOffset? ConfirmEmailSendDate { get; set; }
+        public DateTime CreateDate { get; set; }
     }
 }

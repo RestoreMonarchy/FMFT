@@ -17,7 +17,7 @@ namespace FMFT.Web.Client.Services.Views.Accounts
             this.navigationBroker = navigationBroker;
         }
 
-        public Account Account 
+        public UserAccount Account 
             => accountService.RetrieveAccountStore();
 
         public async ValueTask LoginAsync(LogInWithPasswordRequest request) 

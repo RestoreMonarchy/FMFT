@@ -5,7 +5,7 @@ namespace FMFT.Web.Client.Brokers.APIs
     public partial class APIBroker : IAPIBroker
     {
         private readonly HttpClient httpClient;
-        private readonly IRESTFulApiFactoryClient apiClient;        
+        private readonly IRESTFulApiFactoryClient apiClient;
 
         public APIBroker(IConfiguration configuration)
         {
@@ -13,6 +13,8 @@ namespace FMFT.Web.Client.Brokers.APIs
             {
                 BaseAddress = new Uri(configuration["APIUrl"])
             };
+
+            httpClient.DefaultRequestHeaders.Add("Authorization", configuration["AccountToken"]);
 
             apiClient = GetApiClient();
         }

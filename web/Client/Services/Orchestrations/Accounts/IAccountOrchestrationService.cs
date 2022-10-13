@@ -8,7 +8,7 @@ namespace FMFT.Web.Client.Services.Orchestrations.Accounts
         ValueTask ConfirmExternalLoginAsync(ConfirmExternalLoginRequest request);
         ValueTask LoginAsync(LogInWithPasswordRequest request);
         ValueTask RegisterAsync(RegisterWithPasswordRequest request);
-        Account RetrieveAccountStore();
+        UserAccount RetrieveAccountStore();
         ValueTask UpdateAccountStoreAsync();
     }
 }

@@ -11,12 +11,12 @@ namespace FMFT.Web.Client.Brokers.Storages
             this.localStorage = localStorage;
         }
 
-        private async ValueTask SetItemAsync<T>(string key, T data)
+        private async ValueTask SetLocalItemAsync<T>(string key, T data)
         {
             await localStorage.SetItemAsync(key, data);
         }
 
-        private async ValueTask<T> GetItemAsync<T>(string key)
+        private async ValueTask<T> GetLocalItemAsync<T>(string key)
         {
             return await localStorage.GetItemAsync<T>(key);
         }

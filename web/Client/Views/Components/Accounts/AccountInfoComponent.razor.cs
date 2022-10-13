@@ -9,6 +9,6 @@ namespace FMFT.Web.Client.Views.Components.Accounts
         [Inject]
         public IAccountViewService AccountViewService { get; set; }
 
-        public Account Account => AccountViewService.Account;
+        public UserAccount Account => AccountViewService.Account;
     }
 }

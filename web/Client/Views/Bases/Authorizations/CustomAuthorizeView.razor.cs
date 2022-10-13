@@ -10,7 +10,7 @@ namespace FMFT.Web.Client.Views.Bases.Authorizations
     public partial class CustomAuthorizeView
     {
         [Parameter]
-        public RenderFragment<Account> Authorized { get; set; }
+        public RenderFragment<UserAccount> Authorized { get; set; }
         [Parameter]
         public RenderFragment NotAuthorized { get; set; }
         [Parameter]
@@ -37,7 +37,7 @@ namespace FMFT.Web.Client.Views.Bases.Authorizations
         [Inject]
         public IAccountStoreProcessingService AccountStoreService { get; set; }
 
-        public Account Account { get; set; }
+        public UserAccount Account { get; set; }
 
         protected override void OnInitialized()
         {

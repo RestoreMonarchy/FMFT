@@ -8,12 +8,12 @@ namespace FMFT.Web.Client.Brokers.Storages
 
         public async ValueTask<CultureId> GetCultureIdAsync()
         {
-            return await GetItemAsync<CultureId>(CultureIdKey);
+            return await GetLocalItemAsync<CultureId>(CultureIdKey);
         }
 
         public async ValueTask SetCultureIdAsync(CultureId cultureId)
         {
-            await SetItemAsync(CultureIdKey, cultureId);
+            await SetLocalItemAsync(CultureIdKey, cultureId);
         }
     }
 }

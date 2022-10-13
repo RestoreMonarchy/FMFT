@@ -59,8 +59,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
                 CreateTokenParams @params = new()
                 {
                     Account = account,
-                    AuthenticationMethod = null,
-                    IsPersistent = false
+                    AuthenticationMethod = null
                 };
 
                 return await accountService.CreateTokenAsync(@params);
@@ -76,7 +75,6 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
                 {
                     Account = account,
                     AuthenticationMethod = null,
-                    IsPersistent = request.IsPersistent
                 };
 
                 return await accountService.CreateTokenAsync(@params);

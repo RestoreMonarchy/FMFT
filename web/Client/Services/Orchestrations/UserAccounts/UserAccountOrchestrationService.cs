@@ -18,14 +18,14 @@ namespace FMFT.Web.Client.Services.Orchestrations.UserAccounts
             this.accountStoreService = accountStoreService;
         }
 
-        public Account RetrieveAccountStore()
+        public UserAccount RetrieveAccountStore()
         {
             return accountStoreService.RetrieveAccount();
         }
 
         public async ValueTask UpdateAccountCultureAsync(CultureId cultureId)
         {
-            Account account = RetrieveAccountStore();
+            UserAccount account = RetrieveAccountStore();
             if (account == null)
             {
                 throw new AccountNotAuthenticatedException();
