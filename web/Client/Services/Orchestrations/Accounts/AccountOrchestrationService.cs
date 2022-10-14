@@ -27,9 +27,6 @@ namespace FMFT.Web.Client.Services.Orchestrations.Accounts
         public async ValueTask RegisterAsync(RegisterWithPasswordRequest request)
             => await accountService.RegisterAsync(request);
 
-        public async ValueTask ConfirmExternalLoginAsync(ConfirmExternalLoginRequest request)
-            => await accountService.ConfirmExternalLoginAsync(request);
-
         public async ValueTask UpdateAccountStoreAsync()
         {
             UserAccount account = await accountService.RetrieveAccountAsync();

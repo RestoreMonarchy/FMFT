@@ -13,12 +13,12 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
         ValueTask AuthorizeAccountByUserIdAsync(int userId);
         ValueTask AuthorizeUserAccountByRoleAsync(params UserRole[] authorizedRoles);
         ValueTask AuthorizeUserAccountByUserIdOrRolesAsync(int userId, params UserRole[] authorizedRoles);
-        ValueTask<string> RegisterWithPasswordAsync(RegisterWithPasswordRequest request);
+        ValueTask<AccountToken> RegisterWithPasswordAsync(RegisterWithPasswordRequest request);
         ValueTask<Account> RetrieveAccountAsync();
         ValueTask<IEnumerable<User>> RetrieveAllUsersAsync();
         ValueTask<UserAccount> RetrieveUserAccountAsync();
         ValueTask<User> RetrieveUserByIdAsync(int userId);
-        ValueTask<string> SignInWithPasswordAsync(SignInWithPasswordRequest request);
+        ValueTask<AccountToken> SignInWithPasswordAsync(SignInWithPasswordRequest request);
         ValueTask UpdateUserCultureAsync(UpdateUserCultureParams @params);
         ValueTask UpdateUserRoleAsync(UpdateUserRoleParams @params);
     }

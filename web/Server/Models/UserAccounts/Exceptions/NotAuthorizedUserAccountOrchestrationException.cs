@@ -3,7 +3,7 @@
     public class NotAuthorizedUserAccountOrchestrationException : Exception
     {
         public NotAuthorizedUserAccountOrchestrationException() 
-            : base("ERR021: User account not authorized")
+            : base("ERR002: Account not authorized")
         {
 
         }

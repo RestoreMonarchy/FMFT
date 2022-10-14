@@ -3,6 +3,5 @@
     public class Account
     {
         public int UserId { get; set; }
-        public string AuthenticationMethod { get; set; }
     }
 }

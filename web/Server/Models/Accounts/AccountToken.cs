@@ -1,4 +1,4 @@
-﻿namespace FMFT.Web.Client.Models.AccountTokens
+﻿namespace FMFT.Web.Server.Models.Accounts
 {
     public class AccountToken
     {

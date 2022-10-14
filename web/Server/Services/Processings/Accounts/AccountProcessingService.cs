@@ -40,7 +40,7 @@ namespace FMFT.Web.Server.Services.Processings.Accounts
                 return await accountService.RetrieveAccountAsync();
             });
 
-        public ValueTask<string> CreateTokenAsync(CreateTokenParams @params)
+        public ValueTask<AccountToken> CreateTokenAsync(CreateTokenParams @params)
             => TryCatch(async () =>
             {
                 return await accountService.CreateTokenAsync(@params);

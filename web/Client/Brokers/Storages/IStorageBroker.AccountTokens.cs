@@ -1,8 +1,10 @@
-﻿namespace FMFT.Web.Client.Brokers.Storages
+﻿using FMFT.Web.Client.Models.AccountTokens;
+
+namespace FMFT.Web.Client.Brokers.Storages
 {
     public partial interface IStorageBroker
     {
-        ValueTask<string> GetAccountTokenAsync();
-        ValueTask SetAccountTokenAsync(string accountToken);
+        ValueTask<AccountToken> GetAccountTokenAsync();
+        ValueTask SetAccountTokenAsync(AccountToken accountToken);
     }
 }

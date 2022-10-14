@@ -42,7 +42,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
                 return await userService.RetrieveUserByIdAsync(userId);
             });
 
-        public ValueTask<string> RegisterWithPasswordAsync(RegisterWithPasswordRequest request)
+        public ValueTask<AccountToken> RegisterWithPasswordAsync(RegisterWithPasswordRequest request)
             => TryCatch(async () =>
             {
                 RegisterUserWithPasswordProcessingParams args = new()
@@ -65,7 +65,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
                 return await accountService.CreateTokenAsync(@params);
             });
 
-        public ValueTask<string> SignInWithPasswordAsync(SignInWithPasswordRequest request)
+        public ValueTask<AccountToken> SignInWithPasswordAsync(SignInWithPasswordRequest request)
             => TryCatch(async () =>
             {
                 User user = await userService.RetrieveUserByEmailAndPasswordAsync(request.Email, request.PasswordText);
@@ -102,9 +102,9 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
 
         private async ValueTask<UserAccount> RetrieveUserAccountPrivateAsync()
         {
-            UserAccount userAccount = new();
-            userAccount.Account = await accountService.RetrieveAccountAsync();
-            userAccount.User = await userService.RetrieveUserByIdAsync(userAccount.Account.UserId);
+            Account account = await accountService.RetrieveAccountAsync();
+            User user = await userService.RetrieveUserByIdAsync(account.UserId);
+            UserAccount userAccount = MapUserToUserAccount(user);
             return userAccount;
         }
 
@@ -130,7 +130,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
         {
             UserAccount userAccount = await RetrieveUserAccountPrivateAsync();
 
-            if (!authorizedRoles.Contains(userAccount.User.Role))
+            if (!authorizedRoles.Contains(userAccount.Role))
             {
                 throw new NotAuthorizedUserAccountOrchestrationException();
             }
@@ -146,7 +146,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
         {
             UserAccount userAccount = await RetrieveUserAccountPrivateAsync();
 
-            if (userAccount.User.Id != userId && !authorizedRoles.Contains(userAccount.User.Role))
+            if (userAccount.UserId != userId && !authorizedRoles.Contains(userAccount.Role))
             {
                 throw new NotAuthorizedUserAccountOrchestrationException();
             }

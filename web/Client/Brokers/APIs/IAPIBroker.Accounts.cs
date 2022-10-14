@@ -7,7 +7,7 @@ namespace FMFT.Web.Client.Brokers.APIs
     public partial interface IAPIBroker
     {
         ValueTask<UserAccount> GetUserAccountAsync();
-        ValueTask<string> PostAccountLoginAsync(LogInWithPasswordRequest request);
-        ValueTask<string> PostAccountRegisterAsync(RegisterWithPasswordRequest request);
+        ValueTask<AccountToken> PostAccountLoginAsync(LogInWithPasswordRequest request);
+        ValueTask<AccountToken> PostAccountRegisterAsync(RegisterWithPasswordRequest request);
     }
 }

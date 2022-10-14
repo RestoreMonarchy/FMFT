@@ -20,4 +20,3 @@ ERR017 | Reservation not found
 ERR018 | Seat is already reserved
 ERR019 | User already created a reservation
 ERR020 | Auditorium not found
-ERR021 | User account not authorized

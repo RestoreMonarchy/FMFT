@@ -25,11 +25,12 @@ namespace FMFT.Web.Server.Services.Foundations.Accounts
                 return ValueTask.FromResult(account);
             });
 
-        public ValueTask<string> CreateTokenAsync(CreateTokenParams @params)
+        public ValueTask<AccountToken> CreateTokenAsync(CreateTokenParams @params)
             => TryCatch(() =>
             {
                 string token = authenticationBroker.CreateToken(@params.Account);
-                return ValueTask.FromResult(token);
+                AccountToken accountToken = new(token);
+                return ValueTask.FromResult(accountToken);
             });
     }
 }

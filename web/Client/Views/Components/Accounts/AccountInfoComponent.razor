@@ -40,17 +40,5 @@
                 @Account.Role
             </span>
         </li>
-        <Condition Evaluation="Account.AuthenticationMethod is not null">
-            <Match>
-                <li class="list-group-item">
-                    <span class="fw-bold">
-                        Authentication Method: 
-                    </span>
-                    <span>
-                        @Account.AuthenticationMethod
-                    </span>
-                </li>
-            </Match>
-        </Condition>
     </ul>
 </LoadingView>

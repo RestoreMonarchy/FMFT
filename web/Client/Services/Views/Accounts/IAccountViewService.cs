@@ -7,7 +7,6 @@ namespace FMFT.Web.Client.Services.Views.Accounts
     {
         UserAccount Account { get; }
 
-        ValueTask ConfirmExternalLoginAsync(ConfirmExternalLoginRequest request);
         void ForceLoadNavigateTo(string url);
         ValueTask LoginAsync(LogInWithPasswordRequest request);
         ValueTask RegisterAsync(RegisterWithPasswordRequest request);

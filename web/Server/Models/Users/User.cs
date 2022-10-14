@@ -13,21 +13,9 @@ namespace FMFT.Web.Server.Models.Users
         public CultureId CultureId { get; set; }
         public bool IsEmailConfirmed { get; set; }
         public DateTimeOffset? ConfirmEmailSendDate { get; set; }
-        public DateTime CreateDate { get; set; }
+        public DateTimeOffset CreateDate { get; set; }
 
         [JsonIgnore]
         public string PasswordHash { get; set; }
-
-        public UserInfo ToUserInfo()
-        {
-            return new UserInfo()
-            {
-                Id = Id,
-                Email = Email,
-                FirstName = FirstName,
-                LastName = LastName,
-                Role = Role
-            };
-        }
     }
 }

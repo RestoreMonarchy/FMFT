@@ -1,15 +1,17 @@
-﻿namespace FMFT.Web.Client.Brokers.Storages
+﻿using FMFT.Web.Client.Models.AccountTokens;
+
+namespace FMFT.Web.Client.Brokers.Storages
 {
     public partial class StorageBroker
     {
         private const string AccountTokenKey = "AccountToken";
 
-        public async ValueTask<string> GetAccountTokenAsync()
+        public async ValueTask<AccountToken> GetAccountTokenAsync()
         {
-            return await GetLocalItemAsync<string>(AccountTokenKey);
+            return await GetLocalItemAsync<AccountToken>(AccountTokenKey);
         }
 
-        public async ValueTask SetAccountTokenAsync(string accountToken)
+        public async ValueTask SetAccountTokenAsync(AccountToken accountToken)
         {
             await SetLocalItemAsync(CultureIdKey, accountToken);
         }

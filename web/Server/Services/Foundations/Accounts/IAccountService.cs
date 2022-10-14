@@ -6,7 +6,7 @@ namespace FMFT.Web.Server.Services.Foundations.Accounts
 {
     public interface IAccountService
     {
-        ValueTask<string> CreateTokenAsync(CreateTokenParams @params);
+        ValueTask<AccountToken> CreateTokenAsync(CreateTokenParams @params);
         ValueTask<Account> RetrieveAccountAsync();
     }
 }

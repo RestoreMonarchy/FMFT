@@ -45,7 +45,7 @@ namespace FMFT.Web.Server.Controllers
             {
                 UserAccount userAccount = await userAccountService.RetrieveUserAccountAsync();
 
-                return Ok(userAccount.User);
+                return Ok(userAccount);
             }
             catch (UserAccountOrchestrationDependencyValidationException exception)
                 when (exception.InnerException is NotAuthenticatedAccountException)
@@ -61,9 +61,9 @@ namespace FMFT.Web.Server.Controllers
         {
             try
             {
-                string token = await userAccountService.RegisterWithPasswordAsync(request);
+                AccountToken accountToken = await userAccountService.RegisterWithPasswordAsync(request);
 
-                return Ok(token);
+                return Ok(accountToken);
             } catch (UserAccountOrchestrationDependencyValidationException exception)
                 when (exception.InnerException is RegisterUserWithPasswordValidationException)
             {
@@ -84,9 +84,9 @@ namespace FMFT.Web.Server.Controllers
         {
             try
             {
-                string token = await userAccountService.SignInWithPasswordAsync(request);
+                AccountToken accountToken = await userAccountService.SignInWithPasswordAsync(request);
                 
-                return Ok(token);
+                return Ok(accountToken);
             } catch (UserAccountOrchestrationDependencyValidationException exception) 
                 when (exception.InnerException is NotMatchPasswordUserProcessingException)
             {
