@@ -1,8 +1,8 @@
 ﻿namespace FMFT.Web.Server.Models.Auditoriums.Exceptions
 {
-    public class AuditoriumNotFoundException : Exception
+    public class NotFoundAuditoriumException : Exception
     {
-        public AuditoriumNotFoundException() 
+        public NotFoundAuditoriumException() 
             : base("ERR020: Auditorium not found")
         {
 

@@ -20,8 +20,18 @@ namespace FMFT.Web.Server.Controllers
         [HttpGet]
         public async ValueTask<IActionResult> GetAuditoriums()
         {
-            IEnumerable<Auditorium> auditoriums = await auditoriumService.RetrieveAllAuditoriumsAsync();
-            return Ok(auditoriums);
+            try
+            {
+                IEnumerable<Auditorium> auditoriums = await auditoriumService.RetrieveAllAuditoriumsAsync();
+
+                return Ok(auditoriums);
+            }
+            catch (Exception exception) when (exception is AuditoriumServiceException or AuditoriumDependencyException)
+            {
+                Exception innerException = exception.InnerException;
+
+                return InternalServerError(innerException);
+            }
         }
 
         [HttpGet("{auditoriumId}")]
@@ -30,11 +40,19 @@ namespace FMFT.Web.Server.Controllers
             try
             {
                 Auditorium auditorium = await auditoriumService.RetrieveAuditoriumByIdAsync(auditoriumId);
+
                 return Ok(auditorium);
-            } catch (AuditoriumNotFoundException)
+            } catch (AuditoriumValidationException exception) when (exception.InnerException is NotFoundAuditoriumException)
             {
-                return NotFound();
-            }            
+                Exception innerException = exception.InnerException;
+
+                return NotFound(innerException);
+            } catch (Exception exception) when (exception is AuditoriumServiceException or AuditoriumDependencyException)
+            {
+                Exception innerException = exception.InnerException;
+
+                return InternalServerError(innerException);
+            }
         }
     }
 }
