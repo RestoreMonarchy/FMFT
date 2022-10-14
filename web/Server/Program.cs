@@ -16,7 +16,6 @@ builder.Services.AddOrchestrations();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddFMFTOptions(configuration);
-builder.Services.AddFMFTAuthentication(configuration);
 
 if (builder.Environment.IsDevelopment())
 {
@@ -95,9 +94,6 @@ app.UseCors();
 app.UseStaticFiles();
 
 app.UseRouting();
-
-app.UseAuthentication();
-app.UseAuthorization();
 
 app.MapRazorPages();
 

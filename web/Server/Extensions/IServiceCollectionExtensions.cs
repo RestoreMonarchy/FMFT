@@ -1,5 +1,4 @@
-﻿using FMFT.Extensions.Authentication.Constants;
-using FMFT.Web.Server.Brokers.Authentications;
+﻿using FMFT.Web.Server.Brokers.Authentications;
 using FMFT.Web.Server.Brokers.Encryptions;
 using FMFT.Web.Server.Brokers.Loggings;
 using FMFT.Web.Server.Brokers.Storages;
@@ -19,8 +18,6 @@ using FMFT.Web.Server.Services.Processings.Accounts;
 using FMFT.Web.Server.Services.Processings.Reservations;
 using FMFT.Web.Server.Services.Processings.Shows;
 using FMFT.Web.Server.Services.Processings.Users;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace FMFT.Web.Server.Extensions
 {
@@ -31,40 +28,6 @@ namespace FMFT.Web.Server.Extensions
             services.Configure<JWTAuthenticationOptions>(configuration.GetSection(JWTAuthenticationOptions.SectionKey));
             services.Configure<GoogleAuthenticationOptions>(configuration.GetSection(GoogleAuthenticationOptions.SectionKey));
             services.Configure<FacebookAuthenticationOptions>(configuration.GetSection(FacebookAuthenticationOptions.SectionKey));
-
-            return services;
-        }
-
-        public static IServiceCollection AddFMFTAuthentication(this IServiceCollection services, IConfiguration configuration)
-        {
-            JWTAuthenticationOptions jwtOptions = JWTAuthenticationOptions.FromConfiguration(configuration);
-            GoogleAuthenticationOptions googleOptions = GoogleAuthenticationOptions.FromConfiguration(configuration);
-            FacebookAuthenticationOptions facebookOptions = FacebookAuthenticationOptions.FromConfiguration(configuration);
-
-            AuthenticationBuilder authenticationBuilder = services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddCookie(FMFTAuthenticationDefaults.ExternalScheme, o =>
-                {
-                    o.Cookie.Name = FMFTAuthenticationDefaults.ExternalScheme;
-                    o.ExpireTimeSpan = TimeSpan.FromMinutes(10);
-                });
-            
-            if (googleOptions.Enabled)
-            {
-                authenticationBuilder.AddGoogle(options =>
-                {
-                    options.ClientId = googleOptions.ClientId;
-                    options.ClientSecret = googleOptions.ClientSecret;
-                });
-            }
-
-            if (facebookOptions.Enabled)
-            {
-                authenticationBuilder.AddFacebook(options =>
-                {
-                    options.AppId = facebookOptions.AppId;
-                    options.AppSecret = facebookOptions.AppSecret;
-                });
-            }
 
             return services;
         }
