@@ -38,7 +38,7 @@ namespace FMFT.Web.Server.Controllers.Shows
                 Show show = await accountShowService.RetrieveShowByIdAsync(showId);
                 return Ok(show);
             }
-            catch (ShowNotFoundException)
+            catch (NotFoundShowException)
             {
                 return NotFound();
             }
@@ -52,7 +52,7 @@ namespace FMFT.Web.Server.Controllers.Shows
                 Show show = await accountShowService.AddShowAsync(@params);
                 return Ok(show);
             }
-            catch (ShowAuditoriumNotExistsException exception)
+            catch (AuditoriumNotExistsShowException exception)
             {
                 return Conflict(exception);
             }
@@ -74,11 +74,11 @@ namespace FMFT.Web.Server.Controllers.Shows
                 Show show = await accountShowService.ModifyShowAsync(@params);
                 return Ok(show);
             }
-            catch (ShowAuditoriumNotExistsException exception)
+            catch (AuditoriumNotExistsShowException exception)
             {
                 return Conflict(exception);
             }
-            catch (ShowNotFoundException exception)
+            catch (NotFoundShowException exception)
             {
                 return NotFound(exception);
             }
