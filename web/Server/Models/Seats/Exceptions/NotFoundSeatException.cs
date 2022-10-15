@@ -2,9 +2,9 @@
 
 namespace FMFT.Web.Server.Models.Seats.Exceptions
 {
-    public class SeatNotFoundException : Xeption
+    public class NotFoundSeatException : Xeption
     {
-        public SeatNotFoundException() 
+        public NotFoundSeatException() 
             : base("ERR016: Seat not found")
         {
 
