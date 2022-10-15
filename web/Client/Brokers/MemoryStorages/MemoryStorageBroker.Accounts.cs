@@ -1,4 +1,4 @@
-﻿using FMFT.Web.Client.Models.Accounts;
+﻿using FMFT.Web.Client.Models.API.Accounts;
 
 namespace FMFT.Web.Client.Brokers.MemoryStorages
 {

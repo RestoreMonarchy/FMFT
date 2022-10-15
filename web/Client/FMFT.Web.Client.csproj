@@ -2,61 +2,40 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-	<ImplicitUsings>enable</ImplicitUsings>
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
-	<Using Remove="System.Collections" />
+    <_ContentIncludedByDefault Remove="wwwroot\appsettings.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Views\Components\UserReservations\**" />
-    <Content Remove="Views\Components\UserReservations\**" />
-    <EmbeddedResource Remove="Views\Components\UserReservations\**" />
-    <None Remove="Views\Components\UserReservations\**" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.10" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="6.0.8" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="C:\Users\Michal\.nuget\packages\prettyblazor\1.2.0\contentFiles\any\net5.0\License.txt" />
+    <Content Update="wwwroot\favicon.ico">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\index.html">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Shared\AccountLayout.razor.css" />
+    <Folder Include="Views\Pages\" />
+    <Folder Include="Views\Shared\Components\" />
+    <Folder Include="Views\Shared\Layouts\Account\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Shared\AccountLayout.razor.css" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Blazored.LocalStorage" Version="4.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.5" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.5" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.8" />
-    <PackageReference Include="PrettyBlazor" Version="1.2.0" />
-    <PackageReference Include="Xeption" Version="2.4.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\extensions\DataTables\FMFT.Extensions.DataTables.csproj" />
-    <ProjectReference Include="..\..\extensions\TheStandard\FMFT.Extensions.TheStandard.csproj" />
-    <ProjectReference Include="..\..\external\RESTFulSense.WebAssembly\RESTFulSense.WebAssembly.csproj" />
+    <ProjectReference Include="..\..\extensions\blazor\Bases\FMFT.Extensions.Blazor.Bases.csproj" />
+    <ProjectReference Include="..\..\extensions\blazor\DataTables\FMFT.Extensions.Blazor.DataTables.csproj" />
     <ProjectReference Include="..\Shared\FMFT.Web.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Resources\Localization.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Localization.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Resources\Localization.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Localization.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

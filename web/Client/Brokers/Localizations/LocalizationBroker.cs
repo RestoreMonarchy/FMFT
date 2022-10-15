@@ -1,5 +1,4 @@
-﻿using FMFT.Web.Client.Resources;
-using Microsoft.Extensions.Localization;
+﻿using Microsoft.Extensions.Localization;
 using System.Globalization;
 
 namespace FMFT.Web.Client.Brokers.Localizations

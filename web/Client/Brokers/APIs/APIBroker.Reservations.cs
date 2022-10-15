@@ -1,5 +1,5 @@
-﻿using FMFT.Web.Client.Models.Reservations;
-using FMFT.Web.Client.Models.Reservations.Requests;
+﻿using FMFT.Web.Client.Models.API.Reservations;
+using FMFT.Web.Client.Models.API.Reservations.Requests;
 
 namespace FMFT.Web.Client.Brokers.APIs
 {

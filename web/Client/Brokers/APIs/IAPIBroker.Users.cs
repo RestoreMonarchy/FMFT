@@ -1,5 +1,5 @@
-﻿using FMFT.Web.Client.Models.Users;
-using FMFT.Web.Client.Models.Users.Requests;
+﻿using FMFT.Web.Client.Models.API.Users;
+using FMFT.Web.Client.Models.API.Users.Requests;
 
 namespace FMFT.Web.Client.Brokers.APIs
 {

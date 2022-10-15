@@ -1,0 +1,63 @@
+﻿@using FMFT.Extensions.Blazor.Bases.Navbars
+
+<nav class="navbar navbar-expand-lg bg-light border-bottom border-1">
+    <div class="container">
+        <a class="navbar-brand" href="/">
+            FMFT
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarToggler">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <NavbarItem Location="/">
+                    Home
+                </NavbarItem>
+                <NavbarItem Location="/shows" StartsWith="true">
+                    Shows
+                </NavbarItem>
+                @*<CustomAuthorizeView Role="UserRole.Admin">
+                    <Authorized>
+                        <NavbarDropdown Value="Admin">
+                            <NavbarDropdownItem Location="/admin/shows">
+                                Shows
+                            </NavbarDropdownItem>
+                            <NavbarDropdownItem Location="/admin/reservations">
+                                Reservations
+                            </NavbarDropdownItem>
+                            <NavbarDropdownItem Location="/admin/users">
+                                Users
+                            </NavbarDropdownItem>
+                        </NavbarDropdown>
+                    </Authorized>
+                </CustomAuthorizeView>*@
+            </ul>
+            <ul class="navbar-nav">
+                @*<li class="nav-item dropdown">
+                    <CultureSelectComponent />
+                </li>*@
+                @*<CustomAuthorizeView>
+                    <Authorized>
+                        <MainNavbarDropdown Value="@context.FirstName">
+                            <MainNavbarDropdownItem Location="/account">
+                                Account
+                            </MainNavbarDropdownItem>
+                            <MainNavbarDropdownItem Location="/account/reservations">
+                                Reservations
+                            </MainNavbarDropdownItem>
+                            <MainNavbarDropdownItem Location="/account/logout">
+                                Logout
+                            </MainNavbarDropdownItem>
+                        </MainNavbarDropdown>
+                        
+                    </Authorized>
+                    <NotAuthorized>
+                        <MainNavbarItem Location="/account/login">
+                            Login
+                        </MainNavbarItem>
+                    </NotAuthorized>
+                </CustomAuthorizeView>*@                    
+            </ul>
+        </div>
+    </div>
+</nav>

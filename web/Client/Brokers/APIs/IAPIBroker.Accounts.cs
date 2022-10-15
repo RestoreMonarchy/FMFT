@@ -1,6 +1,5 @@
-﻿using FMFT.Web.Client.Models.Accounts;
-using FMFT.Web.Client.Models.Accounts.Requests;
-using FMFT.Web.Client.Models.AccountTokens;
+﻿using FMFT.Web.Client.Models.API.Accounts;
+using FMFT.Web.Client.Models.API.Accounts.Requests;
 
 namespace FMFT.Web.Client.Brokers.APIs
 {
