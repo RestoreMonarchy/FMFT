@@ -1,82 +1,92 @@
-﻿using FMFT.Web.Server.Models.Reservations;
+﻿using FMFT.Extensions.TheStandard;
+using FMFT.Web.Server.Brokers.Loggings;
+using FMFT.Web.Server.Models.Reservations;
 using FMFT.Web.Server.Models.Reservations.Params;
 using FMFT.Web.Server.Models.Reservations.Requests;
 using FMFT.Web.Server.Services.Processings.Reservations;
 
 namespace FMFT.Web.Server.Services.Orchestrations.Reservations
 {
-    public class ReservationOrchestrationService : IReservationOrchestrationService
+    public partial class ReservationOrchestrationService : TheStandardService, IReservationOrchestrationService
     {
         private readonly IReservationProcessingService reservationService;
+        private readonly ILoggingBroker loggingBroker;
 
-        public ReservationOrchestrationService(IReservationProcessingService reservationService)
+        public ReservationOrchestrationService(IReservationProcessingService reservationService, ILoggingBroker loggingBroker)
         {
             this.reservationService = reservationService;
+            this.loggingBroker = loggingBroker;
         }
 
-        public async ValueTask<Reservation> CreateReservationAsync(CreateReservationRequest request)
-        {
-            CreateReservationParams @params = new()
+        public ValueTask<Reservation> CreateReservationAsync(CreateReservationRequest request)
+            => TryCatch(async () =>
             {
-                ShowId = request.ShowId,
-                SeatId = request.SeatId,
-                UserId = request.UserId
-            };
+                CreateReservationParams @params = new()
+                {
+                    ShowId = request.ShowId,
+                    SeatId = request.SeatId,
+                    UserId = request.UserId
+                };
 
-            //await accountService.AuthorizeAccountByUserIdOrRolesAsync(@params.UserId, UserRole.Admin);
+                //await accountService.AuthorizeAccountByUserIdOrRolesAsync(@params.UserId, UserRole.Admin);
 
-            return await reservationService.CreateReservationAsync(@params);
-        }
+                return await reservationService.CreateReservationAsync(@params);
+            });
 
-        public async ValueTask<Reservation> UpdateReservationStatusAsync(UpdateReservationStatusRequest request)
-        {
-            //await accountService.AuthorizeAccountByRoleAsync(UserRole.Admin);
-
-            UpdateReservationStatusParams @params = new()
+        public ValueTask<Reservation> UpdateReservationStatusAsync(UpdateReservationStatusRequest request)
+            => TryCatch(async () =>
             {
-                ReservationId = request.ReservationId,
-                ReservationStatus = request.Status,
-                UpdateStatusDate = DateTimeOffset.Now,
-                //AdminUserId = account.UserId
-            };
+                //await accountService.AuthorizeAccountByRoleAsync(UserRole.Admin);
 
-            return await reservationService.UpdateReservationStatusAsync(@params);
-        }
+                UpdateReservationStatusParams @params = new()
+                {
+                    ReservationId = request.ReservationId,
+                    ReservationStatus = request.Status,
+                    UpdateStatusDate = DateTimeOffset.Now,
+                    //AdminUserId = account.UserId
+                };
 
-        public async ValueTask<IEnumerable<Reservation>> RetrieveReservationsByUserIdAsync(int userId)
-        {
-            //await accountService.AuthorizeAccountByUserIdOrRolesAsync(userId, UserRole.Admin);
+                return await reservationService.UpdateReservationStatusAsync(@params);
+            });
 
-            IEnumerable<Reservation> reservations = await reservationService.RetrieveReservationsByUserIdAsync(userId);
+        public ValueTask<IEnumerable<Reservation>> RetrieveReservationsByUserIdAsync(int userId)
+            => TryCatch(async () =>
+            {
+                //await accountService.AuthorizeAccountByUserIdOrRolesAsync(userId, UserRole.Admin);
 
-            return reservations;
-        }
+                IEnumerable<Reservation> reservations = await reservationService.RetrieveReservationsByUserIdAsync(userId);
 
-        public async ValueTask<IEnumerable<Reservation>> RetrieveReservationsByShowIdAsync(int showId)
-        {
-            //await accountService.AuthorizeAccountByRoleAsync(UserRole.Admin);
+                return reservations;
+            });
 
-            IEnumerable<Reservation> reservations = await reservationService.RetrieveReservationsByShowIdAsync(showId);
+        public ValueTask<IEnumerable<Reservation>> RetrieveReservationsByShowIdAsync(int showId)
+            => TryCatch(async () =>
+            {
+                //await accountService.AuthorizeAccountByRoleAsync(UserRole.Admin);
 
-            return reservations;
-        }
+                IEnumerable<Reservation> reservations = await reservationService.RetrieveReservationsByShowIdAsync(showId);
 
-        public async ValueTask<IEnumerable<Reservation>> RetrieveAllReservationsAsync()
-        {
-            //await accountService.AuthorizeAccountByRoleAsync(UserRole.Admin);
+                return reservations;
+            });
 
-            IEnumerable<Reservation> reservations = await reservationService.RetrieveAllReservationsAsync();
+        public ValueTask<IEnumerable<Reservation>> RetrieveAllReservationsAsync()
+            => TryCatch(async () =>
+            {
+                //await accountService.AuthorizeAccountByRoleAsync(UserRole.Admin);
 
-            return reservations;
-        }
+                IEnumerable<Reservation> reservations = await reservationService.RetrieveAllReservationsAsync();
 
-        public async ValueTask<Reservation> RetrieveReservationByIdAsync(int reservationId)
-        {
-            Reservation reservation = await reservationService.RetrieveReservationByIdAsync(reservationId);
+                return reservations;
+            });
 
-            //await accountService.AuthorizeAccountByUserIdOrRolesAsync(reservation.User.Id, UserRole.Admin);
+        public ValueTask<Reservation> RetrieveReservationByIdAsync(int reservationId)
+            => TryCatch(async () =>
+            {
+                Reservation reservation = await reservationService.RetrieveReservationByIdAsync(reservationId);
 
-            return reservation;
-        }
+                //await accountService.AuthorizeAccountByUserIdOrRolesAsync(reservation.User.Id, UserRole.Admin);
+
+                return reservation;
+            });
     }
 }

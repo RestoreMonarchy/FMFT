@@ -2,9 +2,9 @@
 
 namespace FMFT.Web.Server.Models.Reservations.Exceptions
 {
-    public class SeatAlreadyReservedException : Xeption
+    public class SeatAlreadyReservedReservationException : Xeption
     {
-        public SeatAlreadyReservedException() 
+        public SeatAlreadyReservedReservationException() 
             : base("ERR018: Seat is already reserved")
         {
 

@@ -42,7 +42,7 @@ namespace FMFT.Web.Server.Controllers
             {
                 Reservation reservation = await accountReservationService.RetrieveReservationByIdAsync(reservationId);
                 return Ok(reservation);
-            } catch (ReservationNotFoundException exception)
+            } catch (NotFoundReservationException exception)
             {
                 return NotFound(exception);
             } catch (NotAuthenticatedAccountException exception)
@@ -63,7 +63,7 @@ namespace FMFT.Web.Server.Controllers
                 Reservation reservation = await accountReservationService.UpdateReservationStatusAsync(request);
                 return Ok(reservation);
             }
-            catch (ReservationNotFoundException exception)
+            catch (NotFoundReservationException exception)
             {
                 return NotFound(exception);
             }

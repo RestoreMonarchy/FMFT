@@ -2,9 +2,9 @@
 
 namespace FMFT.Web.Server.Models.Reservations.Exceptions
 {
-    public class UserAlreadyReservedException : Xeption
+    public class UserAlreadyReservedReservationException : Xeption
     {
-        public UserAlreadyReservedException() 
+        public UserAlreadyReservedReservationException() 
             : base("ERR019: User already created a reservation")
         {
 

@@ -19,11 +19,11 @@ namespace FMFT.Web.Server.Controllers.Users
                 Reservation reservation = await reservationService.CreateReservationAsync(request);
                 return Ok(reservation);
             }
-            catch (SeatAlreadyReservedException exception)
+            catch (SeatAlreadyReservedReservationException exception)
             {
                 return Conflict(exception);
             }
-            catch (UserAlreadyReservedException exception)
+            catch (UserAlreadyReservedReservationException exception)
             {
                 return Conflict(exception);
             }
