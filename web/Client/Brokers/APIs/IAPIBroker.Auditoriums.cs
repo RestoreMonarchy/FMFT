@@ -1,10 +1,11 @@
-﻿using FMFT.Web.Client.Models.API.Auditoriums;
+﻿using FMFT.Web.Client.Models.API;
+using FMFT.Web.Client.Models.API.Auditoriums;
 
 namespace FMFT.Web.Client.Brokers.APIs
 {
     public partial interface IAPIBroker
     {
-        ValueTask<Auditorium> GetAuditoriumByIdAsync(int auditoriumId);
-        ValueTask<List<Auditorium>> GetAllAuditoriumsAsync();
+        ValueTask<APIResponse<Auditorium>> GetAuditoriumByIdAsync(int auditoriumId);
+        ValueTask<APIResponse<List<Auditorium>>> GetAllAuditoriumsAsync();
     }
 }

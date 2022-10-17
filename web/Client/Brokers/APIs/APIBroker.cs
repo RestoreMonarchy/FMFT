@@ -1,11 +1,13 @@
-﻿using RESTFulSense.WebAssembly.Clients;
+﻿using FMFT.Web.Client.Models.API;
+using System.ComponentModel.DataAnnotations;
+using System.Net.Http.Json;
+using System.Xml.Schema;
 
 namespace FMFT.Web.Client.Brokers.APIs
 {
     public partial class APIBroker : IAPIBroker
     {
         private readonly HttpClient httpClient;
-        private readonly IRESTFulApiFactoryClient apiClient;
 
         public APIBroker(IConfiguration configuration)
         {
@@ -15,43 +17,74 @@ namespace FMFT.Web.Client.Brokers.APIs
             };
 
             httpClient.DefaultRequestHeaders.Add("Authorization", configuration["AccountToken"]);
-
-            apiClient = GetApiClient();
         }
 
-        private async ValueTask<T> GetAsync<T>(string relativeUrl)
+        private async ValueTask<APIResponse<T>> GetAsync<T>(string relativeUrl)
         {
-            return await apiClient.GetContentAsync<T>(relativeUrl);
+            HttpResponseMessage response = await httpClient.GetAsync(relativeUrl);
+            APIResponse<T> apiResponse = new(response);
+            if (response.IsSuccessStatusCode)
+            {
+                await apiResponse.ReadObjectAsync();
+            }
+            
+            return apiResponse;
         }
 
-        public async ValueTask<TResult> PostAsync<TContent, TResult>(string relativeUrl, TContent content)
+        public async ValueTask<APIResponse> GetAsync(string relativeUrl)
         {
-            return await apiClient.PostContentAsync<TContent, TResult>(relativeUrl, content);
+            HttpResponseMessage response = await httpClient.GetAsync(relativeUrl);
+            APIResponse apiResponse = new(response);
+            
+            return apiResponse;
         }
 
-        public async ValueTask PostContentWithNoResponseAsync<TContent>(string relativeUrl, TContent content)
-        {
-            await apiClient.PostContentWithNoResponseAsync(relativeUrl, content);
+        public async ValueTask<APIResponse> PostAsync(string relativeUrl, object content)
+        {            
+            HttpResponseMessage response = await httpClient.PostAsJsonAsync(relativeUrl, content);
+            APIResponse apiResponse = new(response);
+            
+            return apiResponse;
         }
 
-        private async ValueTask<TResult> PutAsync<TContent, TResult>(string relativeUrl, TContent content)
+        public async ValueTask<APIResponse<T>> PostAsync<T>(string relativeUrl, object content)
         {
-            return await apiClient.PutContentAsync<TContent, TResult>(relativeUrl, content);
+            HttpResponseMessage response = await httpClient.PostAsJsonAsync(relativeUrl, content);
+            APIResponse<T> apiResponse = new(response);
+            if (response.IsSuccessStatusCode)
+            {
+                await apiResponse.ReadObjectAsync();
+            }
+            
+            return apiResponse;
         }
 
-        private async ValueTask<T> PutContentWithNoResponseAsync<T>(string relativeUrl, T content)
+        public async ValueTask<APIResponse> PutAsync(string relativeUrl, object content)
         {
-            return await apiClient.PutContentAsync<T>(relativeUrl, content);
+            HttpResponseMessage response = await httpClient.PutAsJsonAsync(relativeUrl, content);
+            APIResponse apiResponse = new(response);
+            
+            return apiResponse;
         }
 
-        private async ValueTask<T> DeleteAsync<T>(string relativeUrl)
+        public async ValueTask<APIResponse<T>> PutAsync<T>(string relativeUrl, object content)
         {
-            return await apiClient.DeleteContentAsync<T>(relativeUrl);
+            HttpResponseMessage response = await httpClient.PutAsJsonAsync(relativeUrl, content);
+            APIResponse<T> apiResponse = new(response);
+            if (response.IsSuccessStatusCode)
+            {
+                await apiResponse.ReadObjectAsync();
+            }
+            
+            return apiResponse;
         }
 
-        private IRESTFulApiFactoryClient GetApiClient()
+        public async ValueTask DeleteAsync(string relativeUrl)
         {
-            return new RESTFulApiFactoryClient(httpClient);
+            HttpResponseMessage response = await httpClient.DeleteAsync(relativeUrl);
+            APIResponse apiResponse = new(response);
+            
+            return apiResponse;
         }
     }
 }

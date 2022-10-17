@@ -1,4 +1,5 @@
-﻿using FMFT.Web.Client.Models.API.Users;
+﻿using FMFT.Web.Client.Models.API;
+using FMFT.Web.Client.Models.API.Users;
 using FMFT.Web.Client.Models.API.Users.Requests;
 
 namespace FMFT.Web.Client.Brokers.APIs
@@ -7,27 +8,27 @@ namespace FMFT.Web.Client.Brokers.APIs
     {
         private const string UsersRelativeUrl = "api/users";
 
-        public async ValueTask<List<User>> GetAllUsersAsync()
+        public async ValueTask<APIResponse<List<User>>> GetAllUsersAsync()
         {
             return await GetAsync<List<User>>(UsersRelativeUrl);
         }
 
-        public async ValueTask<User> GetUserByIdAsync(int userId)
+        public async ValueTask<APIResponse<User>> GetUserByIdAsync(int userId)
         {
             string url = $"{UsersRelativeUrl}/{userId}";
             return await GetAsync<User>(url);
         }
 
-        public async ValueTask UpdateUserRoleAsync(UpdateUserRoleRequest request)
+        public async ValueTask<APIResponse> UpdateUserRoleAsync(UpdateUserRoleRequest request)
         {
             string url = $"{UsersRelativeUrl}/{request.UserId}/updaterole";
-            await PostContentWithNoResponseAsync(url, request);
+            return await PostAsync(url, request);
         }
 
-        public async ValueTask UpdateUserCultureAsync(UpdateUserCultureRequest request)
+        public async ValueTask<APIResponse> UpdateUserCultureAsync(UpdateUserCultureRequest request)
         {
             string url = $"{UsersRelativeUrl}/{request.UserId}/updateculture";
-            await PostContentWithNoResponseAsync(url, request);
+            return await PostAsync(url, request);
         }
     }
 }

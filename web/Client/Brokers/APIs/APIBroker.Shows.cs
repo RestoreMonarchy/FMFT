@@ -1,7 +1,6 @@
-﻿using FMFT.Web.Client.Models.API.Shows;
+﻿using FMFT.Web.Client.Models.API;
+using FMFT.Web.Client.Models.API.Shows;
 using FMFT.Web.Client.Models.API.Shows.Requests;
-using FMFT.Web.Client.Models.Shows;
-using FMFT.Web.Client.Models.Shows.Requests;
 
 namespace FMFT.Web.Client.Brokers.APIs
 {
@@ -9,24 +8,24 @@ namespace FMFT.Web.Client.Brokers.APIs
     {
         private const string ShowsRelativeUrl = "api/shows";
 
-        public async ValueTask<Show> GetShowByIdAsync(int showId)
+        public async ValueTask<APIResponse<Show>> GetShowByIdAsync(int showId)
         {
             return await GetAsync<Show>($"{ShowsRelativeUrl}/{showId}");
         }
 
-        public async ValueTask<List<Show>> GetAllShowsAsync()
+        public async ValueTask<APIResponse<List<Show>>> GetAllShowsAsync()
         {
             return await GetAsync<List<Show>>(ShowsRelativeUrl);
         }
 
-        public async ValueTask<Show> AddShowAsync(AddShowRequest request)
+        public async ValueTask<APIResponse<Show>> AddShowAsync(AddShowRequest request)
         {
-            return await PostAsync<AddShowRequest, Show>(ShowsRelativeUrl, request);
+            return await PostAsync<Show>(ShowsRelativeUrl, request);
         }
 
-        public async ValueTask<Show> UpdateShowAsync(UpdateShowRequest request)
+        public async ValueTask<APIResponse<Show>> UpdateShowAsync(UpdateShowRequest request)
         {
-            return await PutAsync<UpdateShowRequest, Show>(ShowsRelativeUrl, request);
+            return await PutAsync<Show>(ShowsRelativeUrl, request);
         }
     }
 }

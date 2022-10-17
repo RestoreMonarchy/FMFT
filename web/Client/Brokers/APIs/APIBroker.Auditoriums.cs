@@ -1,4 +1,5 @@
-﻿using FMFT.Web.Client.Models.API.Auditoriums;
+﻿using FMFT.Web.Client.Models.API;
+using FMFT.Web.Client.Models.API.Auditoriums;
 
 namespace FMFT.Web.Client.Brokers.APIs
 {
@@ -6,12 +7,12 @@ namespace FMFT.Web.Client.Brokers.APIs
     {
         private const string AuditoriumsRelativeUrl = "api/auditoriums";
 
-        public async ValueTask<Auditorium> GetAuditoriumByIdAsync(int auditoriumId)
+        public async ValueTask<APIResponse<Auditorium>> GetAuditoriumByIdAsync(int auditoriumId)
         {
             return await GetAsync<Auditorium>($"{AuditoriumsRelativeUrl}/{auditoriumId}");
         }
 
-        public async ValueTask<List<Auditorium>> GetAllAuditoriumsAsync()
+        public async ValueTask<APIResponse<List<Auditorium>>> GetAllAuditoriumsAsync()
         {
             return await GetAsync<List<Auditorium>>(AuditoriumsRelativeUrl);
         }
