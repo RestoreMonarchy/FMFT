@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Blazored.LocalStorage" Version="4.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.10" PrivateAssets="all" />
     <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="6.0.8" />
@@ -27,15 +28,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Pages\" />
-    <Folder Include="Views\Shared\Components\" />
-    <Folder Include="Views\Shared\Layouts\Account\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\extensions\blazor\Bases\FMFT.Extensions.Blazor.Bases.csproj" />
     <ProjectReference Include="..\..\extensions\blazor\DataTables\FMFT.Extensions.Blazor.DataTables.csproj" />
     <ProjectReference Include="..\Shared\FMFT.Web.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

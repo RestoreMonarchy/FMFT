@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using FMFT.Web.Client.Models.API.Accounts;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 
@@ -6,27 +7,53 @@ namespace FMFT.Web.Client.Models.API
 {
     public class APIResponse
     {
-        public APIResponse(HttpResponseMessage responseMessage)
+        public APIResponse(HttpResponseMessage httpResponseMessage)
         {
-            Message = responseMessage;
+            HttpMessage = httpResponseMessage;
         }
 
-        public HttpStatusCode StatusCode => Message.StatusCode;
-        public HttpResponseMessage Message { get; set; }
+        public HttpStatusCode StatusCode => HttpMessage.StatusCode;
+        public bool IsSuccessfull => HttpMessage.IsSuccessStatusCode;
+        public HttpResponseMessage HttpMessage { get; private set; }
+        public APIError Error { get; private set; }
+
+        public virtual async ValueTask ReadContentAsync()
+        {
+            if (!IsSuccessfull)
+            {
+                await ReadErrorAsync();
+            }
+        }
+
+        protected async ValueTask ReadErrorAsync()
+        {
+            Error = await HttpMessage.Content.ReadFromJsonAsync<APIError>();
+        }
     }
 
-    public class APIResponse<T> : APIResponse
+    public class APIResponse<TObject> : APIResponse
     {
         public APIResponse(HttpResponseMessage httpResponseMessage) : base(httpResponseMessage)
         {
 
         }
 
-        public async ValueTask ReadObjectAsync()
+        public override async ValueTask ReadContentAsync()
         {
-            Object = await Message.Content.ReadFromJsonAsync<T>();
+            if (IsSuccessfull)
+            {
+                await ReadObjectAsync();
+            } else
+            {
+                await ReadErrorAsync();
+            }
         }
 
-        public T Object { get; set; }
+        private async ValueTask ReadObjectAsync()
+        {
+            Object = await HttpMessage.Content.ReadFromJsonAsync<TObject>();
+        }
+
+        public TObject Object { get; set; }
     }
 }

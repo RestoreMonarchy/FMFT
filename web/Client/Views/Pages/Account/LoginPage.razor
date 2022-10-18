@@ -1,0 +1,25 @@
+﻿@page "/account/login"
+
+@using FMFT.Web.Client.Views.Shared.Components.Bodies
+@using FMFT.Web.Client.Views.Shared.Components.Forms
+@using FMFT.Web.Client.Views.Shared.Layouts.Account
+
+@layout AccountLayout
+
+<AccountLayoutBody>
+    <Header>
+        Login
+    </Header>
+    <Content>
+        <LoginForm />
+    </Content>
+    <Footer>
+        <div class="d-flex">
+            <div class="small">
+                <a href="/" class="text-decoration-none">
+                    <i class="bi bi-house-door"></i> Go to homepage
+                </a>
+            </div>
+        </div>
+    </Footer>
+</AccountLayoutBody>

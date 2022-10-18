@@ -1,0 +1,26 @@
+﻿@inherits LayoutComponentBase
+
+@Body
+
+@*
+    This cannot be in the isolated CSS file
+*@
+<style rel="stylesheet">
+    html, body {
+        height: 100% !important;
+    }
+
+    body {
+        display: flex;
+        align-items: center !important;
+        padding-top: 40px;
+        padding-bottom: 40px;
+        background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(/img/background.jpg) no-repeat center center fixed;
+        background-size: cover;
+    }
+
+    #app {
+        display: flex;
+        width: 100%;
+    }
+</style>

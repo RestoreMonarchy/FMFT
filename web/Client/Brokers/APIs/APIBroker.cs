@@ -16,17 +16,18 @@ namespace FMFT.Web.Client.Brokers.APIs
                 BaseAddress = new Uri(configuration["APIUrl"])
             };
 
-            httpClient.DefaultRequestHeaders.Add("Authorization", configuration["AccountToken"]);
+            if (!string.IsNullOrEmpty(configuration["AccountToken"]))
+            {
+                httpClient.DefaultRequestHeaders.Add("Authorization", configuration["AccountToken"]);
+            }            
         }
 
         private async ValueTask<APIResponse<T>> GetAsync<T>(string relativeUrl)
         {
             HttpResponseMessage response = await httpClient.GetAsync(relativeUrl);
             APIResponse<T> apiResponse = new(response);
-            if (response.IsSuccessStatusCode)
-            {
-                await apiResponse.ReadObjectAsync();
-            }
+
+            await apiResponse.ReadContentAsync();
             
             return apiResponse;
         }
@@ -35,7 +36,9 @@ namespace FMFT.Web.Client.Brokers.APIs
         {
             HttpResponseMessage response = await httpClient.GetAsync(relativeUrl);
             APIResponse apiResponse = new(response);
-            
+
+            await apiResponse.ReadContentAsync();
+
             return apiResponse;
         }
 
@@ -43,7 +46,9 @@ namespace FMFT.Web.Client.Brokers.APIs
         {            
             HttpResponseMessage response = await httpClient.PostAsJsonAsync(relativeUrl, content);
             APIResponse apiResponse = new(response);
-            
+
+            await apiResponse.ReadContentAsync();
+
             return apiResponse;
         }
 
@@ -51,11 +56,9 @@ namespace FMFT.Web.Client.Brokers.APIs
         {
             HttpResponseMessage response = await httpClient.PostAsJsonAsync(relativeUrl, content);
             APIResponse<T> apiResponse = new(response);
-            if (response.IsSuccessStatusCode)
-            {
-                await apiResponse.ReadObjectAsync();
-            }
-            
+
+            await apiResponse.ReadContentAsync();
+
             return apiResponse;
         }
 
@@ -63,7 +66,9 @@ namespace FMFT.Web.Client.Brokers.APIs
         {
             HttpResponseMessage response = await httpClient.PutAsJsonAsync(relativeUrl, content);
             APIResponse apiResponse = new(response);
-            
+
+            await apiResponse.ReadContentAsync();
+
             return apiResponse;
         }
 
@@ -71,19 +76,19 @@ namespace FMFT.Web.Client.Brokers.APIs
         {
             HttpResponseMessage response = await httpClient.PutAsJsonAsync(relativeUrl, content);
             APIResponse<T> apiResponse = new(response);
-            if (response.IsSuccessStatusCode)
-            {
-                await apiResponse.ReadObjectAsync();
-            }
-            
+
+            await apiResponse.ReadContentAsync();
+
             return apiResponse;
         }
 
-        public async ValueTask DeleteAsync(string relativeUrl)
+        public async ValueTask<APIResponse> DeleteAsync(string relativeUrl)
         {
             HttpResponseMessage response = await httpClient.DeleteAsync(relativeUrl);
             APIResponse apiResponse = new(response);
-            
+
+            await apiResponse.ReadContentAsync();
+
             return apiResponse;
         }
     }
