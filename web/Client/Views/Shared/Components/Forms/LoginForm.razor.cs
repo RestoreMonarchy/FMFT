@@ -16,7 +16,7 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms
         public IAPIBroker APIBroker { get; set; }
 
         public FormBase Form { get; set; }
-        public ButtonBase SubmitButton { get; set; }
+        public SubmitButtonBase SubmitButton { get; set; }
         public TextInputBase EmailInput { get; set; }
         public TextInputBase PasswordInput { get; set; }
         public CheckboxInputBase PersistentCheckbox { get; set; }

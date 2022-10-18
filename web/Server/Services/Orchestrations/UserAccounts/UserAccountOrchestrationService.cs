@@ -74,7 +74,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
                 CreateTokenParams @params = new()
                 {
                     Account = account,
-                    AuthenticationMethod = null,
+                    AuthenticationMethod = null
                 };
 
                 return await accountService.CreateTokenAsync(@params);

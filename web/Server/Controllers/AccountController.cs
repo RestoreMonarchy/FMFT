@@ -96,9 +96,10 @@ namespace FMFT.Web.Server.Controllers
             } catch (UserAccountOrchestrationDependencyValidationException exception)
                 when (exception.InnerException is NotFoundUserException)
             {
-                Exception innerException = exception.InnerException;
+                // TODO: Handle it better
+                NotMatchPasswordUserProcessingException credentialsException = new();
 
-                return Forbidden(innerException);
+                return Forbidden(credentialsException);
             }
         }
     }

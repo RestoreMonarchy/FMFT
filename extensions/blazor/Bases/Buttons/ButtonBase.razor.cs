@@ -22,8 +22,8 @@ namespace FMFT.Extensions.Blazor.Bases.Buttons
         [Parameter]
         public string Class { get; set; }
 
-        private List<string> AddedClasses { get; set; } = new();
-        private string AddedClassesString => string.Join(' ', AddedClasses);
+        protected List<string> AddedClasses { get; set; } = new();
+        protected string AddedClassesString => string.Join(' ', AddedClasses);
 
         public void Click() => InvokeAsync(OnClick.InvokeAsync);
 

@@ -3,6 +3,7 @@
 <select class="form-select @Class"
     @bind="Value"
     @oninput="OnValueChanged"
-    disabled="@IsDisabled">
+    disabled="@IsDisabled"
+    required="@Required">
     @ChildContent
 </select>

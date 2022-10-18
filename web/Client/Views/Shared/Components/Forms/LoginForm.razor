@@ -1,27 +1,27 @@
 ﻿<AlertGroupBase @ref="AlertGroup">
     <AlertBase @ref="PasswordNotMatchAlert" Class="alert-danger">
-        Invalid username or password
+        Invalid email or password
     </AlertBase>
     <AlertBase @ref="SuccessAlert" Class="alert-danger">
         Successfully logged in!
     </AlertBase>
 </AlertGroupBase>
 
-<FormBase @ref="Form">
+<FormBase @ref="Form" OnSubmit="SubmitAsync">
     <div class="mb-2 text-start">
-        <TextInputBase @ref="EmailInput" @bind-Value="Model.Email" Class="form-control" Placeholder="Email" />
+        <TextInputBase @ref="EmailInput" @bind-Value="Model.Email" Class="form-control" Placeholder="Email" Required="true" />
     </div>
     <div class="mb-2 text-start">
-        <PasswordInputBase @ref="PasswordInput" @bind-Value="Model.PasswordText" Class="form-control" Placeholder="Password" />
+        <PasswordInputBase @ref="PasswordInput" @bind-Value="Model.PasswordText" Class="form-control" Placeholder="Password" Required="true" />
     </div>
     <div class="d-flex align-items-center">
         <CheckboxInputBase @ref="PersistentCheckbox" @bind-Value="@Model.IsPersistent">
             Remember Me
         </CheckboxInputBase>
         <div class="ms-auto">
-            <ButtonBase @ref="SubmitButton" Class="btn btn-primary text-start" OnClick="SubmitAsync">
+            <SubmitButtonBase @ref="SubmitButton" Class="btn btn-primary text-start">
                 Login
-            </ButtonBase>
+            </SubmitButtonBase>
         </div>
     </div>
 </FormBase>

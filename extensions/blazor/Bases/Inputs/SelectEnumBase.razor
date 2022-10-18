@@ -4,7 +4,8 @@
 <select class="form-select @Class"
     @bind="Value"
     @oninput="OnValueChanged"
-    disabled="@IsDisabled">
+    disabled="@IsDisabled"
+    required="@Required">
     <Condition Evaluation="ChildContent is null">
         <Match>
             @foreach (TEnum value in Enum.GetValues(typeof(TEnum)))

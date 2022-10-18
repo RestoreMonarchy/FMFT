@@ -47,7 +47,7 @@ namespace FMFT.Web.Server.Services.Processings.Users
         public ValueTask<User> RetrieveUserByEmailAndPasswordAsync(string email, string passwordText)
             => TryCatch(async () =>
             {
-                User user = await RetrieveUserByEmailAsync(email);
+                User user = await RetrieveUserByEmailPrivateAsync(email);                
 
                 if (!encryptionBroker.VerifyPassword(passwordText, user.PasswordHash))
                 {
@@ -80,5 +80,10 @@ namespace FMFT.Web.Server.Services.Processings.Users
             {
                 await userService.UpdateUserCultureAsync(@params);
             });
+
+        private async ValueTask<User> RetrieveUserByEmailPrivateAsync(string email)
+        {
+            return await userService.RetrieveUserByEmailAsync(email);
+        }
     }
 }

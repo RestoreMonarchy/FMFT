@@ -8,6 +8,9 @@ namespace FMFT.Extensions.Blazor.Bases.Inputs
         [Parameter]
         public bool IsDisabled { get; set; }
 
+        [Parameter]
+        public bool Required { get; set; }
+
         [CascadingParameter]
         public FormBase Form { get; set; }
 

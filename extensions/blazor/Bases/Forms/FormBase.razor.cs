@@ -8,6 +8,10 @@ namespace FMFT.Extensions.Blazor.Bases.Forms
     {
         [Parameter]
         public RenderFragment ChildContent { get; set; }
+        [Parameter]
+        public string Class { get; set; }
+        [Parameter]
+        public EventCallback OnSubmit { get; set; }
 
         public List<InputBase> Inputs { get; set; } = new List<InputBase>();
         public List<ValidationMessageBase> ValidationMessages { get; set; } = new List<ValidationMessageBase>();
