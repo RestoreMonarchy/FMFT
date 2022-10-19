@@ -13,7 +13,7 @@ namespace FMFT.Web.Client.Brokers.Storages
 
         public async ValueTask SetAccountTokenAsync(AccountToken accountToken)
         {
-            await SetLocalItemAsync(CultureIdKey, accountToken);
+            await SetLocalItemAsync(AccountTokenKey, accountToken);
         }
     }
 }

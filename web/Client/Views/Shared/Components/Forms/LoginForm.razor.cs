@@ -5,11 +5,15 @@ using FMFT.Extensions.Blazor.Bases.Inputs;
 using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Accounts;
 using FMFT.Web.Client.Models.API.Accounts.Requests;
+using Microsoft.AspNetCore.Components;
 
 namespace FMFT.Web.Client.Views.Shared.Components.Forms
 {
     public partial class LoginForm
     {
+        [Parameter]
+        public EventCallback<AccountToken> OnSuccess { get; set; }
+
         public FormBase Form { get; set; }
         public SubmitButtonBase SubmitButton { get; set; }
         public TextInputBase EmailInput { get; set; }
@@ -33,6 +37,7 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms
             if (response.IsSuccessfull)
             {
                 SuccessAlert.Show();
+                await OnSuccess.InvokeAsync(response.Object);
             } else
             {
                 if (response.Error.Code == "ERR009")

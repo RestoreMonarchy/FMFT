@@ -15,11 +15,12 @@ namespace FMFT.Web.Client.Brokers.APIs
             {
                 BaseAddress = new Uri(configuration["APIUrl"])
             };
+        }
 
-            if (!string.IsNullOrEmpty(configuration["AccountToken"]))
-            {
-                httpClient.DefaultRequestHeaders.Add("Authorization", configuration["AccountToken"]);
-            }            
+        public void SetAuthorizationToken(string authorizationToken)
+        {
+            httpClient.DefaultRequestHeaders.Remove("Authorization");
+            httpClient.DefaultRequestHeaders.Add("Authorization", authorizationToken);
         }
 
         private async ValueTask<APIResponse<T>> GetAsync<T>(string relativeUrl)

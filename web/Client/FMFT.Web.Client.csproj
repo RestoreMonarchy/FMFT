@@ -33,8 +33,4 @@
     <ProjectReference Include="..\Shared\FMFT.Web.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-
 </Project>

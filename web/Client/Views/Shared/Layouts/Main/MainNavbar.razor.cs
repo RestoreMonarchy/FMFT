@@ -6,9 +6,6 @@ namespace FMFT.Web.Client.Views.Shared.Layouts.Main
 {
     public partial class MainNavbar
     {
-        [Inject]
-        public INavigationBroker NavigationBroker { get; set; }
-
         protected override void OnInitialized()
         {
             NavigationBroker.OnLocationChange += HandleLocationChanged;
