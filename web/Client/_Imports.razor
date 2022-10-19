@@ -1,5 +1,6 @@
 ﻿@using System.Net.Http
 @using System.Net.Http.Json
+@using FMFT.Web.Client.Brokers.APIs
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.Components.Web
@@ -14,3 +15,6 @@
 @using FMFT.Extensions.Blazor.Bases.Forms
 @using FMFT.Extensions.Blazor.Bases.Inputs
 @using FMFT.Extensions.Blazor.Bases.Buttons
+@using FMFT.Extensions.Blazor.Bases.Validations
+
+@inject IAPIBroker APIBroker

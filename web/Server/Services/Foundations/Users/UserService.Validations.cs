@@ -8,17 +8,29 @@ namespace FMFT.Web.Server.Services.Foundations.Users
         private void ValidateRegisterUserWithLoginParams(RegisterUserWithLoginParams @params)
         {
             RegisterUserWithLoginValidationException validationException = new();
+            if (validationBroker.IsStringNullOrEmpty(@params.Email))
+            {
+                validationException.UpsertDataList("Email", "Email is required");
+            }
             if (validationBroker.IsEmailInvalid(@params.Email))
             {
-                validationException.UpsertDataList("Email", "Email is required and must be valid");
+                validationException.UpsertDataList("Email", "Email is invalid");
             }
-            if (validationBroker.IsStringInvalid(@params.FirstName, true, 255, 3))
+            if (validationBroker.IsStringNullOrEmpty(@params.FirstName))
             {
-                validationException.UpsertDataList("FirstName", "First name is required and must be at least 3 characters long");
+                validationException.UpsertDataList("FirstName", "First name is required");
             }
-            if (validationBroker.IsStringInvalid(@params.LastName, true, 255, 3))
+            if (validationBroker.IsStringInvalid(@params.FirstName, 255, 2))
             {
-                validationException.UpsertDataList("LastName", "Last name is required and must be at least 3 characters long");
+                validationException.UpsertDataList("FirstName", "First name must be at least 2 characters long");
+            }
+            if (validationBroker.IsStringNullOrEmpty(@params.LastName))
+            {
+                validationException.UpsertDataList("LastName", "Last name is required");
+            }
+            if (validationBroker.IsStringInvalid(@params.LastName, 255, 2))
+            {
+                validationException.UpsertDataList("LastName", "Last name must be at least 2 characters long");
             }
             if (validationBroker.IsStringInvalid(@params.ProviderName, true, 255, 0))
             {
@@ -32,22 +44,34 @@ namespace FMFT.Web.Server.Services.Foundations.Users
             validationException.ThrowIfContainsErrors();
         }
 
-        private void ValidateRegisterUserWithPasswordArgs(RegisterUserWithPasswordProcessingParams args)
+        private void ValidateRegisterUserWithPasswordParams(RegisterUserWithPasswordProcessingParams @params)
         {
             RegisterUserWithPasswordValidationException validationException = new();
-            if (validationBroker.IsEmailInvalid(args.Email))
+            if (validationBroker.IsStringNullOrEmpty(@params.Email))
             {
-                validationException.UpsertDataList("Email", "Email is required and must be valid");
+                validationException.UpsertDataList("Email", "Email is required");
             }
-            if (validationBroker.IsStringInvalid(args.FirstName, true, 255, 3))
+            if (validationBroker.IsEmailInvalid(@params.Email))
             {
-                validationException.UpsertDataList("FirstName", "First name is required and must be at least 3 characters long");
+                validationException.UpsertDataList("Email", "Email is invalid");
             }
-            if (validationBroker.IsStringInvalid(args.LastName, true, 255, 3))
+            if (validationBroker.IsStringNullOrEmpty(@params.FirstName))
             {
-                validationException.UpsertDataList("LastName", "Last name is required and must be at least 3 characters long");
+                validationException.UpsertDataList("FirstName", "First name is required");
             }
-            if (validationBroker.IsPasswordInvalid(args.PasswordText))
+            if (validationBroker.IsStringInvalid(@params.FirstName, 255, 2))
+            {
+                validationException.UpsertDataList("FirstName", "First name must be at least 2 characters long");
+            }
+            if (validationBroker.IsStringNullOrEmpty(@params.LastName))
+            {
+                validationException.UpsertDataList("LastName", "Last name is required");
+            }
+            if (validationBroker.IsStringInvalid(@params.LastName, 255, 2))
+            {
+                validationException.UpsertDataList("LastName", "Last name must be at least 2 characters long");
+            }
+            if (validationBroker.IsPasswordInvalid(@params.PasswordText))
             {
                 validationException.UpsertDataList("PasswordText", "Password must be at least 8 characters long");
             }

@@ -1,6 +1,7 @@
 ﻿using FMFT.Extensions.Blazor.Bases.Inputs;
 using FMFT.Extensions.Blazor.Bases.Validations;
 using Microsoft.AspNetCore.Components;
+using System.Security;
 
 namespace FMFT.Extensions.Blazor.Bases.Forms
 {
@@ -39,6 +40,19 @@ namespace FMFT.Extensions.Blazor.Bases.Forms
             foreach (InputBase input in Inputs)
             {
                 input.Enable();
+            }
+        }
+
+        public void HandleErrors(Dictionary<string, string[]> errors)
+        {
+            foreach (string key in errors.Keys)
+            {
+                ValidationMessageBase validationMessage = ValidationMessages.FirstOrDefault(x => x.Key == key);
+                if (validationMessage != null)
+                {
+                    string[] value = errors[key];
+                    validationMessage.Enable(value);
+                }
             }
         }
 

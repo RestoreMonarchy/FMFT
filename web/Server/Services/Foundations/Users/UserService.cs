@@ -74,7 +74,7 @@ namespace FMFT.Web.Server.Services.Foundations.Users
         public ValueTask<User> RegisterUserWithPasswordAsync(RegisterUserWithPasswordProcessingParams args)
             => TryCatch(async () =>
             {
-                ValidateRegisterUserWithPasswordArgs(args);
+                ValidateRegisterUserWithPasswordParams(args);
 
                 RegisterUserWithPasswordParams @params = new()
                 {

@@ -8,36 +8,42 @@ using FMFT.Web.Client.Models.API.Accounts.Requests;
 
 namespace FMFT.Web.Client.Views.Shared.Components.Forms
 {
-    public partial class LoginForm
+    public partial class RegisterForm
     {
+        public RegisterWithPasswordRequest Model { get; set; } = new();
+
         public FormBase Form { get; set; }
         public SubmitButtonBase SubmitButton { get; set; }
         public TextInputBase EmailInput { get; set; }
         public TextInputBase PasswordInput { get; set; }
-        public CheckboxInputBase PersistentCheckbox { get; set; }
+        public TextInputBase FirstNameInput { get; set; }
+        public TextInputBase LastNameInput { get; set; }
 
         public AlertGroupBase AlertGroup { get; set; }
-        public AlertBase PasswordNotMatchAlert { get; set; }
-        public AlertBase SuccessAlert { get; set; }
+        public AlertBase UserAlreadyExistsAlert { get; set; }
+        public AlertBase ValidationErrorAlert { get; set; }
 
-        public LogInWithPasswordRequest Model { get; set; } = new();
-
-        private async Task SubmitAsync()
+        public async Task SubmitAsync()
         {
             AlertGroup.HideAll();
+            Form.ClearValidations();
             Form.DisableAll();
             SubmitButton.StartSpinning();
 
-            APIResponse<AccountToken> response = await APIBroker.PostAccountLoginAsync(Model);
+            APIResponse<AccountToken> response = await APIBroker.PostAccountRegisterAsync(Model);
 
             if (response.IsSuccessfull)
             {
-                SuccessAlert.Show();
+
             } else
             {
-                if (response.Error.Code == "ERR009")
+                if (response.Error.Code == "ERR005")
                 {
-                    PasswordNotMatchAlert.Show();
+                    Form.HandleErrors(response.Error.Data);
+                    ValidationErrorAlert.Show();
+                } else if (response.Error.Code == "ERR006")
+                {
+                    UserAlreadyExistsAlert.Show();
                 }
             }
 
