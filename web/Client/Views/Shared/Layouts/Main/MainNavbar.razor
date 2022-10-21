@@ -33,12 +33,21 @@
                 </CustomAuthorizeView>*@
             </ul>
             <ul class="navbar-nav">
-                <NavbarItem Location="/account/login">
-                    Login
-                </NavbarItem>
+                <CustomAuthorizeView>
+                    <Authorized>
+                        <NavbarItem Location="/account">
+                            @context.FirstName
+                        </NavbarItem>
+                    </Authorized>
+                    <NotAuthorized>
+                        <NavbarItem Location="/account/login">
+                            Login
+                        </NavbarItem>
+                    </NotAuthorized>
+                </CustomAuthorizeView>
                 @*<li class="nav-item dropdown">
                     <CultureSelectComponent />
-                </li>*@
+                </li>
                 @*<CustomAuthorizeView>
                     <Authorized>
                         <MainNavbarDropdown Value="@context.FirstName">

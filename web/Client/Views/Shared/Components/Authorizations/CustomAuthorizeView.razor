@@ -1,0 +1,8 @@
+﻿<Condition Evaluation="IsAuthorized()">
+    <Match>
+        @Authorized(UserAccountState.UserAccount)
+    </Match>
+    <NotMatch>
+        @NotAuthorized
+    </NotMatch>
+</Condition>

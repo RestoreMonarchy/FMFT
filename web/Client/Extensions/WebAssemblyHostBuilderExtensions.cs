@@ -6,6 +6,7 @@ using FMFT.Web.Client.Brokers.MemoryStorages;
 using FMFT.Web.Client.Brokers.Navigations;
 using FMFT.Web.Client.Brokers.Storages;
 using FMFT.Web.Client.Services.Accounts;
+using FMFT.Web.Client.StateContainers.UserAccounts;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -26,6 +27,11 @@ namespace FMFT.Web.Client.Extensions
             }
 
             builder.Services.AddBlazoredLocalStorage();
+        }
+
+        public static void AddStateContainers(this WebAssemblyHostBuilder builder)
+        {
+            builder.Services.AddSingleton<IUserAccountStateContainer, UserAccountStateContainer>();
         }
 
         public static void AddBrokers(this WebAssemblyHostBuilder builder)

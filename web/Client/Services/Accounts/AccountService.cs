@@ -4,6 +4,7 @@ using FMFT.Web.Client.Brokers.MemoryStorages;
 using FMFT.Web.Client.Brokers.Storages;
 using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Accounts;
+using FMFT.Web.Client.StateContainers.UserAccounts;
 using System.IO.IsolatedStorage;
 
 namespace FMFT.Web.Client.Services.Accounts
@@ -12,15 +13,15 @@ namespace FMFT.Web.Client.Services.Accounts
     {
         private readonly IAPIBroker apiBroker;
         private readonly IStorageBroker storageBroker;
-        private readonly IMemoryStorageBroker memoryStorageBroker;
         private readonly ILoggingBroker loggingBroker;
+        private readonly IUserAccountStateContainer userAccountStateContainer;
 
-        public AccountService(IAPIBroker apiBroker, IStorageBroker storageBroker, IMemoryStorageBroker memoryStorageBroker, ILoggingBroker loggingBroker)
+        public AccountService(IAPIBroker apiBroker, IStorageBroker storageBroker, ILoggingBroker loggingBroker, IUserAccountStateContainer userAccountStateContainer)
         {
             this.storageBroker = storageBroker;
-            this.memoryStorageBroker = memoryStorageBroker;
             this.apiBroker = apiBroker;
             this.loggingBroker = loggingBroker;
+            this.userAccountStateContainer = userAccountStateContainer;
         }
 
         public async ValueTask InitializeAsync()
@@ -62,7 +63,7 @@ namespace FMFT.Web.Client.Services.Accounts
             APIResponse<UserAccount> response = await apiBroker.GetUserAccountAsync();
             if (response.IsSuccessfull)
             {
-                memoryStorageBroker.SetAccount(response.Object);
+                userAccountStateContainer.UserAccount = response.Object;
                 loggingBroker.LogDebug($"Successfully downloaded user account {response.Object.Email}");
                 return true;
             }
