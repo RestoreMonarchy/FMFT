@@ -1,0 +1,38 @@
+﻿@page "/shows"
+
+<Breadcrumb>
+    <BreadcrumbItem Link="/">
+        Home
+    </BreadcrumbItem>
+    <BreadcrumbItem Active="true">
+        Przedstawienia
+    </BreadcrumbItem>
+</Breadcrumb>
+
+<LoadingView State="ShowsResponse">
+    <Condition Evaluation="ShowsResponse.IsSuccessfull">
+        <Match>
+            <Iterations Items="ShowsResponse.Object">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">@context.Name</h5>
+                        <p class="card-text">@context.Description</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item text-muted">
+                            @context.StartDateTime.LocalDateTime
+                        </li>
+                    </ul>
+                    <div class="card-body">
+                        <a href="/shows/@context.Id" class="btn btn-sm btn-primary">
+                            <i class="fa-solid fa-ticket me-1"></i> Zarezerwuj
+                        </a>
+                    </div>
+                </div>
+            </Iterations>
+        </Match>
+        <NotMatch>
+            Wystąpił błąd, spróbuj ponownie później.
+        </NotMatch>
+    </Condition>
+</LoadingView>
