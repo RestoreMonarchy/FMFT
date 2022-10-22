@@ -17,7 +17,8 @@ namespace FMFT.Web.Client.Views.Shared.Components.Panzooms
         public PanzoomOptions PanzoomOptions { get; set; } = new()
         {
             Canvas = true,
-            MinScale = 0.5
+            MinScale = 0.5,
+            MaxScale = 2
         };
 
         public int Width => RowSeats.Max(x => x.Count()) * 45 + 300;
