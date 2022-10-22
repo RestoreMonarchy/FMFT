@@ -1,0 +1,42 @@
+﻿@page "/shows/{ShowId:int}"
+
+<Breadcrumb>
+    <BreadcrumbItem Link="/">
+        Home
+    </BreadcrumbItem>
+    <BreadcrumbItem Link="/shows">
+        Przedstawienia
+    </BreadcrumbItem>
+    <BreadcrumbItem Active="true">
+        @ShowName
+    </BreadcrumbItem>
+</Breadcrumb>
+
+<LoadingView State="ShowResponse">
+    <Condition Evaluation="ShowResponse.IsSuccessfull">
+        <Match>
+            <div class="card">
+                <div class="card-header">
+                    Szczegóły przedstawienia
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title">
+                        @Show.Name
+                    </h4>
+                    <p class="text-muted">
+                        Data Przedstawienia: <span class="fw-bold">@Show.StartDateTime.LocalDateTime.ToString("f")</span>
+                    </p>
+                    <div class="fw-bold">
+                        Opis
+                    </div>
+                    <div>
+                        @Show.Description
+                    </div>
+                </div>
+            </div>
+        </Match>
+        <NotMatch>
+            <ErrorResponseAlert />
+        </NotMatch>
+    </Condition>
+</LoadingView>

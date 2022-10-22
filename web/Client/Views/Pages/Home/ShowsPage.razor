@@ -20,11 +20,14 @@
                     </div>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item text-muted">
-                            @context.StartDateTime.LocalDateTime
+                            @context.StartDateTime.LocalDateTime.ToString("f")
                         </li>
                     </ul>
                     <div class="card-body">
-                        <a href="/shows/@context.Id" class="btn btn-sm btn-primary">
+                        <a href="/shows/@context.Id" class="btn btn-sm btn-secondary">
+                            <i class="fa-solid fa-info me-1"></i> Szczegóły
+                        </a>
+                        <a href="/shows/@context.Id/reserve" class="btn btn-sm btn-primary">
                             <i class="fa-solid fa-ticket me-1"></i> Zarezerwuj
                         </a>
                     </div>
@@ -32,7 +35,7 @@
             </Iterations>
         </Match>
         <NotMatch>
-            Wystąpił błąd, spróbuj ponownie później.
+            <ErrorResponseAlert />
         </NotMatch>
     </Condition>
 </LoadingView>
