@@ -1,9 +1,9 @@
 ﻿
-<Condition Evaluation="CheckState()">
-    <Match>
-        @ChildContent
-    </Match>
+<Condition Evaluation="IsLoading">
     <NotMatch>
-        <ProgressBar />
+        @ChildContent
     </NotMatch>
+    <Match>
+        <ProgressBar />
+    </Match>
 </Condition>

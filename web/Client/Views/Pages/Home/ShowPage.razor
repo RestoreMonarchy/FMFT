@@ -12,8 +12,8 @@
     </BreadcrumbItem>
 </Breadcrumb>
 
-<LoadingView State="ShowResponse">
-    <Condition Evaluation="ShowResponse.IsSuccessfull">
+<LoadingView @ref="LoadingView">
+    <Condition Evaluation="ShowResponse.IsSuccessfull && AuditoriumResponse.IsSuccessfull">
         <Match>
             <div class="card">
                 <div class="card-header">
@@ -26,12 +26,35 @@
                     <p class="text-muted">
                         Data Przedstawienia: <span class="fw-bold">@Show.StartDateTime.LocalDateTime.ToString("f")</span>
                     </p>
-                    <div class="fw-bold">
-                        Opis
+                    <div class="mb-2">
+                        <div class="fw-bold">
+                            Opis
+                        </div>
+                        <div>
+                            @Show.Description
+                        </div>
                     </div>
-                    <div>
-                        @Show.Description
+                    <div class="mb-2">
+                        <div class="fw-bold">
+                            Sala
+                        </div>
+                        <div>
+                            @Auditorium.Name
+                        </div>
                     </div>
+                    <div class="mb-2">
+                        <div class="fw-bold">
+                            Liczba miejsc (wolne / wszystkie)
+                        </div>
+                        <div>
+                            @Auditorium.Seats.Count / @Auditorium.Seats.Count
+                        </div>
+                    </div>                    
+                </div>
+                <div class="list-group list-group-flush">
+                    <a class="list-group-item list-group-item-action list-group-item-primary" href="/shows/@ShowId/reserve">
+                        <i class="fa-solid fa-ticket me-1"></i> Zarezerwuj
+                    </a>
                 </div>
             </div>
         </Match>

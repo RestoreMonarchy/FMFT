@@ -9,7 +9,7 @@
     </BreadcrumbItem>
 </Breadcrumb>
 
-<LoadingView State="ShowsResponse">
+<LoadingView @ref="LoadingView">
     <Condition Evaluation="ShowsResponse.IsSuccessfull">
         <Match>
             <Iterations Items="ShowsResponse.Object">
