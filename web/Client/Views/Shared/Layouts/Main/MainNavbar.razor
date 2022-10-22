@@ -35,9 +35,14 @@
             <ul class="navbar-nav">
                 <CustomAuthorizeView>
                     <Authorized>
-                        <NavbarItem Location="/account">
-                            @context.FirstName
-                        </NavbarItem>
+                        <NavbarDropdown Value="@context.FirstName">
+                            <NavbarDropdownItem Location="/account">
+                                Account
+                            </NavbarDropdownItem>
+                            <NavbarDropdownItem OnClick="LogoutAsync">
+                                Logout
+                            </NavbarDropdownItem>
+                        </NavbarDropdown>
                     </Authorized>
                     <NotAuthorized>
                         <NavbarItem Location="/account/login">

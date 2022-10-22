@@ -1,7 +1,7 @@
 ﻿@inherits NavbarItem
 
 <li class="nav-item">
-    <a class="dropdown-item @GetActiveClass()" href="@Location">
+    <a class="dropdown-item @GetActiveClass()" href="@LocationHref" @onclick="HandleClickAsync">
         @ChildContent
     </a>
 </li>

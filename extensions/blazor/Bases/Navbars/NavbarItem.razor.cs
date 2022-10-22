@@ -14,10 +14,17 @@ namespace FMFT.Extensions.Blazor.Bases.Navbars
         [Inject]
         public NavigationManager NavigationManager { get; set; }
 
-        protected string CurrentLocation => NavigationManager.Uri;
+        protected string CurrentLocation => NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+
+        protected string LocationHref => Location ?? "javascript:void(0)";
 
         public bool IsActive()
         {
+            if (string.IsNullOrEmpty(Location))
+            {
+                return false;
+            }
+
             string location = Location.TrimStart('/');
 
             if (location == string.Empty)

@@ -6,6 +6,8 @@ namespace FMFT.Extensions.Blazor.Bases.Navbars
     {
         [CascadingParameter]
         public NavbarDropdown Dropdown { get; set; }
+        [Parameter]
+        public EventCallback OnClick { get; set; }
 
         protected override void OnAfterRender(bool firstRender)
         {
@@ -13,6 +15,11 @@ namespace FMFT.Extensions.Blazor.Bases.Navbars
             {
                 Dropdown.AddItem(this);
             }
+        }
+
+        private async Task HandleClickAsync()
+        {
+            await OnClick.InvokeAsync();
         }
     }
 }
