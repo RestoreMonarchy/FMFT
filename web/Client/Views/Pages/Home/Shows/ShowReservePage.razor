@@ -1,0 +1,64 @@
+﻿@page "/shows/{ShowId:int}/reserve"
+@using FMFT.Extensions.Blazor.Bases.Steppers
+@using BlazorPanzoom
+@using FMFT.Web.Client.Views.Shared.Components.Panzooms
+
+<Breadcrumb>
+    <BreadcrumbItem Link="/">
+        Home
+    </BreadcrumbItem>
+    <BreadcrumbItem Link="/shows">
+        Przedstawienia
+    </BreadcrumbItem>
+    <BreadcrumbItem Link="@string.Concat("/shows/", ShowId)">
+        @ShowName
+    </BreadcrumbItem>
+    <BreadcrumbItem Active="true">
+        Zarezerwuj
+    </BreadcrumbItem>
+</Breadcrumb>
+
+<LoadingView @ref="LoadingView">
+    <Condition Evaluation="ShowResponse.IsSuccessfull && AuditoriumResponse.IsSuccessfull">
+        <Match>
+
+            <Stepper>
+                <StepperItem Text="Wybierz miejsce">
+
+                    <div class="mb-2">
+                        <AuditoriumSeatPanzoom Auditorium="Auditorium" />
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            Legenda
+                        </div>
+                        <div class="card-body">
+                            <ul>
+                                <li>
+                                    szary - wolne miejsca
+                                </li>
+                                <li>
+                                    czerwony - miejsca zajęte
+                                </li>
+                                <li>
+                                    żółty - miejsca dla vipów
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </StepperItem>
+                <StepperItem Text="Potwierdź">
+                    there
+                </StepperItem>
+                <StepperItem Text="Podsumowanie">
+                    !
+                </StepperItem>
+            </Stepper>
+
+        </Match>
+        <NotMatch>
+            <ErrorResponseAlert />
+        </NotMatch>
+    </Condition>
+</LoadingView>

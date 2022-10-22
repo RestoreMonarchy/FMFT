@@ -1,4 +1,5 @@
 ﻿using Blazored.LocalStorage;
+using BlazorPanzoom;
 using FMFT.Web.Client.Brokers.APIs;
 using FMFT.Web.Client.Brokers.JSRuntimes;
 using FMFT.Web.Client.Brokers.Loggings;
@@ -27,6 +28,7 @@ namespace FMFT.Web.Client.Extensions
             }
 
             builder.Services.AddBlazoredLocalStorage();
+            builder.Services.AddBlazorPanzoomServices();
         }
 
         public static void AddStateContainers(this WebAssemblyHostBuilder builder)

@@ -1,0 +1,21 @@
+﻿@using BlazorPanzoom
+
+<div class="d-relative border border border-3 border-dark" style="height: 20vw; min-height: 400px; contain: content;">
+    <Panzoom @ref="Panzoom" WheelMode="WheelMode.ZoomWithWheel" PanzoomOptions="PanzoomOptions">
+        <div @ref="@context.ElementReference" class="panzoom">
+            
+            <canvas id="myCanvas"></canvas>
+            
+            @*<Iterations Items="RowSeats" Context="row">
+                <div class="d-flex justify-content-center">
+                    <Iterations Items="row" Context="seat">
+                        <div class="m-1 bg-dark text-white text-center d-flex align-items-center justify-content-center" 
+                            style="width: 35px; height: 35px;">
+                            @seat.Number
+                        </div>
+                    </Iterations>
+                </div>
+            </Iterations>*@
+        </div>
+    </Panzoom>
+</div>

@@ -1,0 +1,22 @@
+﻿<div class="row g-1 g-lg-3 mb-2">
+    <CascadingValue Value="this">
+        @ChildContent
+    </CascadingValue>
+</div>
+
+<Condition Evaluation="ActiveItem is not null">
+    <Match>
+        <div class="mb-2">
+            @ActiveItem.ChildContent
+        </div>
+    </Match>
+</Condition>
+
+<div class="float-end">
+    <button class="btn btn-primary" @onclick="StepDown">
+        Prev
+    </button>
+    <button class="btn btn-primary" @onclick="StepUp">
+        Next
+    </button>
+</div>

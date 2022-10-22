@@ -2,7 +2,7 @@
 using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Shows;
 
-namespace FMFT.Web.Client.Views.Pages.Home
+namespace FMFT.Web.Client.Views.Pages.Home.Shows
 {
     public partial class ShowsPage
     {

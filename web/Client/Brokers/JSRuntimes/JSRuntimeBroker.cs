@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
+﻿using Microsoft.JSInterop;
 
 namespace FMFT.Web.Client.Brokers.JSRuntimes
 {
@@ -12,9 +11,9 @@ namespace FMFT.Web.Client.Brokers.JSRuntimes
             this.jsRuntime = jsRuntime;
         }
 
-        public async ValueTask InitializePanzoomElementAsync(ElementReference containerElement)
+        public async ValueTask BuildSeatsCanvas(string canvasId)
         {
-            await jsRuntime.InvokeVoidAsync("InitializePanzoom", containerElement);
+            await jsRuntime.InvokeVoidAsync("BuildSeatsCanvas", canvasId);
         }
     }
 }

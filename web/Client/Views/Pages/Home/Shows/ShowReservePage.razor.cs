@@ -1,12 +1,14 @@
-﻿using FMFT.Extensions.Blazor.Bases.Loadings;
+﻿using BlazorPanzoom;
+using FMFT.Extensions.Blazor.Bases.Loadings;
 using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Auditoriums;
+using FMFT.Web.Client.Models.API.Seats;
 using FMFT.Web.Client.Models.API.Shows;
 using Microsoft.AspNetCore.Components;
 
-namespace FMFT.Web.Client.Views.Pages.Home
+namespace FMFT.Web.Client.Views.Pages.Home.Shows
 {
-    public partial class ShowPage
+    public partial class ShowReservePage
     {
         [Parameter]
         public int ShowId { get; set; }
@@ -30,5 +32,7 @@ namespace FMFT.Web.Client.Views.Pages.Home
             }
             LoadingView.StopLoading();
         }
+
+        public Panzoom AuditoriumPanzoom { get; set; }
     }
 }

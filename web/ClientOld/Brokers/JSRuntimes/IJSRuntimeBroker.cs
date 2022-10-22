@@ -4,6 +4,7 @@ namespace FMFT.Web.Client.Brokers.JSRuntimes
 {
     public interface IJSRuntimeBroker
     {
+        ValueTask BuildSeatsCanvas(string canvasId);
         ValueTask InitializePanzoomElementAsync(ElementReference containerElement);
     }
 }
