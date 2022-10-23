@@ -16,7 +16,7 @@ namespace FMFT.Web.Client.Views.Shared.Components.Panzooms
         public Panzoom Panzoom { get; set; }
         public PanzoomOptions PanzoomOptions { get; set; } = new()
         {
-            Canvas = true,
+            Canvas = false,
             MinScale = 0.5,
             MaxScale = 2
         };

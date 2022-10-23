@@ -36,33 +36,31 @@
         return (maxWidthPixels - widthPixels) / 2;
     }
 
+    function DrawSeat(row, column, color) {
+        const offset = RowOffset(columnsPerRow[row]);
 
-    let y = 0;
+        let columnX = offset + column * marginX;
+        let columnY = row * marginY;
+
+        ctx.beginPath();
+        ctx.fillStyle = color;
+        ctx.rect(columnX, columnY, 25, 25);
+        ctx.fill();
+
+        ctx.fillStyle = "white";
+        ctx.font = "bold 12px Arial";
+        ctx.textBaseline = "middle";
+        ctx.textAlign = "center";
+        ctx.fillText(column + 1, columnX + 12.5, columnY + 12.5);
+    }
 
     for (let i = 0; i < rows; i++) {
         const columns = columnsPerRow[i];
 
-        let x = RowOffset(columns);
-
         for (let j = 0; j < columns; j++) {
-            let columnX = x;
-            let columnY = y;
-
-            ctx.beginPath();
-            ctx.fillStyle = "#009578";
-            ctx.rect(columnX, columnY, 25, 25);
-            ctx.fill();
-
-
-            ctx.fillStyle = "white";
-            ctx.font = "bold 12px Arial";
-            ctx.textBaseline = "middle";
-            ctx.textAlign = "center";
-            ctx.fillText(j + 1, columnX + 12.5, columnY + 12.5);
-
-            x += marginX;
+            
+            DrawSeat(i, j, "#009578");
         }
-        y += marginY;
     }
 
     canvas.addEventListener("click", HandleClick);
@@ -71,14 +69,21 @@
 
         const rect = canvas.getBoundingClientRect();
 
-        console.log(e);
+        console.log("RECT: ", rect);
+        console.log("EVENT ARGS: ", e);
 
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
+        const zoom = maxHeightPixels / rect.height;
+
+        console.log("ZOOM: ", zoom);
+
+        const x = (e.clientX - rect.left) * zoom;
+        const y = (e.clientY - rect.top) * zoom;
 
         console.log("x: ", x, " y: ", y);
 
-        let column = 0;
+        
+
+        let column = -1;
         const row = y / 30;
         const rowFloor = Math.floor(row);
 
@@ -98,22 +103,21 @@
         for (let k = 0; k < columns; k++) {
             const columnX = rowOffset + k * 30;
 
-            console.log("columnX: ", columnX, "rowOffset: ", rowOffset, "x: ", x);
+            //console.log("columnX: ", columnX, "rowOffset: ", rowOffset, "x: ", x);
 
             if (columnX <= x && x < columnX + 25) {
-                column = k + 1;
+                column = k;
                 break;
             }
         }
 
-        if (column == 0) {
+        if (column == -1) {
             console.log("clicked on column margin");
             return;
         }
 
-        console.log("row: ", rowFloor + 1, "column: ", column);
-
-        console.log("wlazlem");
+        DrawSeat(rowFloor, column, "red");
+        console.log("row: ", rowFloor + 1, "column: ", column + 1);
     }
 
 
