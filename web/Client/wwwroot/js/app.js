@@ -28,7 +28,7 @@
     canvas.height = maxHeightPixels;
     canvas.width = maxWidthPixels;
 
-    function RowOffset(columnsPerRow, columns) {
+    function RowOffset(columns) {
         const maxColumns = Math.max(...columnsPerRow);
         const maxWidthPixels = 30 * maxColumns;
         const widthPixels = 30 * columns;
@@ -42,7 +42,7 @@
     for (let i = 0; i < rows; i++) {
         const columns = columnsPerRow[i];
 
-        let x = RowOffset(columnsPerRow, columns);
+        let x = RowOffset(columns);
 
         for (let j = 0; j < columns; j++) {
             let columnX = x;
@@ -63,6 +63,57 @@
             x += marginX;
         }
         y += marginY;
+    }
+
+    canvas.addEventListener("click", HandleClick);
+
+    function HandleClick(e) {
+
+        const rect = canvas.getBoundingClientRect();
+
+        console.log(e);
+
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        console.log("x: ", x, " y: ", y);
+
+        let column = 0;
+        const row = y / 30;
+        const rowFloor = Math.floor(row);
+
+        console.log("row: ", row);
+        const bottomMargin = 5 / 30;
+        const rowBottomMargin = (row - rowFloor);
+
+
+        if (rowBottomMargin >= 1 - bottomMargin) {
+            console.log("clicked row margin");
+            return;
+        }
+
+        const columns = columnsPerRow[rowFloor];
+        const rowOffset = RowOffset(columns);
+
+        for (let k = 0; k < columns; k++) {
+            const columnX = rowOffset + k * 30;
+
+            console.log("columnX: ", columnX, "rowOffset: ", rowOffset, "x: ", x);
+
+            if (columnX <= x && x < columnX + 25) {
+                column = k + 1;
+                break;
+            }
+        }
+
+        if (column == 0) {
+            console.log("clicked on column margin");
+            return;
+        }
+
+        console.log("row: ", rowFloor + 1, "column: ", column);
+
+        console.log("wlazlem");
     }
 
 
