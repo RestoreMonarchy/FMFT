@@ -1,4 +1,4 @@
-﻿function BuildSeatsCanvas(canvasId) {
+﻿function BuildSeatsCanvas(canvasId, dotnetHelper) {
     const canvas = document.getElementById(canvasId);
     const ctx = canvas.getContext("2d");
 
@@ -117,8 +117,11 @@
         }
 
         DrawSeat(rowFloor, column, "red");
-        console.log("row: ", rowFloor + 1, "column: ", column + 1);
+
+        const actualRow = rowFloor + 1;
+        const actualColumn = column + 1;
+
+        console.log("row: ", actualRow, "column: ", actualColumn);
+        dotnetHelper.invokeMethodAsync('HandleSeatClickAsync', actualRow, actualColumn);
     }
-
-
 }

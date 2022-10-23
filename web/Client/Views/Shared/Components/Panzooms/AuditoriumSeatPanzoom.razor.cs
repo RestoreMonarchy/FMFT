@@ -2,6 +2,7 @@
 using FMFT.Web.Client.Models.API.Auditoriums;
 using FMFT.Web.Client.Models.API.Seats;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace FMFT.Web.Client.Views.Shared.Components.Panzooms
 {
@@ -26,7 +27,14 @@ namespace FMFT.Web.Client.Views.Shared.Components.Panzooms
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            await JSRuntimeBroker.BuildSeatsCanvas("myCanvas");
+            DotNetObjectReference<AuditoriumSeatPanzoom> objectReference = DotNetObjectReference.Create(this);
+            await JSRuntimeBroker.BuildSeatsCanvas("myCanvas", objectReference);
+        }
+
+        [JSInvokable]
+        public async Task HandleSeatClickAsync(int row, int column)
+        {
+            Console.WriteLine("helo there row: {0}, col: {1}", row, column);
         }
     }
 }

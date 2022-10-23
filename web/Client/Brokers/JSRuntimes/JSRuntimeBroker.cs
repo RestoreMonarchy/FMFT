@@ -11,9 +11,9 @@ namespace FMFT.Web.Client.Brokers.JSRuntimes
             this.jsRuntime = jsRuntime;
         }
 
-        public async ValueTask BuildSeatsCanvas(string canvasId)
+        public async ValueTask BuildSeatsCanvas<T>(string canvasId, DotNetObjectReference<T> objectReference) where T : class
         {
-            await jsRuntime.InvokeVoidAsync("BuildSeatsCanvas", canvasId);
+            await jsRuntime.InvokeVoidAsync("BuildSeatsCanvas", canvasId, objectReference);
         }
     }
 }
