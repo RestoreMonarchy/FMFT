@@ -27,14 +27,31 @@ namespace FMFT.Web.Client.Views.Shared.Components.Panzooms
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
+            if (Auditorium == null)
+            {
+                return;
+            }
+
+            int[] seatsMap = RowSeats.Select(x => x.Count()).ToArray();
+
+            object options = new
+            {
+                marginX = 30,
+                marginY = 30,
+                sizeX = 30,
+                sizeY = 30,
+                defaultColor = "#009578"
+            };
+
             DotNetObjectReference<AuditoriumSeatPanzoom> objectReference = DotNetObjectReference.Create(this);
-            await JSRuntimeBroker.BuildSeatsCanvas("myCanvas", objectReference);
+            await JSRuntimeBroker.BuildSeatsCanvas("myCanvas", seatsMap, options, objectReference);
         }
 
         [JSInvokable]
-        public async Task HandleSeatClickAsync(int row, int column)
+        public async Task<string> HandleSeatClickAsync(int row, int column)
         {
             Console.WriteLine("helo there row: {0}, col: {1}", row, column);
+            return "orange";
         }
     }
 }
