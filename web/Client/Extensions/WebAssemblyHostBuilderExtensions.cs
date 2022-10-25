@@ -9,7 +9,6 @@ using FMFT.Web.Client.Brokers.Storages;
 using FMFT.Web.Client.Services.Accounts;
 using FMFT.Web.Client.StateContainers.UserAccounts;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace FMFT.Web.Client.Extensions
 {

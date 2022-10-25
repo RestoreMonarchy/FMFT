@@ -22,36 +22,77 @@ namespace FMFT.Web.Client.Views.Shared.Components.Panzooms
             MaxScale = 2
         };
 
+        public object SeatsCanvasOptions => new
+        {
+            canvasId = "myCanvas",
+            seatsMap = RowSeats.Select(x => x.Count()).ToArray(),
+            marginX = 30,
+            marginY = 30,
+            sizeX = 25,
+            sizeY = 25,
+            defaultColor = "#009578",
+            font = "bold 12px Arial"
+        };
+        
         public int Width => RowSeats.Max(x => x.Count()) * 45 + 300;
         public int Height => RowSeats.Count() * 50 + 300;
 
+        private object seatsCanvasObject = null;
+
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
+            if (!firstRender)
+                return;
+
             if (Auditorium == null)
             {
                 return;
-            }
-
-            int[] seatsMap = RowSeats.Select(x => x.Count()).ToArray();
-
-            object options = new
-            {
-                marginX = 30,
-                marginY = 30,
-                sizeX = 30,
-                sizeY = 30,
-                defaultColor = "#009578"
-            };
+            }            
 
             DotNetObjectReference<AuditoriumSeatPanzoom> objectReference = DotNetObjectReference.Create(this);
-            await JSRuntimeBroker.BuildSeatsCanvas("myCanvas", seatsMap, options, objectReference);
+            seatsCanvasObject = await JSRuntimeBroker.InitializeSeatsCanvasAsync(SeatsCanvasOptions, objectReference);
+
+            if (selectedSeat != null)
+            {
+                await DrawSeatAsync(selectedSeat.Row, selectedSeat.Number, "orange");
+            }
         }
 
+        private Seat selectedSeat = null;
+
         [JSInvokable]
-        public async Task<string> HandleSeatClickAsync(int row, int column)
+        public async Task HandleSeatClickAsync(int row, int column)
         {
-            Console.WriteLine("helo there row: {0}, col: {1}", row, column);
-            return "orange";
+            Seat seat = Auditorium.Seats.FirstOrDefault(x => x.Row == row && x.Number == column);
+
+            Console.WriteLine($"row: {row} column: {column}");
+
+            if (seat == null)
+            {
+                Console.WriteLine("seat not found");
+                return;
+            }
+
+            Console.WriteLine($"Seat ID: {seat.Id}");
+
+            if (selectedSeat != null)
+            {
+                await DrawSeatAsync(selectedSeat.Row, selectedSeat.Number, "#009578");
+
+                if (selectedSeat.Row == row && selectedSeat.Number == column)
+                {
+                    selectedSeat = null;
+                    return;
+                }                
+            }
+
+            selectedSeat = seat;
+            await DrawSeatAsync(row, column, "orange");
+        }
+
+        private async ValueTask DrawSeatAsync(int row, int column, string color)
+        {
+            await JSRuntimeBroker.DrawSeatAsync(SeatsCanvasOptions, row, column, color);
         }
     }
 }
