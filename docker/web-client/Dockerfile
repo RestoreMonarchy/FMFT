@@ -7,8 +7,6 @@ RUN dotnet restore
 
 # Copy everything else and build
 COPY . ./
-RUN dotnet publish web/Client/FMFT.Web.Client.csproj -c Release -o out
+RUN dotnet publish web/Client/FMFT.Web.Client.csproj -c Release -o .
 
-WORKDIR /app
-COPY /app/out .
 ENTRYPOINT ["echo", "Done."]
