@@ -1,0 +1,67 @@
+﻿@page "/account"
+
+<Breadcrumb>
+    <BreadcrumbItem Link="/">
+        Home
+    </BreadcrumbItem>
+    <BreadcrumbItem Active="true">
+        Account
+    </BreadcrumbItem>
+</Breadcrumb>
+
+<Condition Evaluation="UserAccountState.IsAuthenticated">
+    <Match>
+        <div class="card">
+            <div class="card-header">
+                Informacje o koncie
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <span class="fw-bold">
+                        ID:
+                    </span>
+                    <span>
+                        @UserAccountState.UserAccount.UserId
+                    </span>
+                </li>
+                <li class="list-group-item">
+                    <span class="fw-bold">
+                        Email:
+                    </span>
+                    <span>
+                        @UserAccountState.UserAccount.Email
+                    </span>
+                </li>
+                <li class="list-group-item">
+                    <span class="fw-bold">
+                        Imię:
+                    </span>
+                    <span>
+                        @UserAccountState.UserAccount.FirstName
+                    </span>
+                </li>
+                <li class="list-group-item">
+                    <span class="fw-bold">
+                        Nazwisko:
+                    </span>
+                    <span>
+                        @UserAccountState.UserAccount.LastName
+                    </span>
+                </li>
+                <li class="list-group-item">
+                    <span class="fw-bold">
+                        Typ użytkownika:
+                    </span>
+                    <span>
+                        @UserAccountState.UserAccount.Role
+                    </span>
+                </li>
+            </ul>
+        </div>
+        
+    </Match>
+    <NotMatch>
+        <RedirectAlert Link="/account/login" />
+    </NotMatch>
+</Condition>
+

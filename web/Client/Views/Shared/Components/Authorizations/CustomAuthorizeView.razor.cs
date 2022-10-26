@@ -7,9 +7,6 @@ namespace FMFT.Web.Client.Views.Shared.Components.Authorizations
 {
     public partial class CustomAuthorizeView
     {
-        [Inject]
-        public IUserAccountStateContainer UserAccountState { get; set; }
-
         [Parameter]
         public RenderFragment<UserAccount> Authorized { get; set; }
         [Parameter]

@@ -1,0 +1,14 @@
+﻿<div class="alert alert-info" role="alert">
+    <i class="fa-solid fa-circle-info me-1"></i>
+    Naciśnij <a href="@Link">tutaj</a> jeżeli nie zostałeś przekierowany odrazu
+</div>
+
+@code {
+    [Parameter]
+    public string Link { get; set; } = "/";
+
+    protected override void OnInitialized()
+    {
+        //NavigationBroker.NavigateTo(Link);
+    }
+}

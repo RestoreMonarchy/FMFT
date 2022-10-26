@@ -24,7 +24,12 @@
                         @Show.Name
                     </h4>
                     <p class="text-muted">
-                        Data Przedstawienia: <span class="fw-bold">@Show.StartDateTime.LocalDateTime.ToString("f")</span>
+                        <div>
+                            Data: <span class="fw-bold">@Show.StartDateTime.LocalDateTime.ToShortDateString()</span>
+                        </div>
+                        <div>
+                            Godzina: <span class="fw-bold">@Show.StartDateTime.LocalDateTime.ToShortTimeString()</span>
+                        </div>
                     </p>
                     <div class="mb-2">
                         <div class="fw-bold">
