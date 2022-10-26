@@ -88,7 +88,41 @@
 
                 </StepperItem>
                 <StepperItem Text="Potwierdź">
-                    there
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="">
+                                <div class="fs-5">
+                                    Miejsce
+                                </div>
+                                <ul>
+                                    <li>Rząd @SelectedSeat.Row</li>
+                                    <li>Numer @SelectedSeat.Number</li>
+                                </ul>
+                            </div>
+
+                            <div class="">
+                                <div class="fs-5">
+                                    Informacje o przedstawieniu
+                                </div>
+                                <ul>
+                                    <li>@Show.Name</li>
+                                    <li>Data: @Show.StartDateTime.LocalDateTime.ToShortDateString()</li>
+                                    <li>Godzina: @Show.StartDateTime.LocalDateTime.ToShortTimeString()</li>
+                                    <li>Sala: @Auditorium.Name</li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <div class="d-flex">
+                                    <div class="ms-auto">
+                                        <button class="btn btn-primary" @onclick="NextToSummaryAsync">
+                                            Potwierdź
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </StepperItem>
                 <StepperItem Text="Podsumowanie">
                     !

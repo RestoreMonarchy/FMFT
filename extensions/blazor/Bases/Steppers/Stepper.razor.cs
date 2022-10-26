@@ -65,6 +65,19 @@ namespace FMFT.Extensions.Blazor.Bases.Steppers
             InvokeAsync(StateHasChanged);
         }
 
+        public void LockPast()
+        {
+            foreach (StepperItem stepperItem in Items)
+            {
+                if (!IsPast(stepperItem))
+                {
+                    continue;
+                }
+
+                stepperItem.SetDisabled(true);
+            }
+        }
+
         public StepperItem ActiveItem { get; set; }
     }
 }

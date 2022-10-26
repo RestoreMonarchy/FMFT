@@ -48,6 +48,7 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
         private Task NextToSummaryAsync()
         {
             Stepper.StepUp();
+            Stepper.LockPast();
             return Task.CompletedTask;
         }
     }

@@ -37,10 +37,16 @@ namespace FMFT.Extensions.Blazor.Bases.Steppers
 
         private Task HandleClickAsync()
         {
+            if (IsDisabled)
+            {
+                return Task.CompletedTask;
+            }
+
             if (Stepper.IsPast(this))
             {
                 Stepper.Step(this);
-            }            
+            }
+
             return Task.CompletedTask;
         }
 
@@ -59,7 +65,6 @@ namespace FMFT.Extensions.Blazor.Bases.Steppers
             {
                 if (isPast)
                 {
-                    classes.Add("text-black");
                     classes.Add("border-dark");
                 } else
                 {
@@ -70,10 +75,12 @@ namespace FMFT.Extensions.Blazor.Bases.Steppers
             if (IsDisabled)
             {
                 classes.Add("disabled");
+                classes.Add("text-muted");
             } else
             {
                 if (isPast)
                 {
+                    classes.Add("text-black");
                     classes.Add("cursor-pointer");
                 }                
             }
