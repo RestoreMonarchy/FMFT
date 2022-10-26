@@ -22,31 +22,70 @@
     <Condition Evaluation="ShowResponse.IsSuccessfull && AuditoriumResponse.IsSuccessfull">
         <Match>
 
-            <Stepper>
+            <Stepper @ref="Stepper">
                 <StepperItem Text="Wybierz miejsce">
 
-                    <div class="mb-2">
-                        <AuditoriumSeatPanzoom Auditorium="Auditorium" />
+                    <div class="mb-3">
+                        <Condition Evaluation="SelectedSeat is not null">
+                            <Match>
+                                <div class="d-md-flex d-block align-items-center">
+                                    <div class="fs-3 mb-2 mb-md-0">
+                                        Wybrano <span class="fw-bold">rząd: @SelectedSeat.Row numer: @SelectedSeat.Number</span>
+                                    </div>
+                                    <div class="ms-md-auto">
+                                        <button class="btn btn-primary w-100 w-md-auto" @onclick="NexToConfirmAsync">
+                                            Przejdź dalej
+                                        </button>
+                                    </div>
+                                </div>                                
+                            </Match>
+                            <NotMatch>
+                                <div class="fs-3">
+                                    Wybierz miejsce
+                                </div>                                
+                            </NotMatch>
+                        </Condition>
+                        
                     </div>
 
-                    <div class="card">
+                    <div class="mb-3">
+                        <AuditoriumSeatPanzoom Auditorium="Auditorium" @bind-SelectedSeat="SelectedSeat" />
+                    </div>
+
+                    <div class="card mb-3">
                         <div class="card-header">
                             Legenda
                         </div>
                         <div class="card-body">
                             <ul>
                                 <li>
-                                    szary - wolne miejsca
+                                    zielony - wolne miejsca
                                 </li>
                                 <li>
-                                    czerwony - miejsca zajęte
+                                    pomarańczowy - wybrane miejsce
                                 </li>
                                 <li>
-                                    żółty - miejsca dla vipów
+                                    żółty - miejsca zarezerwowane dla vipów
+                                </li>
+                                <li>
+                                    szare - miejsca zajęte
                                 </li>
                             </ul>
                         </div>
                     </div>
+
+                    <Condition Evaluation="SelectedSeat is not null">
+                        <Match>
+                            <div class="d-flex">
+                                <div class="ms-auto">
+                                    <button class="btn btn-primary" @onclick="NexToConfirmAsync">
+                                        Przejdź dalej
+                                    </button>
+                                </div>                                
+                            </div>
+                        </Match>
+                    </Condition>
+
                 </StepperItem>
                 <StepperItem Text="Potwierdź">
                     there

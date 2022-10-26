@@ -10,6 +10,16 @@ namespace FMFT.Web.Client.Views.Shared.Components.Panzooms
     {
         [Parameter]
         public Auditorium Auditorium { get; set; }
+        [Parameter]
+        public Seat SelectedSeat { get; set; }
+        [Parameter]
+        public EventCallback<Seat> SelectedSeatChanged { get; set; }
+
+        private async ValueTask ChangeSeatAsync(Seat seat)
+        {
+            SelectedSeat = seat;
+            await SelectedSeatChanged.InvokeAsync(seat);
+        }
 
         public IEnumerable<IGrouping<short, Seat>> RowSeats 
             => Auditorium.Seats.GroupBy(x => x.Row);
@@ -33,11 +43,6 @@ namespace FMFT.Web.Client.Views.Shared.Components.Panzooms
             defaultColor = "#009578",
             font = "bold 12px Arial"
         };
-        
-        public int Width => RowSeats.Max(x => x.Count()) * 45 + 300;
-        public int Height => RowSeats.Count() * 50 + 300;
-
-        private object seatsCanvasObject = null;
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
@@ -50,43 +55,37 @@ namespace FMFT.Web.Client.Views.Shared.Components.Panzooms
             }            
 
             DotNetObjectReference<AuditoriumSeatPanzoom> objectReference = DotNetObjectReference.Create(this);
-            seatsCanvasObject = await JSRuntimeBroker.InitializeSeatsCanvasAsync(SeatsCanvasOptions, objectReference);
+            await JSRuntimeBroker.InitializeSeatsCanvasAsync(SeatsCanvasOptions, objectReference);
 
-            if (selectedSeat != null)
+            if (SelectedSeat != null)
             {
-                await DrawSeatAsync(selectedSeat.Row, selectedSeat.Number, "orange");
+                await DrawSeatAsync(SelectedSeat.Row, SelectedSeat.Number, "orange");
             }
         }
-
-        private Seat selectedSeat = null;
 
         [JSInvokable]
         public async Task HandleSeatClickAsync(int row, int column)
         {
             Seat seat = Auditorium.Seats.FirstOrDefault(x => x.Row == row && x.Number == column);
 
-            Console.WriteLine($"row: {row} column: {column}");
-
             if (seat == null)
             {
-                Console.WriteLine("seat not found");
+                LoggingBroker.LogDebug($"Seat at row {row} and column {column} does not exist");
                 return;
             }
 
-            Console.WriteLine($"Seat ID: {seat.Id}");
-
-            if (selectedSeat != null)
+            if (SelectedSeat != null)
             {
-                await DrawSeatAsync(selectedSeat.Row, selectedSeat.Number, "#009578");
+                await DrawSeatAsync(SelectedSeat.Row, SelectedSeat.Number, "#009578");
 
-                if (selectedSeat.Row == row && selectedSeat.Number == column)
+                if (SelectedSeat.Row == row && SelectedSeat.Number == column)
                 {
-                    selectedSeat = null;
+                    await ChangeSeatAsync(null);
                     return;
                 }                
             }
 
-            selectedSeat = seat;
+            await ChangeSeatAsync(seat);
             await DrawSeatAsync(row, column, "orange");
         }
 

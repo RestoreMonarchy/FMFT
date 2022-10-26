@@ -38,8 +38,6 @@
         const x = (e.clientX - rect.left) * zoom;
         const y = (e.clientY - rect.top) * zoom;
 
-        console.log("x: ", x, " y: ", y);
-
         const seat = FindSeatByCoordinates(options, x, y);
 
         if (seat == null) {
@@ -116,14 +114,14 @@ function FindSeatByCoordinates(options, x, y) {
     const rowExact = y / marginY;
     const rowIndex = Math.floor(rowExact);
 
-    console.log("row exact: ", rowExact, " row floor: ", rowIndex);
+    //console.log("row exact: ", rowExact, " row floor: ", rowIndex);
 
     const marginYSize = marginY - sizeY;
     const bottomMargin = marginYSize / marginY;
     const rowBottomMargin = rowExact - rowIndex;
 
     if (rowBottomMargin >= 1 - bottomMargin) {
-        console.log("clicked row margin");
+        //console.log("clicked row margin");
         return null;
     }
 
@@ -132,15 +130,13 @@ function FindSeatByCoordinates(options, x, y) {
     const row = rowIndex + 1;
     const rowOffset = CalculateRowOffset(options, row);
 
-    console.log("columns: ", columns);
-
     let columnIndex = -1;
 
     for (let k = 0; k < columns; k++) {
 
         const columnX = rowOffset + k * marginX;
 
-        console.log("columnX: ", columnX, "rowOffset: ", rowOffset, " x: ", x, " columnX ", columnX, " sizeX: ", sizeX);
+        //console.log("columnX: ", columnX, "rowOffset: ", rowOffset, " x: ", x, " columnX ", columnX, " sizeX: ", sizeX);
 
         if (columnX <= x && x < columnX + sizeX) {
             columnIndex = k;
@@ -149,7 +145,7 @@ function FindSeatByCoordinates(options, x, y) {
     }
 
     if (columnIndex == -1) {
-        console.log("clicked on column margin");
+        //console.log("clicked column margin");
         return null;
     }
 

@@ -6,17 +6,6 @@
 
 <Condition Evaluation="ActiveItem is not null">
     <Match>
-        <div class="mb-2">
-            @ActiveItem.ChildContent
-        </div>
+        @ActiveItem.ChildContent
     </Match>
 </Condition>
-
-<div class="float-end">
-    <button class="btn btn-primary" @onclick="StepDown">
-        Prev
-    </button>
-    <button class="btn btn-primary" @onclick="StepUp">
-        Next
-    </button>
-</div>

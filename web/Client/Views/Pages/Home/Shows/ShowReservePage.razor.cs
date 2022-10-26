@@ -1,5 +1,6 @@
 ﻿using BlazorPanzoom;
 using FMFT.Extensions.Blazor.Bases.Loadings;
+using FMFT.Extensions.Blazor.Bases.Steppers;
 using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Auditoriums;
 using FMFT.Web.Client.Models.API.Seats;
@@ -16,6 +17,7 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
         private string ShowName => ShowResponse?.Object.Name ?? ShowId.ToString();
 
         private LoadingView LoadingView { get; set; }
+        private Stepper Stepper { get; set; }
 
         public APIResponse<Show> ShowResponse { get; set; }
         public APIResponse<Auditorium> AuditoriumResponse { get; set; }
@@ -34,5 +36,19 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
         }
 
         public Panzoom AuditoriumPanzoom { get; set; }
+
+        public Seat SelectedSeat { get; set; }
+
+        private Task NexToConfirmAsync()
+        {
+            Stepper.StepUp();
+            return Task.CompletedTask;
+        }
+
+        private Task NextToSummaryAsync()
+        {
+            Stepper.StepUp();
+            return Task.CompletedTask;
+        }
     }
 }
