@@ -41,5 +41,4 @@ services:
       ASPNETCORE_ENVIRONMENT: Production
       TZ: Europe/Warsaw
     volumes:
-      - /srv/${PROJECT_NAME}/outputs/web-client:/app
-      - /srv/${PROJECT_NAME}/configs/clientconfig.json:/app/wwwroot/appsettings.json
+      - /srv/${PROJECT_NAME}/outputs/web-client:/appfiles
