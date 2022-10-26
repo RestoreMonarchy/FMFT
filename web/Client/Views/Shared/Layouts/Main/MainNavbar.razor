@@ -37,16 +37,16 @@
                     <Authorized>
                         <NavbarDropdown Value="@context.FirstName">
                             <NavbarDropdownItem Location="/account">
-                                Account
+                                Konto
                             </NavbarDropdownItem>
                             <NavbarDropdownItem OnClick="LogoutAsync">
-                                Logout
+                                Wyloguj się
                             </NavbarDropdownItem>
                         </NavbarDropdown>
                     </Authorized>
                     <NotAuthorized>
                         <NavbarItem Location="/account/login">
-                            Login
+                            Zaloguj się
                         </NavbarItem>
                     </NotAuthorized>
                 </CustomAuthorizeView>                 

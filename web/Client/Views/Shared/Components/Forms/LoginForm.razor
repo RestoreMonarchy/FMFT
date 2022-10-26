@@ -1,9 +1,9 @@
 ﻿<AlertGroupBase @ref="AlertGroup">
     <AlertBase @ref="PasswordNotMatchAlert" Class="alert-danger">
-        Invalid email or password
+        Nie prawidłowy email lub hasło
     </AlertBase>
     <AlertBase @ref="SuccessAlert" Class="alert-success">
-        Successfully logged in!
+        Logowanie powiodło się!
     </AlertBase>
 </AlertGroupBase>
 
@@ -12,15 +12,15 @@
         <TextInputBase @ref="EmailInput" @bind-Value="Model.Email" Class="form-control" Placeholder="Email" Required="true" />
     </div>
     <div class="mb-2 text-start">
-        <PasswordInputBase @ref="PasswordInput" @bind-Value="Model.PasswordText" Class="form-control" Placeholder="Password" Required="true" />
+        <PasswordInputBase @ref="PasswordInput" @bind-Value="Model.PasswordText" Class="form-control" Placeholder="Hasło" Required="true" />
     </div>
     <div class="d-flex align-items-center">
         <CheckboxInputBase @ref="PersistentCheckbox" @bind-Value="@Model.IsPersistent">
-            Remember Me
+            Pamiętaj mnie
         </CheckboxInputBase>
         <div class="ms-auto">
             <SubmitButtonBase @ref="SubmitButton" Class="btn btn-primary text-start">
-                Login
+                Zaloguj się
             </SubmitButtonBase>
         </div>
     </div>

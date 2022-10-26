@@ -1,9 +1,9 @@
 ﻿<AlertGroupBase @ref="AlertGroup">
     <AlertBase @ref="UserAlreadyExistsAlert" Class="alert-danger">
-        User with this email already exists
+        Użytkownik o tym adresie email już istnieje
     </AlertBase>
     <AlertBase @ref="ValidationErrorAlert" Class="alert-danger">
-        There was a validation error
+        Wystąpił problem z walidacją
     </AlertBase>
 </AlertGroupBase>
 
@@ -14,22 +14,22 @@
     </div>
     <div class="row mb-2">
         <div class="col">
-            <TextInputBase @ref="FirstNameInput" @bind-Value="Model.FirstName" Class="form-control" Placeholder="First Name" Required="true" />
+            <TextInputBase @ref="FirstNameInput" @bind-Value="Model.FirstName" Class="form-control" Placeholder="Imię" Required="true" />
             <ValidationMessageBase Key="@nameof(Model.FirstName)" />
         </div>
         <div class="col">
-            <TextInputBase @ref="LastNameInput" @bind-Value="Model.LastName" Class="form-control" Placeholder="Last Name" Required="true" />
+            <TextInputBase @ref="LastNameInput" @bind-Value="Model.LastName" Class="form-control" Placeholder="Nazwisko" Required="true" />
             <ValidationMessageBase Key="@nameof(Model.LastName)" />
         </div>
     </div>
     <div class="mb-2 text-start">
-        <PasswordInputBase @ref="PasswordInput" @bind-Value="Model.PasswordText" Class="form-control" Placeholder="Password" Required="true" />
+        <PasswordInputBase @ref="PasswordInput" @bind-Value="Model.PasswordText" Class="form-control" Placeholder="Hasło" Required="true" />
         <ValidationMessageBase Key="@nameof(Model.PasswordText)" />
     </div>
     <div class="d-flex align-items-center">
         <div class="ms-auto">
             <SubmitButtonBase @ref="SubmitButton" Class="btn btn-primary text-start">
-                Register
+                Zarejestruj się
             </SubmitButtonBase>
         </div>
     </div>
