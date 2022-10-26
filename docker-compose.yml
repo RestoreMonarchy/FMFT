@@ -20,11 +20,11 @@ services:
         CONNECTION_STRING: "Server=mssql-server;Database=FMFT;Uid=sa;Password=Password!123"
     depends_on:
       - mssql-server
-  web:
+  web-api:
     restart: always
     build:
         context: .
-        dockerfile: ./docker/web/Dockerfile
+        dockerfile: ./docker/web-api/Dockerfile
     depends_on:
       database:
         condition: service_completed_successfully
@@ -33,4 +33,13 @@ services:
       TZ: Europe/Warsaw
     volumes:
       - /srv/${PROJECT_NAME}/configs/serverconfig.json:/app/appsettings.Production.json
+  web-client:
+    build:
+        context: .
+        dockerfile: ./docker/web-client/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      TZ: Europe/Warsaw
+    volumes:
+      - /srv/${PROJECT_NAME}/outputs/web-client:/app
       - /srv/${PROJECT_NAME}/configs/clientconfig.json:/app/wwwroot/appsettings.json
