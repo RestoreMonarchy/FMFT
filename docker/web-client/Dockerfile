@@ -8,5 +8,3 @@ RUN dotnet restore
 # Copy everything else and build
 COPY . ./
 RUN dotnet publish web/Client/FMFT.Web.Client.csproj -c Release -o .
-
-ENTRYPOINT ["echo", "Done."]
