@@ -1,6 +1,6 @@
 ﻿<div class="alert alert-info" role="alert">
     <i class="fa-solid fa-circle-info me-1"></i>
-    Naciśnij <a href="@Link">tutaj</a> jeżeli nie zostałeś przekierowany odrazu
+    Naciśnij <a href="@Link">tutaj</a> jeżeli nie zostałeś przekierowany od razu
 </div>
 
 @code {
@@ -9,6 +9,6 @@
 
     protected override void OnInitialized()
     {
-        //NavigationBroker.NavigateTo(Link);
+        NavigationBroker.NavigateTo(Link);
     }
 }
