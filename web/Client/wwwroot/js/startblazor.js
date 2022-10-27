@@ -18,6 +18,8 @@
                     loadedCount += 1;
 
                     if (filename == "blazor.boot.json") {
+                        const progressbar = document.getElementById('progressbar');
+                        progressbar.style.width = 90 + '%';
                         return;
                     }                        
 
