@@ -9,8 +9,7 @@
 
                 const fetchResources = fetch(defaultUri, {
                     cache: 'no-cache',
-                    integrity: integrity,
-                    headers: { 'MyCustomHeader': 'My custom value' }
+                    integrity: integrity
                 });
 
                 resourcesToLoad.push(fetchResources);
@@ -18,12 +17,16 @@
                 fetchResources.then((r) => {
                     loadedCount += 1;
 
+                    if (filename == "blazor.boot.json") {
+                        return;
+                    }                        
+
                     const totalCount = resourcesToLoad.length;
                     const percentLoaded = 10 + parseInt((loadedCount * 90.0) / totalCount);
                     const progressbar = document.getElementById('progressbar');
                     progressbar.style.width = percentLoaded + '%';
                     const progressLabel = document.getElementById('progressLabel');
-                    progressLabel.innerText = `Downloading ${loadedCount}/${totalCount}: ${filename}`;
+                    progressLabel.innerText = `Pobieranie ${loadedCount}/${totalCount}: ${filename}`;
                 });
 
                 return fetchResources;
