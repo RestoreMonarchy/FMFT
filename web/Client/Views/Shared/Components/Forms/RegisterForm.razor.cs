@@ -5,11 +5,19 @@ using FMFT.Extensions.Blazor.Bases.Inputs;
 using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Accounts;
 using FMFT.Web.Client.Models.API.Accounts.Requests;
+using FMFT.Web.Client.Services.Accounts;
+using Microsoft.AspNetCore.Components;
 
 namespace FMFT.Web.Client.Views.Shared.Components.Forms
 {
     public partial class RegisterForm
     {
+        [Inject]
+        public IAccountService AccountService { get; set; }
+
+        [Parameter]
+        public EventCallback<AccountToken> OnSuccess { get; set; }
+
         public RegisterWithPasswordRequest Model { get; set; } = new();
 
         public FormBase Form { get; set; }
@@ -22,6 +30,7 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms
         public AlertGroupBase AlertGroup { get; set; }
         public AlertBase UserAlreadyExistsAlert { get; set; }
         public AlertBase ValidationErrorAlert { get; set; }
+        public AlertBase SuccessAlert { get; set; }        
 
         public async Task SubmitAsync()
         {
@@ -34,7 +43,8 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms
 
             if (response.IsSuccessfull)
             {
-
+                SuccessAlert.Show();
+                await OnSuccess.InvokeAsync(response.Object);
             } else
             {
                 if (response.Error.Code == "ERR005")

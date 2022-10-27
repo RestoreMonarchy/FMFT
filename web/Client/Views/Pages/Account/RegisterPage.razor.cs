@@ -4,12 +4,12 @@ using Microsoft.AspNetCore.Components;
 
 namespace FMFT.Web.Client.Views.Pages.Account
 {
-    public partial class LoginPage
+    public partial class RegisterPage
     {
         [Inject]
         public IAccountService AccountService { get; set; }
 
-        private async Task HandleSuccessfullLoginAsync(AccountToken accountToken)
+        private async Task HandleSuccessfullRegisterAsync(AccountToken accountToken)
         {
             await AccountService.LoginAsync(accountToken);
             NavigationBroker.NavigateTo("/");
