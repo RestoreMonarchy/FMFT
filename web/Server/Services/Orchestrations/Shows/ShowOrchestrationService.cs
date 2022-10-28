@@ -1,44 +1,39 @@
-﻿using FMFT.Extensions.TheStandard;
-using FMFT.Web.Server.Brokers.Loggings;
+﻿using FMFT.Web.Server.Brokers.Loggings;
 using FMFT.Web.Server.Models.Shows;
 using FMFT.Web.Server.Models.Shows.Params;
-using FMFT.Web.Server.Services.Processings.Shows;
+using FMFT.Web.Server.Services.Foundations.Shows;
 
 namespace FMFT.Web.Server.Services.Orchestrations.Shows
 {
-    public partial class ShowOrchestrationService : TheStandardService, IShowOrchestrationService
+    public partial class ShowOrchestrationService : IShowOrchestrationService
     {
-        private readonly IShowProcessingService showService;
+        private readonly IShowService showService;
         private readonly ILoggingBroker loggingBroker;
 
-        public ShowOrchestrationService(IShowProcessingService showService, ILoggingBroker loggingBroker)
+        public ShowOrchestrationService(IShowService showService, ILoggingBroker loggingBroker)
         {
             this.showService = showService;
             this.loggingBroker = loggingBroker;
         }
 
-        public ValueTask<Show> AddShowAsync(AddShowParams @params)
-            => TryCatch(async () => 
-            {
-                return await showService.AddShowAsync(@params);
-            });
+        public async ValueTask<Show> AddShowAsync(AddShowParams @params)
+        {
+            return await showService.AddShowAsync(@params);
+        }
 
-        public ValueTask<Show> ModifyShowAsync(UpdateShowParams @params)
-            => TryCatch(async () =>
-            {
-                return await showService.ModifyShowAsync(@params);
-            });
+        public async ValueTask<Show> ModifyShowAsync(UpdateShowParams @params)
+        {
+            return await showService.ModifyShowAsync(@params);
+        }
 
-        public ValueTask<Show> RetrieveShowByIdAsync(int showId)
-           => TryCatch(async () =>
-           {
-               return await showService.RetrieveShowByIdAsync(showId);
-           });
+        public async ValueTask<Show> RetrieveShowByIdAsync(int showId)
+        {
+            return await showService.RetrieveShowByIdAsync(showId);
+        }
 
-        public ValueTask<IEnumerable<Show>> RetrieveAllShowsAsync()
-            => TryCatch(async () =>
-            {
-                return await showService.RetrieveAllShowsAsync();
-            });
+        public async ValueTask<IEnumerable<Show>> RetrieveAllShowsAsync()
+        {
+            return await showService.RetrieveAllShowsAsync();
+        }
     }
 }

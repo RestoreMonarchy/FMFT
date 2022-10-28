@@ -19,7 +19,7 @@ namespace FMFT.Web.Server.Controllers.Shows
             {
                 return Unauthorized(exception);
             }
-            catch (NotAuthorizedAccountProcessingException exception)
+            catch (NotAuthorizedAccountException exception)
             {
                 return Forbidden(exception);
             }

@@ -1,5 +1,4 @@
-﻿using FMFT.Extensions.TheStandard;
-using FMFT.Web.Server.Brokers.Loggings;
+﻿using FMFT.Web.Server.Brokers.Loggings;
 using FMFT.Web.Server.Brokers.Storages;
 using FMFT.Web.Server.Brokers.Validations;
 using FMFT.Web.Server.Models.Database;
@@ -9,7 +8,7 @@ using FMFT.Web.Server.Models.Shows.Params;
 
 namespace FMFT.Web.Server.Services.Foundations.Shows
 {
-    public partial class ShowService : TheStandardService, IShowService
+    public partial class ShowService : IShowService
     {
         private readonly IStorageBroker storageBroker;
         private readonly IValidationBroker validationBroker;
@@ -22,58 +21,54 @@ namespace FMFT.Web.Server.Services.Foundations.Shows
             this.loggingBroker = loggingBroker;
         }
 
-        public ValueTask<Show> RetrieveShowByIdAsync(int showId)
-            => TryCatch(async () =>
+        public async ValueTask<Show> RetrieveShowByIdAsync(int showId)
+        {
+            Show show = await storageBroker.SelectShowByIdAsync(showId);
+            if (show == null)
             {
-                Show show = await storageBroker.SelectShowByIdAsync(showId);
-                if (show == null)
-                {
-                    throw new NotFoundShowException();
-                }
+                throw new NotFoundShowException();
+            }
 
-                return show;
-            });
+            return show;
+        }
 
-        public ValueTask<IEnumerable<Show>> RetrieveAllShowsAsync()
-            => TryCatch(async () =>
+        public async ValueTask<IEnumerable<Show>> RetrieveAllShowsAsync()
+        {
+            IEnumerable<Show> shows = await storageBroker.SelectAllShowsAsync();
+            return shows;
+        }
+
+        public async ValueTask<Show> AddShowAsync(AddShowParams @params)
+        {
+            ValidateAddShowParams(@params);
+
+            StoredProcedureResult<Show> result = await storageBroker.ExecuteAddShowAsync(@params);
+
+            if (result.ReturnValue == 1)
             {
-                IEnumerable<Show> shows = await storageBroker.SelectAllShowsAsync();
-                return shows;
-            });
+                throw new AuditoriumNotExistsShowException();
+            }
 
-        public ValueTask<Show> AddShowAsync(AddShowParams @params)
-            => TryCatch(async () =>
+            return result.Result;
+        }
+
+        public async ValueTask<Show> ModifyShowAsync(UpdateShowParams @params)
+        {
+            ValidateUpdateShowParams(@params);
+
+            StoredProcedureResult<Show> result = await storageBroker.ExecuteUpdateShowAsync(@params);
+
+            if (result.ReturnValue == 1)
             {
-                ValidateAddShowParams(@params);
+                throw new AuditoriumNotExistsShowException();
+            }
 
-                StoredProcedureResult<Show> result = await storageBroker.ExecuteAddShowAsync(@params);
-
-                if (result.ReturnValue == 1)
-                {
-                    throw new AuditoriumNotExistsShowException();
-                }
-
-                return result.Result;
-            });
-
-        public ValueTask<Show> ModifyShowAsync(UpdateShowParams @params)
-            => TryCatch(async () =>
+            if (result.ReturnValue == 2)
             {
-                ValidateUpdateShowParams(@params);
+                throw new NotFoundShowException();
+            }
 
-                StoredProcedureResult<Show> result = await storageBroker.ExecuteUpdateShowAsync(@params);
-
-                if (result.ReturnValue == 1)
-                {
-                    throw new AuditoriumNotExistsShowException();
-                }
-
-                if (result.ReturnValue == 2)
-                {
-                    throw new NotFoundShowException();
-                }
-
-                return result.Result;
-            });
+            return result.Result;
+        }
     }
 }

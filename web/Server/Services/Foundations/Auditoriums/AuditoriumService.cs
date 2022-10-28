@@ -1,12 +1,11 @@
-﻿using FMFT.Extensions.TheStandard;
-using FMFT.Web.Server.Brokers.Loggings;
+﻿using FMFT.Web.Server.Brokers.Loggings;
 using FMFT.Web.Server.Brokers.Storages;
 using FMFT.Web.Server.Models.Auditoriums;
 using FMFT.Web.Server.Models.Auditoriums.Exceptions;
 
 namespace FMFT.Web.Server.Services.Foundations.Auditoriums
 {
-    public partial class AuditoriumService : TheStandardService, IAuditoriumService
+    public partial class AuditoriumService : IAuditoriumService
     {
         private readonly IStorageBroker storageBroker;
         private readonly ILoggingBroker loggingBroker;
@@ -17,24 +16,22 @@ namespace FMFT.Web.Server.Services.Foundations.Auditoriums
             this.loggingBroker = loggingBroker;
         }
 
-        public ValueTask<Auditorium> RetrieveAuditoriumByIdAsync(int auditoriumId)
-            => TryCatch(async () =>
+        public async ValueTask<Auditorium> RetrieveAuditoriumByIdAsync(int auditoriumId)
+        {
+            Auditorium auditorium = await storageBroker.SelectAuditoriumByIdAsync(auditoriumId);
+            if (auditorium == null)
             {
-                Auditorium auditorium = await storageBroker.SelectAuditoriumByIdAsync(auditoriumId);
-                if (auditorium == null)
-                {
-                    throw new NotFoundAuditoriumException();
-                }
+                throw new NotFoundAuditoriumException();
+            }
 
-                return auditorium;
-            });
+            return auditorium;
+        }
 
-        public ValueTask<IEnumerable<Auditorium>> RetrieveAllAuditoriumsAsync()
-            => TryCatch(async () =>
-            {
-                IEnumerable<Auditorium> auditoriums = await storageBroker.SelectAllAuditoriumsAsync();
+        public async ValueTask<IEnumerable<Auditorium>> RetrieveAllAuditoriumsAsync()
+        {
+            IEnumerable<Auditorium> auditoriums = await storageBroker.SelectAllAuditoriumsAsync();
 
-                return auditoriums;
-            });
+            return auditoriums;
+        }
     }
 }

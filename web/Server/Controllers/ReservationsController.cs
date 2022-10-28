@@ -29,7 +29,7 @@ namespace FMFT.Web.Server.Controllers
             } catch (NotAuthenticatedAccountException exception)
             {
                 return Unauthorized(exception);
-            } catch (NotAuthorizedAccountProcessingException exception)
+            } catch (NotAuthorizedAccountException exception)
             {
                 return Forbidden(exception);
             }            
@@ -48,13 +48,13 @@ namespace FMFT.Web.Server.Controllers
             } catch (NotAuthenticatedAccountException exception)
             {
                 return Unauthorized(exception);
-            } catch (NotAuthorizedAccountProcessingException exception)
+            } catch (NotAuthorizedAccountException exception)
             {
                 return Forbidden(exception);
             }
         }
 
-        [HttpPost("{reservationId}/status")]
+        [HttpPost("{reservationId}/updatestatus")]
         public async ValueTask<IActionResult> UpdateReservationStatus(int reservationId, [FromBody] UpdateReservationStatusRequest request)
         {
             try
@@ -71,7 +71,7 @@ namespace FMFT.Web.Server.Controllers
             {
                 return Unauthorized(exception);
             }
-            catch (NotAuthorizedAccountProcessingException exception)
+            catch (NotAuthorizedAccountException exception)
             {
                 return Forbidden(exception);
             }

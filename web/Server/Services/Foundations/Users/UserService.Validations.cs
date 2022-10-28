@@ -1,5 +1,6 @@
 ﻿using FMFT.Web.Server.Models.Users.Exceptions;
 using FMFT.Web.Server.Models.Users.Params;
+using FMFT.Web.Server.Models.Users.Requests;
 
 namespace FMFT.Web.Server.Services.Foundations.Users
 {
@@ -44,34 +45,34 @@ namespace FMFT.Web.Server.Services.Foundations.Users
             validationException.ThrowIfContainsErrors();
         }
 
-        private void ValidateRegisterUserWithPasswordParams(RegisterUserWithPasswordProcessingParams @params)
+        private void ValidateRegisterUserWithPasswordParams(RegisterUserWithPasswordRequest request)
         {
             RegisterUserWithPasswordValidationException validationException = new();
-            if (validationBroker.IsStringNullOrEmpty(@params.Email))
+            if (validationBroker.IsStringNullOrEmpty(request.Email))
             {
                 validationException.UpsertDataList("Email", "Email is required");
             }
-            if (validationBroker.IsEmailInvalid(@params.Email))
+            if (validationBroker.IsEmailInvalid(request.Email))
             {
                 validationException.UpsertDataList("Email", "Email is invalid");
             }
-            if (validationBroker.IsStringNullOrEmpty(@params.FirstName))
+            if (validationBroker.IsStringNullOrEmpty(request.FirstName))
             {
                 validationException.UpsertDataList("FirstName", "First name is required");
             }
-            if (validationBroker.IsStringInvalid(@params.FirstName, 255, 2))
+            if (validationBroker.IsStringInvalid(request.FirstName, 255, 2))
             {
                 validationException.UpsertDataList("FirstName", "First name must be at least 2 characters long");
             }
-            if (validationBroker.IsStringNullOrEmpty(@params.LastName))
+            if (validationBroker.IsStringNullOrEmpty(request.LastName))
             {
                 validationException.UpsertDataList("LastName", "Last name is required");
             }
-            if (validationBroker.IsStringInvalid(@params.LastName, 255, 2))
+            if (validationBroker.IsStringInvalid(request.LastName, 255, 2))
             {
                 validationException.UpsertDataList("LastName", "Last name must be at least 2 characters long");
             }
-            if (validationBroker.IsPasswordInvalid(@params.PasswordText))
+            if (validationBroker.IsPasswordInvalid(request.PasswordText))
             {
                 validationException.UpsertDataList("PasswordText", "Password must be at least 8 characters long");
             }

@@ -1,5 +1,4 @@
-﻿using FMFT.Extensions.TheStandard;
-using FMFT.Web.Server.Brokers.Loggings;
+﻿using FMFT.Web.Server.Brokers.Loggings;
 using FMFT.Web.Server.Brokers.Storages;
 using FMFT.Web.Server.Models.Database;
 using FMFT.Web.Server.Models.Reservations;
@@ -8,7 +7,7 @@ using FMFT.Web.Server.Models.Reservations.Params;
 
 namespace FMFT.Web.Server.Services.Foundations.Reservations
 {
-    public partial class ReservationService : TheStandardService, IReservationService
+    public partial class ReservationService : IReservationService
     {
         private readonly IStorageBroker storageBroker;
         private readonly ILoggingBroker loggingBroker;
@@ -19,65 +18,59 @@ namespace FMFT.Web.Server.Services.Foundations.Reservations
             this.loggingBroker = loggingBroker;
         }
 
-        public ValueTask<IEnumerable<Reservation>> RetrieveAllReservationsAsync()
-            => TryCatch(async () =>
+        public async ValueTask<IEnumerable<Reservation>> RetrieveAllReservationsAsync()
+        {
+            return await storageBroker.SelectAllReservationsAsync();
+        }
+
+        public async ValueTask<IEnumerable<Reservation>> RetrieveReservationsByUserIdAsync(int userId)
+        {
+            return await storageBroker.SelectReservationsByUserIdAsync(userId);
+        }
+
+        public async ValueTask<IEnumerable<Reservation>> RetrieveReservationsByShowIdAsync(int showId)
+        {
+            return await storageBroker.SelectReservationsByShowIdAsync(showId);
+        }
+
+        public async ValueTask<Reservation> RetrieveReservationByIdAsync(int reservationId)
+        {
+            Reservation reservation = await storageBroker.SelectReservationByIdAsync(reservationId);
+            if (reservation == null)
             {
-                return await storageBroker.SelectAllReservationsAsync();
-            });
+                throw new NotFoundReservationException();
+            }
 
-        public ValueTask<IEnumerable<Reservation>> RetrieveReservationsByUserIdAsync(int userId)
-            => TryCatch(async () =>
+            return reservation;
+        }
+
+        public async ValueTask<Reservation> CreateReservationAsync(CreateReservationParams @params)
+        {
+            StoredProcedureResult<Reservation> result = await storageBroker.CreateReservationAsync(@params);
+
+            if (result.ReturnValue == 1)
             {
-                return await storageBroker.SelectReservationsByUserIdAsync(userId);
-            });
+                throw new SeatAlreadyReservedReservationException();
+            }
 
-        public ValueTask<IEnumerable<Reservation>> RetrieveReservationsByShowIdAsync(int showId)
-            => TryCatch(async () =>
+            if (result.ReturnValue == 2)
             {
-                return await storageBroker.SelectReservationsByShowIdAsync(showId);
-            });
+                throw new UserAlreadyReservedReservationException();
+            }
 
-        public ValueTask<Reservation> RetrieveReservationByIdAsync(int reservationId)
-            => TryCatch(async () =>
+            return result.Result;
+        }
+
+        public async ValueTask<Reservation> UpdateReservationStatusAsync(UpdateReservationStatusParams @params)
+        {
+            StoredProcedureResult<Reservation> result = await storageBroker.UpdateReservationStatusAsync(@params);
+
+            if (result.ReturnValue == 1)
             {
-                Reservation reservation = await storageBroker.SelectReservationByIdAsync(reservationId);
-                if (reservation == null)
-                {
-                    throw new NotFoundReservationException();
-                }
+                throw new NotFoundReservationException();
+            }
 
-                return reservation;
-            });
-
-        public ValueTask<Reservation> CreateReservationAsync(CreateReservationParams @params)
-            => TryCatch(async () =>
-            {
-                StoredProcedureResult<Reservation> result = await storageBroker.CreateReservationAsync(@params);
-
-                if (result.ReturnValue == 1)
-                {
-                    throw new SeatAlreadyReservedReservationException();
-                }
-
-                if (result.ReturnValue == 2)
-                {
-                    throw new UserAlreadyReservedReservationException();
-                }
-
-                return result.Result;
-            });
-
-        public ValueTask<Reservation> UpdateReservationStatusAsync(UpdateReservationStatusParams @params)
-            => TryCatch(async () =>
-            {
-                StoredProcedureResult<Reservation> result = await storageBroker.UpdateReservationStatusAsync(@params);
-
-                if (result.ReturnValue == 1)
-                {
-                    throw new NotFoundReservationException();
-                }
-
-                return result.Result;
-            });
+            return result.Result;
+        }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace FMFT.Web.Server.Models.Shows.Exceptions
 {
-    public class NotFoundShowException : Xeption
+    public class NotFoundShowException : Exception
     {
         public NotFoundShowException()
             : base("ERR014: Show not found")

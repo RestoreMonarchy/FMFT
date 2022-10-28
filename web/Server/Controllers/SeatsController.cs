@@ -31,9 +31,9 @@ namespace FMFT.Web.Server.Controllers
             {
                 Seat seat = await seatService.RetrieveSeatByIdAsync(seatId);
                 return Ok(seat);
-            } catch (NotFoundSeatException)
+            } catch (NotFoundSeatException exception)
             {
-                return NotFound();
+                return NotFound(exception);
             }
         }
     }

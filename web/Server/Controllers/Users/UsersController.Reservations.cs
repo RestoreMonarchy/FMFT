@@ -4,19 +4,21 @@ using FMFT.Web.Server.Models.Reservations;
 using FMFT.Web.Server.Models.Users.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using FMFT.Web.Server.Models.Accounts.Exceptions;
+using FMFT.Web.Server.Models.Reservations.Params;
 
 namespace FMFT.Web.Server.Controllers.Users
 {
     public partial class UsersController
     {
         [HttpPost("{userId}/reservations/create")]
-        public async ValueTask<IActionResult> CreateReservation(int userId, [FromBody] CreateReservationRequest request)
+        public async ValueTask<IActionResult> CreateReservation(int userId, [FromBody] CreateReservationParams @params)
         {
-            request.UserId = userId;
+            @params.UserId = userId;
 
             try
             {
-                Reservation reservation = await reservationService.CreateReservationAsync(request);
+                Reservation reservation = await reservationService.CreateReservationAsync(@params);
+
                 return Ok(reservation);
             }
             catch (SeatAlreadyReservedReservationException exception)
@@ -27,7 +29,7 @@ namespace FMFT.Web.Server.Controllers.Users
             {
                 return Conflict(exception);
             }
-            catch (NotAuthorizedAccountProcessingException exception)
+            catch (NotAuthorizedAccountException exception)
             {
                 return Forbidden(exception);
             } catch (NotAuthenticatedAccountException exception)
@@ -42,11 +44,12 @@ namespace FMFT.Web.Server.Controllers.Users
             try
             {
                 IEnumerable<Reservation> reservations = await reservationService.RetrieveReservationsByUserIdAsync(userId);
+
                 return Ok(reservations);
             } catch (NotAuthenticatedAccountException exception)
             {
                 return Unauthorized(exception);
-            } catch (NotAuthorizedAccountProcessingException exception)
+            } catch (NotAuthorizedAccountException exception)
             {
                 return Forbidden(exception);
             }

@@ -1,10 +1,8 @@
-﻿using Xeptions;
-
-namespace FMFT.Web.Server.Models.Accounts.Exceptions
+﻿namespace FMFT.Web.Server.Models.Accounts.Exceptions
 {
-    public class NotAuthorizedAccountProcessingException : Xeption
+    public class NotAuthorizedAccountException : Exception
     {
-        public NotAuthorizedAccountProcessingException()
+        public NotAuthorizedAccountException()
             : base("ERR002: Account not authorized")
         {
 

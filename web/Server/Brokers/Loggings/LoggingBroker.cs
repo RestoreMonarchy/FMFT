@@ -16,6 +16,9 @@
         public void LogDebug(string message) =>
             this.logger.LogDebug(message);
 
+        public void LogDebugError(Exception exception) =>
+            this.logger.LogDebug(exception, null);
+
         public void LogWarning(string message) =>
             this.logger.LogWarning(message);
 

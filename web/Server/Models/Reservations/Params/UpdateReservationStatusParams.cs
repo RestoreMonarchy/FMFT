@@ -7,6 +7,6 @@ namespace FMFT.Web.Server.Models.Reservations.Params
         public int ReservationId { get; set; }
         public ReservationStatus ReservationStatus { get; set; }
         public DateTimeOffset UpdateStatusDate { get; set; }
-        public int? AdminUserId { get; set; }        
+        public int? AdminUserId { get; set; }
     }
 }

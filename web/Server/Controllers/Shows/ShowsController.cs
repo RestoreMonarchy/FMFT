@@ -27,6 +27,7 @@ namespace FMFT.Web.Server.Controllers.Shows
         public async ValueTask<IActionResult> GetShows()
         {
             IEnumerable<Show> shows = await accountShowService.RetrieveAllShowsAsync();
+
             return Ok(shows);
         }
 
@@ -36,11 +37,12 @@ namespace FMFT.Web.Server.Controllers.Shows
             try
             {
                 Show show = await accountShowService.RetrieveShowByIdAsync(showId);
+
                 return Ok(show);
             }
-            catch (NotFoundShowException)
+            catch (NotFoundShowException exception)
             {
-                return NotFound();
+                return NotFound(exception);
             }
         }
 
@@ -50,6 +52,7 @@ namespace FMFT.Web.Server.Controllers.Shows
             try
             {
                 Show show = await accountShowService.AddShowAsync(@params);
+
                 return Ok(show);
             }
             catch (AuditoriumNotExistsShowException exception)
@@ -60,7 +63,7 @@ namespace FMFT.Web.Server.Controllers.Shows
             {
                 return BadRequest(exception);
             }
-            catch (NotAuthorizedAccountProcessingException exception)
+            catch (NotAuthorizedAccountException exception)
             {
                 return Unauthorized(exception);
             }
@@ -72,6 +75,7 @@ namespace FMFT.Web.Server.Controllers.Shows
             try
             {
                 Show show = await accountShowService.ModifyShowAsync(@params);
+
                 return Ok(show);
             }
             catch (AuditoriumNotExistsShowException exception)
@@ -86,7 +90,7 @@ namespace FMFT.Web.Server.Controllers.Shows
             {
                 return BadRequest(exception);
             }
-            catch (NotAuthorizedAccountProcessingException exception)
+            catch (NotAuthorizedAccountException exception)
             {
                 return Unauthorized(exception);
             }

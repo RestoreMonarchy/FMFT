@@ -4,6 +4,7 @@ using FMFT.Web.Server.Models.UserAccounts;
 using FMFT.Web.Server.Models.UserAccounts.Exceptions;
 using FMFT.Web.Server.Models.UserAccounts.Requests;
 using FMFT.Web.Server.Models.Users.Exceptions;
+using FMFT.Web.Server.Models.Users.Requests;
 using FMFT.Web.Server.Services.Orchestrations.UserAccounts;
 using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
@@ -29,12 +30,9 @@ namespace FMFT.Web.Server.Controllers
                 Account account = await userAccountService.RetrieveAccountAsync();
 
                 return Ok(account);
-            } catch (UserAccountOrchestrationDependencyValidationException exception) 
-                when (exception.InnerException is NotAuthenticatedAccountException)
+            } catch (NotAuthenticatedAccountException exception)
             {
-                Exception innerException = exception.InnerException;
-
-                return Unauthorized(innerException);
+                return Unauthorized(exception);
             }
         }
 
@@ -47,35 +45,26 @@ namespace FMFT.Web.Server.Controllers
 
                 return Ok(userAccount);
             }
-            catch (UserAccountOrchestrationDependencyValidationException exception)
-                when (exception.InnerException is NotAuthenticatedAccountException)
+            catch (NotAuthenticatedAccountException exception)
             {
-                Exception innerException = exception.InnerException;
-
-                return Unauthorized(innerException);
+                return Unauthorized(exception);
             }
         }
 
         [HttpPost("register")]
-        public async ValueTask<IActionResult> Register([FromBody] RegisterWithPasswordRequest request)
+        public async ValueTask<IActionResult> Register([FromBody] RegisterUserWithPasswordRequest request)
         {
             try
             {
                 AccountToken accountToken = await userAccountService.RegisterWithPasswordAsync(request);
 
                 return Ok(accountToken);
-            } catch (UserAccountOrchestrationDependencyValidationException exception)
-                when (exception.InnerException is RegisterUserWithPasswordValidationException)
+            } catch (RegisterUserWithPasswordValidationException exception)
             {
-                Exception innerException = exception.InnerException;
-
-                return BadRequest(innerException);
-            } catch (UserAccountOrchestrationDependencyValidationException exception)
-                when (exception.InnerException is AlreadyExistsEmailUserException)
+                return BadRequest(exception);
+            } catch (AlreadyExistsEmailUserException exception)
             {
-                Exception innerException = exception.InnerException;
-
-                return Conflict(innerException);
+                return Conflict(exception);
             }
         } 
 
@@ -87,17 +76,13 @@ namespace FMFT.Web.Server.Controllers
                 AccountToken accountToken = await userAccountService.SignInWithPasswordAsync(request);
                 
                 return Ok(accountToken);
-            } catch (UserAccountOrchestrationDependencyValidationException exception) 
-                when (exception.InnerException is NotMatchPasswordUserProcessingException)
+            } catch (NotMatchPasswordUserException exception)
             {
-                Exception innerException = exception.InnerException;
-
-                return Forbidden(innerException);
-            } catch (UserAccountOrchestrationDependencyValidationException exception)
-                when (exception.InnerException is NotFoundUserException)
+                return Forbidden(exception);
+            } catch (NotFoundUserException)
             {
                 // TODO: Handle it better
-                NotMatchPasswordUserProcessingException credentialsException = new();
+                NotMatchPasswordUserException credentialsException = new();
 
                 return Forbidden(credentialsException);
             }

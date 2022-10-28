@@ -6,21 +6,22 @@ using FMFT.Web.Server.Models.UserAccounts.Exceptions;
 using FMFT.Web.Server.Models.UserAccounts.Requests;
 using FMFT.Web.Server.Models.Users;
 using FMFT.Web.Server.Models.Users.Params;
-using FMFT.Web.Server.Services.Processings.Accounts;
-using FMFT.Web.Server.Services.Processings.Users;
+using FMFT.Web.Server.Models.Users.Requests;
+using FMFT.Web.Server.Services.Foundations.Accounts;
+using FMFT.Web.Server.Services.Foundations.Users;
 using FMFT.Web.Shared.Enums;
 
 namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
 {
     public partial class UserAccountOrchestrationService : IUserAccountOrchestrationService
     {
-        private readonly IAccountProcessingService accountService;
-        private readonly IUserProcessingService userService;
+        private readonly IAccountService accountService;
+        private readonly IUserService userService;
         private readonly ILoggingBroker loggingBroker;
 
         public UserAccountOrchestrationService(
-            IAccountProcessingService accountService,
-            IUserProcessingService userService,
+            IAccountService accountService, 
+            IUserService userService, 
             ILoggingBroker loggingBroker)
         {
             this.accountService = accountService;
@@ -28,134 +29,102 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
             this.loggingBroker = loggingBroker;
         }
 
-        public ValueTask<IEnumerable<User>> RetrieveAllUsersAsync()
-            => TryCatch(async () =>
+        public async ValueTask<IEnumerable<User>> RetrieveAllUsersAsync()
+        {
+            await AuthorizeUserAccountByRoleAsync(UserRole.Admin);
+
+            return await userService.RetrieveAllUsersAsync();
+        }
+
+        public async ValueTask<User> RetrieveUserByIdAsync(int userId)
+        {
+            await AuthorizeUserAccountByUserIdOrRolesAsync(userId, UserRole.Admin);
+
+            return await userService.RetrieveUserByIdAsync(userId);
+        }
+
+        public async ValueTask<AccountToken> RegisterWithPasswordAsync(RegisterUserWithPasswordRequest request)
+        {
+            User user = await userService.RegisterUserWithPasswordAsync(request);
+            Account account = MapUserToAccount(user);
+
+            CreateTokenParams @params = new()
             {
-                await AuthorizeUserAccountByRolePrivateAsync(UserRole.Admin);
-                return await userService.RetrieveAllUsersAsync();
-            });
+                Account = account,
+                AuthenticationMethod = null
+            };
 
-        public ValueTask<User> RetrieveUserByIdAsync(int userId)
-            => TryCatch(async () =>
+            return await accountService.CreateTokenAsync(@params);
+        }
+
+        public async ValueTask<AccountToken> SignInWithPasswordAsync(SignInWithPasswordRequest request)
+        {
+            User user = await userService.RetrieveUserByEmailAndPasswordAsync(request.Email, request.PasswordText);
+            Account account = MapUserToAccount(user);
+
+            CreateTokenParams @params = new()
             {
-                await AuthorizeUserAccountByUserIdOrRolesPrivateAsync(userId, UserRole.Admin);
-                return await userService.RetrieveUserByIdAsync(userId);
-            });
+                Account = account,
+                AuthenticationMethod = null
+            };
 
-        public ValueTask<AccountToken> RegisterWithPasswordAsync(RegisterWithPasswordRequest request)
-            => TryCatch(async () =>
-            {
-                RegisterUserWithPasswordProcessingParams args = new()
-                {
-                    Email = request.Email,
-                    FirstName = request.FirstName,
-                    LastName = request.LastName,
-                    PasswordText = request.PasswordText
-                };
+            return await accountService.CreateTokenAsync(@params);
+        }
 
-                User user = await userService.RegisterUserWithPasswordAsync(args);
-                Account account = MapUserToAccount(user);
+        public async ValueTask UpdateUserRoleAsync(UpdateUserRoleParams @params)
+        {
+            await AuthorizeUserAccountByRoleAsync(UserRole.Admin);
+            await userService.UpdateUserRoleAsync(@params);
+        }
 
-                CreateTokenParams @params = new()
-                {
-                    Account = account,
-                    AuthenticationMethod = null
-                };
+        public async ValueTask UpdateUserCultureAsync(UpdateUserCultureParams @params)
+        {
+            await accountService.AuthorizeAccountByUserIdAsync(@params.UserId);
+            await userService.UpdateUserCultureAsync(@params);
+        }
 
-                return await accountService.CreateTokenAsync(@params);
-            });
-
-        public ValueTask<AccountToken> SignInWithPasswordAsync(SignInWithPasswordRequest request)
-            => TryCatch(async () =>
-            {
-                User user = await userService.RetrieveUserByEmailAndPasswordAsync(request.Email, request.PasswordText);
-                Account account = MapUserToAccount(user);
-
-                CreateTokenParams @params = new()
-                {
-                    Account = account,
-                    AuthenticationMethod = null
-                };
-
-                return await accountService.CreateTokenAsync(@params);
-            });
-
-        public ValueTask UpdateUserRoleAsync(UpdateUserRoleParams @params)
-            => TryCatch(async () =>
-            {
-                await AuthorizeUserAccountByRolePrivateAsync(UserRole.Admin);
-                await userService.UpdateUserRoleAsync(@params);
-            });
-
-        public ValueTask UpdateUserCultureAsync(UpdateUserCultureParams @params)
-            => TryCatch(async () =>
-            {
-                await accountService.AuthorizeAccountByUserIdAsync(@params.UserId);
-                await userService.UpdateUserCultureAsync(@params);
-            });
-
-        public ValueTask<UserAccount> RetrieveUserAccountAsync()
-            => TryCatch(async () =>
-            {
-                return await RetrieveUserAccountPrivateAsync();
-            });
-
-        private async ValueTask<UserAccount> RetrieveUserAccountPrivateAsync()
+        public async ValueTask<UserAccount> RetrieveUserAccountAsync()
         {
             Account account = await accountService.RetrieveAccountAsync();
             User user = await userService.RetrieveUserByIdAsync(account.UserId);
             UserAccount userAccount = MapUserToUserAccount(user);
+
             return userAccount;
         }
 
-        public ValueTask AuthorizeAccountAsync()
-            => TryCatch(async () =>
-            {
-                await accountService.AuthorizeAccountAsync();
-            });
-
-        public ValueTask AuthorizeAccountByUserIdAsync(int userId)
-            => TryCatch(async () =>
-            {
-                await accountService.AuthorizeAccountByUserIdAsync(userId);
-            });
-
-        public ValueTask AuthorizeUserAccountByRoleAsync(params UserRole[] authorizedRoles)
-            => TryCatch(async () =>
-            {
-                await AuthorizeUserAccountByRolePrivateAsync(authorizedRoles);
-            });
-
-        private async ValueTask AuthorizeUserAccountByRolePrivateAsync(params UserRole[] authorizedRoles)
+        public async ValueTask AuthorizeAccountAsync()
         {
-            UserAccount userAccount = await RetrieveUserAccountPrivateAsync();
+            await accountService.AuthorizeAccountAsync();
+        }
+
+        public async ValueTask AuthorizeAccountByUserIdAsync(int userId)
+        {
+            await accountService.AuthorizeAccountByUserIdAsync(userId);
+        }
+
+        public async ValueTask AuthorizeUserAccountByRoleAsync(params UserRole[] authorizedRoles)
+        {
+            UserAccount userAccount = await RetrieveUserAccountAsync();
 
             if (!authorizedRoles.Contains(userAccount.Role))
             {
-                throw new NotAuthorizedUserAccountOrchestrationException();
+                throw new NotAuthorizedUserAccountException();
             }
         }
 
-        public ValueTask AuthorizeUserAccountByUserIdOrRolesAsync(int userId, params UserRole[] authorizedRoles)
-        => TryCatch(async () =>
+        public async ValueTask AuthorizeUserAccountByUserIdOrRolesAsync(int userId, params UserRole[] authorizedRoles)
         {
-            await AuthorizeUserAccountByUserIdOrRolesPrivateAsync(userId, authorizedRoles);
-        });
-
-        private async Task AuthorizeUserAccountByUserIdOrRolesPrivateAsync(int userId, params UserRole[] authorizedRoles)
-        {
-            UserAccount userAccount = await RetrieveUserAccountPrivateAsync();
+            UserAccount userAccount = await RetrieveUserAccountAsync();
 
             if (userAccount.UserId != userId && !authorizedRoles.Contains(userAccount.Role))
             {
-                throw new NotAuthorizedUserAccountOrchestrationException();
+                throw new NotAuthorizedUserAccountException();
             }
         }
 
-        public ValueTask<Account> RetrieveAccountAsync()
-            => TryCatch(async () =>
-            {
-                return await accountService.RetrieveAccountAsync();
-            });
+        public async ValueTask<Account> RetrieveAccountAsync()
+        {
+            return await accountService.RetrieveAccountAsync();
+        }
     }
 }

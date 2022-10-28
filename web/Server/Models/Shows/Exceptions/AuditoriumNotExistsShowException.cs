@@ -2,7 +2,7 @@
 
 namespace FMFT.Web.Server.Models.Shows.Exceptions
 {
-    public class AuditoriumNotExistsShowException : Xeption
+    public class AuditoriumNotExistsShowException : Exception
     {
         public AuditoriumNotExistsShowException() 
             : base("ERR015: Show auditorium does not exist")
