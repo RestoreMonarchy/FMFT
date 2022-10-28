@@ -1,11 +1,15 @@
 ﻿using BlazorPanzoom;
+using FMFT.Extensions.Blazor.Bases.Buttons;
 using FMFT.Extensions.Blazor.Bases.Loadings;
 using FMFT.Extensions.Blazor.Bases.Steppers;
 using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Auditoriums;
+using FMFT.Web.Client.Models.API.Reservations;
+using FMFT.Web.Client.Models.API.Reservations.Requests;
 using FMFT.Web.Client.Models.API.Seats;
 using FMFT.Web.Client.Models.API.Shows;
 using Microsoft.AspNetCore.Components;
+using System.Runtime.Intrinsics.X86;
 
 namespace FMFT.Web.Client.Views.Pages.Home.Shows
 {
@@ -18,9 +22,11 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
 
         private LoadingView LoadingView { get; set; }
         private Stepper Stepper { get; set; }
+        public ButtonBase ConfirmButton { get; set; }
 
         public APIResponse<Show> ShowResponse { get; set; }
         public APIResponse<Auditorium> AuditoriumResponse { get; set; }
+        public APIResponse<Reservation> ReservationResponse { get; set; }
 
         public Show Show => ShowResponse.Object;
         public Auditorium Auditorium => AuditoriumResponse.Object;
@@ -39,17 +45,27 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
 
         public Seat SelectedSeat { get; set; }
 
-        private Task NexToConfirmAsync()
+        private Task NextToConfirmAsync()
         {
             Stepper.StepUp();
             return Task.CompletedTask;
         }
 
-        private Task NextToSummaryAsync()
+        private async Task HandleConfirmAsync()
         {
+            ConfirmButton.StartSpinning();
+
+            CreateReservationRequest request = new()
+            {
+                ShowId = ShowId,
+                SeatId = SelectedSeat.Id,
+                UserId = UserAccountState.UserAccount.UserId
+            };
+
+            ReservationResponse = await APIBroker.CreateReservationAsync(request);
+
             Stepper.StepUp();
             Stepper.LockPast();
-            return Task.CompletedTask;
         }
     }
 }

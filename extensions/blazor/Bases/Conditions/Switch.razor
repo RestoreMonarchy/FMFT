@@ -1,0 +1,16 @@
+﻿<CascadingValue Value="this">
+    @ChildContent
+</CascadingValue>
+
+<Condition Evaluation="GetCurrentCase() is not null">
+    <Match>
+        @GetCurrentCase().ChildContent
+    </Match>
+    <NotMatch>
+        <Condition Evaluation="defaultCase is not null">
+            <Match>
+                @defaultCase.ChildContent
+            </Match>
+        </Condition>        
+    </NotMatch>
+</Condition>

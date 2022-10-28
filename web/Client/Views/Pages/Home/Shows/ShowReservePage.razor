@@ -1,4 +1,5 @@
 ﻿@page "/shows/{ShowId:int}/reserve"
+@using FMFT.Extensions.Blazor.Bases.Conditions
 @using FMFT.Extensions.Blazor.Bases.Steppers
 @using BlazorPanzoom
 @using FMFT.Web.Client.Views.Shared.Components.Panzooms
@@ -33,7 +34,7 @@
                                         Wybrano <span class="fw-bold">rząd: @SelectedSeat.Row numer: @SelectedSeat.Number</span>
                                     </div>
                                     <div class="ms-md-auto">
-                                        <button class="btn btn-primary w-100 w-md-auto" @onclick="NexToConfirmAsync">
+                                        <button class="btn btn-primary w-100 w-md-auto" @onclick="NextToConfirmAsync">
                                             Przejdź dalej
                                         </button>
                                     </div>
@@ -78,7 +79,7 @@
                         <Match>
                             <div class="d-flex">
                                 <div class="ms-auto">
-                                    <button class="btn btn-primary" @onclick="NexToConfirmAsync">
+                                    <button class="btn btn-primary" @onclick="NextToConfirmAsync">
                                         Przejdź dalej
                                     </button>
                                 </div>                                
@@ -115,17 +116,50 @@
                             <div>
                                 <div class="d-flex">
                                     <div class="ms-auto">
-                                        <button class="btn btn-primary" @onclick="NextToSummaryAsync">
-                                            Potwierdź
-                                        </button>
+                                        <ButtonBase @ref="ConfirmButton" Class="btn btn-primary" OnClick="HandleConfirmAsync" SpinningText="Przetwarzanie...">
+                                            Potwierdź i zarezerwuj
+                                        </ButtonBase>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </StepperItem>
-                <StepperItem Text="Podsumowanie">
-                    !
+                <StepperItem Text="Podsumowanie"> 
+                    <div class="card">
+                        <div class="card-body">
+                            <Condition Evaluation="ReservationResponse.IsSuccessfull">
+                                <Match>
+                                    <div class="fs-5 text-success">
+                                        Udało się!
+                                    </div>
+                                    <div>
+                                       Składanie rezerwacji na @Show.Name powiodło się!
+                                    </div>
+                                </Match>
+                                <NotMatch>
+                                    <div class="fs-5 text-danger">
+                                        Nie powiodło się
+                                    </div>
+                                    <Switch Expression="ReservationResponse.Error.Code">
+                                        <SwitchCase Value="@("ERR019")">
+                                            <div>
+                                                Złożyłeś już rezerwację na to przedstawienie
+                                            </div>
+                                        </SwitchCase>
+                                        <SwitchCase Value="@("ERR018")">
+                                            <div>
+                                                Miejsce które wybrałeś jest niedostępne. Spróbuj ponownie
+                                            </div>
+                                        </SwitchCase>
+                                        <DefaultSwitchCase>
+                                            <ErrorResponseAlert />
+                                        </DefaultSwitchCase>
+                                    </Switch>
+                                </NotMatch>
+                            </Condition>
+                        </div>
+                    </div>
                 </StepperItem>
             </Stepper>
 
