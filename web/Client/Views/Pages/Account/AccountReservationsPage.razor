@@ -1,0 +1,62 @@
+﻿@page "/account/reservations"
+
+<Breadcrumb>
+    <BreadcrumbItem Link="/">
+        Home
+    </BreadcrumbItem>
+    <BreadcrumbItem Link="/account">
+        Konto
+    </BreadcrumbItem>
+    <BreadcrumbItem Active="true">
+        Rezerwacje
+    </BreadcrumbItem>
+</Breadcrumb>
+
+<LoadingView @ref="LoadingView">
+    <Condition Evaluation="ReservationsResponse.IsSuccessfull">
+        <Match>
+            <Condition Evaluation="Reservations.Any()">
+                <Match>
+                    <table class="table table-bordered caption-top">
+                        <caption>Twoje aktywne rezerwacje</caption>
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Rząd</th>
+                                <th scope="col">Numer</th>
+                                <th scope="col">Przedstawienie</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <Iterations Items="Reservations.OrderByDescending(x => x.CreateDate)">
+                                <tr>
+                                    <th scope="row">
+                                        <a href="/account/reservations/@context.Id" class="text-decoration-none">
+                                            #@context.Id
+                                        </a>
+                                    </th>
+                                    <td>@context.Seat.Row</td>
+                                    <td>@context.Seat.Number</td>
+                                    <td>
+                                        <a href="/shows/@context.Show.Id" class="text-decoration-none">
+                                            @context.Show.Name
+                                        </a>
+                                    </td>
+                                </tr>
+                            </Iterations>
+                        </tbody>
+                    </table>
+                </Match>
+                <NotMatch>
+                    <InfoAlert>
+                        Nie posiadasz żadnych aktywnych rezerwacji
+                    </InfoAlert>
+                </NotMatch>
+            </Condition>
+            
+        </Match>
+        <NotMatch>
+            <ErrorResponseAlert />
+        </NotMatch>
+    </Condition>
+</LoadingView>
