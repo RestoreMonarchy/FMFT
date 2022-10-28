@@ -2,6 +2,7 @@
 using FMFT.Web.Server.Models.Users;
 using FMFT.Web.Server.Models.Users.Exceptions;
 using FMFT.Web.Server.Models.Users.Params;
+using FMFT.Web.Server.Services.Coordinations.Reservations;
 using FMFT.Web.Server.Services.Orchestrations.Reservations;
 using FMFT.Web.Server.Services.Orchestrations.UserAccounts;
 using Microsoft.AspNetCore.Mvc;
@@ -13,13 +14,15 @@ namespace FMFT.Web.Server.Controllers.Users
     [Route("api/[controller]")]
     public partial class UsersController : RESTFulController
     {
-        private readonly IUserAccountOrchestrationService userAccountService;
-        private readonly IReservationOrchestrationService reservationService;
+        private readonly IUserAccountOrchestrationService userAccountOrchestrationService;
+        private readonly IReservationCoordinationService reservationCoordinationService;
 
-        public UsersController(IReservationOrchestrationService reservationService, IUserAccountOrchestrationService userAccountService)
+        public UsersController(
+            IReservationCoordinationService reservationCoordinationService, 
+            IUserAccountOrchestrationService userAccountOrchestrationService)
         {
-            this.reservationService = reservationService;
-            this.userAccountService = userAccountService;
+            this.reservationCoordinationService = reservationCoordinationService;
+            this.userAccountOrchestrationService = userAccountOrchestrationService;
         }
 
         [HttpGet]
@@ -27,7 +30,7 @@ namespace FMFT.Web.Server.Controllers.Users
         {
             try
             {
-                IEnumerable<User> users = await userAccountService.RetrieveAllUsersAsync();
+                IEnumerable<User> users = await userAccountOrchestrationService.RetrieveAllUsersAsync();
 
                 return Ok(users);
             } catch (NotAuthorizedAccountException exception)
@@ -44,7 +47,7 @@ namespace FMFT.Web.Server.Controllers.Users
         {
             try
             {
-                User user = await userAccountService.RetrieveUserByIdAsync(userId);
+                User user = await userAccountOrchestrationService.RetrieveUserByIdAsync(userId);
 
                 return Ok(user);
             } catch (NotFoundUserException exception)
@@ -65,7 +68,7 @@ namespace FMFT.Web.Server.Controllers.Users
             try
             {
                 @params.UserId = userId;
-                await userAccountService.UpdateUserRoleAsync(@params);
+                await userAccountOrchestrationService.UpdateUserRoleAsync(@params);
 
                 return Ok();
             } catch (NotAuthenticatedAccountException exception)
@@ -89,7 +92,7 @@ namespace FMFT.Web.Server.Controllers.Users
             try
             {
                 @params.UserId = userId;
-                await userAccountService.UpdateUserCultureAsync(@params);
+                await userAccountOrchestrationService.UpdateUserCultureAsync(@params);
 
                 return Ok();
             }

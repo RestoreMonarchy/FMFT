@@ -17,7 +17,7 @@ namespace FMFT.Web.Server.Controllers.Users
 
             try
             {
-                Reservation reservation = await reservationService.CreateReservationAsync(@params);
+                Reservation reservation = await reservationCoordinationService.CreateReservationAsync(@params);
 
                 return Ok(reservation);
             }
@@ -43,7 +43,7 @@ namespace FMFT.Web.Server.Controllers.Users
         {
             try
             {
-                IEnumerable<Reservation> reservations = await reservationService.RetrieveReservationsByUserIdAsync(userId);
+                IEnumerable<Reservation> reservations = await reservationCoordinationService.RetrieveReservationsByUserIdAsync(userId);
 
                 return Ok(reservations);
             } catch (NotAuthenticatedAccountException exception)

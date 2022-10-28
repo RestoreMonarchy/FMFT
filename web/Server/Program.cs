@@ -11,6 +11,7 @@ IConfiguration configuration = builder.Configuration;
 builder.Services.AddBrokers();
 builder.Services.AddFoundations();
 builder.Services.AddOrchestrations();
+builder.Services.AddCoordinations();
 
 builder.Services.AddHttpContextAccessor();
 

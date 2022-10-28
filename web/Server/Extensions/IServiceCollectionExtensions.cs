@@ -5,6 +5,7 @@ using FMFT.Web.Server.Brokers.Storages;
 using FMFT.Web.Server.Brokers.Urls;
 using FMFT.Web.Server.Brokers.Validations;
 using FMFT.Web.Server.Models.Options.Authentications;
+using FMFT.Web.Server.Services.Coordinations.Reservations;
 using FMFT.Web.Server.Services.Foundations.Accounts;
 using FMFT.Web.Server.Services.Foundations.Auditoriums;
 using FMFT.Web.Server.Services.Foundations.Reservations;
@@ -36,6 +37,7 @@ namespace FMFT.Web.Server.Extensions
             services.AddScoped<IValidationBroker, ValidationBroker>();
             services.AddScoped<IUrlBroker, UrlBroker>();
             services.AddScoped<ILoggingBroker, LoggingBroker>();
+
             return services;
         }
 
@@ -47,6 +49,7 @@ namespace FMFT.Web.Server.Extensions
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IReservationService, ReservationService>();
             services.AddTransient<IAccountService, AccountService>();
+
             return services;
         }
 
@@ -55,6 +58,14 @@ namespace FMFT.Web.Server.Extensions
             services.AddTransient<IReservationOrchestrationService, ReservationOrchestrationService>();
             services.AddTransient<IUserAccountOrchestrationService, UserAccountOrchestrationService>();
             services.AddTransient<IShowOrchestrationService, ShowOrchestrationService>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddCoordinations(this IServiceCollection services)
+        {
+            services.AddTransient<IReservationCoordinationService, ReservationCoordinationService>();
+
             return services;
         }
     }
