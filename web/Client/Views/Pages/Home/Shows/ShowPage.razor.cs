@@ -11,7 +11,7 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
         [Parameter]
         public int ShowId { get; set; }
 
-        private string ShowName => ShowResponse?.Object.Name ?? ShowId.ToString();
+        private string ShowName => ShowResponse?.Object?.Name ?? ShowId.ToString();
 
         private LoadingView LoadingView { get; set; }
 

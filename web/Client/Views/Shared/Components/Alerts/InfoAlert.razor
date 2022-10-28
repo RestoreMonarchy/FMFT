@@ -1,0 +1,9 @@
+﻿<div class="alert alert-info" role="alert">
+    <i class="fa-solid fa-circle-info me-1"></i>
+    @ChildContent
+</div>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+}

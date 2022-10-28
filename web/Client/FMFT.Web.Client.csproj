@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Shared\Components\Alerts\InfoAlert.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
     <_ContentIncludedByDefault Remove="wwwroot\appsettings.json" />
   </ItemGroup>
 
@@ -33,6 +37,10 @@
     <ProjectReference Include="..\..\extensions\blazor\Bases\FMFT.Extensions.Blazor.Bases.csproj" />
     <ProjectReference Include="..\..\extensions\blazor\DataTables\FMFT.Extensions.Blazor.DataTables.csproj" />
     <ProjectReference Include="..\Shared\FMFT.Web.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Shared\Components\Alerts\InfoAlert.razor" />
   </ItemGroup>
 
 </Project>
