@@ -1,0 +1,15 @@
+﻿CREATE PROCEDURE dbo.GetNewReservationId(@Id CHAR(8) OUTPUT)
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	WHILE 1 = 1
+	BEGIN
+		SELECT @Id = LEFT(CAST(NEWID() AS VARCHAR(36)),8);
+
+		IF NOT EXISTS (SELECT * FROM dbo.Reservations WHERE Id = @Id)
+			BREAK;
+	END;
+
+	RETURN 0;
+END;

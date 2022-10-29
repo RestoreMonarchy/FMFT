@@ -33,7 +33,7 @@ namespace FMFT.Web.Server.Services.Foundations.Reservations
             return await storageBroker.SelectReservationsByShowIdAsync(showId);
         }
 
-        public async ValueTask<Reservation> RetrieveReservationByIdAsync(int reservationId)
+        public async ValueTask<Reservation> RetrieveReservationByIdAsync(string reservationId)
         {
             Reservation reservation = await storageBroker.SelectReservationByIdAsync(reservationId);
             if (reservation == null)

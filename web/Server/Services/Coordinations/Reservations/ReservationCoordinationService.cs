@@ -38,7 +38,7 @@ namespace FMFT.Web.Server.Services.Coordinations.Reservations
             return await reservationService.RetrieveReservationsByShowIdAsync(showId);
         }
 
-        public async ValueTask<Reservation> RetrieveReservationByIdAsync(int reservationId)
+        public async ValueTask<Reservation> RetrieveReservationByIdAsync(string reservationId)
         {
             Reservation reservation = await reservationService.RetrieveReservationByIdAsync(reservationId);
 

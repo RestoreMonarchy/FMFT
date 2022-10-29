@@ -11,7 +11,7 @@ namespace FMFT.Web.Server.Brokers.Storages
 {
     public partial class StorageBroker
     {
-        public async ValueTask<Reservation> SelectReservationByIdAsync(int reservationId)
+        public async ValueTask<Reservation> SelectReservationByIdAsync(string reservationId)
         {
             GetReservationParams @params = new()
             {

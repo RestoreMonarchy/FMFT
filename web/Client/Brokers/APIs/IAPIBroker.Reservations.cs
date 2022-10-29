@@ -6,7 +6,7 @@ namespace FMFT.Web.Client.Brokers.APIs
 {
     public partial interface IAPIBroker
     {
-        ValueTask<APIResponse<Reservation>> GetReservationByIdAsync(int reservationId);
+        ValueTask<APIResponse<Reservation>> GetReservationByIdAsync(string reservationId);
         ValueTask<APIResponse<List<Reservation>>> GetAllReservationsAsync();
         ValueTask<APIResponse<Reservation>> CreateReservationAsync(CreateReservationRequest request);
         ValueTask<APIResponse<List<Reservation>>> GetUserReservationsAsync(int userId);

@@ -7,7 +7,7 @@ namespace FMFT.Web.Server.Models.Reservations
 {
     public class Reservation
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public ReservationStatus Status { get; set; }
         public DateTimeOffset CreateDate { get; set; }
         public DateTimeOffset? UpdateStatusDate { get; set; }

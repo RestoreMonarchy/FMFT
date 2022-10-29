@@ -2,7 +2,7 @@
 {
     public class GetReservationParams
     {
-        public int? ReservationId { get; set; }
+        public string? ReservationId { get; set; }
         public int? ShowId { get; set; }
         public int? UserId { get; set; }        
     }

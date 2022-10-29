@@ -1,5 +1,5 @@
-﻿CREATE PROCEDURE [dbo].[GetReservations]
-	@ReservationId INT = NULL,
+﻿CREATE PROCEDURE dbo.GetReservations
+	@ReservationId CHAR(8) = NULL,
     @ShowId INT = NULL,
     @UserId INT = NULL
 AS

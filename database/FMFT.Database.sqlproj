@@ -60,6 +60,7 @@
     <Folder Include="dbo\tables" />
     <Folder Include="dbo\procedures" />
     <Folder Include="scripts" />
+    <Folder Include="dbo\functions" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\tables\Seats.sql" />
@@ -77,6 +78,7 @@
     <Build Include="dbo\procedures\UpdateReservationStatus.sql" />
     <Build Include="dbo\procedures\GetReservations.sql" />
     <Build Include="dbo\procedures\UpdateUserCulture.sql" />
+    <Build Include="dbo\procedures\GetNewReservationId.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FMFT.Database.publish.xml" />

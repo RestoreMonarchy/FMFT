@@ -38,7 +38,7 @@ namespace FMFT.Web.Server.Controllers
         }
 
         [HttpGet("{reservationId}")]
-        public async ValueTask<IActionResult> GetReservation(int reservationId)
+        public async ValueTask<IActionResult> GetReservation(string reservationId)
         {
             try
             {

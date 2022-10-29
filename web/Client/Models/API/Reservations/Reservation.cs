@@ -7,7 +7,7 @@ namespace FMFT.Web.Client.Models.API.Reservations
 {
     public class Reservation
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public ReservationStatus Status { get; set; }
         public DateTime CreateDate { get; set; }
 

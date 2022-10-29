@@ -8,7 +8,7 @@ namespace FMFT.Web.Client.Brokers.APIs
     {
         private const string ReservationsRelativeUrl = "api/reservations";
 
-        public async ValueTask<APIResponse<Reservation>> GetReservationByIdAsync(int reservationId)
+        public async ValueTask<APIResponse<Reservation>> GetReservationByIdAsync(string reservationId)
         {
             return await GetAsync<Reservation>($"{ReservationsRelativeUrl}/{reservationId}");
         }

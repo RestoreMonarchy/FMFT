@@ -31,9 +31,11 @@
                             <Iterations Items="Reservations.OrderByDescending(x => x.CreateDate)">
                                 <tr>
                                     <th scope="row">
-                                        <a href="/account/reservations/@context.Id" class="text-decoration-none">
-                                            #@context.Id
-                                        </a>
+                                        <tt>
+                                            <a href="/account/reservations/@context.Id" class="text-decoration-none">
+                                                @context.Id
+                                            </a>
+                                        </tt>                                        
                                     </th>
                                     <td>@context.Seat.Row</td>
                                     <td>@context.Seat.Number</td>
