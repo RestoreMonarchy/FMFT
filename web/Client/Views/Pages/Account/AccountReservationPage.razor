@@ -1,0 +1,107 @@
+﻿@page "/account/reservations/{ReservationId}"
+
+<Breadcrumb>
+    <BreadcrumbItem Link="/">
+        Home
+    </BreadcrumbItem>
+    <BreadcrumbItem Link="/account">
+        Konto
+    </BreadcrumbItem>
+    <BreadcrumbItem Link="/account/reservations">
+        Rezerwacje
+    </BreadcrumbItem>
+    <BreadcrumbItem Active="true">
+        @ReservationId
+    </BreadcrumbItem>
+</Breadcrumb>
+
+
+<LoadingView @ref="LoadingView">
+    <Condition Evaluation="ReservationResponse.IsSuccessfull">
+        <Match>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            Informacje o rezerwacji
+                        </div>
+                        <div class="list-group list-group-flush">
+                            <div class="list-group-item">
+                                <span class="fw-bold">
+                                    ID:
+                                </span>
+                                <span>
+                                    @Reservation.Id
+                                </span>
+                            </div>
+                            <div class="list-group-item">
+                                <span class="fw-bold">
+                                    Rząd:
+                                </span>
+                                <span>
+                                    @Reservation.Seat.Row
+                                </span>
+                            </div>
+                            <div class="list-group-item">
+                                <span class="fw-bold">
+                                    Numer:
+                                </span>
+                                <span>
+                                    @Reservation.Seat.Number
+                                </span>
+                            </div>
+                            <div class="list-group-item">
+                                <span class="fw-bold">
+                                    Przedstawienie:
+                                </span>
+                                <span>
+                                    @Reservation.Show.Name
+                                </span>
+                            </div>
+                            <div class="list-group-item">
+                                <span class="fw-bold">
+                                    Data:
+                                </span>
+                                <span>
+                                    @Reservation.Show.StartDateTime.LocalDateTime.ToShortDateString()
+                                </span>
+                            </div>
+                            <div class="list-group-item">
+                                <span class="fw-bold">
+                                    Godzina:
+                                </span>
+                                <span>
+                                    @Reservation.Show.StartDateTime.LocalDateTime.ToShortTimeString()
+                                </span>
+                            </div>
+                            <a class="list-group-item list-group-item-action list-group-item-light" href="/shows/@Reservation.Show.Id">
+                                <i class="fa-solid fa-arrow-right-long me-1"></i>
+                                Przejdź do przedstawienia
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            Zarządzaj rezerwacją
+                        </div>
+                        <div class="list-group list-group-flush">
+                            <a class="list-group-item list-group-item-action list-group-item-warning" href="javascript:void(0)">
+                                <i class="fa-solid fa-xmark me-1"></i>
+                                Anuluj rezerwację
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
+            
+
+        </Match>
+        <NotMatch>
+            <ErrorResponseAlert />
+        </NotMatch>
+    </Condition>
+</LoadingView>
