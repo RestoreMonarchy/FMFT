@@ -16,7 +16,7 @@
     cursor: pointer !important;
 }
 
-#blazor-error-ui {
+/*#blazor-error-ui {
     background: lightyellow;
     bottom: 0;
     box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
@@ -43,4 +43,4 @@
 
     .blazor-error-boundary::after {
         content: "An error has occurred."
-    }
+    }*/
