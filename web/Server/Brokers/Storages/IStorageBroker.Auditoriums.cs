@@ -11,7 +11,5 @@ namespace FMFT.Web.Server.Brokers.Storages
     {
         ValueTask<Auditorium> SelectAuditoriumByIdAsync(int auditoriumId);
         ValueTask<IEnumerable<Auditorium>> SelectAllAuditoriumsAsync();
-        ValueTask<StoredProcedureResult<Show>> ExecuteAddShowAsync(AddShowParams @params);
-        ValueTask<StoredProcedureResult<Show>> ExecuteUpdateShowAsync(UpdateShowParams @params);
     }
 }

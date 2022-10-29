@@ -11,7 +11,7 @@ BEGIN
 	SET XACT_ABORT ON;
 
 	DECLARE @ret INT = 0;
-	DECLARE @id INT;
+	DECLARE @id INT = 0;
 
 	IF NOT EXISTS(SELECT * FROM dbo.Auditoriums WHERE Id = @AuditoriumId)
 		SET @ret = 1;
@@ -23,10 +23,8 @@ BEGIN
 
 		SET @id = SCOPE_IDENTITY();
 	END;
-
-	SELECT * 
-	FROM dbo.Shows 
-	WHERE Id = @id;
+	
+	EXEC dbo.GetShows @ShowId = @id;
 
 	RETURN @ret;
 END;

@@ -1,4 +1,6 @@
-﻿namespace FMFT.Web.Server.Models.Shows
+﻿using Microsoft.AspNetCore.Mvc.ApplicationModels;
+
+namespace FMFT.Web.Server.Models.Shows
 {
     public class Show
     {
@@ -9,5 +11,7 @@
         public DateTimeOffset StartDateTime { get; set; }
         public DateTimeOffset EndDateTime { get; set; }
         public int AuditoriumId { get; set; }
+
+        public List<ShowReservedSeat> ReservedSeats { get; set; }
     }
 }

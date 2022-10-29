@@ -52,7 +52,7 @@
                             Liczba miejsc (wolne / wszystkie)
                         </div>
                         <div>
-                            @Auditorium.Seats.Count / @Auditorium.Seats.Count
+                            @(Auditorium.Seats.Count - Show.ReservedSeats.Count) / @Auditorium.Seats.Count
                         </div>
                     </div>                    
                 </div>

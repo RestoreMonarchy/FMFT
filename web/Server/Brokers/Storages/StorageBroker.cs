@@ -65,5 +65,23 @@ namespace FMFT.Web.Server.Brokers.Storages
 
             return result;
         }
+
+        private async ValueTask<StoredProcedureResult<IEnumerable<T>>> QueryStoredProcedureResultAsync<T>(
+            string storedProcedureName,
+            dynamic parameters)
+        {
+            DynamicParameters p = StoredProcedureParameters(parameters);
+
+            StoredProcedureResult<IEnumerable<T>> result = new()
+            {
+                Result = await connection.QueryAsync<T>(
+                    sql: storedProcedureName,
+                    param: p,
+                    commandType: CommandType.StoredProcedure),
+                ReturnValue = GetReturnValue(p)
+            };
+
+            return result;
+        }
     }
 }

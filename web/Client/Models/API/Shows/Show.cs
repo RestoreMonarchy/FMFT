@@ -11,6 +11,7 @@ namespace FMFT.Web.Client.Models.API.Shows
         public DateTimeOffset StartDateTime { get; set; }
         public DateTimeOffset EndDateTime { get; set; }
         public int AuditoriumId { get; set; }
+        public List<ShowReservedSeat> ReservedSeats { get; set; }
 
         public TimeSpan Duration() => EndDateTime.Subtract(StartDateTime);
 

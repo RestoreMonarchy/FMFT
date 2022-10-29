@@ -32,9 +32,7 @@ BEGIN
 		WHERE Id = @Id;
 	END;
 
-	SELECT * 
-	FROM dbo.Shows 
-	WHERE Id = @Id;
+	EXEC dbo.GetShows @ShowId = @Id;
 
 	RETURN @ret;
 END;
