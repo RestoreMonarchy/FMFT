@@ -7,6 +7,7 @@ using FMFT.Web.Server.Models.Shows.Params;
 using FMFT.Web.Server.Models.Accounts.Exceptions;
 using FMFT.Web.Server.Services.Orchestrations.Shows;
 using FMFT.Web.Server.Services.Orchestrations.Reservations;
+using FMFT.Web.Server.Services.Coordinations.Reservations;
 
 namespace FMFT.Web.Server.Controllers.Shows
 {
@@ -14,19 +15,21 @@ namespace FMFT.Web.Server.Controllers.Shows
     [Route("api/[controller]")]
     public partial class ShowsController : RESTFulController
     {
-        private readonly IShowOrchestrationService accountShowService;
-        private readonly IReservationOrchestrationService accountReservationService;
+        private readonly IShowOrchestrationService showOrchestrationService;
+        private readonly IReservationCoordinationService reservationCoordinationService;
 
-        public ShowsController(IShowOrchestrationService accountShowService, IReservationOrchestrationService accountReservationService)
+        public ShowsController(
+            IShowOrchestrationService showOrchestrationService, 
+            IReservationCoordinationService reservationCoordinationService)
         {
-            this.accountShowService = accountShowService;
-            this.accountReservationService = accountReservationService;
+            this.showOrchestrationService = showOrchestrationService;
+            this.reservationCoordinationService = reservationCoordinationService;
         }
 
         [HttpGet]
         public async ValueTask<IActionResult> GetShows()
         {
-            IEnumerable<Show> shows = await accountShowService.RetrieveAllShowsAsync();
+            IEnumerable<Show> shows = await showOrchestrationService.RetrieveAllShowsAsync();
 
             return Ok(shows);
         }
@@ -36,7 +39,7 @@ namespace FMFT.Web.Server.Controllers.Shows
         {
             try
             {
-                Show show = await accountShowService.RetrieveShowByIdAsync(showId);
+                Show show = await showOrchestrationService.RetrieveShowByIdAsync(showId);
 
                 return Ok(show);
             }
@@ -51,7 +54,7 @@ namespace FMFT.Web.Server.Controllers.Shows
         {
             try
             {
-                Show show = await accountShowService.AddShowAsync(@params);
+                Show show = await showOrchestrationService.AddShowAsync(@params);
 
                 return Ok(show);
             }
@@ -74,7 +77,7 @@ namespace FMFT.Web.Server.Controllers.Shows
         {
             try
             {
-                Show show = await accountShowService.ModifyShowAsync(@params);
+                Show show = await showOrchestrationService.ModifyShowAsync(@params);
 
                 return Ok(show);
             }

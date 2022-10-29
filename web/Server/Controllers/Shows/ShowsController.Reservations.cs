@@ -12,7 +12,7 @@ namespace FMFT.Web.Server.Controllers.Shows
         {
             try
             {
-                IEnumerable<Reservation> reservations = await accountReservationService.RetrieveReservationsByShowIdAsync(showId);
+                IEnumerable<Reservation> reservations = await reservationCoordinationService.RetrieveReservationsByShowIdAsync(showId);
                 return Ok(reservations);
             }
             catch (NotAuthenticatedAccountException exception)
