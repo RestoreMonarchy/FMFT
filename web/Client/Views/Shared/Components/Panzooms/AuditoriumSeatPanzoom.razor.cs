@@ -1,8 +1,10 @@
 ﻿using BlazorPanzoom;
 using FMFT.Web.Client.Models.API.Auditoriums;
 using FMFT.Web.Client.Models.API.Seats;
+using FMFT.Web.Client.Models.API.Shows;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using System.Security.Cryptography.X509Certificates;
 
 namespace FMFT.Web.Client.Views.Shared.Components.Panzooms
 {
@@ -10,6 +12,8 @@ namespace FMFT.Web.Client.Views.Shared.Components.Panzooms
     {
         [Parameter]
         public Auditorium Auditorium { get; set; }
+        [Parameter]
+        public List<ShowReservedSeat> ReservedSeats { get; set; }
         [Parameter]
         public Seat SelectedSeat { get; set; }
         [Parameter]
@@ -57,6 +61,27 @@ namespace FMFT.Web.Client.Views.Shared.Components.Panzooms
             DotNetObjectReference<AuditoriumSeatPanzoom> objectReference = DotNetObjectReference.Create(this);
             await JSRuntimeBroker.InitializeSeatsCanvasAsync(SeatsCanvasOptions, objectReference);
 
+            if (ReservedSeats != null)
+            {
+                foreach (ShowReservedSeat reservedSeat in ReservedSeats)
+                {
+                    Seat seat = Auditorium.Seats.FirstOrDefault(x => x.Id == reservedSeat.SeatId);
+                    if (seat == null)
+                    {
+                        continue;
+                    }
+
+                    if (reservedSeat.IsVip)
+                    {
+                        await DrawSeatAsync(seat.Row, seat.Number, "#9966cc");
+                    }
+                    else
+                    {
+                        await DrawSeatAsync(seat.Row, seat.Number, "dimgray");
+                    }
+                }
+            }            
+
             if (SelectedSeat != null)
             {
                 await DrawSeatAsync(SelectedSeat.Row, SelectedSeat.Number, "orange");
@@ -71,6 +96,12 @@ namespace FMFT.Web.Client.Views.Shared.Components.Panzooms
             if (seat == null)
             {
                 LoggingBroker.LogDebug($"Seat at row {row} and column {column} does not exist");
+                return;
+            }
+
+            if (ReservedSeats.Exists(x => x.SeatId == seat.Id))
+            {
+                LoggingBroker.LogDebug($"The selected seat id {seat.Id} is already reserved");
                 return;
             }
 

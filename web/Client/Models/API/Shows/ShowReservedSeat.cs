@@ -3,5 +3,6 @@
     public class ShowReservedSeat
     {
         public int SeatId { get; set; }
+        public bool IsVip { get; set; }
     }
 }
