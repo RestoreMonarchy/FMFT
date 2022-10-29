@@ -1,4 +1,5 @@
-﻿using FMFT.Extensions.Blazor.Bases.Loadings;
+﻿using FMFT.Extensions.Blazor.Bases.Dialogs;
+using FMFT.Extensions.Blazor.Bases.Loadings;
 using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Reservations;
 using Microsoft.AspNetCore.Components;
@@ -11,6 +12,7 @@ namespace FMFT.Web.Client.Views.Pages.Account
         public string ReservationId { get; set; }
 
         public LoadingView LoadingView { get; set; }
+        public ModalDialog CancelModalDialog { get; set; }
 
         public APIResponse<Reservation> ReservationResponse { get; set; }
 
@@ -20,6 +22,11 @@ namespace FMFT.Web.Client.Views.Pages.Account
         {
             ReservationResponse = await APIBroker.GetReservationByIdAsync(ReservationId);
             LoadingView.StopLoading();
+        }
+
+        private async Task HandleCancelAsync()
+        {
+            await CancelModalDialog.ShowAsync();
         }
     }
 }

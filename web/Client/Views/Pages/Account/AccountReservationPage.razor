@@ -1,4 +1,5 @@
 ﻿@page "/account/reservations/{ReservationId}"
+@using FMFT.Extensions.Blazor.Bases.Dialogs
 
 <Breadcrumb>
     <BreadcrumbItem Link="/">
@@ -87,7 +88,8 @@
                             Zarządzaj rezerwacją
                         </div>
                         <div class="list-group list-group-flush">
-                            <a class="list-group-item list-group-item-action list-group-item-warning" href="javascript:void(0)">
+                            <a class="list-group-item list-group-item-action list-group-item-warning" href="javascript:void(0)" 
+                                @onclick="HandleCancelAsync">
                                 <i class="fa-solid fa-xmark me-1"></i>
                                 Anuluj rezerwację
                             </a>
@@ -97,7 +99,18 @@
             </div>
             
 
-            
+            <ModalDialog @ref="CancelModalDialog" AlignCenter="true">
+                <Title>
+                    Anuluj rezerwację
+                </Title>
+                <Body>
+                    Czy napewno chcesz zrezygnować z rezerwacji na przedstawienie @Reservation.Show.Name?
+                </Body>
+                <Footer>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Nie</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Tak</button>
+                </Footer>
+            </ModalDialog>
 
         </Match>
         <NotMatch>
