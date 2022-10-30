@@ -15,48 +15,52 @@
             <div class="card-header">
                 Informacje o koncie
             </div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">
+            <div class="list-group list-group-flush">
+                <div class="list-group-item">
                     <span class="fw-bold">
                         ID:
                     </span>
                     <span>
                         @UserAccountState.UserAccount.UserId
                     </span>
-                </li>
-                <li class="list-group-item">
+                </div>
+                <div class="list-group-item">
                     <span class="fw-bold">
                         Email:
                     </span>
                     <span>
                         @UserAccountState.UserAccount.Email
                     </span>
-                </li>
-                <li class="list-group-item">
+                </div>
+                <div class="list-group-item">
                     <span class="fw-bold">
                         Imię:
                     </span>
                     <span>
                         @UserAccountState.UserAccount.FirstName
                     </span>
-                </li>
-                <li class="list-group-item">
+                </div>
+                <div class="list-group-item">
                     <span class="fw-bold">
                         Nazwisko:
                     </span>
                     <span>
                         @UserAccountState.UserAccount.LastName
                     </span>
-                </li>
-                <li class="list-group-item">
+                </div>
+                <div class="list-group-item">
                     <span class="fw-bold">
                         Typ użytkownika:
                     </span>
                     <span>
                         @UserAccountState.UserAccount.Role
                     </span>
-                </li>
-            </ul>
+                </div>
+                <a class="list-group-item list-group-item-action list-group-item-light" href="/account/reservations">
+                    <i class="fa-solid fa-arrow-right-long me-1"></i>
+                    Przejdź do rezerwacji
+                </a>
+            </div>
         </div>
         
     </Match>
