@@ -17,37 +17,43 @@
         <Match>
             <Condition Evaluation="Reservations.Any()">
                 <Match>
-                    <table class="table table-bordered caption-top">
-                        <caption>Twoje aktywne rezerwacje</caption>
-                        <thead class="table-light">
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Rząd</th>
-                                <th scope="col">Numer</th>
-                                <th scope="col">Przedstawienie</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <Iterations Items="Reservations.OrderByDescending(x => x.CreateDate)">
-                                <tr>
-                                    <th scope="row">
-                                        <tt>
-                                            <a href="/account/reservations/@context.Id" class="text-decoration-none">
-                                                @context.Id
-                                            </a>
-                                        </tt>                                        
-                                    </th>
-                                    <td>@context.Seat.Row</td>
-                                    <td>@context.Seat.Number</td>
-                                    <td>
-                                        <a href="/shows/@context.Show.Id" class="text-decoration-none">
+                    
+
+                    <div class="mb-2 text-muted">
+                        Twoje rezerwacje
+                    </div>
+
+                    <div class="list-group">
+                        <Iterations Items="Reservations.OrderByDescending(x => x.CreateDate)">
+                            <a class="list-group-item list-group-item-action @GetClasses(context)" href="/account/reservations/@context.Id">
+                                <div class="d-flex align-items-center">
+                                    <div class="small">
+                                        <div class="fw-bold">
+                                            @context.Id
+                                        </div>
+                                        <div>
+                                            <Condition Evaluation="@context.IsCanceled"> 
+                                                <Match>
+                                                    Anulowana
+                                                </Match>
+                                                <NotMatch>
+                                                    Ważna
+                                                </NotMatch>
+                                            </Condition>
+                                        </div>
+                                    </div>
+                                    <div class="ms-auto text-end small">
+                                        <div>
                                             @context.Show.Name
-                                        </a>
-                                    </td>
-                                </tr>
-                            </Iterations>
-                        </tbody>
-                    </table>
+                                        </div>
+                                        <div>
+                                            @context.Show.StartDateTime.LocalDateTime.ToShortDateString()
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </Iterations>
+                    </div>
                 </Match>
                 <NotMatch>
                     <InfoAlert>

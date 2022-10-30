@@ -17,5 +17,25 @@ namespace FMFT.Web.Client.Views.Pages.Account
             ReservationsResponse = await APIBroker.GetUserReservationsAsync(UserAccountState.UserAccount.UserId);
             LoadingView.StopLoading();
         }
+
+        private void GoToReservation(Reservation reservation)
+        {
+            NavigationBroker.NavigateTo($"/account/reservations/{reservation.Id}");
+        }
+
+        public string GetClasses(Reservation reservation)
+        {
+            List<string> classes = new();
+
+            if (reservation.IsCanceled)
+            {
+                classes.Add("list-group-item-light");
+            } else
+            {
+                classes.Add("");
+            }
+
+            return string.Join(", ", classes);
+        }
     }
 }

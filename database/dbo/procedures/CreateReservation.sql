@@ -10,10 +10,10 @@ BEGIN
 	DECLARE @ret INT = 0;
 	DECLARE @id CHAR(8) = '--------';
 
-	IF EXISTS(SELECT * FROM dbo.Reservations WHERE ShowId = @ShowId AND SeatId = @SeatId)
+	IF EXISTS(SELECT * FROM dbo.Reservations WHERE ShowId = @ShowId AND SeatId = @SeatId AND IsCanceled = 0)
 		SET @ret = 1;
 
-	IF EXISTS(SELECT * FROM dbo.Reservations WHERE UserId = @UserId AND ShowId = @ShowId)
+	IF EXISTS(SELECT * FROM dbo.Reservations WHERE UserId = @UserId AND ShowId = @ShowId AND IsCanceled = 0)
 		SET @ret = 2;
 
 			

@@ -46,6 +46,11 @@ namespace FMFT.Web.Server.Services.Orchestrations.Reservations
             return await reservationService.UpdateReservationStatusAsync(@params);
         }
 
+        public async ValueTask<Reservation> CancelReservationAsync(string reservationId)
+        {
+            return await reservationService.CancelReservationAsync(reservationId);
+        }
+
         public async ValueTask<IEnumerable<Reservation>> RetrieveReservationsByUserIdAsync(int userId)
         {
             IEnumerable<Reservation> reservations = await reservationService.RetrieveReservationsByUserIdAsync(userId);

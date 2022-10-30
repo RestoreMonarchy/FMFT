@@ -27,6 +27,13 @@
                             Informacje o rezerwacji
                         </div>
                         <div class="list-group list-group-flush">
+                            <Condition Evaluation="Reservation.IsCanceled">
+                                <Match>
+                                    <div class="list-group-item list-group-item-warning">
+                                        Ta rezerwacja została anulowana
+                                    </div>
+                                </Match>
+                            </Condition>
                             <div class="list-group-item">
                                 <span class="fw-bold">
                                     ID:
@@ -75,7 +82,7 @@
                                     @Reservation.Show.StartDateTime.LocalDateTime.ToShortTimeString()
                                 </span>
                             </div>
-                            <a class="list-group-item list-group-item-action list-group-item-light" href="/shows/@Reservation.Show.Id">
+                            <a class="list-group-item list-group-item-action" href="/shows/@Reservation.Show.Id">
                                 <i class="fa-solid fa-arrow-right-long me-1"></i>
                                 Przejdź do przedstawienia
                             </a>
@@ -88,11 +95,11 @@
                             Zarządzaj rezerwacją
                         </div>
                         <div class="list-group list-group-flush">
-                            <a class="list-group-item list-group-item-action list-group-item-warning" href="javascript:void(0)" 
-                                @onclick="HandleCancelAsync">
+                            <button class="list-group-item list-group-item-action list-group-item-warning" href="javascript:void(0)" 
+                                @onclick="HandleCancelDialogAsync" disabled="@Reservation.IsCanceled">
                                 <i class="fa-solid fa-xmark me-1"></i>
                                 Anuluj rezerwację
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -107,8 +114,12 @@
                     Czy napewno chcesz zrezygnować z rezerwacji na przedstawienie @Reservation.Show.Name?
                 </Body>
                 <Footer>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Nie</button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Tak</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Nie
+                    </button>
+                    <ButtonBase @ref="CancelButton" Class="btn btn-danger" OnClick="HandleCancelAsync">
+                        Tak
+                    </ButtonBase>
                 </Footer>
             </ModalDialog>
 

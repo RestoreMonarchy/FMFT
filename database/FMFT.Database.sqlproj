@@ -78,8 +78,8 @@
     <Build Include="dbo\procedures\GetReservations.sql" />
     <Build Include="dbo\procedures\UpdateUserCulture.sql" />
     <Build Include="dbo\procedures\GetNewReservationId.sql" />
-    <Build Include="dbo\procedures\GetShowReservedSeats.sql" />
     <Build Include="dbo\procedures\GetShows.sql" />
+    <Build Include="dbo\procedures\CancelReservation.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FMFT.Database.publish.xml" />

@@ -10,24 +10,7 @@
             @Body
         </ChildContent>
         <ErrorContent Context="Exception">
-            <div class="text-center">
-                <div class="text-danger">
-                    <i class="fa-solid fa-triangle-exclamation" style="font-size: 8em;"></i>
-                </div>
-                <div class="fs-1">
-                    Wystąpił błąd!
-                </div>
-                <pre class="fs-3">
-                    <code>
-                        @Exception.Message
-                    </code>
-                </pre>
-                <div>
-                    <button class="btn btn-lg btn-secondary" @onclick="HandleRecoverAsync">
-                        Spróbuj ponownie
-                    </button>
-                </div>
-            </div>        
+            <MainError ErrorBoundary="ErrorBoundary" Exception="Exception" />
         </ErrorContent>
     </ErrorBoundary>    
 </div>
@@ -38,11 +21,5 @@
     protected override void OnParametersSet()
     {
         ErrorBoundary?.Recover();
-    }
-
-    private Task HandleRecoverAsync() 
-    {
-        ErrorBoundary?.Recover();
-        return Task.CompletedTask;
     }
 }

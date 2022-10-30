@@ -72,5 +72,12 @@ namespace FMFT.Web.Server.Services.Foundations.Reservations
 
             return result.Result;
         }
+
+        public async ValueTask<Reservation> CancelReservationAsync(string reservationId)
+        {
+            StoredProcedureResult<Reservation> result = await storageBroker.CancelReservationAsync(reservationId);
+
+            return result.Result;
+        }
     }
 }

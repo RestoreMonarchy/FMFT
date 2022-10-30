@@ -6,6 +6,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.Reservations
 {
     public interface IReservationOrchestrationService
     {
+        ValueTask<Reservation> CancelReservationAsync(string reservationId);
         ValueTask<Reservation> CreateReservationAsync(CreateReservationParams @params);
         ValueTask<IEnumerable<Reservation>> RetrieveAllReservationsAsync();
         ValueTask<Reservation> RetrieveReservationByIdAsync(string reservationId);

@@ -24,6 +24,12 @@ namespace FMFT.Web.Client.Brokers.APIs
             return await PostAsync<Reservation>(url, request);
         }
 
+        public async ValueTask<APIResponse<Reservation>> CancelReservationAsync(CancelReservationRequest request)
+        {
+            string url = $"api/users/{request.UserId}/reservations/{request.ReservationId}/cancel";
+            return await PostAsync<Reservation>(url, null);
+        }
+
         public async ValueTask<APIResponse<List<Reservation>>> GetUserReservationsAsync(int userId)
         {
             string url = $"api/users/{userId}/reservations";

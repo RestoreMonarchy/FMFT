@@ -44,8 +44,17 @@ namespace FMFT.Web.Client.Brokers.APIs
         }
 
         public async ValueTask<APIResponse> PostAsync(string relativeUrl, object content)
-        {            
-            HttpResponseMessage response = await httpClient.PostAsJsonAsync(relativeUrl, content);
+        {
+            HttpResponseMessage response;
+            if (content == null)
+            {
+                response = await httpClient.PostAsync(relativeUrl, null);
+            }
+            else
+            {
+                response = await httpClient.PostAsJsonAsync(relativeUrl, content);
+            }
+
             APIResponse apiResponse = new(response);
 
             await apiResponse.ReadContentAsync();
@@ -55,7 +64,15 @@ namespace FMFT.Web.Client.Brokers.APIs
 
         public async ValueTask<APIResponse<T>> PostAsync<T>(string relativeUrl, object content)
         {
-            HttpResponseMessage response = await httpClient.PostAsJsonAsync(relativeUrl, content);
+            HttpResponseMessage response;
+            if (content == null)
+            {
+                response = await httpClient.PostAsync(relativeUrl, null);
+            } else
+            {
+                response = await httpClient.PostAsJsonAsync(relativeUrl, content);
+            }
+             
             APIResponse<T> apiResponse = new(response);
 
             await apiResponse.ReadContentAsync();

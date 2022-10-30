@@ -67,6 +67,20 @@ namespace FMFT.Web.Server.Brokers.Storages
             return result;
         }
         
+        public async ValueTask<StoredProcedureResult<Reservation>> CancelReservationAsync(string reservationId)
+        {
+            const string sql = "dbo.CancelReservation";
+            StoredProcedureResult<Reservation> result = new();
+            DynamicParameters parameters = StoredProcedureParameters(new 
+            { 
+                ReservationId = reservationId
+            });
+
+            result.Result = await QueryReservationAsync(sql, parameters, CommandType.StoredProcedure);
+            result.ReturnValue = GetReturnValue(parameters);
+            return result;
+        }
+
         public async ValueTask<Reservation> GetReservationAsync(GetReservationParams @params)
         {
             IEnumerable<Reservation> reservations = await GetReservationsAsync(@params);

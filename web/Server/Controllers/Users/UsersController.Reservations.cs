@@ -54,5 +54,28 @@ namespace FMFT.Web.Server.Controllers.Users
                 return Forbidden(exception);
             }
         }
+
+        [HttpPost("{userId}/reservations/{reservationId}/cancel")]
+        public async ValueTask<IActionResult> CancelReservationAsync(string reservationId)
+        {
+            try
+            {
+                Reservation reservation = await reservationCoordinationService.CancelReservationAsync(reservationId);
+
+                return Ok(reservation);
+            }
+            catch (NotFoundReservationException exception)
+            {
+                return NotFound(exception);
+            }
+            catch (NotAuthenticatedAccountException exception)
+            {
+                return Unauthorized(exception);
+            }
+            catch (NotAuthorizedAccountException exception)
+            {
+                return Forbidden(exception);
+            }
+        }
     }
 }

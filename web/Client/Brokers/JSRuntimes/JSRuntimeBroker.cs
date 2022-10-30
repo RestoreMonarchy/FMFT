@@ -20,5 +20,10 @@ namespace FMFT.Web.Client.Brokers.JSRuntimes
         {
             await jsRuntime.InvokeVoidAsync("DrawSeat", options, row, column, color);
         }
+
+        public async ValueTask ClearModalBackdropAsync()
+        {
+            await jsRuntime.InvokeVoidAsync("ClearModalBackdrop");
+        }
     }
 }
