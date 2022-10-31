@@ -1,4 +1,5 @@
-﻿using FMFT.Web.Server.Brokers.Loggings;
+﻿using FMFT.Emails.Server.Models;
+using FMFT.Web.Server.Brokers.Loggings;
 using FMFT.Web.Server.Models.Accounts;
 using FMFT.Web.Server.Models.Accounts.Params;
 using FMFT.Web.Server.Models.UserAccounts;
@@ -8,8 +9,10 @@ using FMFT.Web.Server.Models.Users;
 using FMFT.Web.Server.Models.Users.Params;
 using FMFT.Web.Server.Models.Users.Requests;
 using FMFT.Web.Server.Services.Foundations.Accounts;
+using FMFT.Web.Server.Services.Foundations.Emails;
 using FMFT.Web.Server.Services.Foundations.Users;
 using FMFT.Web.Shared.Enums;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
 {
@@ -17,16 +20,16 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
     {
         private readonly IAccountService accountService;
         private readonly IUserService userService;
-        private readonly ILoggingBroker loggingBroker;
+        private readonly IEmailService emailService;
 
         public UserAccountOrchestrationService(
-            IAccountService accountService, 
-            IUserService userService, 
-            ILoggingBroker loggingBroker)
+            IAccountService accountService,
+            IUserService userService,
+            IEmailService emailService)
         {
             this.accountService = accountService;
             this.userService = userService;
-            this.loggingBroker = loggingBroker;
+            this.emailService = emailService;
         }
 
         public async ValueTask<IEnumerable<User>> RetrieveAllUsersAsync()
@@ -46,8 +49,15 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
         public async ValueTask<AccountToken> RegisterWithPasswordAsync(RegisterUserWithPasswordRequest request)
         {
             User user = await userService.RegisterUserWithPasswordAsync(request);
-            Account account = MapUserToAccount(user);
+            
+            RegisterEmailModel model = new()
+            {
+                Email = user.Email,
+                FirstName = user.FirstName
+            };
+            await emailService.SendRegisterEmailAsync(user.Email, model);
 
+            Account account = MapUserToAccount(user);
             CreateTokenParams @params = new()
             {
                 Account = account,

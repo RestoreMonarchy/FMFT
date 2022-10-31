@@ -14,7 +14,8 @@ namespace FMFT.Extensions.EmailClients
             this.options = options;
             client = new SmtpClient(options.Host, options.Port)
             {
-                Credentials = new NetworkCredential(options.Email, options.Password)
+                Credentials = new NetworkCredential(options.Email, options.Password),
+                EnableSsl = true
             };
         }
 

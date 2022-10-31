@@ -11,10 +11,14 @@
     Login do twojego konta to: @Model.Email
 </p>
 
-<p>
-    Kliknij proszę w link poniżej w celu potwierdzenia twojego konta <br />
-    @Model.ConfirmLink
-</p>
+@if (!string.IsNullOrEmpty(Model.ConfirmLink)) 
+{
+    <p>
+        Kliknij proszę w link poniżej w celu potwierdzenia twojego konta <br />
+        @Model.ConfirmLink
+    </p>
+}
+
 
 <p>
     Dziękujemy,<br />

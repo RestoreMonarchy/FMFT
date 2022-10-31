@@ -1,0 +1,49 @@
+﻿@using FMFT.Web.Client.Views.Shared.Components.Bodies
+
+<AccountLayoutBody>
+    <Content>
+        <div class="text-center">
+            <div class="text-danger">
+                <i class="fa-solid fa-triangle-exclamation" style="font-size: 5em;"></i>
+            </div>
+            <div class="fs-3">
+                Wystąpił błąd!
+            </div>
+            <pre class="fs-6">
+                <code>
+                    @Exception.Message
+                </code>
+            </pre>
+            <div>
+                <button class="btn btn-secondary" @onclick="HandleRecoverAsync">
+                    Spróbuj ponownie
+                </button>
+            </div>
+        </div>
+    </Content>
+</AccountLayoutBody>
+
+
+@code {
+    [Parameter]
+    public ErrorBoundary ErrorBoundary { get; set; }
+
+    [Parameter]
+    public Exception Exception { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await HandleErrorAsync();
+    }
+
+    private async Task HandleErrorAsync()
+    {
+        await JSRuntimeBroker.ClearModalBackdropAsync();
+    }
+
+    private Task HandleRecoverAsync()
+    {
+        ErrorBoundary?.Recover();
+        return Task.CompletedTask;
+    }
+}

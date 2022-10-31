@@ -1,6 +1,23 @@
 ﻿@inherits LayoutComponentBase
 
-@Body
+<ErrorBoundary @ref="ErrorBoundary">
+    <ChildContent>
+        @Body
+    </ChildContent>
+    <ErrorContent Context="Exception">
+        <AccountError ErrorBoundary="ErrorBoundary" Exception="Exception" />
+    </ErrorContent>
+</ErrorBoundary>
+
+@code {
+    public ErrorBoundary ErrorBoundary { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        ErrorBoundary?.Recover();
+    }
+}
+
 
 @*
     This cannot be in the isolated CSS file
