@@ -115,7 +115,7 @@ namespace FMFT.Web.Server.Controllers.Users
             }
         }
 
-        [HttpGet("{userId}/confirmemail/{confirmSecret}")]
+        [HttpPost("{userId}/confirmemail/{confirmSecret}")]
         public async ValueTask<IActionResult> ConfirmUserEmail(int userId, Guid confirmSecret)
         {
             try

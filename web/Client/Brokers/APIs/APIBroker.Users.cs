@@ -30,5 +30,11 @@ namespace FMFT.Web.Client.Brokers.APIs
             string url = $"{UsersRelativeUrl}/{request.UserId}/updateculture";
             return await PostAsync(url, request);
         }
+
+        public async ValueTask<APIResponse> ConfirmUserEmailAsync(ConfirmUserEmailRequest request)
+        {
+            string url = $"{UsersRelativeUrl}/{request.UserId}/confirmemail/{request.ConfirmSecret}";
+            return await PostAsync(url, null);
+        }
     }
 }

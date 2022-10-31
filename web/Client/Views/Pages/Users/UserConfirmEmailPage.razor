@@ -1,0 +1,48 @@
+﻿@page "/users/{UserId:int}/confirmemail/{ConfirmSecret}"
+
+@using FMFT.Extensions.Blazor.Bases.Conditions;
+@using FMFT.Web.Client.Views.Shared.Components.Bodies
+@using FMFT.Web.Client.Views.Shared.Layouts.Account
+
+@layout AccountLayout
+
+<AccountLayoutBody>
+    <Header>
+        <div>
+            Rejestracja konta
+        </div>
+    </Header>
+    <Content>
+        <LoadingSpinnerView @ref="LoadingSpinnerView">
+            <Condition Evaluation="ConfirmUserResponse.IsSuccessfull">
+                <Match>
+                    <div class="text-center">
+                        <img src="/img/emojis/okcat.png" />
+                    </div>
+                    <div>
+                        Pomyślnie potwierdzono adres email!
+                    </div>
+                </Match>
+                <NotMatch>
+                    <Switch Expression="ConfirmUserResponse.Error.Code">
+                        <SwitchCase Value="@("ERR021")">
+                            Twoje konto ma już potwierdzony adres email
+                        </SwitchCase>
+                        <SwitchCase Value="@("ERR022")">
+                            Coś poszło nie tak . . .
+                        </SwitchCase>
+                    </Switch>
+                </NotMatch>
+            </Condition>
+        </LoadingSpinnerView>
+    </Content>
+    <Footer>
+        <div class="d-flex">
+            <div class="small">
+                <a href="/" class="text-decoration-none">
+                    <i class="fa-solid fa-house"></i> Powrót do strony głównej
+                </a>
+            </div>
+        </div>
+    </Footer>
+</AccountLayoutBody>
