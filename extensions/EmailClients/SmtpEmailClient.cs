@@ -14,7 +14,7 @@ namespace FMFT.Extensions.EmailClients
             this.options = options;
             client = new SmtpClient(options.Host, options.Port)
             {
-                Credentials = new NetworkCredential(options.Email, options.Password),
+                Credentials = new NetworkCredential(options.SenderEmail, options.Password),
                 EnableSsl = true
             };
         }
@@ -24,7 +24,7 @@ namespace FMFT.Extensions.EmailClients
             MailMessage mailMessage = new()
             {
                 Subject = emailMessage.Subject,
-                From = new MailAddress(options.Email)
+                From = new MailAddress(options.SenderEmail, options.SenderName)
             };
 
             mailMessage.To.Add(emailMessage.EmailAddress);

@@ -5,6 +5,7 @@ using FMFT.Extensions.EmailClients.Models;
 using FMFT.Web.Server.Models.Emails;
 using FMFT.Web.Server.Models.Options.Emails;
 using Microsoft.Extensions.Options;
+using System.Diagnostics;
 
 namespace FMFT.Web.Server.Brokers.Emails
 {
@@ -28,8 +29,9 @@ namespace FMFT.Web.Server.Brokers.Emails
             {
                 Host = options.Host,
                 Port = options.Port,
-                Email = options.Email,
-                Password = options.Password                
+                SenderEmail = options.Email,
+                Password = options.Password,
+                SenderName = options.SenderName
             };
 
             return new SmtpEmailClient(clientOptions);
