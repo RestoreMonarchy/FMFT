@@ -14,6 +14,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
         ValueTask AuthorizeAccountByUserIdAsync(int userId);
         ValueTask AuthorizeUserAccountByRoleAsync(params UserRole[] authorizedRoles);
         ValueTask AuthorizeUserAccountByUserIdOrRolesAsync(int userId, params UserRole[] authorizedRoles);
+        ValueTask ConfirmEmailAsync(int userId, Guid secretKey);
         ValueTask<AccountToken> RegisterWithPasswordAsync(RegisterUserWithPasswordRequest request);
         ValueTask<Account> RetrieveAccountAsync();
         ValueTask<IEnumerable<User>> RetrieveAllUsersAsync();

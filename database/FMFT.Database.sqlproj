@@ -80,6 +80,7 @@
     <Build Include="dbo\procedures\GetNewReservationId.sql" />
     <Build Include="dbo\procedures\GetShows.sql" />
     <Build Include="dbo\procedures\CancelReservation.sql" />
+    <Build Include="dbo\procedures\ConfirmUserEmail.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FMFT.Database.publish.xml" />

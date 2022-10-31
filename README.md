@@ -20,3 +20,5 @@ ERR017 | Reservation not found
 ERR018 | Seat is already reserved
 ERR019 | User already created a reservation
 ERR020 | Auditorium not found
+ERR021 | This user has already confirmed email
+ERR022 | Secret key and user id do not match 

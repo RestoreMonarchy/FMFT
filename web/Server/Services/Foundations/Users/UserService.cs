@@ -148,5 +148,20 @@ namespace FMFT.Web.Server.Services.Foundations.Users
                 throw new AlreadyExistsUserCultureException();
             }
         }
+
+        public async ValueTask ConfirmEmailAsync(int userId, Guid confirmSecret)
+        {
+            StoredProcedureResult result = await storageBroker.ConfirmEmailAsync(userId, confirmSecret);
+
+            if (result.ReturnValue == 1)
+            {
+                throw new NotMatchConfirmEmailSecretUserException();
+            }
+
+            if (result.ReturnValue == 2)
+            {
+                throw new AlreadyConfirmedEmailUserException();
+            }
+        }
     }
 }

@@ -34,6 +34,12 @@ namespace FMFT.Web.Server.Brokers.Storages
             return await connection.QuerySingleOrDefaultAsync<User>(sql, new { providerName, providerKey });
         }
 
+        public async ValueTask<StoredProcedureResult> ConfirmEmailAsync(int userId, Guid confirmSecret)
+        {
+            const string sql = "dbo.ConfirmUserEmail";
+            return await ExecuteStoredProcedureAsync(sql, new { UserId = userId, ConfirmSecret = confirmSecret });
+        }
+
         public async ValueTask<StoredProcedureResult<User>> RegisterUserWithPasswordAsync(
             RegisterUserWithPasswordParams @params)
         {

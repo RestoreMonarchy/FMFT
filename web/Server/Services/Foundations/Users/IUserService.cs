@@ -6,6 +6,7 @@ namespace FMFT.Web.Server.Services.Foundations.Users
 {
     public interface IUserService
     {
+        ValueTask ConfirmEmailAsync(int userId, Guid confirmSecret);
         ValueTask<User> RegisterUserWithLoginAsync(RegisterUserWithLoginParams @params);
         ValueTask<User> RegisterUserWithPasswordAsync(RegisterUserWithPasswordRequest request);
         ValueTask<IEnumerable<User>> RetrieveAllUsersAsync();

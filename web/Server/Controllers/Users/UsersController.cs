@@ -7,6 +7,7 @@ using FMFT.Web.Server.Services.Orchestrations.Reservations;
 using FMFT.Web.Server.Services.Orchestrations.UserAccounts;
 using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
+using System;
 
 namespace FMFT.Web.Server.Controllers.Users
 {
@@ -111,6 +112,25 @@ namespace FMFT.Web.Server.Controllers.Users
             catch (AlreadyExistsUserCultureException exception)
             {
                 return Conflict(exception);
+            }
+        }
+
+        [HttpGet("{userId}/confirmemail/{confirmSecret}")]
+        public async ValueTask<IActionResult> ConfirmUserEmail(int userId, Guid confirmSecret)
+        {
+            try
+            {
+                await userAccountOrchestrationService.ConfirmEmailAsync(userId, confirmSecret);
+
+                return Ok();
+            }
+            catch (AlreadyConfirmedEmailUserException exception)
+            {
+                return Conflict(exception);
+            }
+            catch (NotMatchConfirmEmailSecretUserException exception)
+            {
+                return BadRequest(exception);
             }
         }
     }

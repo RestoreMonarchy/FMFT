@@ -46,6 +46,11 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
             return await userService.RetrieveUserByIdAsync(userId);
         }
 
+        public async ValueTask ConfirmEmailAsync(int userId, Guid secretKey)
+        {
+            await userService.ConfirmEmailAsync(userId, secretKey);
+        }
+
         public async ValueTask<AccountToken> RegisterWithPasswordAsync(RegisterUserWithPasswordRequest request)
         {
             User user = await userService.RegisterUserWithPasswordAsync(request);
