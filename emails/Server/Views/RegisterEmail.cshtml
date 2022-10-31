@@ -1,0 +1,24 @@
+﻿@using FMFT.Emails.Server.Models
+
+@model RegisterEmailModel
+
+<p>
+    Cześć @Model.FirstName,
+</p>
+
+<p>
+    Miło nam poinformować, że rejestracja twojego konta na FMFT App przebiegła pomyślnie. <br />
+    Login do twojego konta to: @Model.Email
+</p>
+
+<p>
+    Kliknij proszę w link poniżej w celu potwierdzenia twojego konta <br />
+    @Model.ConfirmLink
+</p>
+
+<p>
+    Dziękujemy,<br />
+    Organizatorzy FMFT
+</p>
+
+
