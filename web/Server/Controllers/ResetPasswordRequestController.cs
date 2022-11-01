@@ -27,17 +27,21 @@ namespace FMFT.Web.Server.Controllers
 
                 return Ok();
             }
-            catch (UserNotFoundResetPasswordRequestException exception)
+            catch (UserNotFoundResetPasswordRequestException)
             {
-                return NotFound(exception);
+                //return NotFound(exception);
+                // Fake OK so user can't know if the user exists
+                return Ok();
             }
             catch (LimitReachedResetPasswordRequestException exception)
             {
                 return Conflict(exception);
             }
-            catch (NoPasswordUserResetPasswordRequestException exception)
+            catch (NoPasswordUserResetPasswordRequestException)
             {
-                return BadRequest(exception);
+                //return BadRequest(exception);
+                // Fake OK so user can't know if the user exists
+                return Ok();
             }
         }
 

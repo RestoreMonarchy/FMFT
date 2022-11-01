@@ -27,3 +27,5 @@ ERR024 | Change user password validation problem
 ERR025 | Reset password validation problem
 ERR026 | This reset password request has already been used
 ERR027 | This reset password request has expired
+ERR028 | You have reached the limit of reset password requests. Try again later
+ERR029 | Reset password request not found
