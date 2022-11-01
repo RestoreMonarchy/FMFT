@@ -82,6 +82,9 @@
     <Build Include="dbo\procedures\CancelReservation.sql" />
     <Build Include="dbo\procedures\ConfirmUserEmail.sql" />
     <Build Include="dbo\procedures\UpdateUserPassword.sql" />
+    <Build Include="dbo\tables\ResetPasswordRequests.sql" />
+    <Build Include="dbo\procedures\CreateResetPasswordRequest.sql" />
+    <Build Include="dbo\procedures\ResetPassword.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FMFT.Database.publish.xml" />

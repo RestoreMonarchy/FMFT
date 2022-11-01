@@ -49,5 +49,18 @@ namespace FMFT.Web.Server.Brokers.Emails
 
             await emailClient.SendHtmlEmailMessageAsync(message);
         }
+
+        public async Task SendResetPasswordEmailAsync(Email<ResetPasswordEmailModel> email)
+        {
+            HtmlEmailMessage message = new()
+            {
+                Subject = email.Subject,
+                EmailAddress = email.EmailAddress
+            };
+
+            message.Html = await emailGenerator.GenerateResetPasswordEmailHtmlAsync(email.Model);
+
+            await emailClient.SendHtmlEmailMessageAsync(message);
+        }
     }
 }

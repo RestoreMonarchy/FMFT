@@ -35,5 +35,25 @@ namespace FMFT.Web.Server.Services.Foundations.Emails
 
             await emailBroker.SendRegisterEmailAsync(email);
         }
+
+        public async ValueTask SendResetPasswordEmailAsync(string emailAddress, ResetPasswordEmailParams @params)
+        {
+            ResetPasswordEmailModel model = new()
+            {
+                Email = @params.Email,
+                FirstName = @params.FirstName,
+                ExpireTime = @params.ExpireTime,
+                ResetLink = urlBroker.GetClientResetPasswordEmailUrl(@params.SecretKey)
+            };
+
+            Email<ResetPasswordEmailModel> email = new()
+            {
+                Subject = "Reset hasła",
+                EmailAddress = emailAddress,
+                Model = model
+            };
+
+            await emailBroker.SendResetPasswordEmailAsync(email);
+        }
     }
 }

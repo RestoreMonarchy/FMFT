@@ -30,5 +30,12 @@ namespace FMFT.Web.Server.Brokers.Urls
 
             return FormatClientUrl(relativeUrl, userId, confirmSecret);
         }
+
+        public string GetClientResetPasswordEmailUrl(Guid secretKey)
+        {
+            const string relativeUrl = "/account/resetpassword/{0}";
+
+            return FormatClientUrl(relativeUrl, secretKey);
+        }
     }
 }

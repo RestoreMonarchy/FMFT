@@ -24,3 +24,6 @@ ERR021 | This user has already confirmed email
 ERR022 | Secret key and user id do not match 
 ERR023 | This user does not use password authentication
 ERR024 | Change user password validation problem
+ERR025 | Reset password validation problem
+ERR026 | This reset password request has already been used
+ERR027 | This reset password request has expired

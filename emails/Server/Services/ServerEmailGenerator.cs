@@ -24,5 +24,16 @@ namespace FMFT.Emails.Server.Services
 
             return await emailHtmlGenerator.GenerateEmailAsync(template, model);
         }
+
+        public async ValueTask<string> GenerateResetPasswordEmailHtmlAsync(ResetPasswordEmailModel model)
+        {
+            EmailTemplateBuilder emailTemplateBuilder = new();
+            emailTemplateBuilder.SetViewName("/Views/ResetPasswordEmail.cshtml");
+            emailTemplateBuilder.SetCulture("pl-PL");
+
+            IEmailTemplate template = emailTemplateBuilder.Build();
+
+            return await emailHtmlGenerator.GenerateEmailAsync(template, model);
+        }
     }
 }

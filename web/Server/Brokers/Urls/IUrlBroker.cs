@@ -3,5 +3,6 @@
     public interface IUrlBroker
     {
         string GetClientConfirmEmailUrl(int userId, Guid confirmSecret);
+        string GetClientResetPasswordEmailUrl(Guid secretKey);
     }
 }
