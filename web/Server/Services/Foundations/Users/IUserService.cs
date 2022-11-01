@@ -15,6 +15,7 @@ namespace FMFT.Web.Server.Services.Foundations.Users
         ValueTask<User> RetrieveUserByIdAsync(int userId);
         ValueTask<User> RetrieveUserByLoginAsync(string providerName, string providerKey);
         ValueTask UpdateUserCultureAsync(UpdateUserCultureParams @params);
+        ValueTask UpdateUserPasswordAsync(UpdateUserPasswordRequest request);
         ValueTask UpdateUserRoleAsync(UpdateUserRoleParams @params);
     }
 }

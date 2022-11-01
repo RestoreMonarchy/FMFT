@@ -81,6 +81,7 @@
     <Build Include="dbo\procedures\GetShows.sql" />
     <Build Include="dbo\procedures\CancelReservation.sql" />
     <Build Include="dbo\procedures\ConfirmUserEmail.sql" />
+    <Build Include="dbo\procedures\UpdateUserPassword.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FMFT.Database.publish.xml" />

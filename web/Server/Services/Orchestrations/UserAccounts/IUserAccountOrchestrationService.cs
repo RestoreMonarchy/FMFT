@@ -22,6 +22,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
         ValueTask<User> RetrieveUserByIdAsync(int userId);
         ValueTask<AccountToken> SignInWithPasswordAsync(SignInWithPasswordRequest request);
         ValueTask UpdateUserCultureAsync(UpdateUserCultureParams @params);
+        ValueTask UpdateUserPasswordAsync(UpdateUserPasswordRequest request);
         ValueTask UpdateUserRoleAsync(UpdateUserRoleParams @params);
     }
 }

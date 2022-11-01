@@ -90,6 +90,12 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
             return await accountService.CreateTokenAsync(@params);
         }
 
+        public async ValueTask UpdateUserPasswordAsync(UpdateUserPasswordRequest request)
+        {
+            await AuthorizeUserAccountByUserIdOrRolesAsync(request.UserId, UserRole.Admin);
+            await userService.UpdateUserPasswordAsync(request);
+        }
+
         public async ValueTask UpdateUserRoleAsync(UpdateUserRoleParams @params)
         {
             await AuthorizeUserAccountByRoleAsync(UserRole.Admin);

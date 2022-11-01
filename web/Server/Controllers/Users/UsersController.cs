@@ -2,6 +2,7 @@
 using FMFT.Web.Server.Models.Users;
 using FMFT.Web.Server.Models.Users.Exceptions;
 using FMFT.Web.Server.Models.Users.Params;
+using FMFT.Web.Server.Models.Users.Requests;
 using FMFT.Web.Server.Services.Coordinations.Reservations;
 using FMFT.Web.Server.Services.Orchestrations.Reservations;
 using FMFT.Web.Server.Services.Orchestrations.UserAccounts;
@@ -84,6 +85,30 @@ namespace FMFT.Web.Server.Controllers.Users
             } catch (AlreadyExistsUserRoleException exception)
             {
                 return Conflict(exception);
+            }
+        }
+
+        [HttpPost("{userId}/updatepassword")]
+        public async ValueTask<IActionResult> UpdateUserPassword(int userId, UpdateUserPasswordRequest request)
+        {
+            try
+            {
+                request.UserId = userId;
+                await userAccountOrchestrationService.UpdateUserPasswordAsync(request);
+
+                return Ok();
+            }
+            catch (NotAuthenticatedAccountException exception)
+            {
+                return Unauthorized(exception);
+            }
+            catch (NotAuthorizedAccountException exception)
+            {
+                return Forbidden(exception);
+            }
+            catch (NotPasswordUserException exception)
+            {
+                return BadRequest(exception);
             }
         }
 
