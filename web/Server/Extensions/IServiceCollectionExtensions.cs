@@ -6,6 +6,7 @@ using FMFT.Web.Server.Brokers.Loggings;
 using FMFT.Web.Server.Brokers.Storages;
 using FMFT.Web.Server.Brokers.Urls;
 using FMFT.Web.Server.Brokers.Validations;
+using FMFT.Web.Server.Models.Options;
 using FMFT.Web.Server.Models.Options.Authentications;
 using FMFT.Web.Server.Models.Options.Emails;
 using FMFT.Web.Server.Services.Coordinations.Reservations;
@@ -35,6 +36,8 @@ namespace FMFT.Web.Server.Extensions
 
         public static IServiceCollection AddFMFTOptions(this IServiceCollection services, IConfiguration configuration)
         {
+            services.Configure<ServicesOptions>(configuration.GetSection(ServicesOptions.SectionKey));
+
             services.Configure<JWTAuthenticationOptions>(configuration.GetSection(JWTAuthenticationOptions.SectionKey));
             //services.Configure<GoogleAuthenticationOptions>(configuration.GetSection(GoogleAuthenticationOptions.SectionKey));
             //services.Configure<FacebookAuthenticationOptions>(configuration.GetSection(FacebookAuthenticationOptions.SectionKey));

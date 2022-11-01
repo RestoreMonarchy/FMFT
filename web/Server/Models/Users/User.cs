@@ -17,5 +17,7 @@ namespace FMFT.Web.Server.Models.Users
 
         [JsonIgnore]
         public string PasswordHash { get; set; }
+        [JsonIgnore]
+        public Guid ConfirmEmailSecret { get; set; }
     }
 }

@@ -1,21 +1,34 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.AspNetCore.Mvc.Routing;
+﻿using FMFT.Web.Server.Models.Options;
+using Microsoft.Extensions.Options;
 
 namespace FMFT.Web.Server.Brokers.Urls
 {
     public class UrlBroker : IUrlBroker
     {
-        private readonly LinkGenerator linkGenerator;
+        private readonly ServicesOptions options;
 
-        public UrlBroker(LinkGenerator linkGenerator)
+        public UrlBroker(IOptions<ServicesOptions> options)
         {
-            this.linkGenerator = linkGenerator;
+            this.options = options.Value;
         }
 
-        public string Action(string action, string controller, object values)
+        private string FormatUrl(string baseUrl, string relativeUrl, params object[] args)
         {
-            return linkGenerator.GetPathByAction(action, controller, values);
-        }        
+            string url = baseUrl.TrimEnd('/') + "/" + relativeUrl.TrimStart('/');
+
+            return string.Format(url, args);
+        }
+
+        private string FormatClientUrl(string relativeUrl, params object[] args)
+        {
+            return FormatUrl(options.ClientBaseUrl, relativeUrl, args);
+        }
+
+        public string GetClientConfirmEmailUrl(int userId, Guid confirmSecret)
+        {
+            const string relativeUrl = "/users/{0}/confirmemail/{1}";
+
+            return FormatClientUrl(relativeUrl, userId, confirmSecret);
+        }
     }
 }

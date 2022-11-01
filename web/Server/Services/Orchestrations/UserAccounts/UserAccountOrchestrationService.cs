@@ -2,6 +2,7 @@
 using FMFT.Web.Server.Brokers.Loggings;
 using FMFT.Web.Server.Models.Accounts;
 using FMFT.Web.Server.Models.Accounts.Params;
+using FMFT.Web.Server.Models.Emails.Params;
 using FMFT.Web.Server.Models.UserAccounts;
 using FMFT.Web.Server.Models.UserAccounts.Exceptions;
 using FMFT.Web.Server.Models.UserAccounts.Requests;
@@ -54,22 +55,25 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
         public async ValueTask<AccountToken> RegisterWithPasswordAsync(RegisterUserWithPasswordRequest request)
         {
             User user = await userService.RegisterUserWithPasswordAsync(request);
-            
-            RegisterEmailModel model = new()
+
+            RegisterEmailParams @registerEmailParams = new()
             {
+                UserId = user.Id,
                 Email = user.Email,
-                FirstName = user.FirstName
+                FirstName = user.FirstName,
+                ConfirmSecret = user.ConfirmEmailSecret
             };
-            await emailService.SendRegisterEmailAsync(user.Email, model);
+
+            await emailService.SendRegisterEmailAsync(user.Email, @registerEmailParams);
 
             Account account = MapUserToAccount(user);
-            CreateTokenParams @params = new()
+            CreateTokenParams @createTokenParams = new()
             {
                 Account = account,
                 AuthenticationMethod = null
             };
 
-            return await accountService.CreateTokenAsync(@params);
+            return await accountService.CreateTokenAsync(@createTokenParams);
         }
 
         public async ValueTask<AccountToken> SignInWithPasswordAsync(SignInWithPasswordRequest request)

@@ -2,6 +2,6 @@
 {
     public interface IUrlBroker
     {
-        string Action(string action, string controller, object values);
+        string GetClientConfirmEmailUrl(int userId, Guid confirmSecret);
     }
 }
