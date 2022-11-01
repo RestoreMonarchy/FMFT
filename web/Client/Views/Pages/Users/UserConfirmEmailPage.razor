@@ -16,12 +16,7 @@
         <LoadingSpinnerView @ref="LoadingSpinnerView">
             <Condition Evaluation="ConfirmUserResponse.IsSuccessfull">
                 <Match>
-                    <div class="text-center">
-                        <img src="/img/emojis/okcat.png" />
-                    </div>
-                    <div>
-                        Pomyślnie potwierdzono adres email!
-                    </div>
+                    Pomyślnie potwierdzono adres email!
                 </Match>
                 <NotMatch>
                     <Switch Expression="ConfirmUserResponse.Error.Code">
