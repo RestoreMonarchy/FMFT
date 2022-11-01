@@ -2,6 +2,7 @@
 using FMFT.Web.Server.Models.Database;
 using FMFT.Web.Server.Models.Users;
 using FMFT.Web.Server.Models.Users.Params;
+using System.Diagnostics.CodeAnalysis;
 
 namespace FMFT.Web.Server.Brokers.Storages
 {

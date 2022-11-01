@@ -165,6 +165,26 @@ namespace FMFT.Web.Server.Services.Foundations.Users
             }
         }
 
+        public async ValueTask ChangeUserPasswordAsync(ChangeUserPasswordRequest request)
+        {
+            ValidateChangeUserPasswordRequest(request);
+
+            User user = await RetrieveUserByIdAsync(request.UserId);
+
+            if (!encryptionBroker.VerifyPassword(request.CurrentPasswordText, user.PasswordHash))
+            {
+                throw new NotMatchPasswordUserException();
+            }
+
+            UpdateUserPasswordRequest updateUserPasswordRequest = new()
+            {
+                UserId = user.Id,
+                PasswordText = request.PasswordText
+            };
+
+            await UpdateUserPasswordAsync(updateUserPasswordRequest);
+        }
+
         public async ValueTask ConfirmEmailAsync(int userId, Guid confirmSecret)
         {
             StoredProcedureResult result = await storageBroker.ConfirmEmailAsync(userId, confirmSecret);

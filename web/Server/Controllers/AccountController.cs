@@ -87,5 +87,22 @@ namespace FMFT.Web.Server.Controllers
                 return Forbidden(credentialsException);
             }
         }
+
+        [HttpPost("changepassword")]
+        public async ValueTask<IActionResult> ChangePassword([FromBody] ChangeUserAccountPasswordRequest request)
+        {
+            try
+            {
+                await userAccountService.ChangeUserAccountPasswordAsync(request);
+
+                return Ok();
+            } catch (NotMatchPasswordUserException exception)
+            {
+                return BadRequest(exception);
+            } catch (NotAuthenticatedAccountException exception)
+            {
+                return Unauthorized(exception);
+            }
+        }
     }
 }

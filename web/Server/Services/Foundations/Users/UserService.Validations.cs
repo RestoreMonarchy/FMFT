@@ -6,6 +6,17 @@ namespace FMFT.Web.Server.Services.Foundations.Users
 {
     public partial class UserService
     {
+        private void ValidateChangeUserPasswordRequest(ChangeUserPasswordRequest request)
+        {
+            ChangePasswordUserValidationException validationException = new();
+            if (validationBroker.IsPasswordInvalid(request.PasswordText))
+            {
+                validationException.UpsertDataList("PasswordText", "Password must be at least 8 characters long");
+            }
+
+            validationException.ThrowIfContainsErrors();
+        }
+
         private void ValidateRegisterUserWithLoginParams(RegisterUserWithLoginParams @params)
         {
             RegisterUserWithLoginValidationException validationException = new();
