@@ -11,19 +11,29 @@ namespace FMFT.Web.Client.Brokers.APIs
         public async ValueTask<APIResponse<UserAccount>> GetUserAccountAsync()
         {
             string url = $"{AccountsRelativeUrl}/user";
+
             return await GetAsync<UserAccount>(url);
         }
 
         public async ValueTask<APIResponse<AccountToken>> PostAccountLoginAsync(LogInWithPasswordRequest request)
         {
             string url = $"{AccountsRelativeUrl}/login";
+
             return await PostAsync<AccountToken>(url, request);
         }
 
         public async ValueTask<APIResponse<AccountToken>> PostAccountRegisterAsync(RegisterWithPasswordRequest request)
         {
             string url = $"{AccountsRelativeUrl}/register";
+
             return await PostAsync<AccountToken>(url, request);
+        }
+
+        public async ValueTask<APIResponse> PostAccountChangePasswordAsync(ChangePasswordRequest request)
+        {
+            string url = $"{AccountsRelativeUrl}/changepassword";
+
+            return await PostAsync(url, request);
         }
     }
 }

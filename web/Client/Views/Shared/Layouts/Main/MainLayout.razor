@@ -22,4 +22,9 @@
     {
         ErrorBoundary?.Recover();
     }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await JSRuntimeBroker.ClearModalBackdropAsync();
+    }
 }

@@ -8,6 +8,8 @@ namespace FMFT.Extensions.Blazor.Bases.Dialogs
         [Parameter]
         public bool AlignCenter { get; set; }
         [Parameter]
+        public bool HideCloseButton { get; set; }
+        [Parameter]
         public RenderFragment Title { get; set; }
         [Parameter]
         public RenderFragment Body { get; set; }

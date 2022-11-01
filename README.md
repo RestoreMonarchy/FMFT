@@ -8,7 +8,7 @@ ERR005 | Register with password validation problem
 ERR006 | User with this email already exists
 ERR007 | User with this external login already exists
 ERR008 | User not found
-ERR009 | User password not match exception
+ERR009 | Invalid credentials
 ERR010 | User already has this role set
 ERR011 | User already has this culture set
 ERR012 | Add Show validation problem
