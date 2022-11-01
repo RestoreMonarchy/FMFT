@@ -1,4 +1,5 @@
 ﻿using FMFT.Web.Client.Services.Accounts;
+using FMFT.Web.Client.Views.Shared.Components.Dialogs;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
 
@@ -6,8 +7,7 @@ namespace FMFT.Web.Client.Views.Shared.Layouts.Main
 {
     public partial class MainNavbar
     {
-        [Inject]
-        public IAccountService AccountService { get; set; }
+        public LogoutDialog LogoutDialog { get; set; }
 
         protected override void OnInitialized()
         {
@@ -19,10 +19,9 @@ namespace FMFT.Web.Client.Views.Shared.Layouts.Main
             StateHasChanged();
         }
 
-        private async Task LogoutAsync()
+        private async Task HandleLogoutAsync()
         {
-            await AccountService.LogoutAsync();
-            NavigationBroker.NavigateTo("/");
+            await LogoutDialog.ShowAsync();
         }
     }
 }

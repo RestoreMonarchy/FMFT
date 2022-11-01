@@ -1,4 +1,5 @@
 ﻿@using FMFT.Extensions.Blazor.Bases.Navbars
+@using FMFT.Web.Client.Views.Shared.Components.Dialogs
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-1">
     <div class="container">
@@ -42,7 +43,7 @@
                             <NavbarDropdownItem Location="/account/reservations">
                                 Rezerwacje
                             </NavbarDropdownItem>
-                            <NavbarDropdownItem OnClick="LogoutAsync">
+                            <NavbarDropdownItem OnClick="HandleLogoutAsync">
                                 Wyloguj się
                             </NavbarDropdownItem>
                         </NavbarDropdown>
@@ -57,3 +58,5 @@
         </div>
     </div>
 </nav>
+
+<LogoutDialog @ref="LogoutDialog" />

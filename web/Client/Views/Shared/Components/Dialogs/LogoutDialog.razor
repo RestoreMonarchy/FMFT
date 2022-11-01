@@ -1,0 +1,18 @@
+﻿@using FMFT.Extensions.Blazor.Bases.Dialogs
+
+<ModalDialog @ref="LogoutModalDialog" AlignCenter="true">
+    <Title>
+        Wyloguj się
+    </Title>
+    <Body>
+        Czy napewno chcesz się wylogować?
+    </Body>
+    <Footer>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Nie
+        </button>
+        <ButtonBase @ref="LogoutButton" Class="btn btn-danger" OnClick="HandleLogoutAsync">
+            Tak
+        </ButtonBase>
+    </Footer>
+</ModalDialog>
