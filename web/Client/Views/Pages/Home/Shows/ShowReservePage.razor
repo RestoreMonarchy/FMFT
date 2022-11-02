@@ -27,26 +27,25 @@
                 <StepperItem Text="Wybierz miejsce">
 
                     <div class="mb-3">
-                        <Condition Evaluation="SelectedSeat is not null">
-                            <Match>
-                                <div class="d-md-flex d-block align-items-center">
+                        <div class="d-md-flex d-block align-items-center">
+                            <Condition Evaluation="SelectedSeat is not null">
+                                <Match>
                                     <div class="fs-3 mb-2 mb-md-0">
                                         Wybrano <span class="fw-bold">rząd: @SelectedSeat.Row numer: @SelectedSeat.Number</span>
                                     </div>
-                                    <div class="ms-md-auto">
-                                        <button class="btn btn-primary w-100 w-md-auto" @onclick="NextToConfirmAsync">
-                                            Przejdź dalej
-                                        </button>
+                                </Match>
+                                <NotMatch>
+                                    <div class="fs-3 mb-2 mb-md-0">
+                                        Wybierz miejsce
                                     </div>
-                                </div>                                
-                            </Match>
-                            <NotMatch>
-                                <div class="fs-3">
-                                    Wybierz miejsce
-                                </div>                                
-                            </NotMatch>
-                        </Condition>
-                        
+                                </NotMatch>
+                            </Condition>                            
+                            <div class="ms-md-auto">
+                                <button class="btn btn-primary w-100 w-md-auto" @onclick="NextToConfirmAsync" disabled="@(SelectedSeat == null)">
+                                    Przejdź dalej
+                                </button>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="mb-3">
@@ -130,11 +129,33 @@
                         <div class="card-body">
                             <Condition Evaluation="ReservationResponse.IsSuccessfull">
                                 <Match>
-                                    <div class="fs-5 text-success">
-                                        Udało się!
+                                    <div class="mb-2">
+                                        <div class="fs-5 text-success">
+                                            Udało się!
+                                        </div>
+                                        <div>
+                                            Składanie rezerwacji przebiegło pomyślnie
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-2">
+                                       <ul class="list-unstyled mb-0">
+                                           <li>
+                                                <span class="fw-bold">ID rezerwacji:</span> @Reservation.Id
+                                           </li>
+                                           <li>
+                                                <span class="fw-bold">Przedstawienie:</span> @Reservation.Show.Name
+                                           </li>
+                                           <li>
+                                                <span class="fw-bold">Miejsce:</span> rząd @Reservation.Seat.Row numer @Reservation.Seat.Number
+                                           </li>
+                                       </ul>
                                     </div>
                                     <div>
-                                       Składanie rezerwacji na @Show.Name powiodło się!
+                                        <a href="/account/reservations/@Reservation.Id" class="text-decoration-none">
+                                            <i class="fa-solid fa-arrow-right"></i>
+                                            Przejdź do rezerwacji
+                                        </a>
                                     </div>
                                 </Match>
                                 <NotMatch>
@@ -144,12 +165,13 @@
                                     <Switch Expression="ReservationResponse.Error.Code">
                                         <SwitchCase Value="@("ERR019")">
                                             <div>
-                                                Złożyłeś już rezerwację na to przedstawienie
+                                                Złożyłeś już rezerwację na to przedstawienie. <br />
+                                                Jeżeli chcesz zmienić miejsce anuluj obecną rezerwację.
                                             </div>
                                         </SwitchCase>
                                         <SwitchCase Value="@("ERR018")">
                                             <div>
-                                                Miejsce które wybrałeś jest niedostępne. Spróbuj ponownie
+                                                Miejsce które wybrałeś jest już niedostępne. Spróbuj ponownie
                                             </div>
                                         </SwitchCase>
                                         <DefaultSwitchCase>

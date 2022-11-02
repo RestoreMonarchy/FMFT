@@ -30,6 +30,7 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
 
         public Show Show => ShowResponse.Object;
         public Auditorium Auditorium => AuditoriumResponse.Object;
+        public Reservation Reservation => ReservationResponse.Object;
 
         protected override async Task OnParametersSetAsync()
         {
