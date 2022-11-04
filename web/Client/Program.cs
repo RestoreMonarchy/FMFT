@@ -11,6 +11,7 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.AddDependencies();
+builder.AddExtensions();
 builder.AddStateContainers();
 builder.AddBrokers();
 builder.AddServices();

@@ -33,7 +33,6 @@ namespace FMFT.Web.Server.Extensions
             services.AddServerEmailGenerator();
 
             return services;
-
         }
 
         public static IServiceCollection AddFMFTOptions(this IServiceCollection services, IConfiguration configuration)

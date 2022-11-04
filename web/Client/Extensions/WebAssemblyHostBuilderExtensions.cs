@@ -1,5 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using BlazorPanzoom;
+using FMFT.Extensions.Blazor.Facebook.Extensions;
 using FMFT.Web.Client.Brokers.APIs;
 using FMFT.Web.Client.Brokers.JSRuntimes;
 using FMFT.Web.Client.Brokers.Loggings;
@@ -28,6 +29,14 @@ namespace FMFT.Web.Client.Extensions
 
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddBlazorPanzoomServices();
+        }
+
+        public static void AddExtensions(this WebAssemblyHostBuilder builder)
+        {
+            builder.Services.AddFacebook(options => 
+            {
+                options.AppId = builder.Configuration["FacebookAppId"];
+            });
         }
 
         public static void AddStateContainers(this WebAssemblyHostBuilder builder)

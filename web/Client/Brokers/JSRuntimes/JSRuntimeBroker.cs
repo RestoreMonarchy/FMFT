@@ -25,5 +25,15 @@ namespace FMFT.Web.Client.Brokers.JSRuntimes
         {
             await jsRuntime.InvokeVoidAsync("ClearModalBackdrop");
         }
+
+        public async ValueTask InitializeFacebookAsync()
+        {
+            await jsRuntime.InvokeVoidAsync("fbAsyncInit");
+        }
+
+        public async ValueTask ProcessFacebookLoginAsync()
+        {
+            await jsRuntime.InvokeVoidAsync("fbLogin");
+        }
     }
 }

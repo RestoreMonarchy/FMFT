@@ -5,6 +5,7 @@ using FMFT.Web.Client.Brokers.Storages;
 using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Accounts;
 using FMFT.Web.Client.StateContainers.UserAccounts;
+using Microsoft.JSInterop;
 using System.IO.IsolatedStorage;
 
 namespace FMFT.Web.Client.Services.Accounts

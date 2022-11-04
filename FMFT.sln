@@ -35,6 +35,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FMFT.Extensions.EmailClient
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FMFT.Emails.Server", "emails\Server\FMFT.Emails.Server.csproj", "{4B1D2EB9-C031-4CFB-A76F-F1033FCFB9C6}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FMFT.Extensions.Blazor.Facebook", "extensions\blazor\Facebook\FMFT.Extensions.Blazor.Facebook.csproj", "{61414B40-B71D-4617-85C7-1C8D97602180}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,10 @@ Global
 		{4B1D2EB9-C031-4CFB-A76F-F1033FCFB9C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B1D2EB9-C031-4CFB-A76F-F1033FCFB9C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B1D2EB9-C031-4CFB-A76F-F1033FCFB9C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61414B40-B71D-4617-85C7-1C8D97602180}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61414B40-B71D-4617-85C7-1C8D97602180}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61414B40-B71D-4617-85C7-1C8D97602180}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61414B40-B71D-4617-85C7-1C8D97602180}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -99,6 +105,7 @@ Global
 		{E4003F1D-7638-4ED3-876C-2950A29FFB4F} = {D7DF90A7-6221-4CCF-90E2-E5E06B3B57A6}
 		{4F538427-FE60-4F8F-8C63-6545D7DD0666} = {A7DBB44D-AE92-4CA3-B5F4-D55C422CC8EF}
 		{4B1D2EB9-C031-4CFB-A76F-F1033FCFB9C6} = {7576A2C7-E870-42AB-B20C-68A084F68CFC}
+		{61414B40-B71D-4617-85C7-1C8D97602180} = {D7DF90A7-6221-4CCF-90E2-E5E06B3B57A6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {81FEE0D1-B373-4D86-8197-E4065AEF25AD}
