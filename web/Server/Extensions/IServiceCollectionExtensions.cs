@@ -2,6 +2,7 @@
 using FMFT.Web.Server.Brokers.Authentications;
 using FMFT.Web.Server.Brokers.Emails;
 using FMFT.Web.Server.Brokers.Encryptions;
+using FMFT.Web.Server.Brokers.Facebooks;
 using FMFT.Web.Server.Brokers.Loggings;
 using FMFT.Web.Server.Brokers.Storages;
 using FMFT.Web.Server.Brokers.Urls;
@@ -13,6 +14,7 @@ using FMFT.Web.Server.Services.Coordinations.Reservations;
 using FMFT.Web.Server.Services.Foundations.Accounts;
 using FMFT.Web.Server.Services.Foundations.Auditoriums;
 using FMFT.Web.Server.Services.Foundations.Emails;
+using FMFT.Web.Server.Services.Foundations.Facebooks;
 using FMFT.Web.Server.Services.Foundations.Reservations;
 using FMFT.Web.Server.Services.Foundations.ResetPasswordRequests;
 using FMFT.Web.Server.Services.Foundations.Seats;
@@ -41,7 +43,7 @@ namespace FMFT.Web.Server.Extensions
 
             services.Configure<JWTAuthenticationOptions>(configuration.GetSection(JWTAuthenticationOptions.SectionKey));
             //services.Configure<GoogleAuthenticationOptions>(configuration.GetSection(GoogleAuthenticationOptions.SectionKey));
-            //services.Configure<FacebookAuthenticationOptions>(configuration.GetSection(FacebookAuthenticationOptions.SectionKey));
+            services.Configure<FacebookAuthenticationOptions>(configuration.GetSection(FacebookAuthenticationOptions.SectionKey));
 
             services.Configure<SmtpEmailOptions>(configuration.GetSection(SmtpEmailOptions.SectionKey));
 
@@ -57,6 +59,7 @@ namespace FMFT.Web.Server.Extensions
             services.AddScoped<IUrlBroker, UrlBroker>();
             services.AddScoped<ILoggingBroker, LoggingBroker>();
             services.AddScoped<IEmailBroker, EmailBroker>();
+            services.AddScoped<IFacebookBroker, FacebookBroker>();
 
             return services;
         }
@@ -71,6 +74,7 @@ namespace FMFT.Web.Server.Extensions
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<IResetPasswordRequestService, ResetPasswordRequestService>();
+            services.AddTransient<IFacebookService, FacebookService>();
 
             return services;
         }

@@ -3,6 +3,5 @@
     public class CreateTokenParams
     {
         public Account Account { get; set; }
-        public string AuthenticationMethod { get; set; }
     }
 }

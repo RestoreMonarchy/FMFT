@@ -44,10 +44,6 @@ namespace FMFT.Web.Server.Services.Foundations.Users
             {
                 validationException.UpsertDataList("LastName", "Last name must be at least 2 characters long");
             }
-            if (validationBroker.IsStringInvalid(@params.ProviderName, true, 255, 0))
-            {
-                validationException.UpsertDataList("LoginProvider", "Invalid");
-            }
             if (validationBroker.IsStringInvalid(@params.ProviderKey, true, 255, 0))
             {
                 validationException.UpsertDataList("ProviderKey", "Invalid");

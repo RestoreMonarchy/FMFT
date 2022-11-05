@@ -6,6 +6,7 @@
 	LastName NVARCHAR(255) NOT NULL,
 	Role INT NOT NULL CONSTRAINT DF_Users_Role DEFAULT 0,
 	PasswordHash NVARCHAR(128) NULL,
+	IsPasswordEnabled AS CAST(IIF(PasswordHash IS NOT NULL, 1, 0) AS BIT),
 	CultureId INT NOT NULL CONSTRAINT DF_Users_CultureId DEFAULT 0,
 	ConfirmEmailSecret UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_Users_ConfirmEmailSecret DEFAULT NEWID(),
 	IsEmailConfirmed BIT NOT NULL CONSTRAINT DF_Users_IsEmailConfirmed DEFAULT 0,

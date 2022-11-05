@@ -10,6 +10,7 @@ namespace FMFT.Web.Client.Models.API.Accounts
         public string LastName { get; set; }
         public UserRole Role { get; set; }
         public CultureId CultureId { get; set; }
+        public bool IsPasswordEnabled { get; set; }
         public bool IsEmailConfirmed { get; set; }
         public DateTimeOffset CreateDate { get; set; }
     }

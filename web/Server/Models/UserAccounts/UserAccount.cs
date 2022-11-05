@@ -9,8 +9,10 @@ namespace FMFT.Web.Server.Models.UserAccounts
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public UserRole Role { get; set; }
+        public UserAuthenticationType AuthenticationType { get; set; }
         public CultureId CultureId { get; set; }
-        public bool IsEmailConfirmed { get; set; }
+        public bool IsPasswordEnabled { get; set; }
+        public bool IsEmailConfirmed { get; set; } 
         public DateTimeOffset CreateDate { get; set; }
     }
 }

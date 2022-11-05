@@ -2,9 +2,11 @@
 using FMFT.Web.Client.Brokers.APIs;
 using FMFT.Web.Client.Brokers.Loggings;
 using FMFT.Web.Client.Brokers.MemoryStorages;
+using FMFT.Web.Client.Brokers.Navigations;
 using FMFT.Web.Client.Brokers.Storages;
 using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Accounts;
+using FMFT.Web.Client.Models.API.Accounts.Requests;
 using FMFT.Web.Client.StateContainers.UserAccounts;
 using Microsoft.JSInterop;
 using System.IO.IsolatedStorage;
@@ -17,13 +19,20 @@ namespace FMFT.Web.Client.Services.Accounts
         private readonly IStorageBroker storageBroker;
         private readonly ILoggingBroker loggingBroker;
         private readonly IUserAccountStateContainer userAccountStateContainer;
+        private readonly INavigationBroker navigationBroker;
 
-        public AccountService(IAPIBroker apiBroker, IStorageBroker storageBroker, ILoggingBroker loggingBroker, IUserAccountStateContainer userAccountStateContainer)
+        public AccountService(
+            IAPIBroker apiBroker, 
+            IStorageBroker storageBroker, 
+            ILoggingBroker loggingBroker, 
+            IUserAccountStateContainer userAccountStateContainer, 
+            INavigationBroker navigationBroker)
         {
             this.storageBroker = storageBroker;
             this.apiBroker = apiBroker;
             this.loggingBroker = loggingBroker;
             this.userAccountStateContainer = userAccountStateContainer;
+            this.navigationBroker = navigationBroker;
         }
 
         public async ValueTask InitializeAsync()
@@ -84,7 +93,33 @@ namespace FMFT.Web.Client.Services.Accounts
 
         public async ValueTask HandleFacebookLoginAsync(FacebookLoginResult result)
         {
-            loggingBroker.LogDebug("hello from accountservice");
+            if (result.Status != FacebookLoginStatus.Connected)
+            {
+                loggingBroker.LogDebug($"The facebook result status is: {result.Status}");
+                return;
+            }
+            
+            if (userAccountStateContainer.IsAuthenticated)
+            {
+                loggingBroker.LogDebug("The user is already authenticated, ignoring facebook login");
+                return;
+            }
+
+            FacebookLoginRequest request = new()
+            {
+                AccessToken = result.AuthResponse.AccessToken
+            };
+
+            APIResponse<AccountToken> response = await apiBroker.PostAccountFacebookLoginAsync(request);
+
+            if (!response.IsSuccessfull)
+            {
+                loggingBroker.LogDebug(response.Error.Title);
+                return;
+            }
+
+            await LoginAsync(response.Object);
+            navigationBroker.NavigateTo("/");
         }
     }
 }

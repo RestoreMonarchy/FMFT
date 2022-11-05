@@ -35,5 +35,12 @@ namespace FMFT.Web.Client.Brokers.APIs
 
             return await PostAsync(url, request);
         }
+
+        public async ValueTask<APIResponse<AccountToken>> PostAccountFacebookLoginAsync(FacebookLoginRequest request)
+        {
+            string url = $"{AccountsRelativeUrl}/login/facebook";
+
+            return await PostAsync<AccountToken>(url, request);
+        }
     }
 }

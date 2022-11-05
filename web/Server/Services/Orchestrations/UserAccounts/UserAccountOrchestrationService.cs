@@ -3,6 +3,7 @@ using FMFT.Web.Server.Brokers.Loggings;
 using FMFT.Web.Server.Models.Accounts;
 using FMFT.Web.Server.Models.Accounts.Params;
 using FMFT.Web.Server.Models.Emails.Params;
+using FMFT.Web.Server.Models.Facebooks;
 using FMFT.Web.Server.Models.UserAccounts;
 using FMFT.Web.Server.Models.UserAccounts.Exceptions;
 using FMFT.Web.Server.Models.UserAccounts.Requests;
@@ -11,6 +12,7 @@ using FMFT.Web.Server.Models.Users.Params;
 using FMFT.Web.Server.Models.Users.Requests;
 using FMFT.Web.Server.Services.Foundations.Accounts;
 using FMFT.Web.Server.Services.Foundations.Emails;
+using FMFT.Web.Server.Services.Foundations.Facebooks;
 using FMFT.Web.Server.Services.Foundations.Users;
 using FMFT.Web.Shared.Enums;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -22,15 +24,18 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
         private readonly IAccountService accountService;
         private readonly IUserService userService;
         private readonly IEmailService emailService;
+        private readonly IFacebookService facebookService;
 
         public UserAccountOrchestrationService(
             IAccountService accountService,
             IUserService userService,
-            IEmailService emailService)
+            IEmailService emailService,
+            IFacebookService facebookService)
         {
             this.accountService = accountService;
             this.userService = userService;
             this.emailService = emailService;
+            this.facebookService = facebookService;
         }
 
         public async ValueTask<IEnumerable<User>> RetrieveAllUsersAsync()
@@ -69,11 +74,40 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
             Account account = MapUserToAccount(user);
             CreateTokenParams @createTokenParams = new()
             {
-                Account = account,
-                AuthenticationMethod = null
+                Account = account
             };
 
             return await accountService.CreateTokenAsync(@createTokenParams);
+        }
+
+        public async ValueTask<AccountToken> LoginWithFacebookAsync(LoginWithFacebookRequest request)
+        {
+            FacebookUser facebookUser = await facebookService.GetFacebookUserAsync(request.AccessToken);
+
+            User user = await userService.RetrieveUserByLoginAsync("Facebook", facebookUser.Id);
+
+            if (user == null)
+            {
+                RegisterUserWithLoginParams @registerUserWithLoginParams = new()
+                {
+                    Email = facebookUser.Email,
+                    FirstName = facebookUser.FirstName,
+                    LastName = facebookUser.LastName,
+                    Role = UserRole.Guest,
+                    IsEmailConfirmed = true,
+                    ProviderName = "Facebook",
+                    ProviderKey = facebookUser.Id                    
+                };
+
+                user = await userService.RegisterUserWithLoginAsync(@registerUserWithLoginParams);
+            }
+
+            CreateTokenParams @createTokenParams = new()
+            {
+                Account = MapUserToAccount(user)
+            };
+
+            return await accountService.CreateTokenAsync(createTokenParams);
         }
 
         public async ValueTask<AccountToken> SignInWithPasswordAsync(SignInWithPasswordRequest request)
@@ -83,8 +117,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
 
             CreateTokenParams @params = new()
             {
-                Account = account,
-                AuthenticationMethod = null
+                Account = account
             };
 
             return await accountService.CreateTokenAsync(@params);

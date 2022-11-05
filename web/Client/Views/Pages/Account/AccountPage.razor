@@ -59,6 +59,21 @@
                                 @UserAccountState.UserAccount.Role
                             </span>
                         </div>
+                        <div class="list-group-item">
+                            <span class="fw-bold">
+                                Logowanie hasłem:
+                            </span>
+                            <span>
+                                <Condition Evaluation="UserAccountState.UserAccount.IsPasswordEnabled">
+                                    <Match>
+                                        Włączone
+                                    </Match>
+                                    <NotMatch>
+                                        Wyłączone
+                                    </NotMatch>
+                                </Condition>                                
+                            </span>
+                        </div>
                         <a class="list-group-item list-group-item-action" href="/account/reservations">
                             <i class="fa-solid fa-arrow-right-long me-1"></i>
                             Przejdź do rezerwacji
@@ -72,8 +87,8 @@
                         Zarządzaj kontem
                     </div>
                     <div class="list-group list-group-flush">
-                        <button class="list-group-item list-group-item-action list-group-item-info" href="javascript:void(0)" 
-                            @onclick="HandleChangePasswordDialogAsync">
+                        <button class="list-group-item list-group-item-action list-group-item-info" href="javascript:void(0)"
+                                @onclick="HandleChangePasswordDialogAsync" disabled="@(!UserAccountState.UserAccount.IsPasswordEnabled)">
                             <i class="fa-solid fa-key me-1"></i>
                             Zmień hasło
                         </button>

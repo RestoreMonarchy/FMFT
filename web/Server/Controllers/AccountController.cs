@@ -108,5 +108,25 @@ namespace FMFT.Web.Server.Controllers
                 return Unauthorized(exception);
             }
         }
+
+        [HttpPost("login/facebook")]
+        public async ValueTask<IActionResult> LoginFacebook([FromBody] LoginWithFacebookRequest request)
+        {
+            try
+            {
+                AccountToken accountToken = await userAccountService.LoginWithFacebookAsync(request);
+
+                return Ok(accountToken);
+            } catch (AlreadyExistsEmailUserException exception)
+            {
+                return Conflict(exception);
+            } catch (AlreadyExistsUserExternalLoginException exception)
+            {
+                return Conflict(exception);
+            } catch (RegisterUserWithLoginValidationException exception)
+            {
+                return BadRequest(exception);
+            }            
+        }
     }
 }

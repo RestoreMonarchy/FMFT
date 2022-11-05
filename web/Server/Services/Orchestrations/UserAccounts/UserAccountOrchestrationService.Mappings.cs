@@ -24,6 +24,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
                 LastName = user.LastName,
                 Role = user.Role,
                 CultureId = user.CultureId,
+                IsPasswordEnabled = user.IsPasswordEnabled,
                 IsEmailConfirmed = user.IsEmailConfirmed,
                 CreateDate = user.CreateDate
             };
