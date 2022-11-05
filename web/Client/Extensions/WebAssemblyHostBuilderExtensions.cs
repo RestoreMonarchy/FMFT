@@ -2,6 +2,7 @@
 using BlazorPanzoom;
 using FMFT.Extensions.Blazor.Facebook.Extensions;
 using FMFT.Web.Client.Brokers.APIs;
+using FMFT.Web.Client.Brokers.ExternalLogins;
 using FMFT.Web.Client.Brokers.JSRuntimes;
 using FMFT.Web.Client.Brokers.Loggings;
 using FMFT.Web.Client.Brokers.MemoryStorages;
@@ -36,6 +37,10 @@ namespace FMFT.Web.Client.Extensions
             builder.Services.AddFacebook(options => 
             {
                 options.AppId = builder.Configuration["FacebookAppId"];
+                options.OnLogin = async (services, result) =>
+                {
+                    await services.GetRequiredService<IAccountService>().HandleFacebookLoginAsync(result);
+                };
             });
         }
 
@@ -52,6 +57,7 @@ namespace FMFT.Web.Client.Extensions
             builder.Services.AddScoped<ILoggingBroker, LoggingBroker>();
             builder.Services.AddScoped<IMemoryStorageBroker, MemoryStorageBroker>();
             builder.Services.AddScoped<IStorageBroker, StorageBroker>();
+            builder.Services.AddScoped<IExternalLoginBroker, ExternalLoginBroker>();
         }
 
         public static void AddServices(this WebAssemblyHostBuilder builder)

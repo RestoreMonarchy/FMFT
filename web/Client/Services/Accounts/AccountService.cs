@@ -1,4 +1,5 @@
-﻿using FMFT.Web.Client.Brokers.APIs;
+﻿using FMFT.Extensions.Blazor.Facebook.Models.Results;
+using FMFT.Web.Client.Brokers.APIs;
 using FMFT.Web.Client.Brokers.Loggings;
 using FMFT.Web.Client.Brokers.MemoryStorages;
 using FMFT.Web.Client.Brokers.Storages;
@@ -79,6 +80,11 @@ namespace FMFT.Web.Client.Services.Accounts
                 loggingBroker.LogDebug($"Failed to retrieve the user account from the web api");
                 return false;
             }
+        }
+
+        public async ValueTask HandleFacebookLoginAsync(FacebookLoginResult result)
+        {
+            loggingBroker.LogDebug("hello from accountservice");
         }
     }
 }

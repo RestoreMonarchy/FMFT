@@ -1,4 +1,5 @@
-﻿using FMFT.Extensions.Blazor.Facebook.Models;
+﻿using FMFT.Extensions.Blazor.Facebook.Models.Options;
+using FMFT.Extensions.Blazor.Facebook.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FMFT.Extensions.Blazor.Facebook.Extensions
@@ -8,7 +9,8 @@ namespace FMFT.Extensions.Blazor.Facebook.Extensions
         public static IServiceCollection AddFacebook(this IServiceCollection services, Action<FacebookOptions> options)
         {
             services.Configure(options);
-            services.AddSingleton<FacebookService>();
+
+            services.AddScoped<FacebookService>();
 
             return services;
         }
