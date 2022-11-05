@@ -8,6 +8,7 @@ using FMFT.Web.Server.Models.UserAccounts;
 using FMFT.Web.Server.Models.UserAccounts.Exceptions;
 using FMFT.Web.Server.Models.UserAccounts.Requests;
 using FMFT.Web.Server.Models.Users;
+using FMFT.Web.Server.Models.Users.Exceptions;
 using FMFT.Web.Server.Models.Users.Params;
 using FMFT.Web.Server.Models.Users.Requests;
 using FMFT.Web.Server.Services.Foundations.Accounts;
@@ -84,9 +85,12 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
         {
             FacebookUser facebookUser = await facebookService.GetFacebookUserAsync(request.AccessToken);
 
-            User user = await userService.RetrieveUserByLoginAsync("Facebook", facebookUser.Id);
+            User user = null;
 
-            if (user == null)
+            try
+            {
+                user = await userService.RetrieveUserByLoginAsync("Facebook", facebookUser.Id);
+            } catch (NotFoundUserException)
             {
                 RegisterUserWithLoginParams @registerUserWithLoginParams = new()
                 {
@@ -96,7 +100,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
                     Role = UserRole.Guest,
                     IsEmailConfirmed = true,
                     ProviderName = "Facebook",
-                    ProviderKey = facebookUser.Id                    
+                    ProviderKey = facebookUser.Id
                 };
 
                 user = await userService.RegisterUserWithLoginAsync(@registerUserWithLoginParams);
