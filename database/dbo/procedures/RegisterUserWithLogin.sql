@@ -4,6 +4,7 @@
 	@LastName NVARCHAR(255),
 	@Role VARCHAR(255),
 	@ProviderName NVARCHAR(255),
+	@FriendlyName NVARCHAR(255),
 	@ProviderKey NVARCHAR(255),
 	@IsEmailConfirmed BIT
 AS
@@ -28,8 +29,8 @@ BEGIN
 
 	DECLARE @userId INT = SCOPE_IDENTITY();
 
-	INSERT INTO dbo.UserLogins (UserId, ProviderName, ProviderKey)
-	VALUES (@userId, @ProviderName, @ProviderKey);
+	INSERT INTO dbo.UserLogins (UserId, ProviderName, ProviderKey, FriendlyName)
+	VALUES (@userId, @ProviderName, @ProviderKey, @FriendlyName);
 
 	COMMIT;
 

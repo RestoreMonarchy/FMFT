@@ -16,25 +16,36 @@ namespace FMFT.Web.Client.Brokers.APIs
         public async ValueTask<APIResponse<User>> GetUserByIdAsync(int userId)
         {
             string url = $"{UsersRelativeUrl}/{userId}";
+
             return await GetAsync<User>(url);
         }
 
         public async ValueTask<APIResponse> UpdateUserRoleAsync(UpdateUserRoleRequest request)
         {
             string url = $"{UsersRelativeUrl}/{request.UserId}/updaterole";
+
             return await PostAsync(url, request);
         }
 
         public async ValueTask<APIResponse> UpdateUserCultureAsync(UpdateUserCultureRequest request)
         {
             string url = $"{UsersRelativeUrl}/{request.UserId}/updateculture";
+
             return await PostAsync(url, request);
         }
 
         public async ValueTask<APIResponse> ConfirmUserEmailAsync(ConfirmUserEmailRequest request)
         {
             string url = $"{UsersRelativeUrl}/{request.UserId}/confirmemail/{request.ConfirmSecret}";
+
             return await PostAsync(url, null);
+        }
+
+        public async ValueTask<APIResponse<List<UserLogin>>> GetUserLoginsByUserIdAsync(int userId)
+        {
+            string url = $"{UsersRelativeUrl}/{userId}/logins";
+
+            return await GetAsync<List<UserLogin>>(url);
         }
     }
 }

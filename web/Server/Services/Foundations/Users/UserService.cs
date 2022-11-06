@@ -79,6 +79,11 @@ namespace FMFT.Web.Server.Services.Foundations.Users
             return user;
         }
 
+        public async ValueTask<IEnumerable<UserLogin>> RetrieveUserLoginsByUserIdAsync(int userId)
+        {
+            return await storageBroker.SelectUserLoginsByUserIdAsync(userId);
+        }
+
         public async ValueTask<User> RegisterUserWithPasswordAsync(RegisterUserWithPasswordRequest request)
         {
             ValidateRegisterUserWithPasswordParams(request);

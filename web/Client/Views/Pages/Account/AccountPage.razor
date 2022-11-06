@@ -1,4 +1,5 @@
 ﻿@page "/account"
+@using FMFT.Extensions.Blazor.Bases.Conditions
 @using FMFT.Extensions.Blazor.Bases.Dialogs
 
 <Breadcrumb>
@@ -82,18 +83,57 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="card">
+                <div class="card mb-3">
                     <div class="card-header">
                         Zarządzaj kontem
                     </div>
                     <div class="list-group list-group-flush">
-                        <button class="list-group-item list-group-item-action list-group-item-info" href="javascript:void(0)"
+                        <button class="list-group-item list-group-item-action list-group-item-info"
                                 @onclick="HandleChangePasswordDialogAsync" disabled="@(!UserAccountState.UserAccount.IsPasswordEnabled)">
                             <i class="fa-solid fa-key me-1"></i>
                             Zmień hasło
                         </button>
                     </div>
                 </div>
+                <Condition Evaluation="UserAccountState.UserAccount.IsPasswordEnabled">
+                    <NotMatch>
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                Lista zewnętrznych loginów
+                            </div>
+                            <LoadingView @ref="LoginsLoadingView">
+                                <Condition Evaluation="UserLoginsResponse.IsSuccessfull">
+                                    <Match>
+                                        <div class="list-group list-group-flush">
+                                            <Iterations Items="UserLogins">
+                                                <div class="list-group-item">
+                                                    <Switch Expression="context.ProviderName">
+                                                        <SwitchCase Value="@("Facebook")">
+                                                            <i class="fa-brands fa-facebook-f me-1"></i>
+                                                        </SwitchCase>
+                                                        <SwitchCase Value="@("Google")">
+                                                            <i class="fa-brands fa-google me-1"></i>
+                                                        </SwitchCase>
+                                                        <DefaultSwitchCase>
+                                                            <i class="fa-solid fa-question me-1"></i>
+                                                        </DefaultSwitchCase>
+                                                    </Switch>
+                                                    @context.FriendlyName
+                                                </div>
+                                            </Iterations>                                            
+                                        </div>
+                                    </Match>
+                                    <NotMatch>
+                                        <ErrorResponseAlert />                                        
+                                    </NotMatch>
+                                </Condition>
+                            </LoadingView>
+
+                            
+                        </div>
+                    </NotMatch>
+                </Condition>
+                
             </div>
         </div>
         

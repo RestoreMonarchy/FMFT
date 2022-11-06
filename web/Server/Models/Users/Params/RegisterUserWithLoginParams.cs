@@ -10,6 +10,7 @@ namespace FMFT.Web.Server.Models.Users.Params
         public UserRole Role { get; set; }
         public string ProviderName { get; set; }
         public string ProviderKey { get; set; }
+        public string FriendlyName { get; set; }
         public bool IsEmailConfirmed { get; set; }
     }
 }

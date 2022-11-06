@@ -85,8 +85,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
         {
             FacebookUser facebookUser = await facebookService.GetFacebookUserAsync(request.AccessToken);
 
-            User user = null;
-
+            User user;
             try
             {
                 user = await userService.RetrieveUserByLoginAsync("Facebook", facebookUser.Id);
@@ -100,7 +99,8 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
                     Role = UserRole.Guest,
                     IsEmailConfirmed = true,
                     ProviderName = "Facebook",
-                    ProviderKey = facebookUser.Id
+                    ProviderKey = facebookUser.Id,
+                    FriendlyName = facebookUser.Email
                 };
 
                 user = await userService.RegisterUserWithLoginAsync(@registerUserWithLoginParams);
@@ -125,6 +125,13 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
             };
 
             return await accountService.CreateTokenAsync(@params);
+        }
+
+        public async ValueTask<IEnumerable<UserLogin>> RetrieveUserLoginsByUserIdAsync(int userId)
+        {
+            await AuthorizeUserAccountByUserIdOrRolesAsync(userId, UserRole.Admin);
+
+            return await userService.RetrieveUserLoginsByUserIdAsync(userId);
         }
 
         public async ValueTask ChangeUserAccountPasswordAsync(ChangeUserAccountPasswordRequest request)

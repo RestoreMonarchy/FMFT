@@ -3,6 +3,7 @@
 	UserId INT NOT NULL CONSTRAINT FK_UserLogins_UserId FOREIGN KEY REFERENCES dbo.Users(Id),
 	ProviderName NVARCHAR(255) NOT NULL,
 	ProviderKey NVARCHAR(255) NOT NULL,
+	FriendlyName NVARCHAR(255) NULL,
 	CreateDate DATETIME2(0) NOT NULL CONSTRAINT DF_UserLogins_CreateDate DEFAULT SYSDATETIME(),
 	CONSTRAINT PK_UserLogins PRIMARY KEY (ProviderName, ProviderKey)
 )

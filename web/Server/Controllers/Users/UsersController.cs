@@ -158,5 +158,22 @@ namespace FMFT.Web.Server.Controllers.Users
                 return BadRequest(exception);
             }
         }
+
+        [HttpGet("{userId}/logins")]
+        public async ValueTask<IActionResult> UserLogins(int userId)
+        {
+            try
+            {
+                IEnumerable<UserLogin> logins = await userAccountOrchestrationService.RetrieveUserLoginsByUserIdAsync(userId);
+
+                return Ok(logins);
+            } catch (NotAuthorizedAccountException exception)
+            {
+                return Forbidden(exception);
+            } catch (NotAuthenticatedAccountException exception)
+            {
+                return Unauthorized(exception);
+            }
+        }
     }
 }

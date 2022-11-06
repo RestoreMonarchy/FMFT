@@ -12,6 +12,7 @@ namespace FMFT.Web.Server.Brokers.Storages
         ValueTask<IEnumerable<User>> SelectAllUsersAsync();
         ValueTask<User> SelectUserByEmailAsync(string email);
         ValueTask<User> SelectUserByLoginAsync(string providerName, string providerKey);
+        ValueTask<IEnumerable<UserLogin>> SelectUserLoginsByUserIdAsync(int userId);
         ValueTask<StoredProcedureResult> UpdateUserRoleAsync(UpdateUserRoleParams @params);
         ValueTask<StoredProcedureResult> UpdateUserCultureAsync(UpdateUserCultureParams @params);
         ValueTask<StoredProcedureResult> UpdateUserPasswordAsync(UpdateUserPasswordParams @params);

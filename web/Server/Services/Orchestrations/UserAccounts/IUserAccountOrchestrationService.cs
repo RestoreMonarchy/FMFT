@@ -22,6 +22,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
         ValueTask<IEnumerable<User>> RetrieveAllUsersAsync();
         ValueTask<UserAccount> RetrieveUserAccountAsync();
         ValueTask<User> RetrieveUserByIdAsync(int userId);
+        ValueTask<IEnumerable<UserLogin>> RetrieveUserLoginsByUserIdAsync(int userId);
         ValueTask<AccountToken> SignInWithPasswordAsync(SignInWithPasswordRequest request);
         ValueTask UpdateUserCultureAsync(UpdateUserCultureParams @params);
         ValueTask UpdateUserPasswordAsync(UpdateUserPasswordRequest request);
