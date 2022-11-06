@@ -1,15 +1,12 @@
 ﻿using FMFT.Extensions.Blazor.Facebook.Models.Results;
 using FMFT.Web.Client.Brokers.APIs;
 using FMFT.Web.Client.Brokers.Loggings;
-using FMFT.Web.Client.Brokers.MemoryStorages;
 using FMFT.Web.Client.Brokers.Navigations;
 using FMFT.Web.Client.Brokers.Storages;
 using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Accounts;
 using FMFT.Web.Client.Models.API.Accounts.Requests;
 using FMFT.Web.Client.StateContainers.UserAccounts;
-using Microsoft.JSInterop;
-using System.IO.IsolatedStorage;
 
 namespace FMFT.Web.Client.Services.Accounts
 {
@@ -22,10 +19,10 @@ namespace FMFT.Web.Client.Services.Accounts
         private readonly INavigationBroker navigationBroker;
 
         public AccountService(
-            IAPIBroker apiBroker, 
-            IStorageBroker storageBroker, 
-            ILoggingBroker loggingBroker, 
-            IUserAccountStateContainer userAccountStateContainer, 
+            IAPIBroker apiBroker,
+            IStorageBroker storageBroker,
+            ILoggingBroker loggingBroker,
+            IUserAccountStateContainer userAccountStateContainer,
             INavigationBroker navigationBroker)
         {
             this.storageBroker = storageBroker;
@@ -114,6 +111,7 @@ namespace FMFT.Web.Client.Services.Accounts
 
             if (!response.IsSuccessfull)
             {
+                navigationBroker.NavigateTo($"account/externalloginerror/{response.Error.Code}");
                 loggingBroker.LogDebug(response.Error.Title);
                 return;
             }

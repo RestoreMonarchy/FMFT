@@ -1,0 +1,53 @@
+﻿@page "/account/externalloginerror/{ErrorCode}"
+
+@using FMFT.Extensions.Blazor.Bases.Conditions
+@using FMFT.Web.Client.Views.Shared.Components.Bodies
+@using FMFT.Web.Client.Views.Shared.Layouts.Account
+
+@layout AccountLayout
+
+<AccountLayoutBody>
+
+    <Header>
+        Błąd logowania
+    </Header>
+
+    <Content>
+        
+        <div class="mb-2">
+            <Switch Expression="ErrorCode">
+                <SwitchCase Value="@("ERR006")">
+                    Użytkownik z tym adresem email już istnieje
+                </SwitchCase>
+                <SwitchCase Value="@("ERR007")">
+                    Wystąpił błąd! Spróbuj ponownie
+                </SwitchCase>
+                <SwitchCase Value="@("ERR004")">
+                    Twoje ustawienia nie pozwolają nam na uzyskanie adresu email, który jest wymagany.<br />
+                    Zmień ustawienia i spróbuj ponownie
+                </SwitchCase>
+                <DefaultSwitchCase>
+                    <RedirectAlert Link="/account/login" />
+                </DefaultSwitchCase>
+            </Switch>
+        </div>        
+        
+        <div>
+            <a class="btn btn-secondary" href="/account/login">
+                Spróbuj ponownie
+            </a>
+        </div>
+    </Content>
+
+    <Footer>
+        <div class="d-flex">
+            <div class="small">
+                <a href="/account/login" class="text-decoration-none">
+                    <i class="fa-solid fa-rotate-left"></i> Powrót do strony logowania
+                </a>
+            </div>
+        </div>
+    </Footer>
+
+</AccountLayoutBody>
+
