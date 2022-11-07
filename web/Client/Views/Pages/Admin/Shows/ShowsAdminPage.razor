@@ -36,7 +36,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <Iterations Items="Shows">
+                    <Iterations Items="Shows.OrderByDescending(x => x.Id)">
                         <tr>
                             <th>
                                 @context.Id
