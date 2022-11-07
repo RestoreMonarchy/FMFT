@@ -17,21 +17,21 @@
                 <NavbarItem Location="/shows" StartsWith="true">
                     Przedstawienia
                 </NavbarItem>
-                @*<CustomAuthorizeView Role="UserRole.Admin">
+                <CustomAuthorizeView Role="UserRole.Admin">
                     <Authorized>
                         <NavbarDropdown Value="Admin">
                             <NavbarDropdownItem Location="/admin/shows">
                                 Shows
                             </NavbarDropdownItem>
-                            <NavbarDropdownItem Location="/admin/reservations">
+                            @*<NavbarDropdownItem Location="/admin/reservations">
                                 Reservations
                             </NavbarDropdownItem>
                             <NavbarDropdownItem Location="/admin/users">
                                 Users
-                            </NavbarDropdownItem>
+                            </NavbarDropdownItem>*@
                         </NavbarDropdown>
                     </Authorized>
-                </CustomAuthorizeView>*@
+                </CustomAuthorizeView>
             </ul>
             <ul class="navbar-nav">
                 <CustomAuthorizeView>

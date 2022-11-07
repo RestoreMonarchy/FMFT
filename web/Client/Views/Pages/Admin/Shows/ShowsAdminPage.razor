@@ -1,0 +1,61 @@
+﻿@page "/admin/shows"
+@using FMFT.Extensions.Blazor.DataTables
+@using FMFT.Web.Client.Models.API.Shows
+
+<Breadcrumb>
+    <BreadcrumbItem Link="/">
+        Home
+    </BreadcrumbItem>
+    <BreadcrumbItem>
+        Admin
+    </BreadcrumbItem>
+    <BreadcrumbItem Active="true">
+        Shows
+    </BreadcrumbItem>
+</Breadcrumb>
+
+<LoadingView @ref="LoadingView">
+    <Condition Evaluation="ShowsResponse.IsSuccessfull">
+        <Match>
+
+            <table class="table table-striped caption-top">
+                <caption>
+                    Lista przedstawień
+                </caption>
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">
+                            ID
+                        </th>
+                        <th scope="col">
+                            Nazwa
+                        </th>
+                        <th scope="col" class="d-none d-sm-table-cell">
+                            Data
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <Iterations Items="Shows">
+                        <tr>
+                            <th>
+                                @context.Id
+                            </th>
+                            <td>
+                                <a href="/admin/shows/@context.Id" class="text-decoration-none">
+                                    @context.Name
+                                </a>                                
+                            </td>
+                            <td class="d-none d-sm-table-cell">
+                                @context.StartDateTime.LocalDateTime.ToShortDateString()
+                            </td>
+                        </tr>
+                    </Iterations>
+                </tbody>
+            </table>
+        </Match>
+        <NotMatch>
+            <ErrorResponseAlert />
+        </NotMatch>
+    </Condition>
+</LoadingView>
