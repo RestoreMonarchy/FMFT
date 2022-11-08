@@ -2,7 +2,6 @@
 
 <EditForm Model="Model" OnValidSubmit="SubmitAsync">
     <DataAnnotationsValidator />
-
     <div class="card-body">
         <div class="mb-2">
             <span class="form-label">Nazwa</span>
@@ -12,7 +11,7 @@
             </div>
         </div>
         <div class="mb-2">
-        <span class="form-label">Auditorium</span>
+        <span class="form-label">Sala</span>
             <InputSelect @bind-Value="Model.AudotiriumId" class="form-select" disabled="@(hasReservedSeats || isPastStartDate)">
                 <Iterations Items="Audutoriums" Context="auditorium">
                     <option value="@auditorium.Id">
@@ -60,6 +59,24 @@
                 </div>
             </div>
         </div>
+
+        <AlertGroupBase @ref="AlertGroup">
+            <AlertBase @ref="AuditoriumNotFoundAlert" Class="alert-danger mt-3">
+                Wybrana sala nie istnieje
+            </AlertBase>
+            <AlertBase @ref="ShowNotFoundAlert" Class="alert-danger mt-3">
+                Przedstawienie nie istnieje
+            </AlertBase>
+            <AlertBase @ref="ValidationAlert" Class="alert-danger mt-3">
+                Wystąpił problem z walidacją
+            </AlertBase>
+            <AlertBase @ref="ErrorAlert" Class="alert-danger mt-3">
+                Błąd: @Response.Error.Title
+            </AlertBase>
+            <AlertBase @ref="SuccessAlert" Class="alert-success mt-3">
+                Pomyślnie zapisano zmiany dla przedstawienia!
+            </AlertBase>
+        </AlertGroupBase>
     </div>
     <div class="card-footer">
         <div class="d-flex align-items-center">
@@ -72,7 +89,6 @@
             <div class="ms-auto small text-muted">
                 Dodano: @Show.CreateDate.LocalDateTime.ToString("g")
             </div>
-        </div>
-        
-    </div>
+        </div>        
+    </div>    
 </EditForm>

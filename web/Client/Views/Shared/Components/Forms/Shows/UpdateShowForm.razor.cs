@@ -1,4 +1,5 @@
-﻿using FMFT.Extensions.Blazor.Bases.Buttons;
+﻿using FMFT.Extensions.Blazor.Bases.Alerts;
+using FMFT.Extensions.Blazor.Bases.Buttons;
 using FMFT.Extensions.Blazor.Bases.Forms;
 using FMFT.Extensions.Blazor.Bases.Inputs;
 using FMFT.Web.Client.Models.API;
@@ -18,9 +19,16 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Shows
         [Parameter]
         public List<Auditorium> Audutoriums { get; set; }
 
-
+        public AlertGroupBase AlertGroup { get; set; }
+        public AlertBase AuditoriumNotFoundAlert { get; set; }
+        public AlertBase ShowNotFoundAlert { get; set; }
+        public AlertBase ValidationAlert { get; set; }
+        public AlertBase ErrorAlert { get; set; }
+        public AlertBase SuccessAlert { get; set; }
 
         public SubmitButtonBase SubmitButton { get; set; }
+
+        public APIResponse<Show> Response { get; set; }
 
         public UpdateShowFormModel Model { get; set; } = new();
 
@@ -48,6 +56,7 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Shows
 
         private async Task SubmitAsync()
         {
+            AlertGroup.HideAll();
             SubmitButton.StartSpinning();
 
             DateTime startDateTime = Model.StartDate.ToDateTime(Model.StartTime);
@@ -65,8 +74,30 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Shows
 
             Console.WriteLine(request.Id);
 
-            APIResponse<Show> response = await APIBroker.UpdateShowAsync(request);
-            Console.WriteLine($"response status code: {response.StatusCode}");
+            Response = await APIBroker.UpdateShowAsync(request);
+
+            if (Response.IsSuccessful)
+            {
+                SuccessAlert.Show();
+            } else
+            {
+                switch (Response.Error.Code)
+                {
+                    case "ERR014":
+                        ShowNotFoundAlert.Show();
+                        break;
+                    case "ERR020":
+                        AuditoriumNotFoundAlert.Show();
+                        break;
+                    case "ERR013":
+                        ValidationAlert.Show();
+                        break;
+                    default:
+                        ErrorAlert.Show();
+                        break;
+                }
+            }
+
             SubmitButton.StopSpinning();
         }
     }
