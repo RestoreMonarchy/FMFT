@@ -6,6 +6,10 @@
 }
 
 function HideNavbarCollapse(navbarContent) {
-    const bsCollapse = new bootstrap.Collapse(navbarContent)
+    const bsCollapse = new bootstrap.Collapse(navbarContent,
+        {
+            toggle: false
+        })
+
     bsCollapse.hide();
 }
