@@ -9,10 +9,6 @@ namespace FMFT.Web.Server.Services.Foundations.Shows
         {
             UpdateShowValidationException validationException = new();
 
-            if (validationBroker.IsStringInvalid(@params.PublicId, true, 255))
-            {
-                validationException.UpsertDataList("PublicId", "PublicId is required and must not excceed 255 characters");
-            }
             if (validationBroker.IsStringInvalid(@params.Name, true, 255))
             {
                 validationException.UpsertDataList("Name", "Name is required and must not exceed 255 characters");
@@ -42,10 +38,6 @@ namespace FMFT.Web.Server.Services.Foundations.Shows
         {
             AddShowValidationException validationException = new();
 
-            if (validationBroker.IsStringInvalid(@params.PublicId, true, 255))
-            {
-                validationException.UpsertDataList("PublicId", "PublicId is required");
-            }
             if (validationBroker.IsStringInvalid(@params.Name, true, 255))
             {
                 validationException.UpsertDataList("Name", "Name is required");

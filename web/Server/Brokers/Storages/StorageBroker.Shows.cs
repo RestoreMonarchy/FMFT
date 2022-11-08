@@ -78,16 +78,47 @@ namespace FMFT.Web.Server.Brokers.Storages
             return shows;
         }
 
+        private async ValueTask<StoredProcedureResult<Show>> QueryShowStoredProcedureAsync(string procedureName, dynamic parameters)
+        {
+            Show show = null;
+
+            DynamicParameters p = StoredProcedureParameters(parameters);
+
+            await connection.QueryAsync<Show, ShowReservedSeat, Show>(procedureName, (s, rs) =>
+            {
+                if (show == null)
+                {
+                    show = s;
+                    show.ReservedSeats = new();
+                }
+
+                if (rs != null)
+                {
+                    show.ReservedSeats.Add(rs);
+                }
+
+                return null;
+            }, p, commandType: CommandType.StoredProcedure, splitOn: "SeatId");
+
+            StoredProcedureResult<Show> result = new();
+            result.Result = show;
+            result.ReturnValue = GetReturnValue(p);
+
+            return result;
+        }
+
         public async ValueTask<StoredProcedureResult<Show>> ExecuteAddShowAsync(AddShowParams @params)
         {
             const string sql = "dbo.AddShow";
-            return await QueryStoredProcedureSingleResultAsync<Show>(sql, @params);
+
+            return await QueryShowStoredProcedureAsync(sql, @params);
         }
 
         public async ValueTask<StoredProcedureResult<Show>> ExecuteUpdateShowAsync(UpdateShowParams @params)
         {
             const string sql = "dbo.UpdateShow";
-            return await QueryStoredProcedureSingleResultAsync<Show>(sql, @params);
+
+            return await QueryShowStoredProcedureAsync(sql, @params);
         }
     }
 }

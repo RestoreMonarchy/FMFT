@@ -1,5 +1,4 @@
 ﻿CREATE PROCEDURE dbo.AddShow
-	@PublicId VARCHAR(255),
 	@Name NVARCHAR(255),
 	@Description NVARCHAR(4000),
 	@StartDateTime DATETIME2,
@@ -18,8 +17,8 @@ BEGIN
 
 	IF @ret = 0
 	BEGIN
-		INSERT INTO dbo.Shows (PublicId, Name, Description, StartDateTime, EndDateTime, AuditoriumId)
-		VALUES (@PublicId, @Name, @Description, @StartDateTime, @EndDateTime, @AuditoriumId);
+		INSERT INTO dbo.Shows (Name, Description, StartDateTime, EndDateTime, AuditoriumId)
+		VALUES (@Name, @Description, @StartDateTime, @EndDateTime, @AuditoriumId);
 
 		SET @id = SCOPE_IDENTITY();
 	END;

@@ -1,0 +1,65 @@
+﻿@*<AlertGroupBase @ref="AlertGroup">
+    <AlertBase @ref="AuditoriumNotFoundAlert" Class="alert-danger">
+        Selected auditorium does not exist
+    </AlertBase>
+    <AlertBase @ref="ShowNotFoundAlert" Class="alert-danger">
+        The show you are trying to update does not exist
+    </AlertBase>
+    <AlertBase @ref="ValidationAlert" Class="alert-danger">
+        Validation error
+    </AlertBase>
+    <AlertBase @ref="SuccessAlert" Class="alert-success">
+        Successfully updated the show!
+    </AlertBase>
+</AlertGroupBase>*@
+
+<EditForm Model="Model" OnValidSubmit="SubmitAsync">
+    <DataAnnotationsValidator />
+
+    <div class="mb-2">
+        <span class="form-label">Nazwa</span>
+        <InputText class="form-control" @bind-Value="Model.Name" />
+        <div class="text-danger">
+            <ValidationMessage For="@(() => Model.Name)" />
+        </div>        
+    </div>
+    @*<div class="mb-2">
+        <span class="form-label">Auditorium</span>
+        <SelectBase @bind-Value="Params.AuditoriumId">
+            <Iterations Items="Auditoriums">
+                <option value="@context.Id">
+                    @context.Name
+                </option>
+            </Iterations>
+        </SelectBase>
+        <ValidationMessageBase Key="@nameof(Params.AuditoriumId)" />
+    </div>*@
+    <div class="mb-2">
+        <span class="form-label">Opis</span>
+        <TextareaInputBase class="form-control" @bind-Value="Model.Description" />
+        <div class="text-danger">
+            <ValidationMessage For="@(() => Model.Description)" />
+        </div>        
+    </div>
+    <div class="row">
+        <div class="col-md mb-2">
+            <span class="form-label">Data rozpoczęcia</span>
+            <input type="date" class="form-control" @bind="Model.StartDate" min="@calendarStartDate" max="@calendarEndDate" disabled="@isPastStartDate" />
+            <div class="text-danger">
+                <ValidationMessage For="@(() => Model.StartDate)" />
+            </div>            
+        </div>
+        <div class="col-md mb-2">
+            <span class="form-label">Godzina rozpoczęcia</span>
+            <input type="time" class="form-control" @bind="Model.StartTime" disabled="@isPastStartDate" />
+            <div class="text-danger">
+                <ValidationMessage For="@(() => Model.StartTime)" />
+            </div>            
+        </div>
+    </div>
+    <div>
+        <button type="submit" Class="btn btn-primary">
+            Zapisz Zmiany
+        </button>
+    </div>
+</EditForm>

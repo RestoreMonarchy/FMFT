@@ -1,6 +1,5 @@
 ﻿CREATE PROCEDURE dbo.UpdateShow
 	@Id INT,
-	@PublicId VARCHAR(255),
 	@Name NVARCHAR(255),
 	@Description NVARCHAR(4000),
 	@StartDateTime DATETIME2,
@@ -23,7 +22,6 @@ BEGIN
 	BEGIN
 		UPDATE dbo.Shows 
 		SET 
-			PublicId = @PublicId,
 			[Name] = @Name, 
 			[Description] = @Description, 
 			StartDateTime = @StartDateTime, 

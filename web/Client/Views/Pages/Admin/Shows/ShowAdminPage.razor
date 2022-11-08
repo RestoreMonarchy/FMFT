@@ -1,0 +1,37 @@
+﻿@page "/admin/shows/{ShowId:int}"
+@using FMFT.Extensions.Blazor.DataTables
+@using FMFT.Web.Client.Models.API.Shows
+@using FMFT.Web.Client.Views.Shared.Components.Forms.Shows
+
+<Breadcrumb>
+    <BreadcrumbItem Link="/">
+        Home
+    </BreadcrumbItem>
+    <BreadcrumbItem>
+        Admin
+    </BreadcrumbItem>
+    <BreadcrumbItem Link="/admin/shows">
+        Shows
+    </BreadcrumbItem>
+    <BreadcrumbItem Active="true">
+        @ShowName
+    </BreadcrumbItem>
+</Breadcrumb>
+
+<LoadingView @ref="LoadingView">
+    <Condition Evaluation="ShowResponse.IsSuccessfull">
+        <Match>
+            <div class="card">
+                <div class="card-header">
+                    Podstawowe informacje
+                </div>
+                <div class="card-body">
+                    <UpdateShowForm Show="Show" />
+                </div>
+            </div>            
+        </Match>
+        <NotMatch>
+            <ErrorResponseAlert />
+        </NotMatch>
+    </Condition>
+</LoadingView>
