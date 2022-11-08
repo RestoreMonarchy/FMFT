@@ -62,7 +62,7 @@ namespace FMFT.Web.Client.Views.Pages.Account
 
             ChangePasswordResponse = await APIBroker.PostAccountChangePasswordAsync(ChangePasswordRequest);
 
-            if (!ChangePasswordResponse.IsSuccessfull)
+            if (!ChangePasswordResponse.IsSuccessful)
             {
                 switch (ChangePasswordResponse.Error.Code)
                 {

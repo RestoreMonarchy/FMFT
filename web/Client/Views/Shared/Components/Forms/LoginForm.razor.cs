@@ -34,7 +34,7 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms
 
             APIResponse<AccountToken> response = await APIBroker.PostAccountLoginAsync(Model);
 
-            if (response.IsSuccessfull)
+            if (response.IsSuccessful)
             {
                 SuccessAlert.Show();
                 await OnSuccess.InvokeAsync(response.Object);

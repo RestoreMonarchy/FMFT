@@ -10,6 +10,7 @@ namespace FMFT.Web.Server.Models.Shows
         public DateTimeOffset StartDateTime { get; set; }
         public DateTimeOffset EndDateTime { get; set; }
         public int AuditoriumId { get; set; }
+        public DateTimeOffset CreateDate { get; set; }
 
         public List<ShowReservedSeat> ReservedSeats { get; set; }
     }

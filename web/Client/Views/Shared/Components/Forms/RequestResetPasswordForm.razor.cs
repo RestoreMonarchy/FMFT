@@ -31,7 +31,7 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms
 
             APIResponse response = await APIBroker.CreateResetPasswordRequestAsync(Model);
 
-            if (response.IsSuccessfull)
+            if (response.IsSuccessful)
             {
                 Model = new();
                 SuccessAlert.Show();

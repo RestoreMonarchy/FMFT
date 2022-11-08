@@ -75,7 +75,7 @@ namespace FMFT.Web.Client.Services.Accounts
         private async ValueTask<bool> UpdateUserAccountAsync()
         {
             APIResponse<UserAccount> response = await apiBroker.GetUserAccountAsync();
-            if (response.IsSuccessfull)
+            if (response.IsSuccessful)
             {
                 userAccountStateContainer.UserAccount = response.Object;
                 loggingBroker.LogDebug($"Successfully downloaded user account {response.Object.Email}");
@@ -109,7 +109,7 @@ namespace FMFT.Web.Client.Services.Accounts
 
             APIResponse<AccountToken> response = await apiBroker.PostAccountFacebookLoginAsync(request);
 
-            if (!response.IsSuccessfull)
+            if (!response.IsSuccessful)
             {
                 navigationBroker.NavigateTo($"account/externalloginerror/{response.Error.Code}");
                 loggingBroker.LogDebug(response.Error.Title);

@@ -19,15 +19,13 @@
 </Breadcrumb>
 
 <LoadingView @ref="LoadingView">
-    <Condition Evaluation="ShowResponse.IsSuccessfull">
+    <Condition Evaluation="ShowResponse.IsSuccessful && AuditoriumsResponse.IsSuccessful">
         <Match>
             <div class="card">
                 <div class="card-header">
                     Podstawowe informacje
                 </div>
-                <div class="card-body">
-                    <UpdateShowForm Show="Show" />
-                </div>
+                <UpdateShowForm Show="Show" Audutoriums="Auditoriums" />
             </div>            
         </Match>
         <NotMatch>

@@ -102,7 +102,7 @@
                                 Lista zewnętrznych loginów
                             </div>
                             <LoadingView @ref="LoginsLoadingView">
-                                <Condition Evaluation="UserLoginsResponse.IsSuccessfull">
+                                <Condition Evaluation="UserLoginsResponse.IsSuccessful">
                                     <Match>
                                         <div class="list-group list-group-flush">
                                             <Iterations Items="UserLogins">

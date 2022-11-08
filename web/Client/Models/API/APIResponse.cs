@@ -12,13 +12,13 @@ namespace FMFT.Web.Client.Models.API
         }
 
         public HttpStatusCode StatusCode => HttpMessage.StatusCode;
-        public bool IsSuccessfull => HttpMessage.IsSuccessStatusCode;
+        public bool IsSuccessful => HttpMessage.IsSuccessStatusCode;
         public HttpResponseMessage HttpMessage { get; private set; }
         public APIError Error { get; private set; }
 
         public virtual async ValueTask ReadContentAsync()
         {
-            if (!IsSuccessfull)
+            if (!IsSuccessful)
             {
                 await ReadErrorAsync();
             }
@@ -39,7 +39,7 @@ namespace FMFT.Web.Client.Models.API
 
         public override async ValueTask ReadContentAsync()
         {
-            if (IsSuccessfull)
+            if (IsSuccessful)
             {
                 await ReadObjectAsync();
             } else

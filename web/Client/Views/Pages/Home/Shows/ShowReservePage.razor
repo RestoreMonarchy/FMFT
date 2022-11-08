@@ -20,7 +20,7 @@
 </Breadcrumb>
 
 <LoadingView @ref="LoadingView">
-    <Condition Evaluation="ShowResponse.IsSuccessfull && AuditoriumResponse.IsSuccessfull">
+    <Condition Evaluation="ShowResponse.IsSuccessful && AuditoriumResponse.IsSuccessful">
         <Match>
 
             <Stepper @ref="Stepper">
@@ -127,7 +127,7 @@
                 <StepperItem Text="Podsumowanie"> 
                     <div class="card">
                         <div class="card-body">
-                            <Condition Evaluation="ReservationResponse.IsSuccessfull">
+                            <Condition Evaluation="ReservationResponse.IsSuccessful">
                                 <Match>
                                     <div class="mb-2">
                                         <div class="fs-5 text-success">

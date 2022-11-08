@@ -42,7 +42,7 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms
 
             APIResponse response = await APIBroker.ResetPasswordAsync(request);
 
-            if (response.IsSuccessfull)
+            if (response.IsSuccessful)
             {
                 NewPassword = null;
                 SuccessAlert.Show();
