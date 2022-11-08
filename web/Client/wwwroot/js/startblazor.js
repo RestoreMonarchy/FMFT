@@ -27,8 +27,8 @@
                     const percentLoaded = 10 + parseInt((loadedCount * 90.0) / totalCount);
                     const progressbar = document.getElementById('progressbar');
                     progressbar.style.width = percentLoaded + '%';
-                    const progressLabel = document.getElementById('progressLabel');
-                    progressLabel.innerText = `Pobieranie ${loadedCount}/${totalCount}`;
+                    //const progressLabel = document.getElementById('progressLabel');
+                    //progressLabel.innerText = `Pobieranie ${loadedCount}/${totalCount}`;
                 });
 
                 return fetchResources;
