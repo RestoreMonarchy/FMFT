@@ -1,0 +1,33 @@
+﻿@page "/admin/shows/new"
+@using FMFT.Web.Client.Views.Shared.Components.Forms.Shows
+
+<Breadcrumb>
+    <BreadcrumbItem Link="/">
+        Home
+    </BreadcrumbItem>
+    <BreadcrumbItem>
+        Admin
+    </BreadcrumbItem>
+    <BreadcrumbItem Link="/admin/shows">
+        Przedstawienia
+    </BreadcrumbItem>
+    <BreadcrumbItem Active="true">
+        Dodaj
+    </BreadcrumbItem>
+</Breadcrumb>
+
+<LoadingView @ref="LoadingView">
+    <Condition Evaluation="AuditoriumsResponse.IsSuccessful">
+        <Match>
+            <div class="card">
+                <div class="card-header">
+                    Dodaj przedstawienie
+                </div>
+                <AddShowForm Auditoriums="Auditoriums" />
+            </div>            
+        </Match>
+        <NotMatch>
+            <ErrorResponseAlert />
+        </NotMatch>
+    </Condition>
+</LoadingView>

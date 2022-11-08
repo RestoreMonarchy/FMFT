@@ -17,11 +17,18 @@
 <LoadingView @ref="LoadingView">
     <Condition Evaluation="ShowsResponse.IsSuccessful">
         <Match>
-
-            <table class="table table-striped caption-top">
-                <caption>
+            <div class="mb-2 d-flex align-items-center">
+                <div class="text-muted">
                     Lista przedstawień
-                </caption>
+                </div>
+                <div class="ms-auto">
+                    <a href="/admin/shows/new" class="btn btn-primary btn-sm">
+                        <i class="fa-solid fa-plus me-1"></i>
+                        Dodaj nowe
+                    </a>
+                </div>
+            </div>
+            <table class="table table-striped">
                 <thead class="table-dark">
                     <tr>
                         <th scope="col">

@@ -1,7 +1,6 @@
-﻿
-
-<EditForm Model="Model" OnValidSubmit="SubmitAsync">
+﻿<EditForm Model="Model" OnValidSubmit="SubmitAsync">
     <DataAnnotationsValidator />
+
     <div class="card-body">
         <div class="mb-2">
             <span class="form-label">Nazwa</span>
@@ -11,14 +10,18 @@
             </div>
         </div>
         <div class="mb-2">
-        <span class="form-label">Sala</span>
-            <InputSelect @bind-Value="Model.AudotiriumId" class="form-select" disabled="@(hasReservedSeats || isPastStartDate)">
-                <Iterations Items="Audutoriums" Context="auditorium">
+            <span class="form-label">Sala</span>
+            <InputSelect @bind-Value="Model.AudotiriumId" class="form-select">
+                <option>Wybierz salę</option>
+                <Iterations Items="Auditoriums" Context="auditorium">
                     <option value="@auditorium.Id">
                         @auditorium.Name (@auditorium.Seats.Count miejsc)
                     </option>
                 </Iterations>
             </InputSelect>
+            <div class="text-danger">
+                <ValidationMessage For="@(() => Model.AudotiriumId)" />
+            </div>
         </div>
         <div class="mb-2">
             <span class="form-label">Opis</span>
@@ -30,42 +33,35 @@
         <div class="row">
             <div class="col-md mb-2">
                 <span class="form-label">Data rozpoczęcia</span>
-                <input type="date" class="form-control" @bind="Model.StartDate" min="@calendarStartDate" max="@calendarEndDate" disabled="@isPastStartDate" />
+                <input type="date" class="form-control" @bind="Model.StartDate" min="@calendarStartDate" max="@calendarEndDate" />
                 <div class="text-danger">
                     <ValidationMessage For="@(() => Model.StartDate)" />
                 </div>
             </div>
             <div class="col-md mb-2">
                 <span class="form-label">Godzina rozpoczęcia</span>
-                <input type="time" class="form-control" @bind="Model.StartTime" disabled="@isPastStartDate" />
+                <input type="time" class="form-control" @bind="Model.StartTime" />
                 <div class="text-danger">
                     <ValidationMessage For="@(() => Model.StartTime)" />
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md mb-2">
-                <span class="form-label">Data zakończenia</span>
-                <input type="date" class="form-control" @bind="Model.EndDate" min="@calendarStartDate" max="@calendarEndDate" disabled="@isPastEndDate" />
-                <div class="text-danger">
-                    <ValidationMessage For="@(() => Model.EndDate)" />
-                </div>
+        <div class="mb-2">
+            <span class="form-label">Czas trwania</span>
+            <input type="range" class="form-range" @bind="Model.DurationMinutes" @bind:event="oninput" min="1" max="300" />
+            <div class="input-group" style="max-width: 300px;">
+                <input type="number" @bind="Model.DurationMinutes" @bind:event="oninput" class="form-control" placeholder="Username" />
+                <span class="input-group-text">minut</span>
             </div>
-            <div class="col-md mb-2">
-                <span class="form-label">Godzina zakończenia</span>
-                <input type="time" class="form-control" @bind="Model.EndTime" disabled="@isPastEndDate" />
-                <div class="text-danger">
-                    <ValidationMessage For="@(() => Model.EndTime)" />
-                </div>
+
+            <div class="text-danger">
+                <ValidationMessage For="@(() => Model.DurationMinutes)" />
             </div>
         </div>
 
         <AlertGroupBase @ref="AlertGroup">
             <AlertBase @ref="AuditoriumNotFoundAlert" Class="alert-danger mt-3">
                 Wybrana sala nie istnieje
-            </AlertBase>
-            <AlertBase @ref="ShowNotFoundAlert" Class="alert-danger mt-3">
-                Przedstawienie nie istnieje
             </AlertBase>
             <AlertBase @ref="ValidationAlert" Class="alert-danger mt-3">
                 Wystąpił problem z walidacją
@@ -74,7 +70,7 @@
                 Błąd: @Response.Error.Title
             </AlertBase>
             <AlertBase @ref="SuccessAlert" Class="alert-success mt-3">
-                Pomyślnie zapisano zmiany dla przedstawienia!
+                Pomyślnie dodano przedstawienie!
             </AlertBase>
         </AlertGroupBase>
     </div>
@@ -82,13 +78,10 @@
         <div class="d-flex align-items-center">
             <div>
                 <SubmitButtonBase @ref="SubmitButton" Class="btn btn-sm btn-primary">
-                    <i class="fa-regular fa-floppy-disk me-1"></i>
-                    Zapisz zmiany
+                    <i class="fa-solid fa-plus me-1"></i>
+                    Dodaj przedstawienie
                 </SubmitButtonBase>
-            </div>            
-            <div class="ms-auto small text-muted">
-                Dodano: @Show.CreateDate.LocalDateTime.ToString("g")
             </div>
-        </div>        
-    </div>    
+        </div>
+    </div>
 </EditForm>

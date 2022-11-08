@@ -10,16 +10,13 @@ using Microsoft.AspNetCore.Components;
 
 namespace FMFT.Web.Client.Views.Shared.Components.Forms.Shows
 {
-    public partial class UpdateShowForm
+    public partial class AddShowForm
     {
         [Parameter]
-        public Show Show { get; set; }
-        [Parameter]
-        public List<Auditorium> Audutoriums { get; set; }
+        public List<Auditorium> Auditoriums { get; set; }
 
         public AlertGroupBase AlertGroup { get; set; }
         public AlertBase AuditoriumNotFoundAlert { get; set; }
-        public AlertBase ShowNotFoundAlert { get; set; }
         public AlertBase ValidationAlert { get; set; }
         public AlertBase ErrorAlert { get; set; }
         public AlertBase SuccessAlert { get; set; }
@@ -28,64 +25,50 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Shows
 
         public APIResponse<Show> Response { get; set; }
 
-        public UpdateShowFormModel Model { get; set; } = new();
+        public Show Show => Response.Object;
+
+        public AddShowFormModel Model { get; set; } = new()
+        {
+            StartDate = DateOnly.FromDateTime(DateTime.Now),
+            StartTime = TimeOnly.MinValue,
+            DurationMinutes = 120
+        };
 
         private string calendarStartDate = DateTime.Now.TruncateToMinuteStart().Date.ToString("yyyy-MM-dd");
         private string calendarEndDate = DateTime.Now.AddMonths(12).TruncateToMinuteStart().ToString("yyyy-MM-dd");
 
-        private bool isPastStartDate => Show.StartDateTime.UtcDateTime < DateTime.UtcNow;
-        private bool isPastEndDate => Show.EndDateTime.UtcDateTime < DateTime.UtcNow;
-
-        private bool hasReservedSeats => Show.ReservedSeats.Any();
-
-        protected override void OnParametersSet()
-        {
-            Model = new()
-            {
-                Name = Show.Name,
-                Description = Show.Description,
-                StartDate = DateOnly.FromDateTime(Show.StartDateTime.LocalDateTime),
-                StartTime = TimeOnly.FromDateTime(Show.StartDateTime.LocalDateTime),
-                EndDate = DateOnly.FromDateTime(Show.EndDateTime.LocalDateTime),
-                EndTime = TimeOnly.FromDateTime(Show.EndDateTime.LocalDateTime),
-                AudotiriumId = Show.AuditoriumId
-            };
-        }
-
-        private async Task SubmitAsync()
+        public async Task SubmitAsync()
         {
             AlertGroup.HideAll();
             SubmitButton.StartSpinning();
 
             DateTime startDateTime = Model.StartDate.ToDateTime(Model.StartTime);
-            DateTime endDateTime = Model.EndDate.ToDateTime(Model.EndTime);
+            DateTime endDateTime = startDateTime.AddMinutes(Model.DurationMinutes);
 
-            UpdateShowRequest request = new()
+            AddShowRequest request = new()
             {
-                Id = Show.Id,
                 Name = Model.Name,
                 Description = Model.Description,
                 StartDateTime = new DateTimeOffset(startDateTime),
                 EndDateTime = new DateTimeOffset(endDateTime),
-                AuditoriumId = Model.AudotiriumId
+                AuditoriumId = Model.AudotiriumId.Value
             };
 
-            Response = await APIBroker.UpdateShowAsync(request);
+            Response = await APIBroker.AddShowAsync(request);
 
             if (Response.IsSuccessful)
             {
                 SuccessAlert.Show();
-            } else
+                NavigationBroker.NavigateTo($"/admin/shows/{Show.Id}");
+            }
+            else
             {
                 switch (Response.Error.Code)
                 {
-                    case "ERR014":
-                        ShowNotFoundAlert.Show();
-                        break;
                     case "ERR020":
                         AuditoriumNotFoundAlert.Show();
                         break;
-                    case "ERR013":
+                    case "ERR012":
                         ValidationAlert.Show();
                         break;
                     default:
