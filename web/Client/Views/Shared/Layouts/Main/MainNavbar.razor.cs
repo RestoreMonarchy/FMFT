@@ -9,13 +9,16 @@ namespace FMFT.Web.Client.Views.Shared.Layouts.Main
     {
         public LogoutDialog LogoutDialog { get; set; }
 
+        public ElementReference NavbarContent { get; set; }
+
         protected override void OnInitialized()
         {
             NavigationBroker.OnLocationChange += HandleLocationChanged;
         }
 
-        public void HandleLocationChanged(LocationChangedEventArgs args)
+        public async void HandleLocationChanged(LocationChangedEventArgs args)
         {
+            await JSRuntimeBroker.HideNavbarCollapseAsync(NavbarContent);
             StateHasChanged();
         }
 

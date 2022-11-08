@@ -1,10 +1,10 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="mb-3">
+<div class="fixed-top">
     <MainNavbar />
 </div>
 
-<div class="container mb-5">
+<div class="container mb-5" style="margin-top: 70px;">
     <ErrorBoundary @ref="ErrorBoundary">
         <ChildContent>
             @Body

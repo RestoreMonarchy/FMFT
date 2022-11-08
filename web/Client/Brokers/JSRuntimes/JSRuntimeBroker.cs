@@ -1,4 +1,5 @@
-﻿using Microsoft.JSInterop;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace FMFT.Web.Client.Brokers.JSRuntimes
 {
@@ -24,6 +25,11 @@ namespace FMFT.Web.Client.Brokers.JSRuntimes
         public async ValueTask ClearModalBackdropAsync()
         {
             await jsRuntime.InvokeVoidAsync("ClearModalBackdrop");
+        }
+
+        public async ValueTask HideNavbarCollapseAsync(ElementReference navbarContent)
+        {
+            await jsRuntime.InvokeVoidAsync("HideNavbarCollapse", navbarContent);
         }
 
         public async ValueTask InitializeFacebookAsync()
