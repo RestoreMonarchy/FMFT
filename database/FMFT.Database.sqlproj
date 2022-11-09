@@ -86,6 +86,7 @@
     <Build Include="dbo\procedures\CreateResetPasswordRequest.sql" />
     <Build Include="dbo\procedures\ResetPassword.sql" />
     <Build Include="dbo\procedures\GetUserByLogin.sql" />
+    <Build Include="dbo\tables\Media.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FMFT.Database.publish.xml" />

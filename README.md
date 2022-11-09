@@ -29,3 +29,5 @@ ERR026 | This reset password request has already been used
 ERR027 | This reset password request has expired
 ERR028 | You have reached the limit of reset password requests. Try again later
 ERR029 | Reset password request not found
+ERR030 | Media not found
+ERR031 | The media file is too large

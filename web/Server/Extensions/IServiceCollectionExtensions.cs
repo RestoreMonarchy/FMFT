@@ -1,5 +1,6 @@
 ﻿using FMFT.Emails.Server.Extensions;
 using FMFT.Web.Server.Brokers.Authentications;
+using FMFT.Web.Server.Brokers.Converts;
 using FMFT.Web.Server.Brokers.Emails;
 using FMFT.Web.Server.Brokers.Encryptions;
 using FMFT.Web.Server.Brokers.Facebooks;
@@ -10,16 +11,19 @@ using FMFT.Web.Server.Brokers.Validations;
 using FMFT.Web.Server.Models.Options;
 using FMFT.Web.Server.Models.Options.Authentications;
 using FMFT.Web.Server.Models.Options.Emails;
+using FMFT.Web.Server.Services.Coordinations.Medias;
 using FMFT.Web.Server.Services.Coordinations.Reservations;
 using FMFT.Web.Server.Services.Foundations.Accounts;
 using FMFT.Web.Server.Services.Foundations.Auditoriums;
 using FMFT.Web.Server.Services.Foundations.Emails;
 using FMFT.Web.Server.Services.Foundations.Facebooks;
+using FMFT.Web.Server.Services.Foundations.Medias;
 using FMFT.Web.Server.Services.Foundations.Reservations;
 using FMFT.Web.Server.Services.Foundations.ResetPasswordRequests;
 using FMFT.Web.Server.Services.Foundations.Seats;
 using FMFT.Web.Server.Services.Foundations.Shows;
 using FMFT.Web.Server.Services.Foundations.Users;
+using FMFT.Web.Server.Services.Orchestrations.Medias;
 using FMFT.Web.Server.Services.Orchestrations.Reservations;
 using FMFT.Web.Server.Services.Orchestrations.ResetPasswordRequests;
 using FMFT.Web.Server.Services.Orchestrations.Shows;
@@ -60,6 +64,7 @@ namespace FMFT.Web.Server.Extensions
             services.AddScoped<ILoggingBroker, LoggingBroker>();
             services.AddScoped<IEmailBroker, EmailBroker>();
             services.AddScoped<IFacebookBroker, FacebookBroker>();
+            services.AddScoped<IConvertBroker, ConvertBroker>();
 
             return services;
         }
@@ -75,6 +80,7 @@ namespace FMFT.Web.Server.Extensions
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<IResetPasswordRequestService, ResetPasswordRequestService>();
             services.AddTransient<IFacebookService, FacebookService>();
+            services.AddTransient<IMediaService, MediaService>();
 
             return services;
         }
@@ -85,6 +91,7 @@ namespace FMFT.Web.Server.Extensions
             services.AddTransient<IUserAccountOrchestrationService, UserAccountOrchestrationService>();
             services.AddTransient<IShowOrchestrationService, ShowOrchestrationService>();
             services.AddTransient<IResetPasswordRequestOrchestrationService, ResetPasswordRequestOrchestrationService>();
+            services.AddTransient<IMediaOrchestrationService, MediaOrchestrationService>();
 
             return services;
         }
@@ -92,6 +99,7 @@ namespace FMFT.Web.Server.Extensions
         public static IServiceCollection AddCoordinations(this IServiceCollection services)
         {
             services.AddTransient<IReservationCoordinationService, ReservationCoordinationService>();
+            services.AddTransient<IMediaCoordinationService, MediaCoordinationService>();
 
             return services;
         }
