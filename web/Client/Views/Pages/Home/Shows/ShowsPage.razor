@@ -16,8 +16,10 @@
                 <Iterations Items="Shows.Where(x => x.StartDateTime > DateTime.Now)">
                     <div class="col-md-6 g-md-2 col-lg-4">
                         <div class="card mb-3">
-                            <div class="show-thumbnail" style="@GetShowThumbnailStyle(context)">
-                            </div>
+                            <a class="text-decoration-none" href="/shows/@context.Id">
+                                <div class="show-thumbnail" style="@GetShowThumbnailStyle(context)">
+                                </div>
+                            </a>
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item">
                                     @context.Name <br />
