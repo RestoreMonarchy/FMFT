@@ -12,27 +12,32 @@
 <LoadingView @ref="LoadingView">
     <Condition Evaluation="ShowsResponse.IsSuccessful">
         <Match>
-            <Iterations Items="ShowsResponse.Object">
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">@context.Name</h5>
-                        <p class="card-text">@context.Description</p>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item text-muted">
-                            @context.StartDateTime.LocalDateTime.ToString("f")
-                        </li>
-                    </ul>
-                    <div class="card-body">
-                        <a href="/shows/@context.Id" class="btn btn-sm btn-secondary">
-                            <i class="fa-solid fa-info me-1"></i> Szczegóły
-                        </a>
-                        <a href="/shows/@context.Id/reserve" class="btn btn-sm btn-primary">
-                            <i class="fa-solid fa-ticket me-1"></i> Zarezerwuj
-                        </a>
-                    </div>
-                </div>
-            </Iterations>
+            <div class="row">
+                <Iterations Items="Shows.Where(x => x.StartDateTime > DateTime.Now)">
+                    <div class="col-md-6 g-md-2 col-lg-4">
+                        <div class="card mb-3">
+                            <div class="show-thumbnail" style="@GetShowThumbnailStyle(context)">
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    @context.Name <br />
+                                    <small class="text-muted">
+                                        @context.StartDateTime.LocalDateTime.ToString("f")
+                                    </small>
+                                </li>
+                                <li class="list-group-item">
+                                    <a href="/shows/@context.Id" class="btn btn-sm btn-secondary">
+                                        <i class="fa-solid fa-info me-1"></i> Szczegóły
+                                    </a>
+                                    <a href="/shows/@context.Id/reserve" class="btn btn-sm btn-primary">
+                                        <i class="fa-solid fa-ticket me-1"></i> Zarezerwuj
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>                    
+                </Iterations>
+            </div>
         </Match>
         <NotMatch>
             <ErrorResponseAlert />
