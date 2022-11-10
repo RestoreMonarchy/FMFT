@@ -48,7 +48,7 @@
         </div>
         <div class="mb-2">
             <span class="form-label">Czas trwania</span>
-            <input type="range" class="form-range" @bind="Model.DurationMinutes" @bind:event="oninput" min="1" max="300" />
+            <input type="range" class="form-range" @bind="Model.DurationMinutes" @bind:event="oninput" min="5" max="300" step="5" />
             <div class="input-group" style="max-width: 300px;">
                 <input type="number" @bind="Model.DurationMinutes" @bind:event="oninput" class="form-control" placeholder="Username" />
                 <span class="input-group-text">minut</span>

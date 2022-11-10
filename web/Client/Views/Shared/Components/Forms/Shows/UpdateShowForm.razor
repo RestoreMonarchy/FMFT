@@ -30,13 +30,15 @@
         </div>
         <div class="mb-2">
             <span class="form-label">Miniaturka</span>
-            <InputMediaFile Class="form-control" @bind-Value="Model.MediaId" />
-            <div class="text-danger">
-                <ValidationMessage For="@(() => Model.MediaId)" />
+            <div class="input-group">
+                <InputMediaFile Class="form-control" @bind-Value="Model.ThumbnailMediaId" Accept="image/png, image/gif, image/jpeg" />
+                <button type="button" class="btn btn-outline-secondary" @onclick="ShowMediaAsync" disabled="@(!Model.ThumbnailMediaId.HasValue)">
+                    <i class="fa-solid fa-eye"></i>
+                </button>
             </div>
-            <a href="javascript:void(0)" class="text-decoration-none" @onclick="ShowMediaAsync">
-                Pokaż podgląd
-            </a>
+            <div class="text-danger">
+                <ValidationMessage For="@(() => Model.ThumbnailMediaId)" />
+            </div>
         </div>
         <div class="row">
             <div class="col-md mb-2">

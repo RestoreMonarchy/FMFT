@@ -21,5 +21,7 @@ namespace FMFT.Web.Client.Models.Forms.Shows
 
         [Required(ErrorMessage = "Musisz wybrać salę dla tego przedstawienia")]
         public int? AudotiriumId { get; set; }
+
+        public Guid? ThumbnailMediaId { get; set; }
     }
 }

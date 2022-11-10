@@ -51,7 +51,8 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Shows
                 Description = Model.Description,
                 StartDateTime = new DateTimeOffset(startDateTime),
                 EndDateTime = new DateTimeOffset(endDateTime),
-                AuditoriumId = Model.AudotiriumId.Value
+                AuditoriumId = Model.AudotiriumId.Value,
+                ThumbnailMediaId = Model.ThumbnailMediaId
             };
 
             Response = await APIBroker.AddShowAsync(request);

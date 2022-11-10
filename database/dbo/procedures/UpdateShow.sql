@@ -4,7 +4,8 @@
 	@Description NVARCHAR(4000),
 	@StartDateTime DATETIME2,
 	@EndDateTime DATETIME2,
-	@AuditoriumId INT
+	@AuditoriumId INT,
+	@ThumbnailMediaId UNIQUEIDENTIFIER
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -26,7 +27,8 @@ BEGIN
 			[Description] = @Description, 
 			StartDateTime = @StartDateTime, 
 			EndDateTime = @EndDateTime, 
-			AuditoriumId = @AuditoriumId
+			AuditoriumId = @AuditoriumId,
+			ThumbnailMediaId = @ThumbnailMediaId
 		WHERE Id = @Id;
 	END;
 

@@ -3,7 +3,8 @@
 	@Description NVARCHAR(4000),
 	@StartDateTime DATETIME2,
 	@EndDateTime DATETIME2,
-	@AuditoriumId INT
+	@AuditoriumId INT,
+	@ThumbnailMediaId UNIQUEIDENTIFIER
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -17,8 +18,8 @@ BEGIN
 
 	IF @ret = 0
 	BEGIN
-		INSERT INTO dbo.Shows (Name, Description, StartDateTime, EndDateTime, AuditoriumId)
-		VALUES (@Name, @Description, @StartDateTime, @EndDateTime, @AuditoriumId);
+		INSERT INTO dbo.Shows (Name, Description, StartDateTime, EndDateTime, AuditoriumId, ThumbnailMediaId)
+		VALUES (@Name, @Description, @StartDateTime, @EndDateTime, @AuditoriumId, @ThumbnailMediaId);
 
 		SET @id = SCOPE_IDENTITY();
 	END;

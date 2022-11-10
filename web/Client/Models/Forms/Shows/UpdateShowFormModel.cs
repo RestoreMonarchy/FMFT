@@ -21,8 +21,8 @@ namespace FMFT.Web.Client.Models.Forms.Shows
         [Required(ErrorMessage = "To pole jest wymagane")]
         public TimeOnly EndTime { get; set; }
 
-        public int AudotiriumId { get; set; }
-        [Required(ErrorMessage = "Zdjęcie miniaturki jest wymagane")]
-        public Guid? MediaId { get; set; }
+        [Required(ErrorMessage = "Musisz wybrać salę dla tego przedstawienia")]
+        public int? AudotiriumId { get; set; }
+        public Guid? ThumbnailMediaId { get; set; }
     }
 }

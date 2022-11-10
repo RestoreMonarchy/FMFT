@@ -7,5 +7,6 @@
         public DateTimeOffset StartDateTime { get; set; }
         public DateTimeOffset EndDateTime { get; set; }
         public int AuditoriumId { get; set; }
+        public Guid? ThumbnailMediaId { get; set; }
     }
 }

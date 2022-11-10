@@ -10,5 +10,6 @@ namespace FMFT.Web.Client.Models.API.Shows.Requests
         public DateTimeOffset StartDateTime { get; set; }
         public DateTimeOffset EndDateTime { get; set; }
         public int AuditoriumId { get; set; }
+        public Guid? ThumbnailMediaId { get; set; }
     }
 }
