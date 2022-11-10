@@ -12,11 +12,11 @@ namespace FMFT.Web.Client.Brokers.APIs
             return await GetAsync(url);
         }
 
-        public async ValueTask<APIResponse> UploadMediaAsync(IBrowserFile browserFile)
+        public async ValueTask<APIResponse> UploadMediaAsync(APIRequestFile apiRequestFile)
         {
             const string url = "media/upload";
 
-            return await PostFileAsync(url, browserFile);
+            return await PostFileAsync(url, apiRequestFile);
         }
     }
 }

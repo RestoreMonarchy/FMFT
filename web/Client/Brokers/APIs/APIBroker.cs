@@ -82,14 +82,14 @@ namespace FMFT.Web.Client.Brokers.APIs
             return apiResponse;
         }
 
-        private async ValueTask<APIResponse> PostFileAsync(string relativeUrl, IBrowserFile browserFile)
+        private async ValueTask<APIResponse> PostFileAsync(string relativeUrl, APIRequestFile apiRequestFile)
         {
             using MultipartFormDataContent content = new();
 
-            StreamContent fileContent = new(browserFile.OpenReadStream(5 * 1024 * 1024));
-            fileContent.Headers.ContentType = new MediaTypeHeaderValue(browserFile.ContentType);
+            StreamContent fileContent = new(apiRequestFile.FileStream);
+            fileContent.Headers.ContentType = new MediaTypeHeaderValue(apiRequestFile.ContentType);
             string fileContentName = "formfile";
-            string fileName = browserFile.Name;
+            string fileName = apiRequestFile.FileName;
 
             content.Add(fileContent, fileContentName, fileName);
 

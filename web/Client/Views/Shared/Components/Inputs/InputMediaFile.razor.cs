@@ -36,7 +36,7 @@ namespace FMFT.Web.Client.Views.Shared.Components.Inputs
                 await UpdateValueAsync(Value);
             }
 
-            APIResponse response = await APIBroker.UploadMediaAsync(browserFile);
+            APIResponse response = await MediaService.UploadBrowserFileAsync(browserFile);
             response.ThrowIfError();
             Media media = await response.ReadFromJsonAsync<Media>();
             await UpdateValueAsync(media.Id);

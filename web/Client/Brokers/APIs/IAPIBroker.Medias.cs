@@ -6,6 +6,6 @@ namespace FMFT.Web.Client.Brokers.APIs
     public partial interface IAPIBroker
     {
         ValueTask<APIResponse> GetAllMediaAsync();
-        ValueTask<APIResponse> UploadMediaAsync(IBrowserFile browserFile);
+        ValueTask<APIResponse> UploadMediaAsync(APIRequestFile requestFile);
     }
 }
