@@ -2,7 +2,6 @@
 using FMFT.Web.Server.Models.Medias;
 using FMFT.Web.Server.Models.Medias.DTOs;
 using FMFT.Web.Server.Models.Users;
-using Microsoft.AspNetCore.Mvc.Localization;
 
 namespace FMFT.Web.Server.Brokers.Storages
 {
@@ -11,8 +10,7 @@ namespace FMFT.Web.Server.Brokers.Storages
         public async ValueTask<IEnumerable<Media>> SelectAllMediaAsync()
         {
             const string sql = "SELECT m.*, u.* FROM dbo.Media m " +
-                "LEFT JOIN dbo.Users u ON u.Id = m.UserId " +
-                "WHERE m.Id = @mediaId;";
+                "LEFT JOIN dbo.Users u ON u.Id = m.UserId;";
 
             return await connection.QueryAsync<Media, UserInfo, Media>(sql, (m, u) =>
             {
@@ -21,7 +19,7 @@ namespace FMFT.Web.Server.Brokers.Storages
                     m.User = u;
                 }
 
-                return null;
+                return m;
             });
         }
 
