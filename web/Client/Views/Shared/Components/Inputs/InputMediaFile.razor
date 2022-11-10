@@ -1,1 +1,10 @@
-﻿<InputFile OnChange="HandleOnFileChangeAsync" type="file" class="@Class" accept="@Accept" />
+﻿@using FMFT.Web.Client.Views.Shared.Components.Dialogs
+
+<div class="input-group">
+    <InputFile OnChange="HandleOnFileChangeAsync" type="file" class="@Class" accept="@Accept" />
+    <button type="button" class="btn btn-outline-secondary" @onclick="ShowMediaAsync" disabled="@(!Value.HasValue)">
+        <i class="fa-solid fa-eye"></i>
+    </button>
+</div>
+
+<MediaPreviewDialog @ref="MediaPreviewDialog" />

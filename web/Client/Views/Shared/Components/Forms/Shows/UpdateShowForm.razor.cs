@@ -24,7 +24,6 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Shows
         public AlertBase ValidationAlert { get; set; }
         public AlertBase ErrorAlert { get; set; }
         public AlertBase SuccessAlert { get; set; }
-        public MediaPreviewDialog MediaPreviewDialog { get; set; }
 
         public SubmitButtonBase SubmitButton { get; set; }
 
@@ -99,11 +98,6 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Shows
             }
 
             SubmitButton.StopSpinning();
-        }
-
-        private async Task ShowMediaAsync()
-        {
-            await MediaPreviewDialog.ShowMediaAsync(Model.ThumbnailMediaId);
         }
     }
 }

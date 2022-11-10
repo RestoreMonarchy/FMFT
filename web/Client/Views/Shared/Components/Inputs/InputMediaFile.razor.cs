@@ -1,7 +1,9 @@
 ﻿using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Medias;
+using FMFT.Web.Client.Views.Shared.Components.Dialogs;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using System.Reflection;
 
 namespace FMFT.Web.Client.Views.Shared.Components.Inputs
 {
@@ -16,6 +18,8 @@ namespace FMFT.Web.Client.Views.Shared.Components.Inputs
         public Guid? Value { get; set; }
         [Parameter]
         public EventCallback<Guid?> ValueChanged { get; set; }
+
+        public MediaPreviewDialog MediaPreviewDialog { get; set; }
 
         private async Task HandleOnFileChangeAsync(InputFileChangeEventArgs args)
         {
@@ -42,6 +46,11 @@ namespace FMFT.Web.Client.Views.Shared.Components.Inputs
         {
             Value = value;
             await ValueChanged.InvokeAsync(Value);
+        }
+
+        private async Task ShowMediaAsync()
+        {
+            await MediaPreviewDialog.ShowMediaAsync(Value);
         }
     }
 }

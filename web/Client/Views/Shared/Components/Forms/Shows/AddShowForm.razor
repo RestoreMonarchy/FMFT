@@ -1,4 +1,7 @@
-﻿<EditForm Model="Model" OnValidSubmit="SubmitAsync">
+﻿@using FMFT.Web.Client.Views.Shared.Components.Dialogs
+@using FMFT.Web.Client.Views.Shared.Components.Inputs
+
+<EditForm Model="Model" OnValidSubmit="SubmitAsync">
     <DataAnnotationsValidator />
 
     <div class="card-body">
@@ -28,6 +31,15 @@
             <InputTextArea class="form-control" @bind-Value="Model.Description" rows="5" />
             <div class="text-danger">
                 <ValidationMessage For="@(() => Model.Description)" />
+            </div>
+        </div>
+        <div class="mb-2">
+            <span class="form-label">Miniaturka</span>
+            <div class="input-group">
+                <InputMediaFile Class="form-control" @bind-Value="Model.ThumbnailMediaId" Accept="image/png, image/gif, image/jpeg" />
+            </div>
+            <div class="text-danger">
+                <ValidationMessage For="@(() => Model.ThumbnailMediaId)" />
             </div>
         </div>
         <div class="row">
