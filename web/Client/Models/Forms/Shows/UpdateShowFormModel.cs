@@ -22,5 +22,7 @@ namespace FMFT.Web.Client.Models.Forms.Shows
         public TimeOnly EndTime { get; set; }
 
         public int AudotiriumId { get; set; }
+        [Required(ErrorMessage = "Zdjęcie miniaturki jest wymagane")]
+        public Guid? MediaId { get; set; }
     }
 }

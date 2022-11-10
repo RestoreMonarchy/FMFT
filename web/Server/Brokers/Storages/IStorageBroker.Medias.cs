@@ -5,6 +5,7 @@ namespace FMFT.Web.Server.Brokers.Storages
 {
     public partial interface IStorageBroker
     {
+        ValueTask<IEnumerable<Media>> SelectAllMediaAsync();
         ValueTask<Media> SelectMediaByIdAsync(Guid mediaId);
         ValueTask<Media> InsertMediaAsync(InsertMediaDTO dto);
     }

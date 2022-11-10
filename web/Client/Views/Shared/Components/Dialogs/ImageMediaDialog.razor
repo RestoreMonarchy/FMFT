@@ -1,0 +1,22 @@
+﻿@using FMFT.Extensions.Blazor.Bases.Dialogs
+
+<ModalDialog @ref="MediaModalDialog">
+    <Title>
+        Wybierz media
+    </Title>
+    <Body>
+        <Iterations Items="Media">
+            <div class="cursor-pointer @GetClasses(context)" @onclick="() => HandleSelectMediaAsync(context)">
+                <img src="@MediaService.GetMediaUrl(context.Id)" width="50" height="50" />
+            </div>
+        </Iterations>
+    </Body>
+    <Footer>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Zamknij
+        </button>
+        <ButtonBase Class="btn btn-primary" OnClick="HandleSubmitAsync">
+            Tak
+        </ButtonBase>
+    </Footer>
+</ModalDialog>

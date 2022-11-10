@@ -8,6 +8,23 @@ namespace FMFT.Web.Server.Brokers.Storages
 {
     public partial class StorageBroker
     {
+        public async ValueTask<IEnumerable<Media>> SelectAllMediaAsync()
+        {
+            const string sql = "SELECT m.*, u.* FROM dbo.Media m " +
+                "LEFT JOIN dbo.Users u ON u.Id = m.UserId " +
+                "WHERE m.Id = @mediaId;";
+
+            return await connection.QueryAsync<Media, UserInfo, Media>(sql, (m, u) =>
+            {
+                if (u != null)
+                {
+                    m.User = u;
+                }
+
+                return null;
+            });
+        }
+
         public async ValueTask<Media> SelectMediaByIdAsync(Guid mediaId)
         {
             const string sql = "SELECT m.*, u.* FROM dbo.Media m " +

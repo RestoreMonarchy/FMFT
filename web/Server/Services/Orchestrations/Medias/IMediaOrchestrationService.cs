@@ -6,6 +6,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.Medias
     public interface IMediaOrchestrationService
     {
         ValueTask<Media> AddAccountMediaFromFormFileAsync(IFormFile formFile);
+        ValueTask<IEnumerable<Media>> RetrieveAllMediaAsync();
         ValueTask<Media> RetrieveMediaByIdAsync(Guid mediaId);
     }
 }

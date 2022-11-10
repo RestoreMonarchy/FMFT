@@ -28,6 +28,11 @@ namespace FMFT.Web.Server.Services.Orchestrations.Medias
             return await mediaService.AddMediaFromFormFileAsync(formFile, userId);
         }
 
+        public async ValueTask<IEnumerable<Media>> RetrieveAllMediaAsync()
+        {
+            return await mediaService.RetrieveAllMediaAsync();
+        }
+        
         public async ValueTask<Media> RetrieveMediaByIdAsync(Guid mediaId)
         {
             return await mediaService.RetrieveMediaByIdAsync(mediaId);

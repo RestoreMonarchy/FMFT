@@ -7,6 +7,7 @@ namespace FMFT.Web.Server.Services.Foundations.Medias
     {
         ValueTask<Media> AddMediaAsync(AddMediaParams @params);
         ValueTask<Media> AddMediaFromFormFileAsync(IFormFile formFile, int? userId);
+        ValueTask<IEnumerable<Media>> RetrieveAllMediaAsync();
         ValueTask<Media> RetrieveMediaByIdAsync(Guid mediaId);
     }
 }

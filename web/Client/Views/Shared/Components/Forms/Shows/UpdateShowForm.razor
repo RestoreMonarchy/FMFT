@@ -1,4 +1,5 @@
-﻿
+﻿@using FMFT.Web.Client.Views.Shared.Components.Dialogs
+@using FMFT.Web.Client.Views.Shared.Components.Inputs
 
 <EditForm Model="Model" OnValidSubmit="SubmitAsync">
     <DataAnnotationsValidator />
@@ -26,6 +27,16 @@
             <div class="text-danger">
                 <ValidationMessage For="@(() => Model.Description)" />
             </div>
+        </div>
+        <div class="mb-2">
+            <span class="form-label">Miniaturka</span>
+            <InputMediaFile Class="form-control" @bind-Value="Model.MediaId" />
+            <div class="text-danger">
+                <ValidationMessage For="@(() => Model.MediaId)" />
+            </div>
+            <a href="javascript:void(0)" class="text-decoration-none" @onclick="ShowMediaAsync">
+                Pokaż podgląd
+            </a>
         </div>
         <div class="row">
             <div class="col-md mb-2">
@@ -92,3 +103,5 @@
         </div>        
     </div>    
 </EditForm>
+
+<MediaPreviewDialog @ref="MediaPreviewDialog" />

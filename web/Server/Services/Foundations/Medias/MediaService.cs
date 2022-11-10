@@ -62,6 +62,11 @@ namespace FMFT.Web.Server.Services.Foundations.Medias
             return await storageBroker.InsertMediaAsync(dto);
         }
 
+        public async ValueTask<IEnumerable<Media>> RetrieveAllMediaAsync()
+        {
+            return await storageBroker.SelectAllMediaAsync();
+        }
+
         public async ValueTask<Media> RetrieveMediaByIdAsync(Guid mediaId)
         {
             Media media = await storageBroker.SelectMediaByIdAsync(mediaId);

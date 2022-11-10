@@ -9,6 +9,7 @@ using FMFT.Web.Client.Brokers.MemoryStorages;
 using FMFT.Web.Client.Brokers.Navigations;
 using FMFT.Web.Client.Brokers.Storages;
 using FMFT.Web.Client.Services.Accounts;
+using FMFT.Web.Client.Services.Medias;
 using FMFT.Web.Client.StateContainers.UserAccounts;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
@@ -63,6 +64,7 @@ namespace FMFT.Web.Client.Extensions
         public static void AddServices(this WebAssemblyHostBuilder builder)
         {
             builder.Services.AddScoped<IAccountService, AccountService>();
+            builder.Services.AddScoped<IMediaService, MediaService>();
         }
     }
 }

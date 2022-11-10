@@ -5,6 +5,7 @@ using FMFT.Web.Client.Models.API.Auditoriums;
 using FMFT.Web.Client.Models.API.Shows;
 using FMFT.Web.Client.Models.API.Shows.Requests;
 using FMFT.Web.Client.Models.Forms.Shows;
+using FMFT.Web.Client.Views.Shared.Components.Dialogs;
 using FMFT.Web.Shared.Extensions;
 using Microsoft.AspNetCore.Components;
 
@@ -23,6 +24,7 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Shows
         public AlertBase ValidationAlert { get; set; }
         public AlertBase ErrorAlert { get; set; }
         public AlertBase SuccessAlert { get; set; }
+        public MediaPreviewDialog MediaPreviewDialog { get; set; }
 
         public SubmitButtonBase SubmitButton { get; set; }
 
@@ -95,6 +97,11 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Shows
             }
 
             SubmitButton.StopSpinning();
+        }
+
+        private async Task ShowMediaAsync()
+        {
+            await MediaPreviewDialog.ShowMediaAsync(Model.MediaId);
         }
     }
 }

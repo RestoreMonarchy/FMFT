@@ -1,5 +1,7 @@
 ﻿using FMFT.Web.Client.Models.API;
+using Microsoft.AspNetCore.Components.Forms;
 using System.ComponentModel.DataAnnotations;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Xml.Schema;
 
@@ -33,7 +35,7 @@ namespace FMFT.Web.Client.Brokers.APIs
             return apiResponse;
         }
 
-        public async ValueTask<APIResponse> GetAsync(string relativeUrl)
+        private async ValueTask<APIResponse> GetAsync(string relativeUrl)
         {
             HttpResponseMessage response = await httpClient.GetAsync(relativeUrl);
             APIResponse apiResponse = new(response);
@@ -43,7 +45,7 @@ namespace FMFT.Web.Client.Brokers.APIs
             return apiResponse;
         }
 
-        public async ValueTask<APIResponse> PostAsync(string relativeUrl, object content)
+        private async ValueTask<APIResponse> PostAsync(string relativeUrl, object content)
         {
             HttpResponseMessage response;
             if (content == null)
@@ -62,7 +64,7 @@ namespace FMFT.Web.Client.Brokers.APIs
             return apiResponse;
         }
 
-        public async ValueTask<APIResponse<T>> PostAsync<T>(string relativeUrl, object content)
+        private async ValueTask<APIResponse<T>> PostAsync<T>(string relativeUrl, object content)
         {
             HttpResponseMessage response;
             if (content == null)
@@ -80,7 +82,23 @@ namespace FMFT.Web.Client.Brokers.APIs
             return apiResponse;
         }
 
-        public async ValueTask<APIResponse> PutAsync(string relativeUrl, object content)
+        private async ValueTask<APIResponse> PostFileAsync(string relativeUrl, IBrowserFile browserFile)
+        {
+            using MultipartFormDataContent content = new();
+
+            StreamContent fileContent = new(browserFile.OpenReadStream(5 * 1024 * 1024));
+            fileContent.Headers.ContentType = new MediaTypeHeaderValue(browserFile.ContentType);
+            string fileContentName = "formfile";
+            string fileName = browserFile.Name;
+
+            content.Add(fileContent, fileContentName, fileName);
+
+            HttpResponseMessage httpResponseMessage = await httpClient.PostAsync(relativeUrl, content);
+
+            return await APIResponse.CreateAsync(httpResponseMessage);
+        }
+
+        private async ValueTask<APIResponse> PutAsync(string relativeUrl, object content)
         {
             HttpResponseMessage response = await httpClient.PutAsJsonAsync(relativeUrl, content);
             APIResponse apiResponse = new(response);
@@ -90,7 +108,7 @@ namespace FMFT.Web.Client.Brokers.APIs
             return apiResponse;
         }
 
-        public async ValueTask<APIResponse<T>> PutAsync<T>(string relativeUrl, object content)
+        private async ValueTask<APIResponse<T>> PutAsync<T>(string relativeUrl, object content)
         {
             HttpResponseMessage response = await httpClient.PutAsJsonAsync(relativeUrl, content);
             APIResponse<T> apiResponse = new(response);
@@ -100,7 +118,7 @@ namespace FMFT.Web.Client.Brokers.APIs
             return apiResponse;
         }
 
-        public async ValueTask<APIResponse> DeleteAsync(string relativeUrl)
+        private async ValueTask<APIResponse> DeleteAsync(string relativeUrl)
         {
             HttpResponseMessage response = await httpClient.DeleteAsync(relativeUrl);
             APIResponse apiResponse = new(response);

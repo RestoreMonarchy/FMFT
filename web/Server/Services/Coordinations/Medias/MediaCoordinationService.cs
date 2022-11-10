@@ -27,6 +27,13 @@ namespace FMFT.Web.Server.Services.Coordinations.Medias
             return await mediaService.AddAccountMediaFromFormFileAsync(formFile);
         }
 
+        public async ValueTask<IEnumerable<Media>> RetrieveAllMediaAsync()
+        {
+            await userAccountService.AuthorizeUserAccountByRoleAsync(UserRole.Admin);
+
+            return await mediaService.RetrieveAllMediaAsync();
+        }
+
         public async ValueTask<Media> RetrieveMediaByIdAsync(Guid mediaId)
         {
             return await mediaService.RetrieveMediaByIdAsync(mediaId);

@@ -3,9 +3,7 @@ using FMFT.Web.Server.Models.Medias;
 using FMFT.Web.Server.Models.Medias.Exceptions;
 using FMFT.Web.Server.Services.Coordinations.Medias;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Net.Http.Headers;
 using RESTFulSense.Controllers;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace FMFT.Web.Server.Controllers
 {
@@ -20,8 +18,26 @@ namespace FMFT.Web.Server.Controllers
             this.mediaCoordinationService = mediaCoordinationService;
         }
 
-        [HttpGet("{mediaId}")]
-        public async ValueTask<IActionResult> MediaById(Guid mediaId)
+        [HttpGet]
+        public async ValueTask<IActionResult> GetAllMedia()
+        {
+            try
+            {
+                IEnumerable<Media> media = await mediaCoordinationService.RetrieveAllMediaAsync();
+
+                return Ok(media);
+            } catch (NotAuthorizedAccountException exception)
+            {
+                return Forbidden(exception);
+            } catch (NotAuthenticatedAccountException exception)
+            {
+                return Unauthorized(exception);
+            }
+        }
+
+        [HttpGet("file/{mediaId}")]
+        [ResponseCache(Duration = 3 * 60 * 60)]
+        public async ValueTask<IActionResult> MediaFileById(Guid mediaId)
         {
             try
             {

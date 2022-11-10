@@ -1,0 +1,22 @@
+﻿@using FMFT.Extensions.Blazor.Bases.Dialogs
+
+<ModalDialog @ref="ModalDialog" AlignCenter="false">
+    <Title>
+        Podgląd
+    </Title>
+    <Body>
+        <Condition Evaluation="mediaId.HasValue">
+            <Match>
+                <img class="img-thumbnail" src="@MediaService.GetMediaUrl(mediaId.Value)" />
+            </Match>
+            <NotMatch>
+                NULL
+            </NotMatch>
+        </Condition>        
+    </Body>
+    <Footer>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Zamknij
+        </button>
+    </Footer>
+</ModalDialog>
