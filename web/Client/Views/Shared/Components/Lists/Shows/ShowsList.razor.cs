@@ -15,7 +15,7 @@ namespace FMFT.Web.Client.Views.Shared.Components.Lists.Shows
                 return string.Empty;
             }
 
-            string styleFormat = "background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url({0});";
+            string styleFormat = "background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url({0});";
             string thumbnailUrl = MediaService.GetMediaUrl(show.ThumbnailMediaId.Value);
 
             return string.Format(styleFormat, thumbnailUrl);
