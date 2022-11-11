@@ -21,3 +21,23 @@
     background-size: cover;
     width: 100%;
 }
+
+.home-header {
+    padding: 10vw 0 15vw 0;
+    background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url(/img/background.jpg) center;
+    background-size: cover;
+}
+
+.home-header-logo {
+    max-height: 90px;
+    width: 100%;
+}
+
+@media (min-width: 600px) {
+    .home-header {
+        padding: 66px 0 100px 0;
+    }
+    .home-header-logo {
+        max-height: 150px;
+    }
+}

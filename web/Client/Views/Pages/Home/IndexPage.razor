@@ -1,20 +1,31 @@
 ﻿@page "/"
+@using FMFT.Web.Client.Views.Shared.Components.Lists.Shows
+@using FMFT.Web.Client.Views.Shared.Layouts.Home;
 
-<Breadcrumb>
-    <BreadcrumbItem Active="true">
-        Home
-    </BreadcrumbItem>
-</Breadcrumb>
+@layout HomeLayout
 
-<div class="mb-3">
-    <h3>Aplikacja FMFT (DEMO)</h3>
-    <p class="lead">Aplikacja do rezerwacji miejsc na przedstawienia</p>
+<div class="text-center mb-3 w-100 home-header" style="margin-top: 55px;">
+    <div class="fs-3 text-white container">
+        <img src="/img/navbar_brand.svg" class="img-fluid home-header-logo" />
+        53. Festiwal Małych Form Teatralnych
+    </div>    
 </div>
-<div>
-    <div>
-        Festiwal Małych Form Teatralnych (FMFT) Kraków
+
+<div class="container">
+    <div class="mb-3">
+        <div class="fs-4 mb-2">
+            Przedstawienia
+        </div>
+        <div>
+            <LoadingView @ref="ShowsLoadingView">
+                <Condition Evaluation="ShowsResponse.IsSuccessful">
+                    <Match>
+                        <ShowsList Shows="Shows" />
+                    </Match>
+                    <NotMatch>
+                        <ErrorResponseAlert />
+                    </NotMatch>
+                </Condition>
+            </LoadingView>
+        </div>
     </div>
-    <div>
-        <p>Oficjalna strona FMFT: <a href="https://fmft.art.pl" target="_blank">fmft.art.pl</a></p>
-    </div>
-</div>

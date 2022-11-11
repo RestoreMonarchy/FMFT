@@ -2,11 +2,11 @@
 using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Shows;
 
-namespace FMFT.Web.Client.Views.Pages.Home.Shows
+namespace FMFT.Web.Client.Views.Pages.Home
 {
-    public partial class ShowsPage
+    public partial class IndexPage
     {
-        public LoadingView LoadingView { get; set; }
+        public LoadingView ShowsLoadingView { get; set; }
 
         public APIResponse<List<Show>> ShowsResponse { get; set; }
 
@@ -15,7 +15,7 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
         protected override async Task OnInitializedAsync()
         {
             ShowsResponse = await APIBroker.GetAllShowsAsync();
-            LoadingView.StopLoading();
+            ShowsLoadingView.StopLoading();
         }
     }
 }

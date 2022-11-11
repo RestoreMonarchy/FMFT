@@ -7,6 +7,9 @@ namespace FMFT.Web.Client.Views.Shared.Layouts.Main
 {
     public partial class MainNavbar
     {
+        [Parameter]
+        public string Class { get; set; }
+
         public LogoutDialog LogoutDialog { get; set; }
 
         public ElementReference NavbarContent { get; set; }
