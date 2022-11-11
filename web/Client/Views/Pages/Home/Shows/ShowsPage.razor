@@ -1,22 +1,24 @@
 ﻿@page "/shows"
 @using FMFT.Web.Client.Views.Shared.Components.Lists.Shows
 
-<Breadcrumb>
-    <BreadcrumbItem Link="/">
-        Home
-    </BreadcrumbItem>
-    <BreadcrumbItem Active="true">
-        Przedstawienia
-    </BreadcrumbItem>
-</Breadcrumb>
+<MainLayoutBody>
+    <Breadcrumb>
+        <BreadcrumbItem Link="/">
+            Home
+        </BreadcrumbItem>
+        <BreadcrumbItem Active="true">
+            Przedstawienia
+        </BreadcrumbItem>
+    </Breadcrumb>
 
-<LoadingView @ref="LoadingView">
-    <Condition Evaluation="ShowsResponse.IsSuccessful">
-        <Match>
-            <ShowsList Shows="Shows" />
-        </Match>
-        <NotMatch>
-            <ErrorResponseAlert />
-        </NotMatch>
-    </Condition>
-</LoadingView>
+    <LoadingView @ref="LoadingView">
+        <Condition Evaluation="ShowsResponse.IsSuccessful">
+            <Match>
+                <ShowsList Shows="Shows" />
+            </Match>
+            <NotMatch>
+                <ErrorResponseAlert />
+            </NotMatch>
+        </Condition>
+    </LoadingView>
+</MainLayoutBody>

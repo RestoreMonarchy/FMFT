@@ -2,198 +2,199 @@
 @using FMFT.Extensions.Blazor.Bases.Conditions
 @using FMFT.Extensions.Blazor.Bases.Dialogs
 
-<Breadcrumb>
-    <BreadcrumbItem Link="/">
-        Home
-    </BreadcrumbItem>
-    <BreadcrumbItem Active="true">
-        Konto
-    </BreadcrumbItem>
-</Breadcrumb>
+<MainLayoutBody>
+    <Breadcrumb>
+        <BreadcrumbItem Link="/">
+            Home
+        </BreadcrumbItem>
+        <BreadcrumbItem Active="true">
+            Konto
+        </BreadcrumbItem>
+    </Breadcrumb>
 
-<Condition Evaluation="UserAccountState.IsAuthenticated">
-    <Match>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card mb-3">
-                    <div class="card-header">
-                        Informacje o koncie
-                    </div>
-                    <div class="list-group list-group-flush">
-                        <div class="list-group-item">
-                            <span class="fw-bold">
-                                ID:
-                            </span>
-                            <span>
-                                @UserAccountState.UserAccount.UserId
-                            </span>
+    <Condition Evaluation="UserAccountState.IsAuthenticated">
+        <Match>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            Informacje o koncie
                         </div>
-                        <div class="list-group-item">
-                            <span class="fw-bold">
-                                Email:
-                            </span>
-                            <span>
-                                @UserAccountState.UserAccount.Email
-                            </span>
-                        </div>
-                        <div class="list-group-item">
-                            <span class="fw-bold">
-                                Imię:
-                            </span>
-                            <span>
-                                @UserAccountState.UserAccount.FirstName
-                            </span>
-                        </div>
-                        <div class="list-group-item">
-                            <span class="fw-bold">
-                                Nazwisko:
-                            </span>
-                            <span>
-                                @UserAccountState.UserAccount.LastName
-                            </span>
-                        </div>
-                        <div class="list-group-item">
-                            <span class="fw-bold">
-                                Typ użytkownika:
-                            </span>
-                            <span>
-                                @UserAccountState.UserAccount.Role
-                            </span>
-                        </div>
-                        <div class="list-group-item">
-                            <span class="fw-bold">
-                                Logowanie hasłem:
-                            </span>
-                            <span>
-                                <Condition Evaluation="UserAccountState.UserAccount.IsPasswordEnabled">
-                                    <Match>
-                                        Włączone
-                                    </Match>
-                                    <NotMatch>
-                                        Wyłączone
-                                    </NotMatch>
-                                </Condition>                                
-                            </span>
-                        </div>
-                        <a class="list-group-item list-group-item-action" href="/account/reservations">
-                            <i class="fa-solid fa-arrow-right-long me-1"></i>
-                            Przejdź do rezerwacji
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card mb-3">
-                    <div class="card-header">
-                        Zarządzaj kontem
-                    </div>
-                    <div class="list-group list-group-flush">
-                        <button class="list-group-item list-group-item-action list-group-item-info"
-                                @onclick="HandleChangePasswordDialogAsync" disabled="@(!UserAccountState.UserAccount.IsPasswordEnabled)">
-                            <i class="fa-solid fa-key me-1"></i>
-                            Zmień hasło
-                        </button>
-                    </div>
-                </div>
-                <Condition Evaluation="UserAccountState.UserAccount.IsPasswordEnabled">
-                    <NotMatch>
-                        <div class="card mb-3">
-                            <div class="card-header">
-                                Lista zewnętrznych loginów
+                        <div class="list-group list-group-flush">
+                            <div class="list-group-item">
+                                <span class="fw-bold">
+                                    ID:
+                                </span>
+                                <span>
+                                    @UserAccountState.UserAccount.UserId
+                                </span>
                             </div>
-                            <LoadingView @ref="LoginsLoadingView">
-                                <Condition Evaluation="UserLoginsResponse.IsSuccessful">
-                                    <Match>
-                                        <div class="list-group list-group-flush">
-                                            <Iterations Items="UserLogins">
-                                                <div class="list-group-item">
-                                                    <Switch Expression="context.ProviderName">
-                                                        <SwitchCase Value="@("Facebook")">
-                                                            <i class="fa-brands fa-facebook-f me-1"></i>
-                                                        </SwitchCase>
-                                                        <SwitchCase Value="@("Google")">
-                                                            <i class="fa-brands fa-google me-1"></i>
-                                                        </SwitchCase>
-                                                        <DefaultSwitchCase>
-                                                            <i class="fa-solid fa-question me-1"></i>
-                                                        </DefaultSwitchCase>
-                                                    </Switch>
-                                                    @context.FriendlyName
-                                                </div>
-                                            </Iterations>                                            
-                                        </div>
-                                    </Match>
-                                    <NotMatch>
-                                        <ErrorResponseAlert />                                        
-                                    </NotMatch>
-                                </Condition>
-                            </LoadingView>
+                            <div class="list-group-item">
+                                <span class="fw-bold">
+                                    Email:
+                                </span>
+                                <span>
+                                    @UserAccountState.UserAccount.Email
+                                </span>
+                            </div>
+                            <div class="list-group-item">
+                                <span class="fw-bold">
+                                    Imię:
+                                </span>
+                                <span>
+                                    @UserAccountState.UserAccount.FirstName
+                                </span>
+                            </div>
+                            <div class="list-group-item">
+                                <span class="fw-bold">
+                                    Nazwisko:
+                                </span>
+                                <span>
+                                    @UserAccountState.UserAccount.LastName
+                                </span>
+                            </div>
+                            <div class="list-group-item">
+                                <span class="fw-bold">
+                                    Typ użytkownika:
+                                </span>
+                                <span>
+                                    @UserAccountState.UserAccount.Role
+                                </span>
+                            </div>
+                            <div class="list-group-item">
+                                <span class="fw-bold">
+                                    Logowanie hasłem:
+                                </span>
+                                <span>
+                                    <Condition Evaluation="UserAccountState.UserAccount.IsPasswordEnabled">
+                                        <Match>
+                                            Włączone
+                                        </Match>
+                                        <NotMatch>
+                                            Wyłączone
+                                        </NotMatch>
+                                    </Condition>
+                                </span>
+                            </div>
+                            <a class="list-group-item list-group-item-action" href="/account/reservations">
+                                <i class="fa-solid fa-arrow-right-long me-1"></i>
+                                Przejdź do rezerwacji
+                            </a>
                         </div>
-                    </NotMatch>
-                </Condition>
-                
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            Zarządzaj kontem
+                        </div>
+                        <div class="list-group list-group-flush">
+                            <button class="list-group-item list-group-item-action list-group-item-info"
+                                    @onclick="HandleChangePasswordDialogAsync" disabled="@(!UserAccountState.UserAccount.IsPasswordEnabled)">
+                                <i class="fa-solid fa-key me-1"></i>
+                                Zmień hasło
+                            </button>
+                        </div>
+                    </div>
+                    <Condition Evaluation="UserAccountState.UserAccount.IsPasswordEnabled">
+                        <NotMatch>
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    Lista zewnętrznych loginów
+                                </div>
+                                <LoadingView @ref="LoginsLoadingView">
+                                    <Condition Evaluation="UserLoginsResponse.IsSuccessful">
+                                        <Match>
+                                            <div class="list-group list-group-flush">
+                                                <Iterations Items="UserLogins">
+                                                    <div class="list-group-item">
+                                                        <Switch Expression="context.ProviderName">
+                                                            <SwitchCase Value="@("Facebook")">
+                                                                <i class="fa-brands fa-facebook-f me-1"></i>
+                                                            </SwitchCase>
+                                                            <SwitchCase Value="@("Google")">
+                                                                <i class="fa-brands fa-google me-1"></i>
+                                                            </SwitchCase>
+                                                            <DefaultSwitchCase>
+                                                                <i class="fa-solid fa-question me-1"></i>
+                                                            </DefaultSwitchCase>
+                                                        </Switch>
+                                                        @context.FriendlyName
+                                                    </div>
+                                                </Iterations>
+                                            </div>
+                                        </Match>
+                                        <NotMatch>
+                                            <ErrorResponseAlert />
+                                        </NotMatch>
+                                    </Condition>
+                                </LoadingView>
+                            </div>
+                        </NotMatch>
+                    </Condition>
+
+                </div>
             </div>
-        </div>
-        
-        <ModalDialog @ref="ChangePasswordDialog" HideCloseButton="true">
-            <Title>
-                Zmień hasło
-            </Title>
-            <Body>
-                <Condition Evaluation="showResult">
-                    <Match>
-                        Zmiana hasła powiodła się!
-                    </Match>
-                    <NotMatch>
-                        <AlertGroupBase @ref="ChangePasswordAlertGroup">
-                            <AlertBase @ref="ChangePasswordRequiredInputAlert" Class="alert-warning">
-                                Musisz wypełnić wszystkie pola
-                            </AlertBase>
-                            <AlertBase @ref="ChangePasswordInvalidCredentialsAlert" Class="alert-danger">
-                                Obecne hasło nie jest poprawne
-                            </AlertBase>
-                            <AlertBase @ref="ChangePasswordNotEnabledPasswordAlert" Class="alert-danger">
-                                Logowanie hasłem dla tego konta jest wyłączone
-                            </AlertBase>
-                            <AlertBase @ref="ChangePasswordValidationErrorAlert" Class="alert-danger">
-                                Nowe hasło musi zawierać co najmniej 8 znaków
-                            </AlertBase>
-                        </AlertGroupBase>
 
-                        <div class="mb-3">
-                            <label class="form-label">Obecne hasło</label>
-                            <PasswordInputBase @ref="CurrentPasswordInput" @bind-Value="ChangePasswordRequest.CurrentPasswordText" Placeholder="Obecne hasło" />
-                        </div>
-                        <div>
-                            <label class="form-label">Nowe hasło</label>
-                            <PasswordInputBase @ref="NewPasswordInput" @bind-Value="ChangePasswordRequest.PasswordText" Placeholder="Nowe hasło" />
-                        </div>
-                    </NotMatch>
-                </Condition>
-            </Body>
-            <Footer>
-                <Condition Evaluation="showResult">
-                    <Match>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                            Zamknij
-                        </button>
-                    </Match>
-                    <NotMatch>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                            Anuluj
-                        </button>
-                        <ButtonBase @ref="ChangePasswordButton" Class="btn btn-primary" OnClick="HandleChangePasswordAsync">
-                            Zapisz
-                        </ButtonBase>
-                    </NotMatch>
-                </Condition>
-                
-            </Footer>
-        </ModalDialog>
-        
-    </Match>
-    <NotMatch>
-        <RedirectAlert Link="/account/login" />
-    </NotMatch>
-</Condition>
+            <ModalDialog @ref="ChangePasswordDialog" HideCloseButton="true">
+                <Title>
+                    Zmień hasło
+                </Title>
+                <Body>
+                    <Condition Evaluation="showResult">
+                        <Match>
+                            Zmiana hasła powiodła się!
+                        </Match>
+                        <NotMatch>
+                            <AlertGroupBase @ref="ChangePasswordAlertGroup">
+                                <AlertBase @ref="ChangePasswordRequiredInputAlert" Class="alert-warning">
+                                    Musisz wypełnić wszystkie pola
+                                </AlertBase>
+                                <AlertBase @ref="ChangePasswordInvalidCredentialsAlert" Class="alert-danger">
+                                    Obecne hasło nie jest poprawne
+                                </AlertBase>
+                                <AlertBase @ref="ChangePasswordNotEnabledPasswordAlert" Class="alert-danger">
+                                    Logowanie hasłem dla tego konta jest wyłączone
+                                </AlertBase>
+                                <AlertBase @ref="ChangePasswordValidationErrorAlert" Class="alert-danger">
+                                    Nowe hasło musi zawierać co najmniej 8 znaków
+                                </AlertBase>
+                            </AlertGroupBase>
 
+                            <div class="mb-3">
+                                <label class="form-label">Obecne hasło</label>
+                                <PasswordInputBase @ref="CurrentPasswordInput" @bind-Value="ChangePasswordRequest.CurrentPasswordText" Placeholder="Obecne hasło" />
+                            </div>
+                            <div>
+                                <label class="form-label">Nowe hasło</label>
+                                <PasswordInputBase @ref="NewPasswordInput" @bind-Value="ChangePasswordRequest.PasswordText" Placeholder="Nowe hasło" />
+                            </div>
+                        </NotMatch>
+                    </Condition>
+                </Body>
+                <Footer>
+                    <Condition Evaluation="showResult">
+                        <Match>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                Zamknij
+                            </button>
+                        </Match>
+                        <NotMatch>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                Anuluj
+                            </button>
+                            <ButtonBase @ref="ChangePasswordButton" Class="btn btn-primary" OnClick="HandleChangePasswordAsync">
+                                Zapisz
+                            </ButtonBase>
+                        </NotMatch>
+                    </Condition>
+
+                </Footer>
+            </ModalDialog>
+
+        </Match>
+        <NotMatch>
+            <RedirectAlert Link="/account/login" />
+        </NotMatch>
+    </Condition>
+</MainLayoutBody>

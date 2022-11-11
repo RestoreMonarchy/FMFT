@@ -1,21 +1,24 @@
-﻿<div class="text-center">
-    <div class="text-danger">
-        <i class="fa-solid fa-triangle-exclamation" style="font-size: 8em;"></i>
-    </div>
-    <div class="fs-1">
-        Wystąpił błąd!
-    </div>
-    <pre class="fs-3">
-        <code>
-            @Exception.Message
-        </code>
-    </pre>
-    <div>
-        <button class="btn btn-lg btn-secondary" @onclick="HandleRecoverAsync">
-            Spróbuj ponownie
-        </button>
-    </div>
-</div> 
+﻿<MainLayoutBody>
+    <div class="text-center">
+        <div class="text-danger">
+            <i class="fa-solid fa-triangle-exclamation" style="font-size: 8em;"></i>
+        </div>
+        <div class="fs-1">
+            Wystąpił błąd!
+        </div>
+        <pre class="fs-3">
+            <code>
+                    @Exception.Message
+            </code>
+        </pre>
+        <div>
+            <button class="btn btn-lg btn-secondary" @onclick="HandleRecoverAsync">
+                Spróbuj ponownie
+            </button>
+        </div>
+    </div> 
+</MainLayoutBody>
+
 
 @code {
     [Parameter]

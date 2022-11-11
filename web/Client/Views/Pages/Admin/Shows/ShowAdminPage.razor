@@ -3,33 +3,35 @@
 @using FMFT.Web.Client.Models.API.Shows
 @using FMFT.Web.Client.Views.Shared.Components.Forms.Shows
 
-<Breadcrumb>
-    <BreadcrumbItem Link="/">
-        Home
-    </BreadcrumbItem>
-    <BreadcrumbItem>
-        Admin
-    </BreadcrumbItem>
-    <BreadcrumbItem Link="/admin/shows">
-        Przedstawienia
-    </BreadcrumbItem>
-    <BreadcrumbItem Active="true">
-        @ShowName
-    </BreadcrumbItem>
-</Breadcrumb>
+<MainLayoutBody>
+    <Breadcrumb>
+        <BreadcrumbItem Link="/">
+            Home
+        </BreadcrumbItem>
+        <BreadcrumbItem>
+            Admin
+        </BreadcrumbItem>
+        <BreadcrumbItem Link="/admin/shows">
+            Przedstawienia
+        </BreadcrumbItem>
+        <BreadcrumbItem Active="true">
+                @ShowName
+        </BreadcrumbItem>
+    </Breadcrumb>
 
-<LoadingView @ref="LoadingView">
-    <Condition Evaluation="ShowResponse.IsSuccessful && AuditoriumsResponse.IsSuccessful">
-        <Match>
-            <div class="card">
-                <div class="card-header">
-                    Podstawowe informacje
-                </div>
-                <UpdateShowForm Show="Show" Audutoriums="Auditoriums" />
-            </div>            
-        </Match>
-        <NotMatch>
-            <ErrorResponseAlert />
-        </NotMatch>
-    </Condition>
-</LoadingView>
+    <LoadingView @ref="LoadingView">
+        <Condition Evaluation="ShowResponse.IsSuccessful && AuditoriumsResponse.IsSuccessful">
+            <Match>
+                <div class="card">
+                    <div class="card-header">
+                        Podstawowe informacje
+                    </div>
+                    <UpdateShowForm Show="Show" Audutoriums="Auditoriums" />
+                </div>            
+            </Match>
+            <NotMatch>
+                <ErrorResponseAlert />
+            </NotMatch>
+        </Condition>
+    </LoadingView>
+</MainLayoutBody>

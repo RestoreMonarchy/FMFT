@@ -4,190 +4,193 @@
 @using BlazorPanzoom
 @using FMFT.Web.Client.Views.Shared.Components.Panzooms
 
-<Breadcrumb>
-    <BreadcrumbItem Link="/">
-        Home
-    </BreadcrumbItem>
-    <BreadcrumbItem Link="/shows">
-        Przedstawienia
-    </BreadcrumbItem>
-    <BreadcrumbItem Link="@string.Concat("/shows/", ShowId)">
-        @ShowName
-    </BreadcrumbItem>
-    <BreadcrumbItem Active="true">
-        Zarezerwuj
-    </BreadcrumbItem>
-</Breadcrumb>
+<MainLayoutBody>
+    <Breadcrumb>
+        <BreadcrumbItem Link="/">
+            Home
+        </BreadcrumbItem>
+        <BreadcrumbItem Link="/shows">
+            Przedstawienia
+        </BreadcrumbItem>
+        <BreadcrumbItem Link="@string.Concat("/shows/", ShowId)">
+            @ShowName
+        </BreadcrumbItem>
+        <BreadcrumbItem Active="true">
+            Zarezerwuj
+        </BreadcrumbItem>
+    </Breadcrumb>
 
-<LoadingView @ref="LoadingView">
-    <Condition Evaluation="ShowResponse.IsSuccessful && AuditoriumResponse.IsSuccessful">
-        <Match>
+    <LoadingView @ref="LoadingView">
+        <Condition Evaluation="ShowResponse.IsSuccessful && AuditoriumResponse.IsSuccessful">
+            <Match>
 
-            <Stepper @ref="Stepper">
-                <StepperItem Text="Wybierz miejsce">
+                <Stepper @ref="Stepper">
+                    <StepperItem Text="Wybierz miejsce">
 
-                    <div class="mb-3">
-                        <div class="d-md-flex d-block align-items-center">
-                            <Condition Evaluation="SelectedSeat is not null">
-                                <Match>
-                                    <div class="fs-3 mb-2 mb-md-0">
-                                        Wybrano <span class="fw-bold">rząd: @SelectedSeat.Row numer: @SelectedSeat.Number</span>
-                                    </div>
-                                </Match>
-                                <NotMatch>
-                                    <div class="fs-3 mb-2 mb-md-0">
-                                        Wybierz miejsce
-                                    </div>
-                                </NotMatch>
-                            </Condition>                            
-                            <div class="ms-md-auto">
-                                <button class="btn btn-primary w-100 w-md-auto" @onclick="NextToConfirmAsync" disabled="@(SelectedSeat == null)">
-                                    Przejdź dalej
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <AuditoriumSeatPanzoom Auditorium="Auditorium" ReservedSeats="Show.ReservedSeats" @bind-SelectedSeat="SelectedSeat" />
-                    </div>
-
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            Legenda
-                        </div>
-                        <div class="card-body">
-                            <ul>
-                                <li>
-                                    zielony - wolne miejsca
-                                </li>
-                                <li>
-                                    pomarańczowy - wybrane miejsce
-                                </li>
-                                <li>
-                                    fioletowy - miejsca zarezerwowane dla vipów
-                                </li>
-                                <li>
-                                    szary - miejsca zajęte
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <Condition Evaluation="SelectedSeat is not null">
-                        <Match>
-                            <div class="d-flex">
-                                <div class="ms-auto">
-                                    <button class="btn btn-primary" @onclick="NextToConfirmAsync">
+                        <div class="mb-3">
+                            <div class="d-md-flex d-block align-items-center">
+                                <Condition Evaluation="SelectedSeat is not null">
+                                    <Match>
+                                        <div class="fs-3 mb-2 mb-md-0">
+                                            Wybrano <span class="fw-bold">rząd: @SelectedSeat.Row numer: @SelectedSeat.Number</span>
+                                        </div>
+                                    </Match>
+                                    <NotMatch>
+                                        <div class="fs-3 mb-2 mb-md-0">
+                                            Wybierz miejsce
+                                        </div>
+                                    </NotMatch>
+                                </Condition>
+                                <div class="ms-md-auto">
+                                    <button class="btn btn-primary w-100 w-md-auto" @onclick="NextToConfirmAsync" disabled="@(SelectedSeat == null)">
                                         Przejdź dalej
                                     </button>
-                                </div>                                
-                            </div>
-                        </Match>
-                    </Condition>
-
-                </StepperItem>
-                <StepperItem Text="Potwierdź">
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <div class="">
-                                <div class="fs-5">
-                                    Miejsce
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <AuditoriumSeatPanzoom Auditorium="Auditorium" ReservedSeats="Show.ReservedSeats" @bind-SelectedSeat="SelectedSeat" />
+                        </div>
+
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                Legenda
+                            </div>
+                            <div class="card-body">
                                 <ul>
-                                    <li>Rząd @SelectedSeat.Row</li>
-                                    <li>Numer @SelectedSeat.Number</li>
+                                    <li>
+                                        zielony - wolne miejsca
+                                    </li>
+                                    <li>
+                                        pomarańczowy - wybrane miejsce
+                                    </li>
+                                    <li>
+                                        fioletowy - miejsca zarezerwowane dla vipów
+                                    </li>
+                                    <li>
+                                        szary - miejsca zajęte
+                                    </li>
                                 </ul>
                             </div>
+                        </div>
 
-                            <div class="">
-                                <div class="fs-5">
-                                    Informacje o przedstawieniu
-                                </div>
-                                <ul>
-                                    <li>@Show.Name</li>
-                                    <li>Data: @Show.StartDateTime.LocalDateTime.ToShortDateString()</li>
-                                    <li>Godzina: @Show.StartDateTime.LocalDateTime.ToShortTimeString()</li>
-                                    <li>Sala: @Auditorium.Name</li>
-                                </ul>
-                            </div>
-
-                            <div>
+                        <Condition Evaluation="SelectedSeat is not null">
+                            <Match>
                                 <div class="d-flex">
                                     <div class="ms-auto">
-                                        <ButtonBase @ref="ConfirmButton" Class="btn btn-primary" OnClick="HandleConfirmAsync" SpinningText="Przetwarzanie...">
-                                            Potwierdź i zarezerwuj
-                                        </ButtonBase>
+                                        <button class="btn btn-primary" @onclick="NextToConfirmAsync">
+                                            Przejdź dalej
+                                        </button>
+                                    </div>
+                                </div>
+                            </Match>
+                        </Condition>
+
+                    </StepperItem>
+                    <StepperItem Text="Potwierdź">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <div class="">
+                                    <div class="fs-5">
+                                        Miejsce
+                                    </div>
+                                    <ul>
+                                        <li>Rząd @SelectedSeat.Row</li>
+                                        <li>Numer @SelectedSeat.Number</li>
+                                    </ul>
+                                </div>
+
+                                <div class="">
+                                    <div class="fs-5">
+                                        Informacje o przedstawieniu
+                                    </div>
+                                    <ul>
+                                        <li>@Show.Name</li>
+                                        <li>Data: @Show.StartDateTime.LocalDateTime.ToShortDateString()</li>
+                                        <li>Godzina: @Show.StartDateTime.LocalDateTime.ToShortTimeString()</li>
+                                        <li>Sala: @Auditorium.Name</li>
+                                    </ul>
+                                </div>
+
+                                <div>
+                                    <div class="d-flex">
+                                        <div class="ms-auto">
+                                            <ButtonBase @ref="ConfirmButton" Class="btn btn-primary" OnClick="HandleConfirmAsync" SpinningText="Przetwarzanie...">
+                                                Potwierdź i zarezerwuj
+                                            </ButtonBase>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </StepperItem>
-                <StepperItem Text="Podsumowanie"> 
-                    <div class="card">
-                        <div class="card-body">
-                            <Condition Evaluation="ReservationResponse.IsSuccessful">
-                                <Match>
-                                    <div class="mb-2">
-                                        <div class="fs-5 text-success">
-                                            Udało się!
+                    </StepperItem>
+                    <StepperItem Text="Podsumowanie">
+                        <div class="card">
+                            <div class="card-body">
+                                <Condition Evaluation="ReservationResponse.IsSuccessful">
+                                    <Match>
+                                        <div class="mb-2">
+                                            <div class="fs-5 text-success">
+                                                Udało się!
+                                            </div>
+                                            <div>
+                                                Składanie rezerwacji przebiegło pomyślnie
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-2">
+                                            <ul class="list-unstyled mb-0">
+                                                <li>
+                                                    <span class="fw-bold">ID rezerwacji:</span> @Reservation.Id
+                                                </li>
+                                                <li>
+                                                    <span class="fw-bold">Przedstawienie:</span> @Reservation.Show.Name
+                                                </li>
+                                                <li>
+                                                    <span class="fw-bold">Miejsce:</span> rząd @Reservation.Seat.Row numer @Reservation.Seat.Number
+                                                </li>
+                                            </ul>
                                         </div>
                                         <div>
-                                            Składanie rezerwacji przebiegło pomyślnie
+                                            <a href="/account/reservations/@Reservation.Id" class="text-decoration-none">
+                                                <i class="fa-solid fa-arrow-right"></i>
+                                                Przejdź do rezerwacji
+                                            </a>
                                         </div>
-                                    </div>
-                                    
-                                    <div class="mb-2">
-                                       <ul class="list-unstyled mb-0">
-                                           <li>
-                                                <span class="fw-bold">ID rezerwacji:</span> @Reservation.Id
-                                           </li>
-                                           <li>
-                                                <span class="fw-bold">Przedstawienie:</span> @Reservation.Show.Name
-                                           </li>
-                                           <li>
-                                                <span class="fw-bold">Miejsce:</span> rząd @Reservation.Seat.Row numer @Reservation.Seat.Number
-                                           </li>
-                                       </ul>
-                                    </div>
-                                    <div>
-                                        <a href="/account/reservations/@Reservation.Id" class="text-decoration-none">
-                                            <i class="fa-solid fa-arrow-right"></i>
-                                            Przejdź do rezerwacji
-                                        </a>
-                                    </div>
-                                </Match>
-                                <NotMatch>
-                                    <div class="fs-5 text-danger">
-                                        Nie powiodło się
-                                    </div>
-                                    <Switch Expression="ReservationResponse.Error.Code">
-                                        <SwitchCase Value="@("ERR019")">
-                                            <div>
-                                                Złożyłeś już rezerwację na to przedstawienie. <br />
-                                                Jeżeli chcesz zmienić miejsce anuluj obecną rezerwację.
-                                            </div>
-                                        </SwitchCase>
-                                        <SwitchCase Value="@("ERR018")">
-                                            <div>
-                                                Miejsce które wybrałeś jest już niedostępne. Spróbuj ponownie
-                                            </div>
-                                        </SwitchCase>
-                                        <DefaultSwitchCase>
-                                            <ErrorResponseAlert />
-                                        </DefaultSwitchCase>
-                                    </Switch>
-                                </NotMatch>
-                            </Condition>
+                                    </Match>
+                                    <NotMatch>
+                                        <div class="fs-5 text-danger">
+                                            Nie powiodło się
+                                        </div>
+                                        <Switch Expression="ReservationResponse.Error.Code">
+                                            <SwitchCase Value="@("ERR019")">
+                                                <div>
+                                                    Złożyłeś już rezerwację na to przedstawienie. <br />
+                                                    Jeżeli chcesz zmienić miejsce anuluj obecną rezerwację.
+                                                </div>
+                                            </SwitchCase>
+                                            <SwitchCase Value="@("ERR018")">
+                                                <div>
+                                                    Miejsce które wybrałeś jest już niedostępne. Spróbuj ponownie
+                                                </div>
+                                            </SwitchCase>
+                                            <DefaultSwitchCase>
+                                                <ErrorResponseAlert />
+                                            </DefaultSwitchCase>
+                                        </Switch>
+                                    </NotMatch>
+                                </Condition>
+                            </div>
                         </div>
-                    </div>
-                </StepperItem>
-            </Stepper>
+                    </StepperItem>
+                </Stepper>
 
-        </Match>
-        <NotMatch>
-            <ErrorResponseAlert />
-        </NotMatch>
-    </Condition>
-</LoadingView>
+            </Match>
+            <NotMatch>
+                <ErrorResponseAlert />
+            </NotMatch>
+        </Condition>
+    </LoadingView>
+</MainLayoutBody>
+

@@ -1,17 +1,17 @@
 ﻿@page "/"
 @using FMFT.Web.Client.Views.Shared.Components.Lists.Shows
-@using FMFT.Web.Client.Views.Shared.Layouts.Home;
+@using FMFT.Web.Client.Views.Shared.Layouts.Main;
 
-@layout HomeLayout
+@layout MainLayout
 
-<div class="text-center mb-3 w-100 home-header" style="margin-top: 55px;">
+<div class="text-center mb-3 w-100 home-header">
     <div class="fs-3 text-white container">
         <img src="/img/navbar_brand.svg" class="img-fluid home-header-logo" />
         53. Festiwal Małych Form Teatralnych
-    </div>    
+    </div>
 </div>
 
-<div class="container">
+<MainLayoutBody>
     <div class="mb-3">
         <div class="fs-4 mb-2">
             Przedstawienia
@@ -29,4 +29,4 @@
             </LoadingView>
         </div>
     </div>
-</div>
+</MainLayoutBody>
