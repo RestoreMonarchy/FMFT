@@ -8,6 +8,7 @@ using FMFT.Web.Server.Models.Accounts.Exceptions;
 using FMFT.Web.Server.Services.Orchestrations.Shows;
 using FMFT.Web.Server.Services.Orchestrations.Reservations;
 using FMFT.Web.Server.Services.Coordinations.Reservations;
+using FMFT.Web.Server.Services.Coordinations.ShowGalleries;
 
 namespace FMFT.Web.Server.Controllers.Shows
 {
@@ -17,13 +18,16 @@ namespace FMFT.Web.Server.Controllers.Shows
     {
         private readonly IShowOrchestrationService showOrchestrationService;
         private readonly IReservationCoordinationService reservationCoordinationService;
+        private readonly IShowGalleryCoordinationService showGalleryCoordinationService;
 
         public ShowsController(
-            IShowOrchestrationService showOrchestrationService, 
-            IReservationCoordinationService reservationCoordinationService)
+            IShowOrchestrationService showOrchestrationService,
+            IReservationCoordinationService reservationCoordinationService,
+            IShowGalleryCoordinationService showGalleryCoordinationService)
         {
             this.showOrchestrationService = showOrchestrationService;
             this.reservationCoordinationService = reservationCoordinationService;
+            this.showGalleryCoordinationService = showGalleryCoordinationService;
         }
 
         [HttpGet]
