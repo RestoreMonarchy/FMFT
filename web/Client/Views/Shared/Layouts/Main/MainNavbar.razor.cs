@@ -19,6 +19,11 @@ namespace FMFT.Web.Client.Views.Shared.Layouts.Main
             NavigationBroker.OnLocationChange += HandleLocationChanged;
         }
 
+        void IDisposable.Dispose()
+        {
+            NavigationBroker.OnLocationChange -= HandleLocationChanged;
+        }
+
         public async void HandleLocationChanged(LocationChangedEventArgs args)
         {
             await JSRuntimeBroker.HideNavbarCollapseAsync(NavbarContent);

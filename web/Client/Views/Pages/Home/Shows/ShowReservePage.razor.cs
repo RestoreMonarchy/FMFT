@@ -35,6 +35,12 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
         protected override async Task OnParametersSetAsync()
         {
             ShowResponse = await APIBroker.GetShowByIdAsync(ShowId);
+            
+            if (!UserAccountState.IsAuthenticated)
+            {
+                return;
+            }
+
             if (ShowResponse.IsSuccessful)
             {
                 AuditoriumResponse = await APIBroker.GetAuditoriumByIdAsync(Show.AuditoriumId);
