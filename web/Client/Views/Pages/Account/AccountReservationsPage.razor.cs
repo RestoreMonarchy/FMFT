@@ -14,6 +14,11 @@ namespace FMFT.Web.Client.Views.Pages.Account
 
         protected override async Task OnInitializedAsync()
         {
+            if (!UserAccountState.IsAuthenticated)
+            {
+                return;
+            }
+
             ReservationsResponse = await APIBroker.GetUserReservationsAsync(UserAccountState.UserAccount.UserId);
             LoadingView.StopLoading();
         }

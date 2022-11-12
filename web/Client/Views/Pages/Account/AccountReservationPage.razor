@@ -18,116 +18,125 @@
     </Breadcrumb>
 
 
-    <LoadingView @ref="LoadingView">
-        <Condition Evaluation="ReservationResponse.IsSuccessful">
-            <Match>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="card mb-3">
-                            <div class="card-header">
-                                Informacje o rezerwacji
-                            </div>
-                            <div class="list-group list-group-flush">
-                                <Condition Evaluation="Reservation.IsCanceled">
-                                    <Match>
-                                        <div class="list-group-item list-group-item-warning">
-                                            Ta rezerwacja została anulowana
+
+    <CustomAuthorizeView>
+        <Authorized>
+            <LoadingView @ref="LoadingView">
+                <Condition Evaluation="ReservationResponse.IsSuccessful">
+                    <Match>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card mb-3">
+                                    <div class="card-header">
+                                        Informacje o rezerwacji
+                                    </div>
+                                    <div class="list-group list-group-flush">
+                                        <Condition Evaluation="Reservation.IsCanceled">
+                                            <Match>
+                                                <div class="list-group-item list-group-item-warning">
+                                                    Ta rezerwacja została anulowana
+                                                </div>
+                                            </Match>
+                                        </Condition>
+                                        <div class="list-group-item">
+                                            <span class="fw-bold">
+                                                ID:
+                                            </span>
+                                            <span>
+                                                @Reservation.Id
+                                            </span>
                                         </div>
-                                    </Match>
-                                </Condition>
-                                <div class="list-group-item">
-                                    <span class="fw-bold">
-                                        ID:
-                                    </span>
-                                    <span>
-                                        @Reservation.Id
-                                    </span>
+                                        <div class="list-group-item">
+                                            <span class="fw-bold">
+                                                Rząd:
+                                            </span>
+                                            <span>
+                                                @Reservation.Seat.Row
+                                            </span>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <span class="fw-bold">
+                                                Numer:
+                                            </span>
+                                            <span>
+                                                @Reservation.Seat.Number
+                                            </span>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <span class="fw-bold">
+                                                Przedstawienie:
+                                            </span>
+                                            <span>
+                                                @Reservation.Show.Name
+                                            </span>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <span class="fw-bold">
+                                                Data:
+                                            </span>
+                                            <span>
+                                                @Reservation.Show.StartDateTime.LocalDateTime.ToShortDateString()
+                                            </span>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <span class="fw-bold">
+                                                Godzina:
+                                            </span>
+                                            <span>
+                                                @Reservation.Show.StartDateTime.LocalDateTime.ToShortTimeString()
+                                            </span>
+                                        </div>
+                                        <a class="list-group-item list-group-item-action" href="/shows/@Reservation.Show.Id">
+                                            <i class="fa-solid fa-arrow-right-long me-1"></i>
+                                            Przejdź do przedstawienia
+                                        </a>
+                                    </div>
                                 </div>
-                                <div class="list-group-item">
-                                    <span class="fw-bold">
-                                        Rząd:
-                                    </span>
-                                    <span>
-                                        @Reservation.Seat.Row
-                                    </span>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        Zarządzaj rezerwacją
+                                    </div>
+                                    <div class="list-group list-group-flush">
+                                        <button class="list-group-item list-group-item-action list-group-item-warning" href="javascript:void(0)"
+                                                @onclick="HandleCancelDialogAsync" disabled="@Reservation.IsCanceled">
+                                            <i class="fa-solid fa-xmark me-1"></i>
+                                            Anuluj rezerwację
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="list-group-item">
-                                    <span class="fw-bold">
-                                        Numer:
-                                    </span>
-                                    <span>
-                                        @Reservation.Seat.Number
-                                    </span>
-                                </div>
-                                <div class="list-group-item">
-                                    <span class="fw-bold">
-                                        Przedstawienie:
-                                    </span>
-                                    <span>
-                                        @Reservation.Show.Name
-                                    </span>
-                                </div>
-                                <div class="list-group-item">
-                                    <span class="fw-bold">
-                                        Data:
-                                    </span>
-                                    <span>
-                                        @Reservation.Show.StartDateTime.LocalDateTime.ToShortDateString()
-                                    </span>
-                                </div>
-                                <div class="list-group-item">
-                                    <span class="fw-bold">
-                                        Godzina:
-                                    </span>
-                                    <span>
-                                        @Reservation.Show.StartDateTime.LocalDateTime.ToShortTimeString()
-                                    </span>
-                                </div>
-                                <a class="list-group-item list-group-item-action" href="/shows/@Reservation.Show.Id">
-                                    <i class="fa-solid fa-arrow-right-long me-1"></i>
-                                    Przejdź do przedstawienia
-                                </a>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-header">
-                                Zarządzaj rezerwacją
-                            </div>
-                            <div class="list-group list-group-flush">
-                                <button class="list-group-item list-group-item-action list-group-item-warning" href="javascript:void(0)"
-                                        @onclick="HandleCancelDialogAsync" disabled="@Reservation.IsCanceled">
-                                    <i class="fa-solid fa-xmark me-1"></i>
-                                    Anuluj rezerwację
+
+
+                        <ModalDialog @ref="CancelModalDialog" AlignCenter="true">
+                            <Title>
+                                Anuluj rezerwację
+                            </Title>
+                            <Body>
+                                Czy napewno chcesz zrezygnować z rezerwacji na przedstawienie @Reservation.Show.Name?
+                            </Body>
+                            <Footer>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    Nie
                                 </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                                <ButtonBase @ref="CancelButton" Class="btn btn-danger" OnClick="HandleCancelAsync">
+                                    Tak
+                                </ButtonBase>
+                            </Footer>
+                        </ModalDialog>
 
-
-                <ModalDialog @ref="CancelModalDialog" AlignCenter="true">
-                    <Title>
-                        Anuluj rezerwację
-                    </Title>
-                    <Body>
-                        Czy napewno chcesz zrezygnować z rezerwacji na przedstawienie @Reservation.Show.Name?
-                    </Body>
-                    <Footer>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                            Nie
-                        </button>
-                        <ButtonBase @ref="CancelButton" Class="btn btn-danger" OnClick="HandleCancelAsync">
-                            Tak
-                        </ButtonBase>
-                    </Footer>
-                </ModalDialog>
-
-            </Match>
-            <NotMatch>
-                <ErrorResponseAlert />
-            </NotMatch>
-        </Condition>
-    </LoadingView>
+                    </Match>
+                    <NotMatch>
+                        <ErrorResponseAlert />
+                    </NotMatch>
+                </Condition>
+            </LoadingView>
+        </Authorized>
+        <NotAuthorized>
+            <NotAuthenticatedAlert />
+        </NotAuthorized>
+    </CustomAuthorizeView>
+    
 </MainLayoutBody>

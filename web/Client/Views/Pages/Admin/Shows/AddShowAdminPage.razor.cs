@@ -1,6 +1,7 @@
 ﻿using FMFT.Extensions.Blazor.Bases.Loadings;
 using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Auditoriums;
+using FMFT.Web.Shared.Enums;
 
 namespace FMFT.Web.Client.Views.Pages.Admin.Shows
 {
@@ -14,6 +15,11 @@ namespace FMFT.Web.Client.Views.Pages.Admin.Shows
 
         protected override async Task OnInitializedAsync()
         {
+            if (!UserAccountState.IsInRole(UserRole.Admin))
+            {
+                return;
+            }
+
             AuditoriumsResponse = await APIBroker.GetAllAuditoriumsAsync();
             LoadingView.StopLoading();
         }

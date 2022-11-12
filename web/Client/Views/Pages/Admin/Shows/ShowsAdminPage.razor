@@ -15,56 +15,63 @@
         </BreadcrumbItem>
     </Breadcrumb>
 
-    <LoadingView @ref="LoadingView">
-        <Condition Evaluation="ShowsResponse.IsSuccessful">
-            <Match>
-                <div class="mb-2 d-flex align-items-center">
-                    <div class="text-muted">
-                        Lista przedstawień
-                    </div>
-                    <div class="ms-auto">
-                        <a href="/admin/shows/new" class="btn btn-primary btn-sm">
-                            <i class="fa-solid fa-plus me-1"></i>
-                            Dodaj nowe
-                        </a>
-                    </div>
-                </div>
-                <table class="table table-striped">
-                    <thead class="table-dark">
-                        <tr>
-                            <th scope="col">
-                                ID
-                            </th>
-                            <th scope="col">
-                                Nazwa
-                            </th>
-                            <th scope="col" class="d-none d-sm-table-cell">
-                                Data
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <Iterations Items="Shows.OrderByDescending(x => x.Id)">
-                            <tr>
-                                <th>
-                                    @context.Id
-                                </th>
-                                <td>
-                                    <a href="/admin/shows/@context.Id" class="text-decoration-none">
-                                        @context.Name
-                                    </a>
-                                </td>
-                                <td class="d-none d-sm-table-cell">
-                                    @context.StartDateTime.LocalDateTime.ToShortDateString()
-                                </td>
-                            </tr>
-                        </Iterations>
-                    </tbody>
-                </table>
-            </Match>
-            <NotMatch>
-                <ErrorResponseAlert />
-            </NotMatch>
-        </Condition>
-    </LoadingView>
+    <CustomAuthorizeView>
+        <Authorized>
+            <LoadingView @ref="LoadingView">
+                <Condition Evaluation="ShowsResponse.IsSuccessful">
+                    <Match>
+                        <div class="mb-2 d-flex align-items-center">
+                            <div class="text-muted">
+                                Lista przedstawień
+                            </div>
+                            <div class="ms-auto">
+                                <a href="/admin/shows/new" class="btn btn-primary btn-sm">
+                                    <i class="fa-solid fa-plus me-1"></i>
+                                    Dodaj nowe
+                                </a>
+                            </div>
+                        </div>
+                        <table class="table table-striped">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th scope="col">
+                                        ID
+                                    </th>
+                                    <th scope="col">
+                                        Nazwa
+                                    </th>
+                                    <th scope="col" class="d-none d-sm-table-cell">
+                                        Data
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <Iterations Items="Shows.OrderByDescending(x => x.Id)" Context="show">
+                                    <tr>
+                                        <th>
+                                            @show.Id
+                                        </th>
+                                        <td>
+                                            <a href="/admin/shows/@show.Id" class="text-decoration-none">
+                                                @show.Name
+                                            </a>
+                                        </td>
+                                        <td class="d-none d-sm-table-cell">
+                                            @show.StartDateTime.LocalDateTime.ToShortDateString()
+                                        </td>
+                                    </tr>
+                                </Iterations>
+                            </tbody>
+                        </table>
+                    </Match>
+                    <NotMatch>
+                        <ErrorResponseAlert />
+                    </NotMatch>
+                </Condition>
+            </LoadingView>
+        </Authorized>
+        <NotAuthorized>
+            <NotAuthorizedAlert />
+        </NotAuthorized>
+    </CustomAuthorizeView>
 </MainLayoutBody>

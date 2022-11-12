@@ -15,23 +15,31 @@
             Przedstawienia
         </BreadcrumbItem>
         <BreadcrumbItem Active="true">
-                @ShowName
+            @ShowName
         </BreadcrumbItem>
     </Breadcrumb>
 
-    <LoadingView @ref="LoadingView">
-        <Condition Evaluation="ShowResponse.IsSuccessful && AuditoriumsResponse.IsSuccessful">
-            <Match>
-                <div class="card">
-                    <div class="card-header">
-                        Podstawowe informacje
-                    </div>
-                    <UpdateShowForm Show="Show" Audutoriums="Auditoriums" />
-                </div>            
-            </Match>
-            <NotMatch>
-                <ErrorResponseAlert />
-            </NotMatch>
-        </Condition>
-    </LoadingView>
+    <CustomAuthorizeView Role="UserRole.Admin">
+        <Authorized>
+            <LoadingView @ref="LoadingView">
+                <Condition Evaluation="ShowResponse.IsSuccessful && AuditoriumsResponse.IsSuccessful">
+                    <Match>
+                        <div class="card">
+                            <div class="card-header">
+                                Podstawowe informacje
+                        </div>
+                            <UpdateShowForm Show="Show" Audutoriums="Auditoriums" />
+                        </div>            
+                    </Match>
+                    <NotMatch>
+                        <ErrorResponseAlert />
+                    </NotMatch>
+                </Condition>
+            </LoadingView>
+        </Authorized>
+        <NotAuthorized>
+            <NotAuthorizedAlert />
+        </NotAuthorized>
+    </CustomAuthorizeView>
+    
 </MainLayoutBody>

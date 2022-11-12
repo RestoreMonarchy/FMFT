@@ -2,6 +2,7 @@
 using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Auditoriums;
 using FMFT.Web.Client.Models.API.Shows;
+using FMFT.Web.Shared.Enums;
 using Microsoft.AspNetCore.Components;
 
 namespace FMFT.Web.Client.Views.Pages.Admin.Shows
@@ -23,6 +24,11 @@ namespace FMFT.Web.Client.Views.Pages.Admin.Shows
 
         protected override async Task OnParametersSetAsync()
         {
+            if (!UserAccountState.IsInRole(UserRole.Admin))
+            {
+                return;
+            }
+
             ShowResponse = await APIBroker.GetShowByIdAsync(ShowId);
             AuditoriumsResponse = await APIBroker.GetAllAuditoriumsAsync();
 

@@ -1,4 +1,5 @@
 ﻿using FMFT.Web.Client.Models.API.Accounts;
+using FMFT.Web.Shared.Enums;
 
 namespace FMFT.Web.Client.StateContainers.UserAccounts
 {
@@ -25,6 +26,16 @@ namespace FMFT.Web.Client.StateContainers.UserAccounts
         }
 
         public bool IsAuthenticated => userAccount != null;
+
+        public bool IsInRole(UserRole userRole)
+        {
+            if (!IsAuthenticated)
+            {
+                return false;
+            }
+
+            return userAccount.Role == userRole;
+        }
 
         public event Action OnChange;
 
