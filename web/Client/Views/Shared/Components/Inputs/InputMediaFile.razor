@@ -2,9 +2,13 @@
 
 <div class="input-group">
     <InputFile OnChange="HandleOnFileChangeAsync" type="file" class="@Class" accept="@Accept" />
-    <button type="button" class="btn btn-outline-secondary" @onclick="ShowMediaAsync" disabled="@(!Value.HasValue)">
-        <i class="fa-solid fa-eye"></i>
-    </button>
+    <Condition Evaluation="DisablePreview">
+        <NotMatch>
+            <button type="button" class="btn btn-outline-secondary" @onclick="ShowMediaAsync" disabled="@(!Value.HasValue)">
+                <i class="fa-solid fa-eye"></i>
+            </button>
+        </NotMatch>
+    </Condition>    
 </div>
 
 <MediaPreviewDialog @ref="MediaPreviewDialog" />

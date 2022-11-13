@@ -13,6 +13,8 @@ namespace FMFT.Web.Client.Views.Shared.Components.Inputs
         public string Class { get; set; }
         [Parameter]
         public string Accept { get; set; }
+        [Parameter]
+        public bool DisablePreview { get; set; }
 
         [Parameter]
         public Guid? Value { get; set; }

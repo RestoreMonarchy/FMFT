@@ -27,5 +27,26 @@ namespace FMFT.Web.Client.Brokers.APIs
         {
             return await PutAsync<Show>(ShowsRelativeUrl, request);
         }
+
+        public async ValueTask<APIResponse> AddShowGalleryAsync(AddShowGalleryRequest request)
+        {
+            string url = $"{ShowsRelativeUrl}/{request.ShowId}/gallery/add";
+
+            return await PostAsync(url, request);
+        }
+
+        public async ValueTask<APIResponse<List<ShowGallery>>> GetShowGalleryByShowIdAsync(int showId)
+        {
+            string url = $"{ShowsRelativeUrl}/{showId}/gallery";
+
+            return await GetAsync<List<ShowGallery>>(url);
+        }
+
+        public async ValueTask<APIResponse> DeleteShowGalleryByIdAsync(int showGalleryId)
+        {
+            string url = $"{ShowsRelativeUrl}/gallery/{showGalleryId}/delete";
+
+            return await DeleteAsync(url);
+        }
     }
 }
