@@ -17,9 +17,11 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
 
         public APIResponse<Show> ShowResponse { get; set; }
         public APIResponse<Auditorium> AuditoriumResponse { get; set; }
+        public APIResponse<List<ShowGallery>> ShowGalleryResponse { get; set; }
 
         public Show Show => ShowResponse.Object;
         public Auditorium Auditorium => AuditoriumResponse.Object;
+        public List<ShowGallery> ShowGallery => ShowGalleryResponse.Object;
 
         protected override async Task OnParametersSetAsync()
         {
@@ -27,6 +29,7 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
             if (ShowResponse.IsSuccessful)
             {
                 AuditoriumResponse = await APIBroker.GetAuditoriumByIdAsync(Show.AuditoriumId);
+                ShowGalleryResponse = await APIBroker.GetShowGalleryByShowIdAsync(Show.Id);
             }
             LoadingView.StopLoading();
         }
