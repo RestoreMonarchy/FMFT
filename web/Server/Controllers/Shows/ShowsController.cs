@@ -9,6 +9,7 @@ using FMFT.Web.Server.Services.Orchestrations.Shows;
 using FMFT.Web.Server.Services.Orchestrations.Reservations;
 using FMFT.Web.Server.Services.Coordinations.Reservations;
 using FMFT.Web.Server.Services.Coordinations.ShowGalleries;
+using FMFT.Web.Server.Services.Coordinations.Shows;
 
 namespace FMFT.Web.Server.Controllers.Shows
 {
@@ -16,16 +17,16 @@ namespace FMFT.Web.Server.Controllers.Shows
     [Route("api/[controller]")]
     public partial class ShowsController : RESTFulController
     {
-        private readonly IShowOrchestrationService showOrchestrationService;
+        private readonly IShowCoordinationService showCoordinationService;
         private readonly IReservationCoordinationService reservationCoordinationService;
         private readonly IShowGalleryCoordinationService showGalleryCoordinationService;
 
         public ShowsController(
-            IShowOrchestrationService showOrchestrationService,
+            IShowCoordinationService showCoordinationService,
             IReservationCoordinationService reservationCoordinationService,
             IShowGalleryCoordinationService showGalleryCoordinationService)
         {
-            this.showOrchestrationService = showOrchestrationService;
+            this.showCoordinationService = showCoordinationService;
             this.reservationCoordinationService = reservationCoordinationService;
             this.showGalleryCoordinationService = showGalleryCoordinationService;
         }
@@ -33,7 +34,7 @@ namespace FMFT.Web.Server.Controllers.Shows
         [HttpGet]
         public async ValueTask<IActionResult> GetShows()
         {
-            IEnumerable<Show> shows = await showOrchestrationService.RetrieveAllShowsAsync();
+            IEnumerable<Show> shows = await showCoordinationService.RetrieveAllShowsAsync();
 
             return Ok(shows);
         }
@@ -43,7 +44,7 @@ namespace FMFT.Web.Server.Controllers.Shows
         {
             try
             {
-                Show show = await showOrchestrationService.RetrieveShowByIdAsync(showId);
+                Show show = await showCoordinationService.RetrieveShowByIdAsync(showId);
 
                 return Ok(show);
             }
@@ -58,7 +59,7 @@ namespace FMFT.Web.Server.Controllers.Shows
         {
             try
             {
-                Show show = await showOrchestrationService.AddShowAsync(@params);
+                Show show = await showCoordinationService.AddShowAsync(@params);
 
                 return Ok(show);
             }
@@ -72,6 +73,9 @@ namespace FMFT.Web.Server.Controllers.Shows
             }
             catch (NotAuthorizedAccountException exception)
             {
+                return Forbidden(exception);
+            } catch (NotAuthenticatedAccountException exception)
+            {
                 return Unauthorized(exception);
             }
         }
@@ -81,7 +85,7 @@ namespace FMFT.Web.Server.Controllers.Shows
         {
             try
             {
-                Show show = await showOrchestrationService.ModifyShowAsync(@params);
+                Show show = await showCoordinationService.ModifyShowAsync(@params);
 
                 return Ok(show);
             }
@@ -98,6 +102,10 @@ namespace FMFT.Web.Server.Controllers.Shows
                 return BadRequest(exception);
             }
             catch (NotAuthorizedAccountException exception)
+            {
+                return Forbidden(exception);
+            }
+            catch (NotAuthenticatedAccountException exception)
             {
                 return Unauthorized(exception);
             }

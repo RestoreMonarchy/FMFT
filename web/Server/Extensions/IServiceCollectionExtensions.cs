@@ -14,6 +14,7 @@ using FMFT.Web.Server.Models.Options.Emails;
 using FMFT.Web.Server.Services.Coordinations.Medias;
 using FMFT.Web.Server.Services.Coordinations.Reservations;
 using FMFT.Web.Server.Services.Coordinations.ShowGalleries;
+using FMFT.Web.Server.Services.Coordinations.Shows;
 using FMFT.Web.Server.Services.Foundations.Accounts;
 using FMFT.Web.Server.Services.Foundations.Auditoriums;
 using FMFT.Web.Server.Services.Foundations.Emails;
@@ -106,6 +107,7 @@ namespace FMFT.Web.Server.Extensions
             services.AddTransient<IReservationCoordinationService, ReservationCoordinationService>();
             services.AddTransient<IMediaCoordinationService, MediaCoordinationService>();
             services.AddTransient<IShowGalleryCoordinationService, ShowGalleryCoordinationService>();
+            services.AddTransient<IShowCoordinationService, ShowCoordinationService>();
 
             return services;
         }
