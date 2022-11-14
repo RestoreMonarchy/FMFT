@@ -3,6 +3,8 @@ using FMFT.Web.Server.Brokers.Emails;
 using FMFT.Web.Server.Brokers.Urls;
 using FMFT.Web.Server.Models.Emails;
 using FMFT.Web.Server.Models.Emails.Params;
+using System.ComponentModel.DataAnnotations;
+using System.Net.Mail;
 
 namespace FMFT.Web.Server.Services.Foundations.Emails
 {
@@ -54,6 +56,25 @@ namespace FMFT.Web.Server.Services.Foundations.Emails
             };
 
             await emailBroker.SendResetPasswordEmailAsync(email);
+        }
+
+        public async ValueTask SendRegisterExternalEmailAsync(string emailAddress, RegisterExternalEmailParams @params)
+        {
+            RegisterExternalEmailModel model = new()
+            {
+                Email = @params.Email,
+                FirstName = @params.FirstName,
+                AuthenticationMethod = @params.AuthenticationMethod
+            };
+
+            Email<RegisterExternalEmailModel> email = new()
+            {
+                Subject = "Potwierdzenie rejestracji",
+                EmailAddress = emailAddress,
+                Model = model
+            };
+
+            await emailBroker.SendRegisterExternalEmailAsync(email);
         }
     }
 }

@@ -62,5 +62,18 @@ namespace FMFT.Web.Server.Brokers.Emails
 
             await emailClient.SendHtmlEmailMessageAsync(message);
         }
+
+        public async Task SendRegisterExternalEmailAsync(Email<RegisterExternalEmailModel> email)
+        {
+            HtmlEmailMessage message = new()
+            {
+                Subject = email.Subject,
+                EmailAddress = email.EmailAddress
+            };
+
+            message.Html = await emailGenerator.GenerateRegisterExternalEmailHtmlAsync(email.Model);
+
+            await emailClient.SendHtmlEmailMessageAsync(message);
+        }
     }
 }

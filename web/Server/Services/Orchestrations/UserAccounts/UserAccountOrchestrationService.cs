@@ -91,19 +91,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
                 user = await userService.RetrieveUserByLoginAsync("Facebook", facebookUser.Id);
             } catch (NotFoundUserException)
             {
-                RegisterUserWithLoginParams @registerUserWithLoginParams = new()
-                {
-                    Email = facebookUser.Email,
-                    FirstName = facebookUser.FirstName,
-                    LastName = facebookUser.LastName,
-                    Role = UserRole.Guest,
-                    IsEmailConfirmed = true,
-                    ProviderName = "Facebook",
-                    ProviderKey = facebookUser.Id,
-                    FriendlyName = facebookUser.Email
-                };
-
-                user = await userService.RegisterUserWithLoginAsync(@registerUserWithLoginParams);
+                user = await RegisterFacebookUserAsync(facebookUser);
             }
 
             CreateTokenParams @createTokenParams = new()
@@ -112,6 +100,34 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
             };
 
             return await accountService.CreateTokenAsync(createTokenParams);
+        }
+
+        private async ValueTask<User> RegisterFacebookUserAsync(FacebookUser facebookUser)
+        {
+            RegisterUserWithLoginParams @registerUserWithLoginParams = new()
+            {
+                Email = facebookUser.Email,
+                FirstName = facebookUser.FirstName,
+                LastName = facebookUser.LastName,
+                Role = UserRole.Guest,
+                IsEmailConfirmed = true,
+                ProviderName = "Facebook",
+                ProviderKey = facebookUser.Id,
+                FriendlyName = facebookUser.Email
+            };
+
+            User user = await userService.RegisterUserWithLoginAsync(@registerUserWithLoginParams);
+
+            RegisterExternalEmailParams @registerExternalEmailParams = new()
+            {
+                Email = user.Email,
+                FirstName = user.FirstName,
+                AuthenticationMethod = "Facebook"
+            };
+
+            await emailService.SendRegisterExternalEmailAsync(user.Email, @registerExternalEmailParams);
+
+            return user;
         }
 
         public async ValueTask<AccountToken> SignInWithPasswordAsync(SignInWithPasswordRequest request)
