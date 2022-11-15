@@ -1,6 +1,7 @@
 ﻿using FMFT.Extensions.Blazor.Bases.Loadings;
 using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Users;
+using FMFT.Web.Shared.Enums;
 
 namespace FMFT.Web.Client.Views.Pages.Admin.Users
 {
@@ -18,6 +19,11 @@ namespace FMFT.Web.Client.Views.Pages.Admin.Users
 
         protected override async Task OnInitializedAsync()
         {
+            if (!UserAccountState.IsInRole(UserRole.Admin))
+            {
+                return;
+            }
+
             UsersResponse = await APIBroker.GetAllUsersAsync();
 
             LoadingView.StopLoading();
