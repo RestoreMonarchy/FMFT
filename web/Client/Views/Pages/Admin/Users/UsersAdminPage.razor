@@ -1,0 +1,82 @@
+﻿@page "/admin/users"
+
+<MainLayoutBody>
+
+    <Breadcrumb>
+        <BreadcrumbItem Link="/">
+            Home
+        </BreadcrumbItem>
+        <BreadcrumbItem>
+            Admin
+        </BreadcrumbItem>
+        <BreadcrumbItem Active="true">
+            Użytkownicy
+        </BreadcrumbItem>
+    </Breadcrumb>
+
+    <CustomAuthorizeView Role="UserRole.Admin">
+        <Authorized>
+
+            <LoadingView @ref="LoadingView">
+                <Condition Evaluation="UsersResponse.IsSuccessful">
+                    <Match>
+                        <div class="d-md-flex align-items-center">
+                            <div class="text-muted mb-2">
+                                Lista użytkowników (@SearchUsers.Count())
+                            </div>
+                            <div class="ms-auto mb-2">
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fa-solid fa-magnifying-glass"></i>
+                                    </span>
+                                    <input class="form-control" type="text" @bind="searchString" placeholder="Szukaj po email" @bind:event="oninput" />
+                                </div>                                
+                            </div>
+                        </div>
+                        <table class="table table-striped">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th scope="col">
+                                        ID
+                                    </th>
+                                    <th scope="col">
+                                        Email
+                                    </th>
+                                    <th scope="col" class="d-none d-sm-table-cell">
+                                        Data rejestracji
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <Iterations Items="SearchUsers.OrderByDescending(x => x.Id)" Context="user">
+                                    <tr>
+                                        <th>
+                                            @user.Id
+                                        </th>
+                                        <td>
+                                            <a href="/admin/users/@user.Id" class="text-decoration-none">
+                                                @user.Email
+                                            </a>
+                                        </td>
+                                        <td class="d-none d-sm-table-cell">
+                                            @user.CreateDate.LocalDateTime.ToShortDateString()
+                                        </td>
+                                    </tr>
+                                </Iterations>
+                            </tbody>
+                        </table>
+                    </Match>
+                    <NotMatch>
+                        <ErrorResponseAlert />
+                    </NotMatch>
+                </Condition>
+            </LoadingView>
+
+        </Authorized>
+        <NotAuthorized>
+            <NotAuthorizedAlert />
+        </NotAuthorized>
+    </CustomAuthorizeView>
+
+</MainLayoutBody>
+

@@ -11,7 +11,7 @@ namespace FMFT.Web.Client.Models.API.Users
         public UserRole Role { get; set; }
         public bool IsEmailConfirmed { get; set; }
         public DateTimeOffset? ConfirmEmailSendDate { get; set; }
-        public DateTime CreateDate { get; set; }
+        public DateTimeOffset CreateDate { get; set; }
 
         public string FullName() => string.Join(' ', FirstName, LastName);
     }
