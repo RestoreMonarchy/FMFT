@@ -1,0 +1,156 @@
+﻿@page "/admin/users/{UserId:int}"
+@using FMFT.Extensions.Blazor.Bases.Conditions
+
+<MainLayoutBody>
+
+    <Breadcrumb>
+        <BreadcrumbItem Link="/">
+            Home
+        </BreadcrumbItem>
+        <BreadcrumbItem>
+            Admin
+        </BreadcrumbItem>
+        <BreadcrumbItem>
+            Użytkownicy
+        </BreadcrumbItem>
+        <BreadcrumbItem Active="true">
+            @UserName
+        </BreadcrumbItem>
+    </Breadcrumb>
+
+    <CustomAuthorizeView Role="UserRole.Admin">
+        <Authorized>
+            <LoadingView @ref="LoadingView">
+                <Condition Evaluation="UserResponse.IsSuccessful">
+                    <Match>
+                       <div class="row">
+                           <div class="col-md-6">
+                               <div class="card mb-3">
+                                   <div class="card-header">
+                                       Informacja o użytkowniku
+                                   </div>
+                                   <div class="list-group list-group-flush">
+                                        <div class="list-group-item">
+                                            <span class="fw-bold">
+                                                ID:
+                                            </span>
+                                            <span>@User.Id</span>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <span class="fw-bold">
+                                                Email:
+                                            </span>
+                                            <span>@User.Email</span>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <span class="fw-bold">
+                                                 Imię:
+                                             </span>
+                                             <span>@User.FirstName</span>
+                                         </div>
+                                        <div class="list-group-item">
+                                            <span class="fw-bold">
+                                                Nazwisko:
+                                            </span>
+                                            <span>@User.LastName</span>
+                                        </div>
+                                        <div class="list-group-item">
+                                        <span class="fw-bold">
+                                                Typ użytkownika:
+                                            </span>
+                                            <span>@User.Role</span>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <span class="fw-bold">
+                                                Logowanie hasłem:
+                                            </span>
+                                            <span>
+                                                <Condition Evaluation="User.IsPasswordEnabled">
+                                                    <Match>
+                                                        Włączone
+                                                    </Match>
+                                                    <NotMatch>
+                                                        Wyłączone
+                                                    </NotMatch>
+                                                </Condition>
+                                            </span>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <span class="fw-bold">
+                                                Status konta:
+                                            </span>
+                                            <span>
+                                                <Condition Evaluation="User.IsEmailConfirmed">
+                                                    <Match>
+                                                        Potwierdzone
+                                                    </Match>
+                                                    <NotMatch>
+                                                        Nie potwierdzone
+                                                    </NotMatch>
+                                                </Condition>
+                                            </span>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <span class="fw-bold">
+                                                 Data rejestracji:
+                                             </span>
+                                             <span>
+                                                 @User.CreateDate.LocalDateTime
+                                            </span>
+                                        </div>
+
+                                   </div>
+                               </div>
+                           </div>
+                           <div class="col-md-6 mb-3">
+                               <Condition Evaluation="User.IsPasswordEnabled">
+                                    <NotMatch>
+                                        <div class="card mb-3">
+                                            <div class="card-header">
+                                                Lista zewnętrznych loginów
+                                            </div>
+                                            <LoadingView @ref="UserLoginsLoadingView">
+                                                <Condition Evaluation="UserLoginsResponse.IsSuccessful">
+                                                    <Match>
+                                                        <div class="list-group list-group-flush">
+                                                            <Iterations Items="UserLogins" Context="userLogin">
+                                                                <div class="list-group-item">
+                                                                    <Switch Expression="userLogin.ProviderName">
+                                                                        <SwitchCase Value="@("Facebook")">
+                                                                            <i class="fa-brands fa-facebook-f me-1"></i>
+                                                                        </SwitchCase>
+                                                                        <SwitchCase Value="@("Google")">
+                                                                            <i class="fa-brands fa-google me-1"></i>
+                                                                        </SwitchCase>
+                                                                        <DefaultSwitchCase>
+                                                                            <i class="fa-solid fa-question me-1"></i>
+                                                                        </DefaultSwitchCase>
+                                                                    </Switch>
+                                                                    @userLogin.FriendlyName
+                                                                </div>
+                                                            </Iterations>
+                                                        </div>
+                                                    </Match>
+                                                    <NotMatch>
+                                                        <ErrorResponseAlert />
+                                                    </NotMatch>
+                                                </Condition>
+                                            </LoadingView>
+                                        </div>
+                                    </NotMatch>
+                                </Condition>
+                           </div>
+                       </div>
+                    </Match>
+                    <NotMatch>
+                        <ErrorResponseAlert />
+                    </NotMatch>
+                </Condition>
+            </LoadingView>
+        </Authorized>
+        <NotAuthorized>
+            <NotAuthorizedAlert />
+        </NotAuthorized>
+    </CustomAuthorizeView>
+
+</MainLayoutBody>

@@ -9,6 +9,7 @@ namespace FMFT.Web.Client.Models.API.Users
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public UserRole Role { get; set; }
+        public bool IsPasswordEnabled { get; set; }
         public bool IsEmailConfirmed { get; set; }
         public DateTimeOffset? ConfirmEmailSendDate { get; set; }
         public DateTimeOffset CreateDate { get; set; }

@@ -15,7 +15,7 @@ namespace FMFT.Web.Client.Views.Pages.Admin.Shows
         [Parameter]
         public int ShowId { get; set; }
 
-        public string ShowName => ShowResponse?.Object.Name ?? ShowId.ToString();
+        public string ShowName => ShowResponse?.Object?.Name ?? ShowId.ToString();
 
         public LoadingView LoadingView { get; set; }
         public ModalDialog PreviewShowGalleryModalDialog { get; set; }
