@@ -11,5 +11,6 @@ namespace FMFT.Web.Client.Brokers.JSRuntimes
         ValueTask InitializeFacebookAsync();
         ValueTask<object> InitializeSeatsCanvasAsync<T>(object options, DotNetObjectReference<T> objectReference) where T : class;
         ValueTask ProcessFacebookLoginAsync();
+        ValueTask StartCarouselAsync(ElementReference carousel);
     }
 }

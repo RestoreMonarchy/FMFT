@@ -13,3 +13,8 @@ function HideNavbarCollapse(navbarContent) {
 
     bsCollapse.hide();
 }
+
+function StartCarousel(myCarousel) {
+    const carousel = new bootstrap.Carousel(myCarousel);
+    console.log(carousel);
+}

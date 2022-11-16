@@ -57,7 +57,7 @@
                         <Condition Evaluation="ShowGallery.Any()">
                             <Match>
                                 <div class="mb-3">
-                                    <div id="carouselGallery" class="carousel slide carousel-fade" data-bs-ride="carousel">
+                                    <div id="carouselGallery" @ref="GalleryCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
                                         <div class="carousel-inner rounded-2" style="max-height: 450px;">
                                             <Condition Evaluation="Show.ThumbnailMediaId.HasValue">
                                                 <Match>

@@ -14,6 +14,7 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
         private string ShowName => ShowResponse?.Object?.Name ?? ShowId.ToString();
 
         private LoadingView LoadingView { get; set; }
+        public ElementReference GalleryCarousel { get; set; }
 
         public APIResponse<Show> ShowResponse { get; set; }
         public APIResponse<Auditorium> AuditoriumResponse { get; set; }
@@ -32,6 +33,11 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
                 ShowGalleryResponse = await APIBroker.GetShowGalleryByShowIdAsync(Show.Id);
             }
             LoadingView.StopLoading();
+        }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            await JSRuntimeBroker.StartCarouselAsync(GalleryCarousel);
         }
     }
 }
