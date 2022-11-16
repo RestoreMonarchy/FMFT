@@ -15,6 +15,10 @@ function HideNavbarCollapse(navbarContent) {
 }
 
 function StartCarousel(myCarousel) {
+    if (typeof (myCarousel) == 'undefined' || myCarousel == null) {
+        return;
+    }
+
     const carousel = new bootstrap.Carousel(myCarousel);
-    console.log(carousel);
+    carousel.cycle();
 }

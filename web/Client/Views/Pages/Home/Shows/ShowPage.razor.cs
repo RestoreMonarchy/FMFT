@@ -37,7 +37,10 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            await JSRuntimeBroker.StartCarouselAsync(GalleryCarousel);
+            if (!firstRender)
+            {
+                await JSRuntimeBroker.StartCarouselAsync(GalleryCarousel);
+            }            
         }
     }
 }
