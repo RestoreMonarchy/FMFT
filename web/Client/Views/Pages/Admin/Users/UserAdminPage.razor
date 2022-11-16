@@ -1,5 +1,6 @@
 ﻿@page "/admin/users/{UserId:int}"
 @using FMFT.Extensions.Blazor.Bases.Conditions
+@using FMFT.Extensions.Blazor.Bases.Dialogs
 
 <MainLayoutBody>
 
@@ -10,7 +11,7 @@
         <BreadcrumbItem>
             Admin
         </BreadcrumbItem>
-        <BreadcrumbItem>
+        <BreadcrumbItem Link="/admin/users">
             Użytkownicy
         </BreadcrumbItem>
         <BreadcrumbItem Active="true">
@@ -98,12 +99,10 @@
                                                  @User.CreateDate.LocalDateTime
                                             </span>
                                         </div>
-
                                    </div>
                                </div>
-                           </div>
-                           <div class="col-md-6 mb-3">
-                               <Condition Evaluation="User.IsPasswordEnabled">
+
+                                <Condition Evaluation="User.IsPasswordEnabled">
                                     <NotMatch>
                                         <div class="card mb-3">
                                             <div class="card-header">
@@ -139,8 +138,54 @@
                                         </div>
                                     </NotMatch>
                                 </Condition>
+
+                           </div>
+                           <div class="col-md-6">
+                               <div class="card mb-3">
+                                   <div class="card-header">
+                                       Zarządzaj użytkownikiem
+                                   </div>
+                                    <div class="list-group list-group-flush">
+                                        <button class="list-group-item list-group-item-action list-group-item-info" @onclick="HandleOpenChangeRoleAsync">
+                                            <i class="fa-regular fa-id-badge me-1"></i>
+                                            Zmień typ użytkownika
+                                        </button>
+                                    </div>
+                               </div>
                            </div>
                        </div>
+
+                       <ModalDialog @ref="ChangeRoleModalDialog">
+                           <Title>
+                               Zmień typ użytkownika
+                           </Title>
+                           <Body>
+                               <AlertGroupBase @ref="ChangeRoleAlertGroup">
+                                   <AlertBase @ref="ChangeRoleSuccessAlert" Class="alert alert-success">
+                                       Pomyślnie zmieniono typ użytkownika!
+                                   </AlertBase>
+                                    <AlertBase @ref="ChangeRoleSameAlert" Class="alert alert-warning">
+                                        Ten użytkownik ma już ustawiony wybrany typ użytkownika
+                                    </AlertBase>
+                                   <AlertBase @ref="ChangeRoleErrorAlert" Class="alert alert-danger">
+                                       Coś poszło nie tak. Spróbuj ponownie później.
+                                   </AlertBase>
+                               </AlertGroupBase>
+
+                               <div>
+                                   <label class="form-label">Typ użytkownika</label>
+                                    <SelectEnumBase @ref="ChangeRoleSelect" TEnum="UserRole" @bind-Value="changeRole" />
+                               </div>
+                           </Body>
+                           <Footer>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    Anuluj
+                                </button>
+                                <ButtonBase @ref="ChangeRoleButton" Class="btn btn-primary" OnClick="HandleChangeRoleAsync">
+                                    Zapisz
+                                </ButtonBase>
+                           </Footer>
+                       </ModalDialog>
                     </Match>
                     <NotMatch>
                         <ErrorResponseAlert />
