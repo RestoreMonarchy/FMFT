@@ -13,5 +13,9 @@ RUN dotnet publish web/Server/FMFT.Web.Server.csproj -c Release -o out
 FROM mcr.microsoft.com/dotnet/aspnet:6.0
 WORKDIR /app
 EXPOSE 80
+
+RUN apt-get update -y
+RUN apt-get install -y libgdiplus
+
 COPY --from=build-env /app/out .
 ENTRYPOINT ["dotnet", "FMFT.Web.Server.dll"]
