@@ -1,5 +1,6 @@
 ﻿@page "/shows/{ShowId:int}"
 @using FMFT.Extensions.Blazor.Bases.Carousels
+@using FMFT.Extensions.Blazor.Bases.MarkdownEditors;
 
 <MainLayoutBody>
     <Breadcrumb>
@@ -86,38 +87,9 @@
                                 <h4 class="card-title">
                                     @Show.Name
                                 </h4>
-                                <p class="text-muted">
-                                    <div>
-                                        Data: <span class="fw-bold">@Show.StartDateTime.LocalDateTime.ToShortDateString()</span>
-                                    </div>
-                                    <div>
-                                        Godzina: <span class="fw-bold">@Show.StartDateTime.LocalDateTime.ToShortTimeString()</span>
-                                    </div>
+                                <p>
+                                    @Description
                                 </p>
-                                <div class="mb-2">
-                                    <div class="fw-bold">
-                                        Opis
-                                    </div>
-                                    <div>
-                                        @Show.Description
-                                    </div>
-                                </div>
-                                <div class="mb-2">
-                                    <div class="fw-bold">
-                                        Sala
-                                    </div>
-                                    <div>
-                                        @Auditorium.Name
-                                    </div>
-                                </div>
-                                <div class="mb-2">
-                                    <div class="fw-bold">
-                                        Liczba miejsc (wolne / wszystkie)
-                                    </div>
-                                    <div>
-                                        @(Auditorium.Seats.Count - Show.ReservedSeats.Count) / @Auditorium.Seats.Count
-                                    </div>
-                                </div>
                             </div>
                             <div class="list-group list-group-flush">
                                 <a class="list-group-item list-group-item-action list-group-item-primary" href="/shows/@ShowId/reserve">

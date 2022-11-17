@@ -1,4 +1,5 @@
 ﻿using FMFT.Extensions.Blazor.Bases.Loadings;
+using FMFT.Extensions.Blazor.Bases.MarkdownEditors;
 using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Auditoriums;
 using FMFT.Web.Client.Models.API.Shows;
@@ -22,6 +23,8 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
         public Show Show => ShowResponse.Object;
         public Auditorium Auditorium => AuditoriumResponse.Object;
         public List<ShowGallery> ShowGallery => ShowGalleryResponse.Object;
+
+        public MarkupString Description => new MarkupString(MarkdownEditorHelper.ParseToHtml(Show.Description));
 
         protected override async Task OnParametersSetAsync()
         {

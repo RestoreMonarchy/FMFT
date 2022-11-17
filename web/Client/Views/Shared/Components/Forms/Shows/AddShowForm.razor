@@ -1,5 +1,6 @@
 ﻿@using FMFT.Web.Client.Views.Shared.Components.Dialogs
 @using FMFT.Web.Client.Views.Shared.Components.Inputs
+@using FMFT.Extensions.Blazor.Bases.MarkdownEditors
 
 <EditForm Model="Model" OnValidSubmit="SubmitAsync">
     <DataAnnotationsValidator />
@@ -28,7 +29,7 @@
         </div>
         <div class="mb-2">
             <span class="form-label">Opis</span>
-            <InputTextArea class="form-control" @bind-Value="Model.Description" rows="5" />
+            <MarkdownEditor @bind-Value="Model.Description" DisableHtml="false" Height="300" />
             <div class="text-danger">
                 <ValidationMessage For="@(() => Model.Description)" />
             </div>
