@@ -15,3 +15,12 @@ function HideModal(modalElement) {
     const modal = bootstrap.Modal.getInstance(modalElement);
     modal.hide();
 }
+
+function StartCarousel(myCarousel) {
+    if (typeof (myCarousel) == 'undefined' || myCarousel == null) {
+        return;
+    }
+
+    const carousel = new bootstrap.Carousel(myCarousel);
+    carousel.cycle();
+}
