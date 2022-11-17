@@ -6,6 +6,7 @@ namespace FMFT.Web.Client.Services.Medias
     public interface IMediaService
     {
         string GetMediaUrl(Guid mediaId);
+        string GetReservationQRCodeUrl(string reservationId);
         ValueTask<APIResponse> UploadBrowserFileAsync(IBrowserFile browserFile);
     }
 }

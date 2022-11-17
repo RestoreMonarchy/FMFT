@@ -33,8 +33,6 @@ namespace FMFT.Web.Server.Services.Orchestrations.Reservations
         {
             Reservation reservation = await reservationService.RetrieveReservationByIdAsync(reservationId);
 
-            await accountService.AuthorizeAccountByUserIdAsync(reservation.User.Id);
-
             return await qrCodeService.GenerateReservationQRCodeImageAsync(reservation.Id);
         }
 

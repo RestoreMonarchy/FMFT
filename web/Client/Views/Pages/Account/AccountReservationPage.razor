@@ -99,6 +99,11 @@
                                         Zarządzaj rezerwacją
                                     </div>
                                     <div class="list-group list-group-flush">
+                                        <button class="list-group-item list-group-item-action list-group-item-info" href="javascript:void(0)"
+                                                @onclick="HandleQRCodeDialogAsync" disabled="@Reservation.IsCanceled">
+                                            <i class="fa-solid fa-qrcode me-1"></i>
+                                            Pokaż QRCode
+                                        </button>
                                         <button class="list-group-item list-group-item-action list-group-item-warning" href="javascript:void(0)"
                                                 @onclick="HandleCancelDialogAsync" disabled="@Reservation.IsCanceled">
                                             <i class="fa-solid fa-xmark me-1"></i>
@@ -124,6 +129,20 @@
                                 <ButtonBase @ref="CancelButton" Class="btn btn-danger" OnClick="HandleCancelAsync">
                                     Tak
                                 </ButtonBase>
+                            </Footer>
+                        </ModalDialog>
+
+                        <ModalDialog @ref="QRCodeModalDialog" AlignCenter="false">
+                            <Title>
+                                QRCode rezerwacji
+                            </Title>
+                            <Body>
+                                <img src="@MediaService.GetReservationQRCodeUrl(Reservation.Id)" class="img-thumbnail" />
+                            </Body>
+                            <Footer>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    Zamknij
+                                </button>
                             </Footer>
                         </ModalDialog>
 

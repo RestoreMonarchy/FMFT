@@ -71,14 +71,6 @@ namespace FMFT.Web.Server.Controllers
             {
                 return NotFound(exception);
             }
-            catch (NotAuthenticatedAccountException exception)
-            {
-                return Unauthorized(exception);
-            }
-            catch (NotAuthorizedAccountException exception)
-            {
-                return Forbidden(exception);
-            }
         }
 
         //[HttpPost("{reservationId}/updatestatus")]

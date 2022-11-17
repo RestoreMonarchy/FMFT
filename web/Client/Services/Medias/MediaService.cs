@@ -25,7 +25,14 @@ namespace FMFT.Web.Client.Services.Medias
             const string format = "{0}/media/file/{1}";
 
             return string.Format(format, APIUrl, mediaId);
-        }        
+        }
+
+        public string GetReservationQRCodeUrl(string reservationId)
+        {
+            const string format = "{0}/api/reservations/{1}/image";
+
+            return string.Format(format, APIUrl, reservationId);
+        }
 
         public async ValueTask<APIResponse> UploadBrowserFileAsync(IBrowserFile browserFile)
         {
