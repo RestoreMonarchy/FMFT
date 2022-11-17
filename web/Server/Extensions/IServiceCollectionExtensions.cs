@@ -5,6 +5,7 @@ using FMFT.Web.Server.Brokers.Emails;
 using FMFT.Web.Server.Brokers.Encryptions;
 using FMFT.Web.Server.Brokers.Facebooks;
 using FMFT.Web.Server.Brokers.Loggings;
+using FMFT.Web.Server.Brokers.QRCodes;
 using FMFT.Web.Server.Brokers.Storages;
 using FMFT.Web.Server.Brokers.Urls;
 using FMFT.Web.Server.Brokers.Validations;
@@ -20,6 +21,7 @@ using FMFT.Web.Server.Services.Foundations.Auditoriums;
 using FMFT.Web.Server.Services.Foundations.Emails;
 using FMFT.Web.Server.Services.Foundations.Facebooks;
 using FMFT.Web.Server.Services.Foundations.Medias;
+using FMFT.Web.Server.Services.Foundations.QRCodes;
 using FMFT.Web.Server.Services.Foundations.Reservations;
 using FMFT.Web.Server.Services.Foundations.ResetPasswordRequests;
 using FMFT.Web.Server.Services.Foundations.Seats;
@@ -69,6 +71,7 @@ namespace FMFT.Web.Server.Extensions
             services.AddScoped<IEmailBroker, EmailBroker>();
             services.AddScoped<IFacebookBroker, FacebookBroker>();
             services.AddScoped<IConvertBroker, ConvertBroker>();
+            services.AddScoped<IQRCodeBroker, QRCodeBroker>();
 
             return services;
         }
@@ -86,6 +89,7 @@ namespace FMFT.Web.Server.Extensions
             services.AddTransient<IFacebookService, FacebookService>();
             services.AddTransient<IMediaService, MediaService>();
             services.AddTransient<IShowGalleryService, ShowGalleryService>();
+            services.AddTransient<IQRCodeService, QRCodeService>();
 
             return services;
         }

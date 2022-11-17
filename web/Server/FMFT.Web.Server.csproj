@@ -10,6 +10,7 @@
     <PackageReference Include="Dapper" Version="2.0.123" />
     <PackageReference Include="FacebookCore" Version="2.1.13" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="6.0.5" />
+    <PackageReference Include="QRCoder" Version="1.4.2" />
     <PackageReference Include="RESTFulSense" Version="2.7.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.5" />

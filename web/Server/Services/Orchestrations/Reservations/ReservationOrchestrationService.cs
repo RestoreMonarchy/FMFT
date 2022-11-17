@@ -1,8 +1,11 @@
 ﻿using FMFT.Web.Server.Brokers.Loggings;
+using FMFT.Web.Server.Brokers.QRCodes;
+using FMFT.Web.Server.Models.QRCodes;
 using FMFT.Web.Server.Models.Reservations;
 using FMFT.Web.Server.Models.Reservations.Params;
 using FMFT.Web.Server.Models.Reservations.Requests;
 using FMFT.Web.Server.Services.Foundations.Accounts;
+using FMFT.Web.Server.Services.Foundations.QRCodes;
 using FMFT.Web.Server.Services.Foundations.Reservations;
 
 namespace FMFT.Web.Server.Services.Orchestrations.Reservations
@@ -11,16 +14,28 @@ namespace FMFT.Web.Server.Services.Orchestrations.Reservations
     {
         private readonly IReservationService reservationService;
         private readonly IAccountService accountService;
+        private readonly IQRCodeService qrCodeService;
         private readonly ILoggingBroker loggingBroker;
 
         public ReservationOrchestrationService(
-            IReservationService reservationService, 
-            IAccountService accountService, 
-            ILoggingBroker loggingBroker)
+            IReservationService reservationService,
+            IAccountService accountService,
+            ILoggingBroker loggingBroker,
+            IQRCodeService qrCodeService)
         {
             this.reservationService = reservationService;
             this.accountService = accountService;
             this.loggingBroker = loggingBroker;
+            this.qrCodeService = qrCodeService;
+        }
+
+        public async ValueTask<QRCodeImage> GenerateReservationQRCodeImageAsync(string reservationId)
+        {
+            Reservation reservation = await reservationService.RetrieveReservationByIdAsync(reservationId);
+
+            await accountService.AuthorizeAccountByUserIdAsync(reservation.User.Id);
+
+            return await qrCodeService.GenerateReservationQRCodeImageAsync(reservation.Id);
         }
 
         public async ValueTask<Reservation> CreateReservationAsync(CreateReservationParams @params)

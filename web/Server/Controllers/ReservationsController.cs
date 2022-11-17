@@ -1,4 +1,5 @@
 ﻿using FMFT.Web.Server.Models.Accounts.Exceptions;
+using FMFT.Web.Server.Models.QRCodes;
 using FMFT.Web.Server.Models.Reservations;
 using FMFT.Web.Server.Models.Reservations.Exceptions;
 using FMFT.Web.Server.Models.Reservations.Requests;
@@ -52,6 +53,29 @@ namespace FMFT.Web.Server.Controllers
             {
                 return Unauthorized(exception);
             } catch (NotAuthorizedAccountException exception)
+            {
+                return Forbidden(exception);
+            }
+        }
+
+        [HttpGet("{reservationId}/image")]
+        public async ValueTask<IActionResult> GetReservationImage(string reservationId)
+        {
+            try
+            {
+                QRCodeImage image = await reservationCoordinationService.GenerateReservationQRCodeImageAsync(reservationId);
+
+                return File(image.Data, image.ContentType);
+            }
+            catch (NotFoundReservationException exception)
+            {
+                return NotFound(exception);
+            }
+            catch (NotAuthenticatedAccountException exception)
+            {
+                return Unauthorized(exception);
+            }
+            catch (NotAuthorizedAccountException exception)
             {
                 return Forbidden(exception);
             }

@@ -1,4 +1,5 @@
-﻿using FMFT.Web.Server.Models.Reservations;
+﻿using FMFT.Web.Server.Models.QRCodes;
+using FMFT.Web.Server.Models.Reservations;
 using FMFT.Web.Server.Models.Reservations.Params;
 using FMFT.Web.Server.Services.Orchestrations.Reservations;
 using FMFT.Web.Server.Services.Orchestrations.UserAccounts;
@@ -17,6 +18,11 @@ namespace FMFT.Web.Server.Services.Coordinations.Reservations
         {
             this.reservationService = reservationService;
             this.userAccountService = userAccountService;
+        }
+
+        public async ValueTask<QRCodeImage> GenerateReservationQRCodeImageAsync(string reservationId)
+        {
+            return await reservationService.GenerateReservationQRCodeImageAsync(reservationId);
         }
 
         public async ValueTask<Reservation> CreateReservationAsync(CreateReservationParams @params)
