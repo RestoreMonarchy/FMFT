@@ -41,10 +41,5 @@ namespace FMFT.Web.Client.Brokers.JSRuntimes
         {
             await jsRuntime.InvokeVoidAsync("fbLogin");
         }
-
-        public async ValueTask StartCarouselAsync(ElementReference carousel)
-        {
-            await jsRuntime.InvokeVoidAsync("StartCarousel", carousel);
-        }
     }
 }

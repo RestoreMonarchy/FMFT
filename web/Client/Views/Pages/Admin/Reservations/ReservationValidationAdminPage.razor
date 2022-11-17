@@ -1,0 +1,140 @@
+﻿@page "/admin/reservations/validation"
+@using FMFT.Extensions.Blazor.Bases.Conditions
+
+<MainLayoutBody>
+    <Breadcrumb>
+        <BreadcrumbItem Link="/">
+            Home
+        </BreadcrumbItem>
+        <BreadcrumbItem>
+            Admin
+        </BreadcrumbItem>
+        <BreadcrumbItem>
+            Rezerwacje
+        </BreadcrumbItem>
+        <BreadcrumbItem Active="true">
+            Sprawdź
+        </BreadcrumbItem>
+    </Breadcrumb>
+
+    <CustomAuthorizeView Role="UserRole.Admin">
+        <Authorized>
+            <div class="text-center mb-3">
+                <h4 class="fs-5">Sprawdź rezerwację</h4>
+                <FormBase OnSubmit="HandleSubmitAsync">
+                    <div class="input-group mx-auto" style="max-width: 400px;">
+                        <span class="input-group-text">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </span>
+                        <TextInputBase @ref="SearchInput" @bind-Value="ReservationId" Class="form-control" Placeholder="Numer rezerwacji" />
+                    </div>
+                    <button class="d-none" type="submit">Szukaj</button>
+                </FormBase>
+            </div>
+
+            <div>
+                <Condition Evaluation="isLoading">
+                    <NotMatch>
+                        <Condition Evaluation="ReservationResponse != null">
+                            <Match>
+                                <Condition Evaluation="ReservationResponse.IsSuccessful">
+                                    <Match>
+                                        <div class="card">
+                                            <div class="card-header">
+                                                Informacje o rezerwacji
+                                            </div>
+                                            <div class="list-group list-group-flush">
+                                                <Condition Evaluation="Reservation.IsCanceled">
+                                                    <Match>
+                                                        <div class="list-group-item list-group-item-warning">
+                                                            Ta rezerwacja została anulowana
+                                                        </div>
+                                                    </Match>
+                                                </Condition>
+                                                <div class="list-group-item">
+                                                    <span class="fw-bold">
+                                                        ID:
+                                                    </span>
+                                                    <span>
+                                                        @Reservation.Id
+                                                    </span>
+                                                </div>
+                                                <div class="list-group-item">
+                                                    <span class="fw-bold">
+                                                        Rząd:
+                                                    </span>
+                                                    <span>
+                                                        @Reservation.Seat.Row
+                                                    </span>
+                                                </div>
+                                                <div class="list-group-item">
+                                                    <span class="fw-bold">
+                                                        Numer:
+                                                    </span>
+                                                    <span>
+                                                        @Reservation.Seat.Number
+                                                    </span>
+                                                </div>
+                                                <div class="list-group-item">
+                                                    <span class="fw-bold">
+                                                        Przedstawienie:
+                                                    </span>
+                                                    <span>
+                                                        @Reservation.Show.Name
+                                                    </span>
+                                                </div>
+                                                <div class="list-group-item">
+                                                    <span class="fw-bold">
+                                                        Imię:
+                                                    </span>
+                                                    <span>
+                                                        @Reservation.User.FirstName
+                                                    </span>
+                                                </div>
+                                                <div class="list-group-item">
+                                                    <span class="fw-bold">
+                                                        Nazwisko:
+                                                    </span>
+                                                    <span>
+                                                        @Reservation.User.LastName
+                                                    </span>
+                                                </div>
+                                                <div class="list-group-item">
+                                                    <span class="fw-bold">
+                                                        Email:
+                                                    </span>
+                                                    <span>
+                                                        @Reservation.User.Email
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </Match>
+                                    <NotMatch>
+                                        <Switch Expression="ReservationResponse.Error.Code">
+                                            <SwitchCase Value="@("ERR017")">
+                                                <InfoAlert>
+                                                    Rezerwacja o podanym numerze nie istnieje
+                                                </InfoAlert>
+                                            </SwitchCase>
+                                            <DefaultSwitchCase>
+                                                <ErrorResponseAlert />
+                                            </DefaultSwitchCase>
+                                        </Switch>
+                                    </NotMatch>
+                                </Condition>
+                            </Match>
+                        </Condition>
+                    </NotMatch>
+                    <Match>
+                        <ProgressBar />
+                    </Match>
+                </Condition>
+            </div>
+        </Authorized>
+        <NotAuthorized>
+            <NotAuthorizedAlert />
+        </NotAuthorized>
+    </CustomAuthorizeView>        
+
+</MainLayoutBody>

@@ -1,9 +1,13 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace FMFT.Extensions.Blazor.Bases.Inputs
 {
     public partial class TextInputBase
     {
+        [Inject]
+        public IJSRuntime JsRuntime { get; set; }
+
         [Parameter]
         public string Value { get; set; }
 
@@ -17,6 +21,7 @@ namespace FMFT.Extensions.Blazor.Bases.Inputs
         public string Class { get; set; }
 
         public bool IsEnabled => IsDisabled is false;
+        public ElementReference InputElement { get; set; }
 
         protected Task OnValueChanged(ChangeEventArgs changeEventArgs)
         {
@@ -31,5 +36,10 @@ namespace FMFT.Extensions.Blazor.Bases.Inputs
             this.Value = value;
             await this.ValueChanged.InvokeAsync(this.Value);
         });
+
+        public async Task SelectAsync()
+        {
+            await JsRuntime.InvokeVoidAsync("SelectInput", InputElement);
+        }
     }
 }

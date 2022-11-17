@@ -24,3 +24,7 @@ function StartCarousel(myCarousel) {
     const carousel = new bootstrap.Carousel(myCarousel);
     carousel.cycle();
 }
+
+function SelectInput(inputElement) {
+    inputElement.select();
+}
