@@ -4,7 +4,6 @@ using LitJWT;
 using LitJWT.Algorithms;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
-using Microsoft.Net.Http.Headers;
 
 namespace FMFT.Extensions.Authentication
 {
@@ -33,7 +32,7 @@ namespace FMFT.Extensions.Authentication
 
         public string RetrieveToken()
         {
-            if (httpContext.Request.Headers.TryGetValue(HeaderNames.Authorization, out StringValues token))
+            if (httpContext.Request.Headers.TryGetValue("Authorization", out StringValues token))
             {
                 return token.ToString();
             }

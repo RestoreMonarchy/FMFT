@@ -1,34 +1,50 @@
-Error Code | Message 
---- | ---
-ERR001 | Account not authenticated
-ERR002 | Account not authorized
-ERR003 | External login not found
-ERR004 | Register with login validation problem
-ERR005 | Register with password validation problem
-ERR006 | User with this email already exists
-ERR007 | User with this external login already exists
-ERR008 | User not found
-ERR009 | Invalid credentials
-ERR010 | User already has this role set
-ERR011 | User already has this culture set
-ERR012 | Add Show validation problem
-ERR013 | Update Show validation problem
-ERR014 | Show not found
-ERR015 | Show auditorium does not exist
-ERR016 | Seat not found
-ERR017 | Reservation not found
-ERR018 | Seat is already reserved
-ERR019 | User already created a reservation
-ERR020 | Auditorium not found
-ERR021 | This user has already confirmed email
-ERR022 | Secret key and user id do not match 
-ERR023 | This user does not use password authentication
-ERR024 | Change user password validation problem
-ERR025 | Reset password validation problem
-ERR026 | This reset password request has already been used
-ERR027 | This reset password request has expired
-ERR028 | You have reached the limit of reset password requests. Try again later
-ERR029 | Reset password request not found
-ERR030 | Media not found
-ERR031 | The media file is too large
-ERR032 | The media file is required
+## About
+This repository is a reservation system custom solution for FMFT - the annual cultural festival hosted in the city of Kraków.  
+
+### Features
+* Custom user registration system
+    - external Facebook authentication
+    - password based authentication
+    - change and reset password options
+    - user roles
+* Performances management
+    - basic information
+    - gallery
+    - auditorium assigment
+* Reservations
+    - seat based
+    - user limited to one reservation per show
+    - cancellation
+    - QR codes
+    - validity check page for admins
+* Emails
+    - SMTP client
+
+### Tech Information
+#### Stack
+ * .NET 6
+ * Blazor WebAssembly in `FMFT.Web.Client` project
+ * ASP.NET Core in `FMFT.Web.Server` project
+ * SQL Server Database in `FMFT.Database` project
+ * Docker
+
+#### External libraries
+* Dapper 
+* BCrypt.Net-Next
+* BlazorPanzoom
+* FacebookCore
+* Markdig
+* QRCoder
+* RESTFulSense
+* Xeption
+* PrettyBlazor
+* LitJWT
+* Swagger
+* Bootstrap 5
+* Fontawesome
+
+#### Other features
+* Authentication is made with JWT without using any Microsoft authentication packages
+* Emails are generated from razor views using the RazorViewToEmailTemplates package
+* The Web API and Blazor WebAssembly projects are running as seperate services
+* The Web API returns error codes, check them [here](/ERROR-CODES.md)
