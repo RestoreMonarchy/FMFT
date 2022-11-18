@@ -31,7 +31,7 @@
         </div>
         <div class="mb-2">
             <span class="form-label">Miniaturka</span>
-            <InputMediaFile Class="form-control" @bind-Value="Model.ThumbnailMediaId" Accept="image/png, image/gif, image/jpeg" />
+            <InputMediaFile Class="form-control" @bind-Value="Model.ThumbnailMediaId" Accept="image/png, image/gif, image/jpeg, image/webp" />
             <div class="text-danger">
                 <ValidationMessage For="@(() => Model.ThumbnailMediaId)" />
             </div>
