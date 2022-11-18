@@ -10,7 +10,7 @@ namespace FMFT.Web.Client.Models.API.Reservations
         public string Id { get; set; }
         public ReservationStatus Status { get; set; }
         public bool IsCanceled { get; set; }
-        public DateTime CreateDate { get; set; }
+        public DateTimeOffset CreateDate { get; set; }
 
         public Show Show { get; set; }
         public Seat Seat { get; set; }
