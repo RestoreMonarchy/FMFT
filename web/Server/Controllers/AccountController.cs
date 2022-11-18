@@ -52,6 +52,9 @@ namespace FMFT.Web.Server.Controllers
             catch (NotAuthenticatedAccountException exception)
             {
                 return Unauthorized(exception);
+            } catch (NotFoundUserException exception)
+            {
+                return NotFound(exception);
             }
         }
 
