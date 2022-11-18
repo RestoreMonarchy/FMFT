@@ -25,6 +25,11 @@ namespace FMFT.Web.Client.Brokers.APIs
             httpClient.DefaultRequestHeaders.Add("Authorization", authorizationToken);
         }
 
+        public void RemoveAuthorizationToken()
+        {
+            httpClient.DefaultRequestHeaders.Remove("Authorization");
+        }
+
         private async ValueTask<APIResponse<T>> GetAsync<T>(string relativeUrl)
         {
             HttpResponseMessage response = await httpClient.GetAsync(relativeUrl);

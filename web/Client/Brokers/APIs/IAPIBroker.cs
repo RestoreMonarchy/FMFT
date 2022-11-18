@@ -3,5 +3,6 @@
     public partial interface IAPIBroker
     {
         void SetAuthorizationToken(string authorizationToken);
+        void RemoveAuthorizationToken();
     }
 }

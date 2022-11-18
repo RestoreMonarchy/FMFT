@@ -46,7 +46,7 @@ namespace FMFT.Web.Client.Services.Accounts
             bool isSuccessfull = await UpdateUserAccountAsync();
             if (!isSuccessfull)
             {
-                apiBroker.SetAuthorizationToken(null);
+                await LogoutAsync();
             }
         }
 
@@ -62,13 +62,14 @@ namespace FMFT.Web.Client.Services.Accounts
             bool isSuccessfull = await UpdateUserAccountAsync();
             if (!isSuccessfull)
             {
-                apiBroker.SetAuthorizationToken(null);
+                await LogoutAsync();
             }
         }
 
         public async ValueTask LogoutAsync()
         {
             await storageBroker.SetAccountTokenAsync(null);
+            apiBroker.RemoveAuthorizationToken();
             userAccountStateContainer.UserAccount = null;
         }
 
