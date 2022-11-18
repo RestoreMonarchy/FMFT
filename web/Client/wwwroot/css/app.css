@@ -24,7 +24,7 @@
 
 .home-header {
     padding: 10vw 0 15vw 0;
-    background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url(/img/background.jpg) center;
+    background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url(/img/background.webp) center;
     background-size: cover;
 }
 
