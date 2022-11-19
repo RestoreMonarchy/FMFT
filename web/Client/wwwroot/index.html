@@ -33,16 +33,18 @@
         <div style="position:absolute; top:30vh; width: 100%; text-align:center">
             <div class="m-auto" style="max-width: 300px;">
                 <div class="progress">
-                    <div id="progressbar" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 10%;"></div>
+                    <div id="progressbar" class="progress-bar progress-bar-striped progress-bar-animated" style="width: var(--blazor-load-percentage, 0%);"></div>
                 </div>
                 <div>
-                    <span id="progressLabel" class="text-muted">Trwa ładowanie aplikacji...</span>
+                    <div class="text-muted progressLabel">
+                        Ładowanie
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="_framework/blazor.webassembly.js" autostart="false"></script>
+    <script src="_framework/blazor.webassembly.js"></script>
 
     <!-- Bootstrap 5.2 JavaScript Bundle with Popper -->
     <script src="/vendor/bootstrap/bootstrap.bundle.min.js"></script>
@@ -55,7 +57,6 @@
     <script src="https://connect.facebook.net/pl_PL/sdk.js"></script>
     <script src="_content/FMFT.Extensions.Blazor.Facebook/facebook.js"></script>
 
-    <script src="js/startblazor.js"></script>
     <script src="js/app.js?v=2"></script>
     <script src="js/seats-canvas.js"></script>
 

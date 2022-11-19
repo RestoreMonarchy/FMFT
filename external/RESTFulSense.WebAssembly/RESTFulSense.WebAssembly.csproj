@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <Nullable>disable</Nullable>
 	<DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>
 	<Authors>Brian Parker | Hassan Habib</Authors>
@@ -27,8 +27,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
-    <PackageReference Include="Xeption" Version="1.7.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
+    <PackageReference Include="Xeption" Version="2.5.0" />
   </ItemGroup>
 
 	<ItemGroup>

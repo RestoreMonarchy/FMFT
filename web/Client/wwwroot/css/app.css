@@ -41,3 +41,11 @@
         max-height: 150px;
     }
 }
+
+/*
+    Loading progress
+*/
+
+.progressLabel:after {
+    content: var(--blazor-load-percentage-text, "0%");
+}
