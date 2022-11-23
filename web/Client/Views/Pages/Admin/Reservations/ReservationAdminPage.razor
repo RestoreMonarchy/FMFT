@@ -1,0 +1,135 @@
+﻿@page "/admin/reservations/{ReservationId}"
+
+<MainLayoutBody>
+    <Breadcrumb>
+        <BreadcrumbItem Link="/">
+            Home
+        </BreadcrumbItem>
+        <BreadcrumbItem>
+            Admin
+        </BreadcrumbItem>
+        <BreadcrumbItem Link="/admin/reservations">
+            Rezerwacje
+        </BreadcrumbItem>
+        <BreadcrumbItem Active="true">
+            @ReservationId
+        </BreadcrumbItem>
+    </Breadcrumb>
+
+    <CustomAuthorizeView Role="UserRole.Admin">
+        <Authorized>
+
+            <LoadingView @ref="LoadingView">
+
+                <Condition Evaluation="ReservationResponse.IsSuccessful">
+                    <Match>
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+                                <div class="card">
+                                    <div class="card-header">
+                                        Informacje o rezerwacji
+                                    </div>
+                                    <div class="list-group list-group-flush">
+                                        <Condition Evaluation="Reservation.IsCanceled">
+                                            <Match>
+                                                <div class="list-group-item list-group-item-warning">
+                                                    Ta rezerwacja została anulowana
+                                                </div>
+                                            </Match>
+                                        </Condition>
+                                        <div class="list-group-item">
+                                            <span class="fw-bold">
+                                                ID:
+                                            </span>
+                                            <span>
+                                                @Reservation.Id
+                                            </span>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <span class="fw-bold">
+                                                Rząd:
+                                            </span>
+                                            <span>
+                                                @Reservation.Seat.Row
+                                            </span>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <span class="fw-bold">
+                                                Numer:
+                                            </span>
+                                            <span>
+                                                @Reservation.Seat.Number
+                                            </span>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <span class="fw-bold">
+                                                Przedstawienie:
+                                            </span>
+                                            <span>
+                                                @Reservation.Show.Name
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        Informacje o użytkowniku
+                                    </div>
+                                    <div class="list-group list-group-flush">
+                                        <div class="list-group-item">
+                                            <span class="fw-bold">
+                                                Imię:
+                                            </span>
+                                            <span>
+                                                @Reservation.User.FirstName
+                                            </span>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <span class="fw-bold">
+                                                Nazwisko:
+                                            </span>
+                                            <span>
+                                                @Reservation.User.LastName
+                                            </span>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <span class="fw-bold">
+                                                Email:
+                                            </span>
+                                            <span>
+                                                @Reservation.User.Email
+                                            </span>
+                                        </div>
+                                        <a class="list-group-item list-group-item-action" href="/admin/users/@Reservation.User.Id">
+                                            <i class="fa-solid fa-arrow-right-long me-1"></i>
+                                            Przejdź do użytkownika
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </Match>
+                    <NotMatch>
+
+                        <ErrorResponseAlert />
+
+                    </NotMatch>
+                </Condition>
+
+            </LoadingView>
+
+        </Authorized>
+        <NotAuthorized>
+            <NotAuthorizedAlert />
+        </NotAuthorized>
+    </CustomAuthorizeView>
+
+
+</MainLayoutBody>
