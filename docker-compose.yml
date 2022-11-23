@@ -34,6 +34,7 @@ services:
     volumes:
       - /srv/${PROJECT_NAME}/configs/serverconfig.json:/app/appsettings.Production.json
   web-client:
+    restart: always
     build:
         context: .
         dockerfile: ./docker/web-client/Dockerfile
