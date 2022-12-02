@@ -14,9 +14,9 @@
             </div>
         </div>
         <div class="mb-2">
-            <span class="form-label">Sala</span>
+            <span class="form-label">Audytorium</span>
             <InputSelect @bind-Value="Model.AudotiriumId" class="form-select">
-                <option>Wybierz salę</option>
+                <option>Wybierz audytorium</option>
                 <Iterations Items="Auditoriums" Context="auditorium">
                     <option value="@auditorium.Id">
                         @auditorium.Name (@auditorium.Seats.Count miejsc)
@@ -74,7 +74,7 @@
 
         <AlertGroupBase @ref="AlertGroup">
             <AlertBase @ref="AuditoriumNotFoundAlert" Class="alert-danger mt-3">
-                Wybrana sala nie istnieje
+                Wybrane audytorium nie istnieje
             </AlertBase>
             <AlertBase @ref="ValidationAlert" Class="alert-danger mt-3">
                 Wystąpił problem z walidacją
