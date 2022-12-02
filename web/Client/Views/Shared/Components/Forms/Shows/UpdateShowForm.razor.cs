@@ -5,7 +5,6 @@ using FMFT.Web.Client.Models.API.Auditoriums;
 using FMFT.Web.Client.Models.API.Shows;
 using FMFT.Web.Client.Models.API.Shows.Requests;
 using FMFT.Web.Client.Models.Forms.Shows;
-using FMFT.Web.Client.Views.Shared.Components.Dialogs;
 using FMFT.Web.Shared.Extensions;
 using Microsoft.AspNetCore.Components;
 
@@ -41,14 +40,15 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Shows
 
         protected override void OnParametersSet()
         {
+            TimeSpan duration = Show.EndDateTime - Show.StartDateTime;
+
             Model = new()
             {
                 Name = Show.Name,
                 Description = Show.Description,
                 StartDate = DateOnly.FromDateTime(Show.StartDateTime.LocalDateTime),
                 StartTime = TimeOnly.FromDateTime(Show.StartDateTime.LocalDateTime),
-                EndDate = DateOnly.FromDateTime(Show.EndDateTime.LocalDateTime),
-                EndTime = TimeOnly.FromDateTime(Show.EndDateTime.LocalDateTime),
+                DurationMinutes = (int)duration.TotalMinutes,
                 AudotiriumId = Show.AuditoriumId,
                 ThumbnailMediaId = Show.ThumbnailMediaId
             };
@@ -60,7 +60,7 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Shows
             SubmitButton.StartSpinning();
 
             DateTime startDateTime = Model.StartDate.ToDateTime(Model.StartTime);
-            DateTime endDateTime = Model.EndDate.ToDateTime(Model.EndTime);
+            DateTime endDateTime = startDateTime.AddMinutes(Model.DurationMinutes);
 
             UpdateShowRequest request = new()
             {

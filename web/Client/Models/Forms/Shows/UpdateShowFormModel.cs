@@ -17,9 +17,7 @@ namespace FMFT.Web.Client.Models.Forms.Shows
         public TimeOnly StartTime { get; set; }
 
         [Required(ErrorMessage = "To pole jest wymagane")]
-        public DateOnly EndDate { get; set; }
-        [Required(ErrorMessage = "To pole jest wymagane")]
-        public TimeOnly EndTime { get; set; }
+        public int DurationMinutes { get; set; }
 
         [Required(ErrorMessage = "Musisz wybrać salę")]
         public int? AudotiriumId { get; set; }
