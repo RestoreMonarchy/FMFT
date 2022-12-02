@@ -10,7 +10,7 @@
             Home
         </BreadcrumbItem>
         <BreadcrumbItem Link="/shows">
-            Przedstawienia
+            Wydarzenia
         </BreadcrumbItem>
         <BreadcrumbItem Link="@string.Concat("/shows/", ShowId)">
             @ShowName
@@ -105,7 +105,7 @@
 
                                         <div class="">
                                             <div class="fs-5">
-                                                Informacje o przedstawieniu
+                                                Informacje o wydarzeniu
                                             </div>
                                             <ul>
                                                 <li>@Show.Name</li>
@@ -147,7 +147,7 @@
                                                             <span class="fw-bold">ID rezerwacji:</span> @Reservation.Id
                                                         </li>
                                                         <li>
-                                                            <span class="fw-bold">Przedstawienie:</span> @Reservation.Show.Name
+                                                            <span class="fw-bold">Wydarzenie:</span> @Reservation.Show.Name
                                                         </li>
                                                         <li>
                                                             <span class="fw-bold">Miejsce:</span> rząd @Reservation.Seat.Row numer @Reservation.Seat.Number
@@ -168,7 +168,7 @@
                                                 <Switch Expression="ReservationResponse.Error.Code">
                                                     <SwitchCase Value="@("ERR019")">
                                                         <div>
-                                                            Złożyłeś już rezerwację na to przedstawienie. <br />
+                                                            Złożyłeś już rezerwację na to wydarzenie. <br />
                                                             Jeżeli chcesz zmienić miejsce anuluj obecną rezerwację.
                                                         </div>
                                                     </SwitchCase>
