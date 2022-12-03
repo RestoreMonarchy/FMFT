@@ -15,6 +15,8 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
 {
     public partial class ShowReservePage
     {
+        private const int MaxSeats = 3;
+
         [Parameter]
         public int ShowId { get; set; }
 
@@ -23,6 +25,7 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
         private LoadingView LoadingView { get; set; }
         private Stepper Stepper { get; set; }
         public ButtonBase ConfirmButton { get; set; }
+        public ButtonBase BackButton { get; set; }
 
         public APIResponse<Show> ShowResponse { get; set; }
         public APIResponse<Auditorium> AuditoriumResponse { get; set; }
@@ -48,28 +51,62 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
             LoadingView.StopLoading();
         }
 
-        public Panzoom AuditoriumPanzoom { get; set; }
+        public int TicketsCount { get; set; } = 1;
+        private string TicketsCountString()
+        {
+            string format = string.Empty;
+            if (TicketsCount == 1)
+            {
+                format = "{0} miejsce";
+            } else if (TicketsCount > 1 && TicketsCount < 5)
+            {
+                format = "{0} miejsca";
+            } else
+            {
+                format = "{0} miejsc";
+            }
 
-        public Seat SelectedSeat { get; set; }
+            return string.Format(format, TicketsCount);
+        }
+
+        private bool showSelectSeats = false;
+
+        private void HandleShowSelectSeats()
+        {
+            showSelectSeats = true;
+        }
+
+        private void HandleHideSelectSeats()
+        {
+            showSelectSeats = false;
+        }
+
+        private bool HasSelectedSeats => SelectedSeats.Count == TicketsCount;
+
+        public List<Seat> SelectedSeats { get; set; } = new();
 
         private Task NextToConfirmAsync()
         {
             Stepper.StepUp();
             return Task.CompletedTask;
         }
+        
+        private Task BackToSelectAsync()
+        {
+            Stepper.StepDown();
+            return Task.CompletedTask;
+        }
 
         private async Task HandleConfirmAsync()
         {
+            BackButton.Disable();
             ConfirmButton.StartSpinning();
 
             CreateReservationRequest request = new()
             {
                 ShowId = ShowId,
                 UserId = UserAccountState.UserAccount.UserId,
-                SeatIds = new List<int>()
-                {
-                    SelectedSeat.Id
-                }
+                SeatIds = SelectedSeats.Select(x => x.Id).ToList()
             };
 
             ReservationResponse = await APIBroker.CreateReservationAsync(request);

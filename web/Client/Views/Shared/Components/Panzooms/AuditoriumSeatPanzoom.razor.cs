@@ -15,14 +15,22 @@ namespace FMFT.Web.Client.Views.Shared.Components.Panzooms
         [Parameter]
         public List<ShowReservedSeat> ReservedSeats { get; set; }
         [Parameter]
-        public Seat SelectedSeat { get; set; }
+        public List<Seat> SelectedSeats { get; set; } = new();
         [Parameter]
-        public EventCallback<Seat> SelectedSeatChanged { get; set; }
+        public int MaxAmount { get; set; } = 3;
+        [Parameter]
+        public EventCallback<List<Seat>> SelectedSeatsChanged { get; set; }
 
-        private async ValueTask ChangeSeatAsync(Seat seat)
+        private async ValueTask AddSeatAsync(Seat seat)
         {
-            SelectedSeat = seat;
-            await SelectedSeatChanged.InvokeAsync(seat);
+            SelectedSeats.Add(seat);
+            await SelectedSeatsChanged.InvokeAsync(SelectedSeats);
+        }
+
+        private async ValueTask RemoveSeatAsync(Seat seat)
+        {
+            SelectedSeats.Remove(seat);
+            await SelectedSeatsChanged.InvokeAsync(SelectedSeats);
         }
 
         public IEnumerable<IGrouping<short, Seat>> RowSeats 
@@ -82,9 +90,9 @@ namespace FMFT.Web.Client.Views.Shared.Components.Panzooms
                 }
             }            
 
-            if (SelectedSeat != null)
+            foreach (Seat seat in SelectedSeats)
             {
-                await DrawSeatAsync(SelectedSeat.Row, SelectedSeat.Number, "orange");
+                await DrawSeatAsync(seat.Row, seat.Number, "orange");
             }
         }
 
@@ -105,18 +113,22 @@ namespace FMFT.Web.Client.Views.Shared.Components.Panzooms
                 return;
             }
 
-            if (SelectedSeat != null)
+            // uncheck the seat
+            if (SelectedSeats.Contains(seat)) 
             {
-                await DrawSeatAsync(SelectedSeat.Row, SelectedSeat.Number, "#009578");
+                await DrawSeatAsync(seat.Row, seat.Number, "#009578");
 
-                if (SelectedSeat.Row == row && SelectedSeat.Number == column)
-                {
-                    await ChangeSeatAsync(null);
-                    return;
-                }                
+                await RemoveSeatAsync(seat);
+                return;
             }
 
-            await ChangeSeatAsync(seat);
+            if (SelectedSeats.Count >= MaxAmount)
+            {
+                LoggingBroker.LogDebug("You have reached the maximum amount of seats");
+                return;
+            }
+
+            await AddSeatAsync(seat);
             await DrawSeatAsync(row, column, "orange");
         }
 
