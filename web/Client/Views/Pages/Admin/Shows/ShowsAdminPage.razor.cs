@@ -23,5 +23,25 @@ namespace FMFT.Web.Client.Views.Pages.Admin.Shows
             ShowsResponse = await APIBroker.GetAllShowsAsync();
             LoadingView.StopLoading();
         }
+
+        private string GetRowClass(Show show)
+        {
+            if (show.EndDateTime < DateTime.Now)
+            {
+                return "text-muted";
+            }
+
+            return string.Empty;
+        }
+
+        private string GetLinkClass(Show show)
+        {
+            if (show.EndDateTime < DateTime.Now)
+            {
+                return "link-secondary";
+            }
+
+            return string.Empty;
+        }
     }
 }

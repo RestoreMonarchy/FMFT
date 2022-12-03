@@ -1,5 +1,5 @@
 ﻿<div class="row">
-    <Iterations Items="Shows.Where(x => x.StartDateTime > DateTime.Now)">
+    <Iterations Items="Shows.Where(x => x.StartDateTime > DateTime.Now.AddHours(1)).OrderBy(x => x.StartDateTime)">
         <div class="col-md-6 g-md-2 col-lg-4">
             <div class="card mb-3">
                 <a class="text-decoration-none" href="/shows/@context.Id">
