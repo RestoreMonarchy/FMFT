@@ -13,7 +13,7 @@ namespace FMFT.Web.Client.Models.API.Reservations
         public DateTimeOffset CreateDate { get; set; }
 
         public Show Show { get; set; }
-        public Seat Seat { get; set; }
         public UserInfo User { get; set; }
+        public List<ReservationSeat> Seats { get; set; }
     }
 }

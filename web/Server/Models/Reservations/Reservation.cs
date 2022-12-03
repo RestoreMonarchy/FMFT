@@ -14,8 +14,8 @@ namespace FMFT.Web.Server.Models.Reservations
         public DateTimeOffset? UpdateStatusDate { get; set; }
 
         public Show Show { get; set; }
-        public Seat Seat { get; set; }
         public UserInfo User { get; set; }
         public UserInfo AdminUser { get; set; }
+        public List<ReservationSeat> Seats { get; set; }
     }
 }

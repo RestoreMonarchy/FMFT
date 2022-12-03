@@ -28,6 +28,9 @@ namespace FMFT.Web.Server.Controllers.Users
             catch (UserAlreadyReservedReservationException exception)
             {
                 return Conflict(exception);
+            } catch (SeatsNotProvidedReservationException exception)
+            {
+                return BadRequest(exception);
             }
             catch (NotAuthorizedAccountException exception)
             {

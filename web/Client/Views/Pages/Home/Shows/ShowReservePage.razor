@@ -149,9 +149,12 @@
                                                         <li>
                                                             <span class="fw-bold">Wydarzenie:</span> @Reservation.Show.Name
                                                         </li>
-                                                        <li>
-                                                            <span class="fw-bold">Miejsce:</span> rząd @Reservation.Seat.Row numer @Reservation.Seat.Number
-                                                        </li>
+                                                        <Iterations Items="Reservation.Seats" Context="seat">
+                                                            <li>
+                                                                <span class="fw-bold">Miejsce:</span> rząd @seat.Seat.Row numer @seat.Seat.Number
+                                                            </li>
+                                                        </Iterations>
+                                                        
                                                     </ul>
                                                 </div>
                                                 <div>

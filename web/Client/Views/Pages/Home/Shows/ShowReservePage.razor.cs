@@ -65,8 +65,11 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
             CreateReservationRequest request = new()
             {
                 ShowId = ShowId,
-                SeatId = SelectedSeat.Id,
-                UserId = UserAccountState.UserAccount.UserId
+                UserId = UserAccountState.UserAccount.UserId,
+                SeatIds = new List<int>()
+                {
+                    SelectedSeat.Id
+                }
             };
 
             ReservationResponse = await APIBroker.CreateReservationAsync(request);

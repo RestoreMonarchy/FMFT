@@ -2,6 +2,7 @@
 using FMFT.Web.Server.Brokers.Storages;
 using FMFT.Web.Server.Models.Database;
 using FMFT.Web.Server.Models.Reservations;
+using FMFT.Web.Server.Models.Reservations.DTOs;
 using FMFT.Web.Server.Models.Reservations.Exceptions;
 using FMFT.Web.Server.Models.Reservations.Params;
 
@@ -46,7 +47,14 @@ namespace FMFT.Web.Server.Services.Foundations.Reservations
 
         public async ValueTask<Reservation> CreateReservationAsync(CreateReservationParams @params)
         {
-            StoredProcedureResult<Reservation> result = await storageBroker.CreateReservationAsync(@params);
+            CreateReservationDTO dto = new()
+            {
+                ShowId = @params.ShowId,
+                UserId = @params.UserId,
+                Seats = @params.SeatIds != null ? string.Join(',', @params.SeatIds) : string.Empty
+            };
+
+            StoredProcedureResult<Reservation> result = await storageBroker.CreateReservationAsync(dto);
 
             if (result.ReturnValue == 1)
             {
@@ -56,6 +64,11 @@ namespace FMFT.Web.Server.Services.Foundations.Reservations
             if (result.ReturnValue == 2)
             {
                 throw new UserAlreadyReservedReservationException();
+            }
+
+            if (result.ReturnValue == 3)
+            {
+                throw new SeatsNotProvidedReservationException();
             }
 
             return result.Result;

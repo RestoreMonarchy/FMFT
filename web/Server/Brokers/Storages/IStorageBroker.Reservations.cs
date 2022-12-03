@@ -1,5 +1,6 @@
 ﻿using FMFT.Web.Server.Models.Database;
 using FMFT.Web.Server.Models.Reservations;
+using FMFT.Web.Server.Models.Reservations.DTOs;
 using FMFT.Web.Server.Models.Reservations.Params;
 
 namespace FMFT.Web.Server.Brokers.Storages
@@ -10,7 +11,7 @@ namespace FMFT.Web.Server.Brokers.Storages
         ValueTask<IEnumerable<Reservation>> SelectReservationsByUserIdAsync(int userId);
         ValueTask<IEnumerable<Reservation>> SelectReservationsByShowIdAsync(int showId);
         ValueTask<Reservation> SelectReservationByIdAsync(string reservationId);
-        ValueTask<StoredProcedureResult<Reservation>> CreateReservationAsync(CreateReservationParams @params);
+        ValueTask<StoredProcedureResult<Reservation>> CreateReservationAsync(CreateReservationDTO dto);
         ValueTask<StoredProcedureResult<Reservation>> UpdateReservationStatusAsync(UpdateReservationStatusParams @params);
         ValueTask<StoredProcedureResult<Reservation>> CancelReservationAsync(string reservationId);
     }

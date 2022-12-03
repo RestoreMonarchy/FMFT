@@ -1,7 +1,7 @@
 ﻿CREATE PROCEDURE dbo.CreateReservation
 	@ShowId INT,
-	@SeatId INT,
-	@UserId INT
+	@UserId INT,
+	@Seats VARCHAR(8000)
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -9,21 +9,42 @@ BEGIN
 
 	DECLARE @ret INT = 0;
 	DECLARE @id CHAR(8) = '--------';
+	DECLARE @seatsTable TABLE(SeatId INT NOT NULL PRIMARY KEY);
 
-	IF EXISTS(SELECT * FROM dbo.Reservations WHERE ShowId = @ShowId AND SeatId = @SeatId AND IsCanceled = 0)
+	INSERT INTO @seatsTable (SeatId) SELECT VALUE FROM STRING_SPLIT(@Seats, ',');
+
+	IF @@ROWCOUNT = 0
+		SET @ret = 3;
+
+	IF EXISTS(
+		SELECT * 
+		FROM dbo.Reservations r 
+		JOIN dbo.ReservationSeats rs ON rs.ReservationId = r.Id 
+		JOIN @seatsTable st ON st.SeatId = rs.SeatId
+		WHERE r.ShowId = @ShowId AND r.IsCanceled = 0
+		)
+	BEGIN
 		SET @ret = 1;
+	END;
+		
 
 	IF EXISTS(SELECT * FROM dbo.Reservations WHERE UserId = @UserId AND ShowId = @ShowId AND IsCanceled = 0)
 		SET @ret = 2;
-
 			
 	IF @ret = 0
 	BEGIN		
 		
 		EXEC dbo.GetNewReservationId @Id = @id OUTPUT;
 
-		INSERT INTO dbo.Reservations (Id, ShowId, SeatId, UserId)
-		VALUES (@id, @ShowId, @SeatId, @UserId);
+		BEGIN TRAN;
+
+		INSERT INTO dbo.Reservations (Id, ShowId, UserId)
+		VALUES (@id, @ShowId, @UserId);
+
+		INSERT INTO dbo.ReservationSeats (ReservationId, SeatId)
+		SELECT @id, SeatId FROM @seatsTable;
+		
+		COMMIT;
 
 	END;
 
