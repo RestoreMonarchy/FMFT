@@ -76,6 +76,24 @@
                                         </a>
                                     </div>
                                 </div>
+                                <div class="card mb-3">
+                                    <div class="card-header">
+                                        Miejsca (@Reservation.Seats.Count)
+                                    </div>
+                                    <div class="list-group list-group-flush">
+                                        <Iterations Items="Reservation.Seats.OrderBy(x => x.Seat.Row).ThenBy(x => x.Seat.Number)" Context="seat">
+                                            <div class="list-group-item d-flex align-items-center justify-content-between">
+                                                Rząd @seat.Seat.Row Numer @seat.Seat.Number
+                                                <div>
+                                                    <button class="btn btn-outline-info btn-sm" @onclick="HandleSeatQRCodeDialogAsync">
+                                                        <i class="fa-solid fa-qrcode"></i>
+                                                        QRCode
+                                                    </button>
+                                                </div>                                                
+                                            </div>
+                                        </Iterations>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="card">
@@ -124,6 +142,24 @@
                                 <img src="@MediaService.GetReservationQRCodeUrl(Reservation.Id)" class="img-thumbnail" />
                             </Body>
                             <Footer>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    Zamknij
+                                </button>
+                            </Footer>
+                        </ModalDialog>
+
+                        <ModalDialog @ref="SeatQRCodeModalDialog" AlignCenter="false">
+                            <Title>
+                                QRCode miejsca
+                            </Title>
+                            <Body>
+                                <img src="" />
+                            </Body>
+                            <Footer>
+                                <button type="button" class="btn btn-outline-success me-auto">
+                                    <i class="fa-solid fa-download"></i>
+                                    Pobierz bilet
+                                </button>
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                                     Zamknij
                                 </button>

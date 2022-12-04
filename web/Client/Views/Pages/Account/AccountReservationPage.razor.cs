@@ -17,6 +17,7 @@ namespace FMFT.Web.Client.Views.Pages.Account
         public ModalDialog CancelModalDialog { get; set; }
         public ButtonBase CancelButton { get; set; }
         public ModalDialog QRCodeModalDialog { get; set; }
+        public ModalDialog SeatQRCodeModalDialog { get; set; }
 
         public APIResponse<Reservation> ReservationResponse { get; set; }
 
@@ -29,6 +30,11 @@ namespace FMFT.Web.Client.Views.Pages.Account
 
             ReservationResponse = await APIBroker.GetReservationByIdAsync(ReservationId);
             LoadingView.StopLoading();
+        }
+
+        private async Task HandleSeatQRCodeDialogAsync()
+        {
+            await SeatQRCodeModalDialog.ShowAsync();
         }
 
         private async Task HandleCancelDialogAsync()
