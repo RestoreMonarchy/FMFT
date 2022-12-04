@@ -145,21 +145,21 @@
                                 <div class="card mb-3">
                                     <div class="card-body">
                                         <div class="">
-                                            <div class="fs-5">
-                                                Miejsce
+                                            <div class="fs-5 mb-2">
+                                                Miejsca (@SelectedSeats.Count)
                                             </div>
 
-                                            <Iterations Items="SelectedSeats" Context="seat">
+                                            <Iterations Items="SelectedSeats.OrderBy(x => x.Row).GroupBy(x => x.Row)" Context="row">
                                                 <ul>
-                                                    <li>Rząd @seat.Row</li>
-                                                    <li>Numer @seat.Number</li>
+                                                    <li>Rząd @row.Key</li>
+                                                    <li>Numer @(string.Join(", ", row.Select(x => x.Number.ToString()).Order()))</li>
                                                 </ul>
                                             </Iterations>
                                             
                                         </div>
 
                                         <div class="">
-                                            <div class="fs-5">
+                                            <div class="fs-5 mb-2">
                                                 Informacje o wydarzeniu
                                             </div>
                                             <ul>
@@ -209,11 +209,17 @@
                                                         <li>
                                                             <span class="fw-bold">Wydarzenie:</span> @Reservation.Show.Name
                                                         </li>
-                                                        <Iterations Items="Reservation.Seats" Context="seat">
-                                                            <li>
-                                                                <span class="fw-bold">Miejsce:</span> rząd @seat.Seat.Row numer @seat.Seat.Number
-                                                            </li>
-                                                        </Iterations>
+                                                        <li>
+                                                            <span class="fw-bold">Miejsca:</span>
+                                                            <ul>
+                                                                <Iterations Items="Reservation.Seats.OrderBy(x => x.Seat.Row).ThenBy(x => x.Seat.Number)" Context="seat">
+                                                                    <li>
+                                                                        Rząd @seat.Seat.Row Numer @seat.Seat.Number
+                                                                    </li>
+                                                                </Iterations>
+                                                            </ul>
+                                                        </li>
+                                                        
                                                         
                                                     </ul>
                                                 </div>

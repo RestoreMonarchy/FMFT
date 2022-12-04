@@ -73,7 +73,8 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
 
         private void HandleShowSelectSeats()
         {
-            showSelectSeats = true;
+            SelectedSeats = new();
+            showSelectSeats = true;            
         }
 
         private void HandleHideSelectSeats()
