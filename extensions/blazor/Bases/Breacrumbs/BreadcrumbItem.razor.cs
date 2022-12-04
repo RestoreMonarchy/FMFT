@@ -13,6 +13,8 @@ namespace FMFT.Extensions.Blazor.Bases.Breacrumbs
         public bool Active { get; set; }
         [Parameter]
         public string Link { get; set; }
+        [Parameter]
+        public string Class { get; set; }
 
         public string ActiveClass => Active ? "active" : "";
         public bool HasLink => !string.IsNullOrEmpty(Link);

@@ -1,7 +1,7 @@
 ﻿<nav aria-label="breadcrumb">
     <ol class="breadcrumb">        
         <Iterations Items="items">
-            <li class="breadcrumb-item @context.ActiveClass">
+            <li class="breadcrumb-item @context.ActiveClass @context.Class">
                 <Condition Evaluation="context.HasLink">
                     <Match>
                         <a href="@context.Link">
