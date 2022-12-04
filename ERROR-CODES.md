@@ -39,3 +39,4 @@ ERR030 | Media not found
 ERR031 | The media file is too large
 ERR032 | The media file is required
 ERR033 | The seats for the reservation were not provided
+ERR034 | Reservation seat not found

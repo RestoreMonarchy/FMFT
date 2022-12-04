@@ -58,8 +58,8 @@ namespace FMFT.Web.Server.Controllers
             }
         }
 
-        [HttpGet("{reservationId}/image")]
-        public async ValueTask<IActionResult> GetReservationImage(string reservationId)
+        [HttpGet("{reservationId}/qrcode")]
+        public async ValueTask<IActionResult> GetReservationQrCode(string reservationId)
         {
             try
             {
@@ -70,6 +70,35 @@ namespace FMFT.Web.Server.Controllers
             catch (NotFoundReservationException exception)
             {
                 return NotFound(exception);
+            } catch (NotAuthorizedAccountException exception)
+            {
+                return Forbidden(exception);
+            } catch (NotAuthenticatedAccountException exception)
+            {
+                return Unauthorized(exception);
+            }
+        }
+
+        [HttpGet("{reservationId}/seats/{reservationSeatId}/qrcode")]
+        public async ValueTask<IActionResult> GetReservationSeatQrCode(string reservationId, int reservationSeatId)
+        {
+            try
+            {
+                QRCodeImage image = await reservationCoordinationService.GenerateReservationSeatQRCodeImageAsync(reservationId, reservationSeatId);
+
+                return File(image.Data, image.ContentType);
+            } catch (NotFoundReservationException exception)
+            {
+                return NotFound(exception);
+            } catch (NotFoundSeatReservationException exception)
+            {
+                return NotFound(exception);
+            } catch (NotAuthorizedAccountException exception)
+            {
+                return Forbidden(exception);
+            } catch (NotAuthenticatedAccountException exception)
+            {
+                return Unauthorized(exception);
             }
         }
 
