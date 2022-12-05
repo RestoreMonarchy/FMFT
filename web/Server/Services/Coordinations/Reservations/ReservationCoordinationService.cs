@@ -28,7 +28,7 @@ namespace FMFT.Web.Server.Services.Coordinations.Reservations
 
             await userAccountService.AuthorizeUserAccountByUserIdOrRolesAsync(reservation.User.Id, UserRole.Admin);
 
-            return await reservationService.GenerateReservationQRCodeImageAsync(reservationId);
+            return await reservationService.GenerateGuidQRCodeImageAsync(reservation.SecretCode);
         }
 
         public async ValueTask<QRCodeImage> GenerateReservationSeatQRCodeImageAsync(string reservationId, int reservationSeatId)
@@ -44,7 +44,7 @@ namespace FMFT.Web.Server.Services.Coordinations.Reservations
                 throw new NotFoundSeatReservationException();
             }
 
-            return await reservationService.GenerateReservationQRCodeImageAsync(reservationId);
+            return await reservationService.GenerateGuidQRCodeImageAsync(reservationSeat.SecretCode);
         }
 
         public async ValueTask<Reservation> CreateReservationAsync(CreateReservationParams @params)

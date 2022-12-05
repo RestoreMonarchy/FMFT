@@ -12,9 +12,9 @@ namespace FMFT.Web.Server.Services.Foundations.QRCodes
             this.qrCodeBroker = qrCodeBroker;
         }
 
-        public async ValueTask<QRCodeImage> GenerateReservationQRCodeImageAsync(string reservationId)
+        public async ValueTask<QRCodeImage> GenerateGuidQRCodeImageAsync(Guid guid)
         {
-            return await qrCodeBroker.GenerateReservationQRCodeImageAsync(reservationId);
+            return await qrCodeBroker.GenerateGuidQRCodeImageAsync(guid);
         }
     }
 }

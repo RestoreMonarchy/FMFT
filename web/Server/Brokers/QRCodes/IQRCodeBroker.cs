@@ -4,6 +4,6 @@ namespace FMFT.Web.Server.Brokers.QRCodes
 {
     public interface IQRCodeBroker
     {
-        Task<QRCodeImage> GenerateReservationQRCodeImageAsync(string reservationId);
+        Task<QRCodeImage> GenerateGuidQRCodeImageAsync(Guid guid);
     }
 }

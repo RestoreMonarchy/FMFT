@@ -2,6 +2,7 @@
 using FMFT.Web.Server.Models.Shows;
 using FMFT.Web.Server.Models.Users;
 using FMFT.Web.Shared.Enums;
+using System.Text.Json.Serialization;
 
 namespace FMFT.Web.Server.Models.Reservations
 {
@@ -17,5 +18,8 @@ namespace FMFT.Web.Server.Models.Reservations
         public UserInfo User { get; set; }
         public UserInfo AdminUser { get; set; }
         public List<ReservationSeat> Seats { get; set; }
+
+        [JsonIgnore]
+        public Guid SecretCode { get; set; }
     }
 }

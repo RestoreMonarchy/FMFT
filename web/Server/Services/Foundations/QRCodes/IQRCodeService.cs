@@ -4,6 +4,6 @@ namespace FMFT.Web.Server.Services.Foundations.QRCodes
 {
     public interface IQRCodeService
     {
-        ValueTask<QRCodeImage> GenerateReservationQRCodeImageAsync(string reservationId);
+        ValueTask<QRCodeImage> GenerateGuidQRCodeImageAsync(Guid guid);
     }
 }

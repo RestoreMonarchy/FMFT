@@ -29,11 +29,9 @@ namespace FMFT.Web.Server.Services.Orchestrations.Reservations
             this.qrCodeService = qrCodeService;
         }
 
-        public async ValueTask<QRCodeImage> GenerateReservationQRCodeImageAsync(string reservationId)
+        public async ValueTask<QRCodeImage> GenerateGuidQRCodeImageAsync(Guid guid)
         {
-            Reservation reservation = await reservationService.RetrieveReservationByIdAsync(reservationId);
-
-            return await qrCodeService.GenerateReservationQRCodeImageAsync(reservation.Id);
+            return await qrCodeService.GenerateGuidQRCodeImageAsync(guid);
         }
 
         public async ValueTask<Reservation> CreateReservationAsync(CreateReservationParams @params)

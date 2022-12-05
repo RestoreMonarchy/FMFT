@@ -37,6 +37,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FMFT.Emails.Server", "email
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FMFT.Extensions.Blazor.Facebook", "extensions\blazor\Facebook\FMFT.Extensions.Blazor.Facebook.csproj", "{61414B40-B71D-4617-85C7-1C8D97602180}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "features", "features", "{2848C346-7BC0-4AA8-BD14-8AD57F2CCE5F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
