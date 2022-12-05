@@ -1,4 +1,5 @@
-﻿using FMFT.Web.Client.Models.API;
+﻿using FMFT.Web.Client.Models;
+using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Reservations;
 using FMFT.Web.Client.Models.API.Reservations.Requests;
 
@@ -34,6 +35,18 @@ namespace FMFT.Web.Client.Brokers.APIs
         {
             string url = $"api/users/{userId}/reservations";
             return await GetAsync<List<Reservation>>(url);
+        }
+
+        public async ValueTask<APIResponse<QRCodeImage>> GetReservationQRCodeImageByIdAsync(string reservationId)
+        {
+            string url = $"{ReservationsRelativeUrl}/{reservationId}/qrcode";
+            return await GetAsync<QRCodeImage>(url);
+        }
+
+        public async ValueTask<APIResponse<QRCodeImage>> GetReservationQRCodeImageBySeatIdAsync(string reservationId, int seatId)
+        {
+            string url = $"{ReservationsRelativeUrl}/{reservationId}/seats/{seatId}/qrcode";
+            return await GetAsync<QRCodeImage>(url);
         }
     }
 }

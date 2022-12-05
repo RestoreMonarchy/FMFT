@@ -1,6 +1,7 @@
 ﻿using FMFT.Extensions.Blazor.Bases.Buttons;
 using FMFT.Extensions.Blazor.Bases.Dialogs;
 using FMFT.Extensions.Blazor.Bases.Loadings;
+using FMFT.Web.Client.Models;
 using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Reservations;
 using FMFT.Web.Client.Models.API.Reservations.Requests;
@@ -32,9 +33,20 @@ namespace FMFT.Web.Client.Views.Pages.Account
             LoadingView.StopLoading();
         }
 
-        private async Task HandleSeatQRCodeDialogAsync()
+        public ReservationSeat SelectedReservationSeat { get; set; }
+        public APIResponse<QRCodeImage> SelectedReservationSeatQRCodeResponse { get; set; }
+        public LoadingView SelectedReservationSeatQRCodeLoadingView { get; set; }
+        private async Task HandleSeatQRCodeDialogAsync(ReservationSeat reservationSeat)
         {
+            SelectedReservationSeat = reservationSeat;
+
+            SelectedReservationSeatQRCodeLoadingView.StartLoading();
+
             await SeatQRCodeModalDialog.ShowAsync();
+
+            SelectedReservationSeatQRCodeResponse = await APIBroker.GetReservationQRCodeImageBySeatIdAsync(Reservation.Id, reservationSeat.Id);
+
+            SelectedReservationSeatQRCodeLoadingView.StopLoading();
         }
 
         private async Task HandleCancelDialogAsync()
@@ -42,9 +54,17 @@ namespace FMFT.Web.Client.Views.Pages.Account
             await CancelModalDialog.ShowAsync();
         }
 
+        public APIResponse<QRCodeImage> ReservationQRCodeResponse { get; set; }
+        public LoadingView ReservationQRCodeLoadingView { get; set; }
         private async Task HandleQRCodeDialogAsync()
         {
+            ReservationQRCodeLoadingView.StartLoading();
+
             await QRCodeModalDialog.ShowAsync();
+
+            ReservationQRCodeResponse = await APIBroker.GetReservationQRCodeImageByIdAsync(Reservation.Id);
+
+            ReservationQRCodeLoadingView.StopLoading();
         }
 
         private async Task HandleCancelAsync()

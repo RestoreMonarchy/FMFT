@@ -1,5 +1,6 @@
 ﻿@page "/account/reservations/{ReservationId}"
 @using FMFT.Extensions.Blazor.Bases.Dialogs
+@using FMFT.Web.Client.Views.Shared.Components.QRCodes
 
 <MainLayoutBody>
     <Breadcrumb>
@@ -85,7 +86,7 @@
                                             <div class="list-group-item d-flex align-items-center justify-content-between">
                                                 Rząd @seat.Seat.Row Numer @seat.Seat.Number
                                                 <div>
-                                                    <button class="btn btn-outline-info btn-sm" @onclick="HandleSeatQRCodeDialogAsync">
+                                                    <button class="btn btn-outline-info btn-sm" @onclick="() => HandleSeatQRCodeDialogAsync(seat)">
                                                         <i class="fa-solid fa-qrcode"></i>
                                                         QRCode
                                                     </button>
@@ -139,7 +140,18 @@
                                 QRCode rezerwacji
                             </Title>
                             <Body>
-                                <img src="@MediaService.GetReservationQRCodeUrl(Reservation.Id)" class="img-thumbnail" />
+                                
+                                <LoadingView @ref="ReservationQRCodeLoadingView">
+                                    <Condition Evaluation="ReservationQRCodeResponse.IsSuccessful">
+                                        <Match>
+                                            <QRCodeImageView QRCodeImage="ReservationQRCodeResponse.Object" Class="img-thumbnail" />
+                                        </Match>
+                                        <NotMatch>
+                                            <ErrorResponseAlert />
+                                        </NotMatch>
+                                    </Condition>
+                                </LoadingView>
+
                             </Body>
                             <Footer>
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
@@ -153,7 +165,18 @@
                                 QRCode miejsca
                             </Title>
                             <Body>
-                                <img src="" />
+
+                                <LoadingView @ref="SelectedReservationSeatQRCodeLoadingView">
+                                    <Condition Evaluation="SelectedReservationSeatQRCodeResponse.IsSuccessful">
+                                        <Match>
+                                            <QRCodeImageView QRCodeImage="SelectedReservationSeatQRCodeResponse.Object" Class="img-thumbnail" />
+                                        </Match>
+                                        <NotMatch>
+                                            <ErrorResponseAlert />
+                                        </NotMatch>
+                                    </Condition>
+                                </LoadingView>
+
                             </Body>
                             <Footer>
                                 <button type="button" class="btn btn-outline-success me-auto">

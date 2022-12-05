@@ -65,7 +65,7 @@ namespace FMFT.Web.Server.Controllers
             {
                 QRCodeImage image = await reservationCoordinationService.GenerateReservationQRCodeImageAsync(reservationId);
 
-                return File(image.Data, image.ContentType);
+                return Ok(image);
             }
             catch (NotFoundReservationException exception)
             {
@@ -86,7 +86,7 @@ namespace FMFT.Web.Server.Controllers
             {
                 QRCodeImage image = await reservationCoordinationService.GenerateReservationSeatQRCodeImageAsync(reservationId, reservationSeatId);
 
-                return File(image.Data, image.ContentType);
+                return Ok(image);
             } catch (NotFoundReservationException exception)
             {
                 return NotFound(exception);
