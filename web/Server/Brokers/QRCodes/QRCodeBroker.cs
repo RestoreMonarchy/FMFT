@@ -1,4 +1,6 @@
-﻿using FMFT.Web.Server.Models.QRCodes;
+﻿using FMFT.Features.Tickets.Models;
+using FMFT.Features.Tickets.Services;
+using FMFT.Web.Server.Models.QRCodes;
 using FMFT.Web.Server.Models.QRCodes.Params;
 using QRCoder;
 using System.Drawing;
@@ -11,13 +13,16 @@ namespace FMFT.Web.Server.Brokers.QRCodes
     public partial class QRCodeBroker : IQRCodeBroker
     {
         private readonly QRCodeGenerator generator;
+        private readonly TicketGenerator ticketGenerator;
 
-        public QRCodeBroker()
+        public QRCodeBroker(TicketGenerator ticketGenerator)
         {
             generator = new();
+
+            this.ticketGenerator = ticketGenerator;
         }
 
-        public Task<QRCodeImage> GenerateGuidQRCodeImageAsync(Guid guid)
+        public ValueTask<QRCodeImage> GenerateGuidQRCodeImageAsync(Guid guid)
         {
             string value = guid.ToString();
 
@@ -29,48 +34,20 @@ namespace FMFT.Web.Server.Brokers.QRCodes
                 ContentType = "image/jpeg"
             };
 
-            return Task.FromResult(image);            
+            return ValueTask.FromResult(image);            
         }
 
-        public ValueTask<QRCodeImage> GenerateTicketAsync(GenerateTicketParams @params)
+        public ValueTask<QRCodeImage> GenerateReservationTicketAsync(ReservationTicketModel model)
         {
-            int height = 1600, width = 900;
-
-            string qrCodeValue = @params.SecretCode.ToString();
-
-            Bitmap backgroundBitmap = GetTicketBackgrund(width, height, Brushes.White);
-            Bitmap qrCodeBitmap = GetQRCodeBitmap(qrCodeValue);
-
-            using Graphics graphics = Graphics.FromImage(backgroundBitmap);
-
-            graphics.SmoothingMode = SmoothingMode.AntiAlias;
-            graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
-            graphics.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
-
-            graphics.DrawImage(qrCodeBitmap, 0, 0);
+            Bitmap ticketBitmap = ticketGenerator.GenerateReservationTicket(model);
 
             QRCodeImage image = new()
             {
-                Data = GetBitmapToBytes(qrCodeBitmap, ImageFormat.Jpeg),
+                Data = GetBitmapToBytes(ticketBitmap, ImageFormat.Jpeg),
                 ContentType = "image/jpeg"
             };
 
             return ValueTask.FromResult(image);
-        }
-
-
-        private Bitmap GetTicketBackgrund(int width, int height, Brush brush)
-        {
-            Rectangle rect = new(0, 0, width, height);
-            Bitmap bitmap = new(rect.Width, rect.Height);
-            bitmap.SetResolution(96, 96);
-
-            using Graphics graphic = Graphics.FromImage(bitmap);
-
-            graphic.FillRectangle(brush, rect);
-
-            return bitmap;
         }
 
         private Bitmap GetQRCodeBitmap(string value)

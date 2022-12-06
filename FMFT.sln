@@ -39,6 +39,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FMFT.Extensions.Blazor.Face
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "features", "features", "{2848C346-7BC0-4AA8-BD14-8AD57F2CCE5F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FMFT.Features.Tickets", "features\Tickets\FMFT.Features.Tickets.csproj", "{4886CE4B-F923-4382-B97B-9F3BCEBBF914}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +93,10 @@ Global
 		{61414B40-B71D-4617-85C7-1C8D97602180}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61414B40-B71D-4617-85C7-1C8D97602180}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{61414B40-B71D-4617-85C7-1C8D97602180}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4886CE4B-F923-4382-B97B-9F3BCEBBF914}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4886CE4B-F923-4382-B97B-9F3BCEBBF914}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4886CE4B-F923-4382-B97B-9F3BCEBBF914}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4886CE4B-F923-4382-B97B-9F3BCEBBF914}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -108,6 +114,7 @@ Global
 		{4F538427-FE60-4F8F-8C63-6545D7DD0666} = {A7DBB44D-AE92-4CA3-B5F4-D55C422CC8EF}
 		{4B1D2EB9-C031-4CFB-A76F-F1033FCFB9C6} = {7576A2C7-E870-42AB-B20C-68A084F68CFC}
 		{61414B40-B71D-4617-85C7-1C8D97602180} = {D7DF90A7-6221-4CCF-90E2-E5E06B3B57A6}
+		{4886CE4B-F923-4382-B97B-9F3BCEBBF914} = {2848C346-7BC0-4AA8-BD14-8AD57F2CCE5F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {81FEE0D1-B373-4D86-8197-E4065AEF25AD}

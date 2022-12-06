@@ -102,6 +102,33 @@ namespace FMFT.Web.Server.Controllers
             }
         }
 
+        [HttpGet("{reservationId}/seats/{reservationSeatId}/ticket")]
+        public async ValueTask<IActionResult> GetReservationSeatTicket(string reservationId, int reservationSeatId)
+        {
+            try
+            {
+                QRCodeImage image = await reservationCoordinationService.GenerateReservationSeatTicketAsync(reservationId, reservationSeatId);
+
+                return Ok(image);
+            }
+            catch (NotFoundReservationException exception)
+            {
+                return NotFound(exception);
+            }
+            catch (NotFoundSeatReservationException exception)
+            {
+                return NotFound(exception);
+            }
+            catch (NotAuthorizedAccountException exception)
+            {
+                return Forbidden(exception);
+            }
+            catch (NotAuthenticatedAccountException exception)
+            {
+                return Unauthorized(exception);
+            }
+        }
+
         //[HttpPost("{reservationId}/updatestatus")]
         //public async ValueTask<IActionResult> UpdateReservationStatus(int reservationId, [FromBody] UpdateReservationStatusRequest request)
         //{

@@ -41,5 +41,10 @@ namespace FMFT.Web.Client.Brokers.JSRuntimes
         {
             await jsRuntime.InvokeVoidAsync("fbLogin");
         }
+
+        public async ValueTask DownloadFromByteArrayAsync(byte[] byteArray, string fileName, string contentType)
+        {
+            await jsRuntime.InvokeVoidAsync("DownloadFromByteArray", byteArray, fileName, contentType);
+        }
     }
 }

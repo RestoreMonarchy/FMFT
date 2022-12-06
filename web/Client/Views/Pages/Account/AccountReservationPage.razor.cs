@@ -5,6 +5,7 @@ using FMFT.Web.Client.Models;
 using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Reservations;
 using FMFT.Web.Client.Models.API.Reservations.Requests;
+using FMFT.Web.Client.Models.API.Shows;
 using Microsoft.AspNetCore.Components;
 
 namespace FMFT.Web.Client.Views.Pages.Account
@@ -44,7 +45,7 @@ namespace FMFT.Web.Client.Views.Pages.Account
 
             await SeatQRCodeModalDialog.ShowAsync();
 
-            SelectedReservationSeatQRCodeResponse = await APIBroker.GetReservationQRCodeImageBySeatIdAsync(Reservation.Id, reservationSeat.Id);
+            SelectedReservationSeatQRCodeResponse = await APIBroker.GetReservationSeatQRCodeAsync(Reservation.Id, reservationSeat.Id);
 
             SelectedReservationSeatQRCodeLoadingView.StopLoading();
         }
@@ -79,6 +80,26 @@ namespace FMFT.Web.Client.Views.Pages.Account
             ReservationResponse = await APIBroker.CancelReservationAsync(request);
              
             await CancelModalDialog.HideAsync();
+        }
+
+        public ButtonBase DownloadTicketButton { get; set; }
+        private async Task HandleDownloadTicketAsync()
+        {
+            int reservationSeatId = SelectedReservationSeat.Id;
+
+            DownloadTicketButton.StartSpinning();
+
+            APIResponse<QRCodeImage> response = await APIBroker.GetReservationSeatTicketAsync(Reservation.Id, reservationSeatId);
+
+            if (response.IsSuccessful)
+            {
+                QRCodeImage qrCodeImage = response.Object;
+                string fileName = $"{ReservationId}-{Reservation.Show.Name}-{reservationSeatId}.jpg";
+
+                await JSRuntimeBroker.DownloadFromByteArrayAsync(qrCodeImage.Data, fileName, qrCodeImage.ContentType);
+            }
+
+            DownloadTicketButton.StopSpinning();
         }
     }
 }

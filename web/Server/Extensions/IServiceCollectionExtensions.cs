@@ -1,4 +1,5 @@
 ﻿using FMFT.Emails.Server.Extensions;
+using FMFT.Features.Tickets.Extensions;
 using FMFT.Web.Server.Brokers.Authentications;
 using FMFT.Web.Server.Brokers.Converts;
 using FMFT.Web.Server.Brokers.Emails;
@@ -44,6 +45,8 @@ namespace FMFT.Web.Server.Extensions
             services.AddHttpContextAccessor();
             services.AddServerEmailGenerator();
 
+            services.AddTicketsFeatures();
+            
             return services;
         }
 

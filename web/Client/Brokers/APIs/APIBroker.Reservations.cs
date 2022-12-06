@@ -43,9 +43,15 @@ namespace FMFT.Web.Client.Brokers.APIs
             return await GetAsync<QRCodeImage>(url);
         }
 
-        public async ValueTask<APIResponse<QRCodeImage>> GetReservationQRCodeImageBySeatIdAsync(string reservationId, int seatId)
+        public async ValueTask<APIResponse<QRCodeImage>> GetReservationSeatQRCodeAsync(string reservationId, int seatId)
         {
             string url = $"{ReservationsRelativeUrl}/{reservationId}/seats/{seatId}/qrcode";
+            return await GetAsync<QRCodeImage>(url);
+        }
+
+        public async ValueTask<APIResponse<QRCodeImage>> GetReservationSeatTicketAsync(string reservationId, int seatId)
+        {
+            string url = $"{ReservationsRelativeUrl}/{reservationId}/seats/{seatId}/ticket";
             return await GetAsync<QRCodeImage>(url);
         }
     }

@@ -1,6 +1,7 @@
 ﻿using FMFT.Web.Server.Brokers.Loggings;
 using FMFT.Web.Server.Brokers.QRCodes;
 using FMFT.Web.Server.Models.QRCodes;
+using FMFT.Web.Server.Models.QRCodes.Params;
 using FMFT.Web.Server.Models.Reservations;
 using FMFT.Web.Server.Models.Reservations.Params;
 using FMFT.Web.Server.Models.Reservations.Requests;
@@ -32,6 +33,11 @@ namespace FMFT.Web.Server.Services.Orchestrations.Reservations
         public async ValueTask<QRCodeImage> GenerateGuidQRCodeImageAsync(Guid guid)
         {
             return await qrCodeService.GenerateGuidQRCodeImageAsync(guid);
+        }
+
+        public async ValueTask<QRCodeImage> GenerateReservationTicketAsync(GenerateReservationTicketParams @params)
+        {
+            return await qrCodeService.GenerateReservationTicketAsync(@params);
         }
 
         public async ValueTask<Reservation> CreateReservationAsync(CreateReservationParams @params)

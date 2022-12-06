@@ -13,6 +13,7 @@ namespace FMFT.Web.Client.Brokers.APIs
         ValueTask<APIResponse<Reservation>> CancelReservationAsync(CancelReservationRequest request);
         ValueTask<APIResponse<List<Reservation>>> GetUserReservationsAsync(int userId);
         ValueTask<APIResponse<QRCodeImage>> GetReservationQRCodeImageByIdAsync(string reservationId);
-        ValueTask<APIResponse<QRCodeImage>> GetReservationQRCodeImageBySeatIdAsync(string reservationId, int seatId);
+        ValueTask<APIResponse<QRCodeImage>> GetReservationSeatQRCodeAsync(string reservationId, int seatId);
+        ValueTask<APIResponse<QRCodeImage>> GetReservationSeatTicketAsync(string reservationId, int seatId);
     }
 }

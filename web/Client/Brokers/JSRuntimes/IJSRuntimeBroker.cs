@@ -6,6 +6,7 @@ namespace FMFT.Web.Client.Brokers.JSRuntimes
     public interface IJSRuntimeBroker
     {
         ValueTask ClearModalBackdropAsync();
+        ValueTask DownloadFromByteArrayAsync(byte[] byteArray, string fileName, string contentType);
         ValueTask DrawSeatAsync(object options, int row, int column, string color);
         ValueTask HideNavbarCollapseAsync(ElementReference navbarContent);
         ValueTask InitializeFacebookAsync();

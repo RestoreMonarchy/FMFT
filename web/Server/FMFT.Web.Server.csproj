@@ -20,6 +20,7 @@
     <ProjectReference Include="..\..\emails\Server\FMFT.Emails.Server.csproj" />
     <ProjectReference Include="..\..\extensions\Authentication\FMFT.Extensions.Authentication.csproj" />
     <ProjectReference Include="..\..\extensions\EmailClients\FMFT.Extensions.EmailClients.csproj" />
+    <ProjectReference Include="..\..\features\Tickets\FMFT.Features.Tickets.csproj" />
     <ProjectReference Include="..\Shared\FMFT.Web.Shared.csproj" />
   </ItemGroup>
 

@@ -1,4 +1,5 @@
 ﻿using FMFT.Web.Server.Models.QRCodes;
+using FMFT.Web.Server.Models.QRCodes.Params;
 using FMFT.Web.Server.Models.Reservations;
 using FMFT.Web.Server.Models.Reservations.Exceptions;
 using FMFT.Web.Server.Models.Reservations.Params;
@@ -45,6 +46,32 @@ namespace FMFT.Web.Server.Services.Coordinations.Reservations
             }
 
             return await reservationService.GenerateGuidQRCodeImageAsync(reservationSeat.SecretCode);
+        }
+
+        public async ValueTask<QRCodeImage> GenerateReservationSeatTicketAsync(string reservationId, int reservationSeatId)
+        {
+            Reservation reservation = await reservationService.RetrieveReservationByIdAsync(reservationId);
+
+            await userAccountService.AuthorizeUserAccountByUserIdOrRolesAsync(reservation.User.Id, UserRole.Admin);
+
+            ReservationSeat reservationSeat = reservation.Seats.FirstOrDefault(x => x.Id == reservationSeatId);
+
+            if (reservationSeat == null)
+            {
+                throw new NotFoundSeatReservationException();
+            }
+
+            GenerateReservationTicketParams @params = new()
+            {
+                SecretCode = reservationSeat.SecretCode,
+                ShowName = reservation.Show.Name,
+                Date = reservation.Show.StartDateTime,
+                ReservationId = reservation.Id,
+                Number = reservationSeat.Seat.Number,
+                Row = reservationSeat.Seat.Row
+            };
+
+            return await reservationService.GenerateReservationTicketAsync(@params);
         }
 
         public async ValueTask<Reservation> CreateReservationAsync(CreateReservationParams @params)
