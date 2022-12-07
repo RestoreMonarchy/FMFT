@@ -10,9 +10,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Resources\TicketTemplate.png">
+    <EmbeddedResource Include="Resources\TicketTemplate.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
