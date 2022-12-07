@@ -25,7 +25,7 @@ namespace FMFT.Web.Server.Services.Foundations.QRCodes
             {
                 SecretCode = @params.SecretCode,
                 ShowName = @params.ShowName,
-                StartDate = @params.Date,
+                ShowDate = @params.Date,
                 ReservationId = @params.ReservationId,
                 SeatNumber = @params.Number,
                 SeatRow = @params.Row

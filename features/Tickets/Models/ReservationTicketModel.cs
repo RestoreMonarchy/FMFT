@@ -4,7 +4,7 @@
     {
         public Guid SecretCode { get; set; }
         public string ShowName { get; set; }
-        public DateTimeOffset StartDate { get; set; }
+        public DateTimeOffset ShowDate { get; set; }
         public string ReservationId { get; set; }
         public int SeatRow { get; set; }
         public int SeatNumber { get; set; }

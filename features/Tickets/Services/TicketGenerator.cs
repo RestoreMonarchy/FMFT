@@ -5,74 +5,115 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Globalization;
+using System.Reflection;
 
 namespace FMFT.Features.Tickets.Services
 {
     public class TicketGenerator
     {
+        public static readonly TimeZoneInfo TimeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+        public static readonly CultureInfo Culture = CultureInfo.GetCultureInfo("pl-PL");
+
         public Bitmap GenerateReservationTicket(ReservationTicketModel model)
         {
-            // Load the ticket template from disk
-
             Bitmap template = Templates.TicketTemplate;
 
-            // Create a new Bitmap with the desired size
-            Bitmap ticket = new Bitmap(900, 1600);
+            Bitmap ticket = new(900, 1600);
+
             ticket.SetResolution(96, 96);
 
             using Graphics graphics = Graphics.FromImage(ticket);
-
-            graphics.DrawImage(template, new Rectangle(0, 0, ticket.Width, ticket.Height));
-
-            // Generate the QR code using the SecretCode property of the model
-            QRCodeGenerator qrGenerator = new();
-            QRCodeData qrData = qrGenerator.CreateQrCode(model.SecretCode.ToString(), QRCodeGenerator.ECCLevel.Q);
-            QRCode qrCode = new(qrData);
-
-            Bitmap qrCodeBitmap = qrCode.GetGraphic(20);
-
-            // Calculate the position of the QR code on the ticket
-            int qrCodeX = (ticket.Width - qrCodeBitmap.Width) / 2;
-            int qrCodeY = 230 + 82;
-
-            // Draw the QR code on the ticket
-            graphics.DrawImage(qrCodeBitmap, qrCodeX, qrCodeY);
-
+            
+            // Set properties for the graphics
             graphics.SmoothingMode = SmoothingMode.AntiAlias;
             graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
             graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
             graphics.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
 
-            Font font = new("Arial", 36);
-                        
+            // Draw background
+            graphics.DrawImage(template, new Rectangle(0, 0, ticket.Width, ticket.Height));
+
+            string secretCode = model.SecretCode.ToString();
+
+            Bitmap qrCode = GenerateQRCodeFromString(secretCode);
+
+            int positionY = 0;
+
+            // Add margin of the gray header 
+            positionY += 230;
+
+            // Add margin from the bottom of header to QRCode position
+            positionY += 82;
+
+            // Calculate the horizontal position of the QR code on the ticket
+            int qrCodeX = (ticket.Width - qrCode.Width) / 2;
+
+            // Draw the QR code on the ticket
+            graphics.DrawImage(qrCode, qrCodeX, positionY);
+
+            positionY += qrCode.Height;
+
+            Font bigFont = new("Arial", 36);
+            Font smallFont = new("Arial", 30);
+            Font tinyFont = new("Arial", 24);
+
+            // Add a margin from the bottom of QRCode
+            positionY += 82;
+
             // Calculate the position of the show name on the ticket
-            int showNameX = (int)(ticket.Width - graphics.MeasureString(model.ShowName, font).Width) / 2;
-            int showNameY = qrCodeY + qrCodeBitmap.Height + 82;
+            string showName = model.ShowName;
+            SizeF showNameSize = graphics.MeasureString(showName, bigFont);
+            int showNameX = (ticket.Width - (int)showNameSize.Width) / 2;
 
             // Draw the show name on the ticket
-            graphics.DrawString(model.ShowName, font, Brushes.Black, showNameX, showNameY);
+            graphics.DrawString(showName, bigFont, Brushes.Black, showNameX, positionY);
 
-            Font font2 = new("Arial", 30);
+            positionY += (int)showNameSize.Height;
 
-            DateTime dateTime = TimeZoneInfo.ConvertTime(model.StartDate, TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time")).DateTime;
-            CultureInfo culture = CultureInfo.GetCultureInfo("pl-PL");
-            string dateString = dateTime.ToString("g", culture);
+            DateTime dateTime = TimeZoneInfo.ConvertTime(model.ShowDate, TimeZone).DateTime;
+            string date = dateTime.ToString("U", Culture);
+            date = date.Substring(0, date.Length - 3);
+            SizeF dateSize = graphics.MeasureString(date, smallFont);
+            int dateX = (ticket.Width - (int)dateSize.Width) / 2;
 
-            int dateX = (int)(ticket.Width - graphics.MeasureString(dateString, font2).Width) / 2;
-            int dateY = showNameY + 52 + 30;
+            positionY += 30;
 
-            graphics.DrawString(dateString, font2, Brushes.Black, dateX, dateY);
+            graphics.DrawString(date, smallFont, Brushes.Black, dateX, positionY);
 
-            string seatString = $"Rząd: {model.SeatRow} Miejsce: {model.SeatNumber}";
-            
-            int seatX = (int)(ticket.Width - graphics.MeasureString(seatString, font2).Width) / 2;
-            int seatY = dateY + 48 + 10;
+            positionY += smallFont.Height;
 
-            graphics.DrawString(seatString, font2, Brushes.Black, seatX, seatY);
+            string seat = $"Rząd: {model.SeatRow} Miejsce: {model.SeatNumber}";
+            SizeF seatSize = graphics.MeasureString(seat, smallFont);
+            int seatX = (int)(ticket.Width - seatSize.Width) / 2;
 
+            positionY += 20;
 
+            graphics.DrawString(seat, smallFont, Brushes.Black, seatX, positionY);
+
+            // Add footer
+            int footerHeight = 150;
+
+            string reservationId = $"ID rezerwacji: {model.ReservationId}";
+            SizeF reservationIdSize = graphics.MeasureString(reservationId, tinyFont);
+
+            int reservationIdMarginY = (footerHeight - (int)reservationIdSize.Height) / 2;
+            int reservationIdMarginX = 50;
+
+            int reservationIdX = (ticket.Width - (int)reservationIdSize.Width - reservationIdMarginX);
+            int reservationIdY = ticket.Height  - footerHeight + reservationIdMarginY;
+
+            graphics.DrawString(reservationId, tinyFont, Brushes.White, reservationIdX, reservationIdY);
 
             return ticket;
+        }
+
+        private Bitmap GenerateQRCodeFromString(string value)
+        {
+            QRCodeGenerator qrGenerator = new();
+            QRCodeData qrData = qrGenerator.CreateQrCode(value, QRCodeGenerator.ECCLevel.Q);
+            QRCode qrCode = new(qrData);
+
+            return qrCode.GetGraphic(20);
         }
     }
 }
