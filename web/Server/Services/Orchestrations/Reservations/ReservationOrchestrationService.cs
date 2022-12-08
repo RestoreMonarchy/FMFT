@@ -5,6 +5,7 @@ using FMFT.Web.Server.Models.QRCodes.Params;
 using FMFT.Web.Server.Models.Reservations;
 using FMFT.Web.Server.Models.Reservations.Params;
 using FMFT.Web.Server.Models.Reservations.Requests;
+using FMFT.Web.Server.Models.Reservations.Results;
 using FMFT.Web.Server.Services.Foundations.Accounts;
 using FMFT.Web.Server.Services.Foundations.QRCodes;
 using FMFT.Web.Server.Services.Foundations.Reservations;
@@ -66,6 +67,11 @@ namespace FMFT.Web.Server.Services.Orchestrations.Reservations
         public async ValueTask<Reservation> CancelReservationAsync(string reservationId)
         {
             return await reservationService.CancelReservationAsync(reservationId);
+        }
+
+        public async ValueTask<ValidateReservationSecretCodeResult> ValidateReservationSecretCodeAsync(Guid secretCode)
+        {
+            return await reservationService.ValidateReservationSecretCodeAsync(secretCode);
         }
 
         public async ValueTask<IEnumerable<Reservation>> RetrieveReservationsByUserIdAsync(int userId)

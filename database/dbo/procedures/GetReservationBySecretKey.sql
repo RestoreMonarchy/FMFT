@@ -1,6 +1,6 @@
 ﻿CREATE PROCEDURE dbo.GetReservationBySecretKey 
 	@SecretCode UNIQUEIDENTIFIER,
-	@SeatId INT OUTPUT
+	@ReservationSeatId INT OUTPUT
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -9,7 +9,7 @@ BEGIN
 	DECLARE @reservationId CHAR(8);
 
 	SELECT 
-		@SeatId = SeatId,
+		@ReservationSeatId = Id,
 		@reservationId = ReservationId
 	FROM dbo.ReservationSeats
 	WHERE SecretCode = @SecretCode;

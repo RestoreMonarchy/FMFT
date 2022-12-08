@@ -2,7 +2,9 @@
 using FMFT.Web.Server.Models.QRCodes;
 using FMFT.Web.Server.Models.Reservations;
 using FMFT.Web.Server.Models.Reservations.Exceptions;
+using FMFT.Web.Server.Models.Reservations.Params;
 using FMFT.Web.Server.Models.Reservations.Requests;
+using FMFT.Web.Server.Models.Reservations.Results;
 using FMFT.Web.Server.Services.Coordinations.Reservations;
 using FMFT.Web.Server.Services.Orchestrations.Reservations;
 using Microsoft.AspNetCore.Mvc;
@@ -116,6 +118,29 @@ namespace FMFT.Web.Server.Controllers
                 return NotFound(exception);
             }
             catch (NotFoundSeatReservationException exception)
+            {
+                return NotFound(exception);
+            }
+            catch (NotAuthorizedAccountException exception)
+            {
+                return Forbidden(exception);
+            }
+            catch (NotAuthenticatedAccountException exception)
+            {
+                return Unauthorized(exception);
+            }
+        }
+
+        [HttpPost("validate")]
+        public async ValueTask<IActionResult> ValidateReservationSecretCodeAsync([FromBody] ValidateReservationSecretCodeParams @params)
+        {
+            try
+            {
+                ValidateReservationSecretCodeResult result = await reservationCoordinationService.ValidateReservationSecretCodeAsync(@params.SecretCode);
+
+                return Ok(result);
+            }
+            catch (NotFoundReservationException exception)
             {
                 return NotFound(exception);
             }

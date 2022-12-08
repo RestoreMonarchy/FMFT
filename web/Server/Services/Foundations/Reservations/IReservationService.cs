@@ -1,5 +1,6 @@
 ﻿using FMFT.Web.Server.Models.Reservations;
 using FMFT.Web.Server.Models.Reservations.Params;
+using FMFT.Web.Server.Models.Reservations.Results;
 
 namespace FMFT.Web.Server.Services.Foundations.Reservations
 {
@@ -12,5 +13,6 @@ namespace FMFT.Web.Server.Services.Foundations.Reservations
         ValueTask<IEnumerable<Reservation>> RetrieveReservationsByShowIdAsync(int showId);
         ValueTask<IEnumerable<Reservation>> RetrieveReservationsByUserIdAsync(int userId);
         ValueTask<Reservation> UpdateReservationStatusAsync(UpdateReservationStatusParams @params);
+        ValueTask<ValidateReservationSecretCodeResult> ValidateReservationSecretCodeAsync(Guid secretCode);
     }
 }

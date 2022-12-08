@@ -5,6 +5,7 @@ using FMFT.Web.Server.Models.Reservations;
 using FMFT.Web.Server.Models.Reservations.DTOs;
 using FMFT.Web.Server.Models.Reservations.Exceptions;
 using FMFT.Web.Server.Models.Reservations.Params;
+using FMFT.Web.Server.Models.Reservations.Results;
 
 namespace FMFT.Web.Server.Services.Foundations.Reservations
 {
@@ -89,6 +90,18 @@ namespace FMFT.Web.Server.Services.Foundations.Reservations
         public async ValueTask<Reservation> CancelReservationAsync(string reservationId)
         {
             StoredProcedureResult<Reservation> result = await storageBroker.CancelReservationAsync(reservationId);
+
+            return result.Result;
+        }
+
+        public async ValueTask<ValidateReservationSecretCodeResult> ValidateReservationSecretCodeAsync(Guid secretCode)
+        {
+            StoredProcedureResult<ValidateReservationSecretCodeResult> result = await storageBroker.ValidateReservationSecretCodeAsync(secretCode);
+
+            if (result.ReturnValue == 1)
+            {
+                throw new NotFoundReservationException();
+            }
 
             return result.Result;
         }

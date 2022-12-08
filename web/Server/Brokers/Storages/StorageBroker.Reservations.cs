@@ -3,6 +3,7 @@ using FMFT.Web.Server.Models.Database;
 using FMFT.Web.Server.Models.Reservations;
 using FMFT.Web.Server.Models.Reservations.DTOs;
 using FMFT.Web.Server.Models.Reservations.Params;
+using FMFT.Web.Server.Models.Reservations.Results;
 using FMFT.Web.Server.Models.Seats;
 using FMFT.Web.Server.Models.Shows;
 using FMFT.Web.Server.Models.Users;
@@ -89,13 +90,34 @@ namespace FMFT.Web.Server.Brokers.Storages
             return result;
         }
 
-        public async ValueTask<Reservation> GetReservationAsync(GetReservationParams @params)
+        public async ValueTask<StoredProcedureResult<ValidateReservationSecretCodeResult>> ValidateReservationSecretCodeAsync(Guid secretCode)
+        {
+            const string sql = "dbo.GetReservationBySecretKey";
+            StoredProcedureResult<ValidateReservationSecretCodeResult> spResult = new();
+            DynamicParameters parameters = StoredProcedureParameters(new 
+            { 
+                SecretCode = secretCode
+            });
+            parameters.Add("ReservationSeatId", dbType: DbType.Int32, direction: ParameterDirection.Output);
+
+            ValidateReservationSecretCodeResult result = new();
+
+            result.Reservation = await QueryReservationAsync(sql, parameters, CommandType.StoredProcedure);
+            result.ReservationSeatId = parameters.Get<int?>("ReservationSeatId");
+
+            spResult.Result = result;
+            spResult.ReturnValue = GetReturnValue(parameters);
+
+            return spResult;
+        }
+
+        private async ValueTask<Reservation> GetReservationAsync(GetReservationParams @params)
         {
             IEnumerable<Reservation> reservations = await GetReservationsAsync(@params);
 
             return reservations.FirstOrDefault();
         }
-
+            
         private async ValueTask<IEnumerable<Reservation>> GetReservationsAsync(GetReservationParams @params)
         {
             const string sql = "dbo.GetReservations";

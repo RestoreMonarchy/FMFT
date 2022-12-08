@@ -3,6 +3,7 @@ using FMFT.Web.Server.Models.QRCodes.Params;
 using FMFT.Web.Server.Models.Reservations;
 using FMFT.Web.Server.Models.Reservations.Exceptions;
 using FMFT.Web.Server.Models.Reservations.Params;
+using FMFT.Web.Server.Models.Reservations.Results;
 using FMFT.Web.Server.Models.Seats.Exceptions;
 using FMFT.Web.Server.Services.Orchestrations.Reservations;
 using FMFT.Web.Server.Services.Orchestrations.UserAccounts;
@@ -93,6 +94,15 @@ namespace FMFT.Web.Server.Services.Coordinations.Reservations
             await userAccountService.AuthorizeUserAccountByUserIdOrRolesAsync(reservation.User.Id, UserRole.Admin);
 
             return await reservationService.CancelReservationAsync(reservationId);
+        }
+
+        public async ValueTask<ValidateReservationSecretCodeResult> ValidateReservationSecretCodeAsync(Guid secretCode)
+        {
+            await userAccountService.AuthorizeUserAccountByRoleAsync(UserRole.Admin);
+
+            ValidateReservationSecretCodeResult result = await reservationService.ValidateReservationSecretCodeAsync(secretCode);
+
+            return result;
         }
 
         public async ValueTask<IEnumerable<Reservation>> RetrieveReservationsByShowIdAsync(int showId)

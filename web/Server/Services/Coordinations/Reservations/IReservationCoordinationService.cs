@@ -1,6 +1,7 @@
 ﻿using FMFT.Web.Server.Models.QRCodes;
 using FMFT.Web.Server.Models.Reservations;
 using FMFT.Web.Server.Models.Reservations.Params;
+using FMFT.Web.Server.Models.Reservations.Results;
 
 namespace FMFT.Web.Server.Services.Coordinations.Reservations
 {
@@ -15,5 +16,6 @@ namespace FMFT.Web.Server.Services.Coordinations.Reservations
         ValueTask<Reservation> RetrieveReservationByIdAsync(string reservationId);
         ValueTask<IEnumerable<Reservation>> RetrieveReservationsByShowIdAsync(int showId);
         ValueTask<IEnumerable<Reservation>> RetrieveReservationsByUserIdAsync(int userId);
+        ValueTask<ValidateReservationSecretCodeResult> ValidateReservationSecretCodeAsync(Guid secretCode);
     }
 }
