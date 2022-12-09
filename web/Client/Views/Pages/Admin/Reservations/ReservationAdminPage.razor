@@ -27,7 +27,7 @@
                         <div class="row">
 
                             <div class="col-md-6 mb-3">
-                                <div class="card">
+                                <div class="card mb-3">
                                     <div class="card-header">
                                         Informacje o rezerwacji
                                     </div>
@@ -55,6 +55,35 @@
                                                 @Reservation.Show.Name
                                             </span>
                                         </div>
+                                        <div class="list-group-item">
+                                            <span class="fw-bold">
+                                                Data:
+                                            </span>
+                                            <span>
+                                                @Reservation.Show.StartDateTime.LocalDateTime.ToLongDateString()
+                                            </span>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <span class="fw-bold">
+                                                Godzina:
+                                            </span>
+                                            <span>
+                                                @Reservation.Show.StartDateTime.LocalDateTime.ToString("t")
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card">
+                                    <div class="card-header">
+                                        Miejsca (@Reservation.Seats.Count)
+                                    </div>
+                                    <div class="list-group list-group-flush">
+                                        <Iterations Items="Reservation.Seats.OrderBy(x => x.Seat.Row).ThenBy(x => x.Seat.Number)" Context="seat">
+                                            <div class="list-group-item d-flex align-items-center justify-content-between">
+                                                Rząd @seat.Seat.Row Numer @seat.Seat.Number
+                                            </div>
+                                        </Iterations>
                                     </div>
                                 </div>
                             </div>
@@ -62,7 +91,7 @@
                             <div class="col-md-6">
                                 <div class="card">
                                     <div class="card-header">
-                                        Informacje o użytkowniku
+                                        Użytkownik
                                     </div>
                                     <div class="list-group list-group-flush">
                                         <div class="list-group-item">

@@ -56,6 +56,7 @@ namespace FMFT.Web.Client.Views.Pages.Admin.Reservations
         private async Task HandleSubmitAsync()
         {
             AlertGroup.HideAll();
+            ValidateReservationResponse = null;
 
             isLoading = true;
             StateHasChanged();

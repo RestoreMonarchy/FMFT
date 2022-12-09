@@ -68,7 +68,7 @@
                                                 Godzina:
                                             </span>
                                             <span>
-                                                @Reservation.Show.StartDateTime.LocalDateTime.ToShortTimeString()
+                                                @Reservation.Show.StartDateTime.LocalDateTime.ToString("t")
                                             </span>
                                         </div>
                                         <a class="list-group-item list-group-item-action" href="/shows/@Reservation.Show.Id">
