@@ -24,9 +24,6 @@ function downloadFromUrl(url, fileName) {
 
 function DownloadFromByteArray(byteArray, fileName, contentType) {
 
-    // Convert base64 string to numbers array.
-    /*const numArray = atob(byteArray).split('').map(c => c.charCodeAt(0));*/
-
     // Convert numbers array to Uint8Array object.
     const uint8Array = new Uint8Array(byteArray);
 

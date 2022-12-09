@@ -2,6 +2,7 @@
 using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Reservations;
 using FMFT.Web.Client.Models.API.Reservations.Requests;
+using FMFT.Web.Client.Models.API.Reservations.Responses;
 
 namespace FMFT.Web.Client.Brokers.APIs
 {
@@ -53,6 +54,12 @@ namespace FMFT.Web.Client.Brokers.APIs
         {
             string url = $"{ReservationsRelativeUrl}/{reservationId}/seats/{seatId}/ticket";
             return await GetAsync<QRCodeImage>(url);
+        }
+
+        public async ValueTask<APIResponse<ValidateReservationResponse>> ValidateReservationAsync(ValidateReservationRequest request)
+        {
+            string url = $"{ReservationsRelativeUrl}/validate";
+            return await PostAsync<ValidateReservationResponse>(url, request);
         }
     }
 }

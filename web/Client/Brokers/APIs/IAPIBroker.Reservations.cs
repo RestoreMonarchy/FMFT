@@ -2,6 +2,7 @@
 using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Reservations;
 using FMFT.Web.Client.Models.API.Reservations.Requests;
+using FMFT.Web.Client.Models.API.Reservations.Responses;
 
 namespace FMFT.Web.Client.Brokers.APIs
 {
@@ -15,5 +16,6 @@ namespace FMFT.Web.Client.Brokers.APIs
         ValueTask<APIResponse<QRCodeImage>> GetReservationQRCodeImageByIdAsync(string reservationId);
         ValueTask<APIResponse<QRCodeImage>> GetReservationSeatQRCodeAsync(string reservationId, int seatId);
         ValueTask<APIResponse<QRCodeImage>> GetReservationSeatTicketAsync(string reservationId, int seatId);
+        ValueTask<APIResponse<ValidateReservationResponse>> ValidateReservationAsync(ValidateReservationRequest request);
     }
 }

@@ -1,3 +1,14 @@
+document.onkeypress = function (e) {
+    e = e || window.event;
+
+    const params =
+    {
+        KeyCode: e.keyCode,
+        Key: e.key
+    };
+
+    DotNet.invokeMethodAsync("FMFT.Extensions.Blazor.Bases", "TriggerOnKeyPressAsync", params);
+};
 
 function ShowModal(modalElement) {
     const modal = new bootstrap.Modal(modalElement);

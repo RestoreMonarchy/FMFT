@@ -1,37 +1,71 @@
-﻿using FMFT.Extensions.Blazor.Bases.Alerts;
-using FMFT.Extensions.Blazor.Bases.Inputs;
-using FMFT.Extensions.Blazor.Bases.Loadings;
+﻿using FMFT.Extensions.Blazor.Bases.Inputs;
+using FMFT.Extensions.Blazor.Bases.Javascript;
+using FMFT.Extensions.Blazor.Bases.Javascript.Params;
 using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Reservations;
+using FMFT.Web.Client.Models.API.Reservations.Requests;
+using FMFT.Web.Client.Models.API.Reservations.Responses;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace FMFT.Web.Client.Views.Pages.Admin.Reservations
 {
     public partial class ReservationValidationAdminPage
     {
-        public string ReservationId { get; set; }
+        public string SecretCode { get; set; }
 
         public TextInputBase SearchInput { get; set; }
 
-        public APIResponse<Reservation> ReservationResponse { get; set; }
+        public APIResponse<ValidateReservationResponse> ValidateReservationResponse { get; set; }
 
-        public Reservation Reservation => ReservationResponse.Object;
+        public Reservation Reservation => ValidateReservationResponse.Object.Reservation;
+
+        protected override void OnInitialized()
+        {
+            JavascriptEvents.OnKeyPress += HandleKeyPressAsync;
+        }
+
+        private string text = string.Empty;
+
+        private async Task HandleKeyPressAsync(KeyPressParams @params)
+        {
+            await InvokeAsync(async () => 
+            {
+                if (@params.Key.Length == 1)
+                {
+                    text += @params.Key;
+                }
+
+                if (@params.KeyCode == 13)
+                {
+                    SecretCode = text;
+                    text = string.Empty;
+                    await HandleSubmitAsync();
+                }
+            });
+            
+        }
 
         private bool isLoading = false;
 
         private async Task HandleSubmitAsync()
         {
             isLoading = true;
-            SearchInput.Disable();
+            StateHasChanged();
 
-            string reservationId = ReservationId.TrimStart(' ').TrimEnd(' ');
+            string secretCodeString = SecretCode.TrimStart(' ').TrimEnd(' ');
 
-            ReservationResponse = await APIBroker.GetReservationByIdAsync(reservationId);
+            Guid secretCode = Guid.Parse(secretCodeString);
 
-            await SearchInput.SelectAsync();
+            ValidateReservationRequest request = new()
+            {
+                SecretCode = secretCode
+            };
 
-            SearchInput.Enable();
+            ValidateReservationResponse = await APIBroker.ValidateReservationAsync(request);
+
             isLoading = false;
+            StateHasChanged();
         }
     }
 }
