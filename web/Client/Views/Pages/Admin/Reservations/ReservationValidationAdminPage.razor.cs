@@ -1,4 +1,5 @@
-﻿using FMFT.Extensions.Blazor.Bases.Inputs;
+﻿using FMFT.Extensions.Blazor.Bases.Alerts;
+using FMFT.Extensions.Blazor.Bases.Inputs;
 using FMFT.Extensions.Blazor.Bases.Javascript;
 using FMFT.Extensions.Blazor.Bases.Javascript.Params;
 using FMFT.Web.Client.Models.API;
@@ -15,6 +16,8 @@ namespace FMFT.Web.Client.Views.Pages.Admin.Reservations
         public string SecretCode { get; set; }
 
         public TextInputBase SearchInput { get; set; }
+        public AlertGroupBase AlertGroup { get; set; }
+        public AlertBase InvalidInputAlert { get; set; }
 
         public APIResponse<ValidateReservationResponse> ValidateReservationResponse { get; set; }
 
@@ -29,40 +32,49 @@ namespace FMFT.Web.Client.Views.Pages.Admin.Reservations
 
         private async Task HandleKeyPressAsync(KeyPressParams @params)
         {
-            await InvokeAsync(async () => 
+            if (isLoading)
             {
-                if (@params.Key.Length == 1)
-                {
-                    text += @params.Key;
-                }
+                return;
+            }
 
-                if (@params.KeyCode == 13)
-                {
-                    SecretCode = text;
-                    text = string.Empty;
-                    await HandleSubmitAsync();
-                }
-            });
-            
+            if (@params.Key.Length == 1)
+            {
+                text += @params.Key;
+            }
+
+            // When the pressed key is "Enter"
+            if (@params.KeyCode == 13)
+            {
+                SecretCode = text;
+                text = string.Empty;
+                await HandleSubmitAsync();
+            }            
         }
 
         private bool isLoading = false;
 
         private async Task HandleSubmitAsync()
         {
+            AlertGroup.HideAll();
+
             isLoading = true;
             StateHasChanged();
 
             string secretCodeString = SecretCode.TrimStart(' ').TrimEnd(' ');
 
-            Guid secretCode = Guid.Parse(secretCodeString);
-
-            ValidateReservationRequest request = new()
+            if (!Guid.TryParse(secretCodeString, out Guid secretCode))
             {
-                SecretCode = secretCode
-            };
+                await Task.Delay(500);
+                InvalidInputAlert.Show();
+            } else
+            {
+                ValidateReservationRequest request = new()
+                {
+                    SecretCode = secretCode
+                };
 
-            ValidateReservationResponse = await APIBroker.ValidateReservationAsync(request);
+                ValidateReservationResponse = await APIBroker.ValidateReservationAsync(request);
+            }
 
             isLoading = false;
             StateHasChanged();

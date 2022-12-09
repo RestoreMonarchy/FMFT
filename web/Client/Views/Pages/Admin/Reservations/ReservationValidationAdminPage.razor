@@ -27,6 +27,12 @@
                     </p>
                 </div>
                 <div>
+                    <AlertGroupBase @ref="AlertGroup">
+                        <AlertBase @ref="InvalidInputAlert" Class="alert-danger">
+                            Podany kod biletu jest nieprawdiłowy
+                        </AlertBase>
+                    </AlertGroupBase>
+
                     <Condition Evaluation="isLoading">
                         <NotMatch>
                             <Condition Evaluation="ValidateReservationResponse != null">
@@ -92,7 +98,7 @@
                                             <Switch Expression="ValidateReservationResponse.Error.Code">
                                                 <SwitchCase Value="@("ERR017")">
                                                     <InfoAlert>
-                                                        Rezerwacja o podanym numerze nie istnieje
+                                                        Podany kod biletu nie istnieje w systemie
                                                     </InfoAlert>
                                                 </SwitchCase>
                                                 <DefaultSwitchCase>
