@@ -1,10 +1,8 @@
-﻿using FMFT.Web.Server.Models.Reservations.Exceptions;
-using FMFT.Web.Server.Models.Reservations.Requests;
+﻿using FMFT.Web.Server.Models.Accounts.Exceptions;
 using FMFT.Web.Server.Models.Reservations;
-using FMFT.Web.Server.Models.Users.Exceptions;
-using Microsoft.AspNetCore.Mvc;
-using FMFT.Web.Server.Models.Accounts.Exceptions;
+using FMFT.Web.Server.Models.Reservations.Exceptions;
 using FMFT.Web.Server.Models.Reservations.Params;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FMFT.Web.Server.Controllers.Users
 {
@@ -20,19 +18,19 @@ namespace FMFT.Web.Server.Controllers.Users
                 Reservation reservation = await reservationCoordinationService.CreateReservationAsync(@params);
 
                 return Ok(reservation);
-            }
-            catch (SeatAlreadyReservedReservationException exception)
+            } catch (CreateReservationValidationException exception)
+            {
+                return BadRequest(exception);
+            } catch (SeatAlreadyReservedReservationException exception)
             {
                 return Conflict(exception);
-            }
-            catch (UserAlreadyReservedReservationException exception)
+            } catch (UserAlreadyReservedReservationException exception)
             {
                 return Conflict(exception);
             } catch (SeatsNotProvidedReservationException exception)
             {
                 return BadRequest(exception);
-            }
-            catch (NotAuthorizedAccountException exception)
+            } catch (NotAuthorizedAccountException exception)
             {
                 return Forbidden(exception);
             } catch (NotAuthenticatedAccountException exception)

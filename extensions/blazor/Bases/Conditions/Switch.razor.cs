@@ -22,14 +22,12 @@ namespace FMFT.Extensions.Blazor.Bases.Conditions
         {
             cases.Add(switchCase);
             StateHasChanged();
-            Console.WriteLine("hello from addCase");
         }
 
         public void SetDefaultCase(DefaultSwitchCase defaultSwitchCase)
         {
             defaultCase = defaultSwitchCase;
             StateHasChanged();
-            Console.WriteLine("hello from defaultCase");
         }
 
         private SwitchCase GetCurrentCase()

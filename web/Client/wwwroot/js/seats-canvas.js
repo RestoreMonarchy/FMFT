@@ -44,7 +44,7 @@
             return;
         }
 
-        console.log("row: ", seat.row, "column: ", seat.column);
+        //console.log("row: ", seat.row, "column: ", seat.column);
         dotnetHelper.invokeMethodAsync("HandleSeatClickAsync", seat.row, seat.column);
     }
 
