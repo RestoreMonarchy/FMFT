@@ -86,7 +86,7 @@
                                             <div class="list-group-item d-flex align-items-center justify-content-between">
                                                 Rząd @seat.Seat.Row Numer @seat.Seat.Number
                                                 <div>
-                                                    <button class="btn btn-outline-info btn-sm" @onclick="() => HandleSeatQRCodeDialogAsync(seat)">
+                                                    <button class="btn btn-outline-info btn-sm" @onclick="() => HandleSeatQRCodeDialogAsync(seat)" disabled="@Reservation.IsCanceled">
                                                         <i class="fa-solid fa-qrcode"></i>
                                                         QRCode
                                                     </button>
