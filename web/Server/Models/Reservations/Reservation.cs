@@ -17,6 +17,8 @@ namespace FMFT.Web.Server.Models.Reservations
         public Show Show { get; set; }
         public UserInfo User { get; set; }
         public UserInfo AdminUser { get; set; }
+
+        public ReservationDetails Details { get; set; }
         public List<ReservationSeat> Seats { get; set; }
 
         [JsonIgnore]

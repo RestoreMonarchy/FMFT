@@ -129,7 +129,7 @@ namespace FMFT.Web.Server.Brokers.Storages
         {
             Reservation reservation = null;
 
-            await connection.QueryAsync<Reservation, Show, UserInfo, UserInfo, ReservationSeat, Seat, Reservation>(sql, (r, s, u, au, rs, se) => 
+            await connection.QueryAsync<Reservation, Show, UserInfo, UserInfo, ReservationDetails, ReservationSeat, Seat, Reservation>(sql, (r, s, u, au, rd, rs, se) => 
             {
                 if (reservation == null)
                 {
@@ -137,6 +137,12 @@ namespace FMFT.Web.Server.Brokers.Storages
                     reservation.Show = s;
                     reservation.User = u;
                     reservation.AdminUser = au;
+
+                    if (rd != null && rd.ReservationId != null)
+                    {
+                        reservation.Details = rd;
+                    }
+
                     reservation.Seats = new();
                 }
 
@@ -147,7 +153,7 @@ namespace FMFT.Web.Server.Brokers.Storages
                 }                
 
                 return null;
-            }, param, commandType: commandType);
+            }, param, commandType: commandType, splitOn: "Id,Id,Id,Id,ReservationId,Id,Id");
 
             return reservation;
         }
@@ -156,7 +162,7 @@ namespace FMFT.Web.Server.Brokers.Storages
         {
             List<Reservation> reservations = new();
 
-            await connection.QueryAsync<Reservation, Show, UserInfo, UserInfo, ReservationSeat, Seat, Reservation>(sql, (r, s, u, au, rs, se) =>
+            await connection.QueryAsync<Reservation, Show, UserInfo, UserInfo, ReservationDetails, ReservationSeat, Seat, Reservation>(sql, (r, s, u, au, rd, rs, se) =>
             {
                 Reservation reservation = reservations.FirstOrDefault(x => x.Id == r.Id);
 
@@ -166,6 +172,12 @@ namespace FMFT.Web.Server.Brokers.Storages
                     reservation.Show = s;
                     reservation.User = u;
                     reservation.AdminUser = au;
+
+                    if (rd != null && rd.ReservationId != null)
+                    {
+                        reservation.Details = rd;
+                    }
+                    
                     reservation.Seats = new();
 
                     reservations.Add(reservation);
@@ -178,7 +190,7 @@ namespace FMFT.Web.Server.Brokers.Storages
                 }
 
                 return null;
-            }, param, commandType: commandType);
+            }, param, commandType: commandType, splitOn: "Id,Id,Id,Id,ReservationId,Id,Id");
 
             return reservations;
         }
