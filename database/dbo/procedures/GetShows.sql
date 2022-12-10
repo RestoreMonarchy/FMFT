@@ -8,14 +8,18 @@ BEGIN
 
 	IF @ShowId IS NOT NULL
 	BEGIN
-		SELECT s.*, r.SeatId FROM dbo.Shows s
-		LEFT JOIN dbo.Reservations r ON r.ShowId = s.Id AND r.IsCanceled = 0
+		SELECT s.*, rs.SeatId 
+		FROM dbo.Shows s 
+		LEFT JOIN dbo.Reservations r ON r.ShowId = s.Id 
+		JOIN dbo.ReservationSeats rs ON rs.ReservationId  = r.Id
 		WHERE s.Id = @ShowId;
 	END
 	ELSE
 	BEGIN
-		SELECT s.*, r.SeatId FROM dbo.Shows s
-		LEFT JOIN dbo.Reservations r ON r.ShowId = s.Id AND r.IsCanceled = 0;
+		SELECT s.*, rs.SeatId 
+		FROM dbo.Shows s 
+		LEFT JOIN dbo.Reservations r ON r.ShowId = s.Id 
+		JOIN dbo.ReservationSeats rs ON rs.ReservationId  = r.Id;
 	END;
 
 	RETURN 0;
