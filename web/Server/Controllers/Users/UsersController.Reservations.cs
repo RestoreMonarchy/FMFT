@@ -15,7 +15,7 @@ namespace FMFT.Web.Server.Controllers.Users
 
             try
             {
-                Reservation reservation = await reservationCoordinationService.CreateReservationAsync(@params);
+                Reservation reservation = await reservationCoordinationService.CreateUserReservationAsync(@params);
 
                 return Ok(reservation);
             } catch (CreateReservationValidationException exception)

@@ -1,7 +1,10 @@
 ﻿CREATE PROCEDURE dbo.CreateReservation
 	@ShowId INT,
 	@UserId INT,
-	@Seats VARCHAR(8000)
+	@Seats VARCHAR(8000),
+	@Email NVARCHAR(255) NULL,
+	@FirstName NVARCHAR(255) NULL,
+	@LastName NVARCHAR(255) NULL
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -43,9 +46,14 @@ BEGIN
 
 		INSERT INTO dbo.ReservationSeats (ReservationId, SeatId)
 		SELECT @id, SeatId FROM @seatsTable;
+
+		IF @UserId IS NULL
+		BEGIN
+			INSERT INTO dbo.ReservationDetails (ReservationId, Email, FirstName, LastName)
+			VALUES (@id, @Email, @FirstName, @LastName);
+		END
 		
 		COMMIT;
-
 	END;
 
 	EXEC dbo.GetReservations @ReservationId = @id;

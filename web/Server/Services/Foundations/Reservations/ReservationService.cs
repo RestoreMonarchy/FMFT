@@ -63,7 +63,11 @@ namespace FMFT.Web.Server.Services.Foundations.Reservations
             {
                 ShowId = @params.ShowId,
                 UserId = @params.UserId,
-                Seats = @params.SeatIds != null ? string.Join(',', @params.SeatIds) : string.Empty
+                Seats = @params.SeatIds != null ? string.Join(',', @params.SeatIds) : string.Empty,
+                
+                Email = @params.Email,
+                FirstName = @params.FirstName,
+                LastName = @params.LastName
             };
 
             StoredProcedureResult<Reservation> result = await storageBroker.CreateReservationAsync(dto);

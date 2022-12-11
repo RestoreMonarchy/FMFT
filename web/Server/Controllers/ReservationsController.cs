@@ -154,6 +154,41 @@ namespace FMFT.Web.Server.Controllers
             }
         }
 
+        [HttpPost("create")]
+        public async ValueTask<IActionResult> CreateReservation([FromBody] CreateReservationParams @params)
+        {
+            try
+            {
+                Reservation reservation = await reservationCoordinationService.CreateReservationAsync(@params);
+
+                return Ok(reservation);
+            }
+            catch (CreateReservationValidationException exception)
+            {
+                return BadRequest(exception);
+            }
+            catch (SeatAlreadyReservedReservationException exception)
+            {
+                return Conflict(exception);
+            }
+            catch (UserAlreadyReservedReservationException exception)
+            {
+                return Conflict(exception);
+            }
+            catch (SeatsNotProvidedReservationException exception)
+            {
+                return BadRequest(exception);
+            }
+            catch (NotAuthorizedAccountException exception)
+            {
+                return Forbidden(exception);
+            }
+            catch (NotAuthenticatedAccountException exception)
+            {
+                return Unauthorized(exception);
+            }
+        }
+
         //[HttpPost("{reservationId}/updatestatus")]
         //public async ValueTask<IActionResult> UpdateReservationStatus(int reservationId, [FromBody] UpdateReservationStatusRequest request)
         //{
