@@ -25,12 +25,18 @@
                             <div class="text-muted mb-2">
                                 Lista rezerwacji (@SearchReservations.Count())
                             </div>
-                            <div class="ms-auto mb-2">
-                                <div class="input-group">
+                            <div class="ms-auto mb-2 d-flex align-items-center">
+                                <div class="input-group input-group-sm">
                                     <span class="input-group-text">
                                         <i class="fa-solid fa-magnifying-glass"></i>
                                     </span>
                                     <input class="form-control" type="text" @bind="searchString" placeholder="Szukaj po ID lub wydarzeniu" @bind:event="oninput" />
+                                </div>
+                                <div class="ms-1">
+                                    <a href="/admin/reservations/create" class="btn btn-primary btn-sm text-nowrap">
+                                        <i class="fa-solid fa-plus me-1"></i>
+                                        Dodaj rezerwację
+                                    </a>
                                 </div>
                             </div>
                         </div>

@@ -56,16 +56,8 @@ namespace FMFT.Web.Client.Views.Shared.Components.Panzooms
             font = "bold 12px Arial"
         };
 
-        protected override async Task OnAfterRenderAsync(bool firstRender)
+        public async Task ReloadAsync()
         {
-            if (!firstRender)
-                return;
-
-            if (Auditorium == null)
-            {
-                return;
-            }            
-
             DotNetObjectReference<AuditoriumSeatPanzoom> objectReference = DotNetObjectReference.Create(this);
             await JSRuntimeBroker.InitializeSeatsCanvasAsync(SeatsCanvasOptions, objectReference);
 
@@ -88,7 +80,7 @@ namespace FMFT.Web.Client.Views.Shared.Components.Panzooms
                         await DrawSeatAsync(seat.Row, seat.Number, "dimgray");
                     }
                 }
-            }            
+            }
 
             foreach (Seat seat in SelectedSeats)
             {
@@ -96,9 +88,24 @@ namespace FMFT.Web.Client.Views.Shared.Components.Panzooms
             }
         }
 
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (!firstRender)
+                return;
+
+            if (Auditorium == null)
+            {
+                return;
+            }
+
+            await ReloadAsync();
+        }
+
         [JSInvokable]
         public async Task HandleSeatClickAsync(int row, int column)
         {
+            LoggingBroker.LogDebug($"HandleSeatClickAsync for row {row} and column {column}");
+
             Seat seat = Auditorium.Seats.FirstOrDefault(x => x.Row == row && x.Number == column);
 
             if (seat == null)
@@ -116,6 +123,8 @@ namespace FMFT.Web.Client.Views.Shared.Components.Panzooms
             // uncheck the seat
             if (SelectedSeats.Contains(seat)) 
             {
+                LoggingBroker.LogDebug($"Unchecking the seat id {seat.Id} at row {row} and column {column}");
+
                 await DrawSeatAsync(seat.Row, seat.Number, "#009578");
 
                 await RemoveSeatAsync(seat);

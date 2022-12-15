@@ -1,0 +1,59 @@
+﻿@page "/admin/reservations/create"
+@using FMFT.Web.Client.Views.Shared.Components.Forms.Reservations
+
+<MainLayoutBody>
+    <Breadcrumb>
+        <BreadcrumbItem Link="/">
+            Home
+        </BreadcrumbItem>
+        <BreadcrumbItem>
+            Admin
+        </BreadcrumbItem>
+        <BreadcrumbItem Link="/admin/reservations">
+            Rezerwacje
+        </BreadcrumbItem>
+        <BreadcrumbItem Active="true">
+            Dodaj
+        </BreadcrumbItem>
+    </Breadcrumb>
+
+    <CustomAuthorizeView Role="UserRole.Admin">
+
+        <Authorized>
+
+            <LoadingView @ref="LoadingView"> 
+
+                <Condition Evaluation="ShowsResponse.IsSuccessful && AuditoriumsResponse.IsSuccessful">
+
+                    <Match>
+
+                        <div class="card">
+                            <div class="card-header">
+                                Dodaj rezerwację
+                            </div>
+                            <CreateReservationForm Shows="Shows" Auditoriums="Auditorioums" />
+                        </div>                        
+
+                    </Match>
+
+                    <NotMatch>
+
+                        <ErrorResponseAlert />
+
+                    </NotMatch>
+
+                </Condition>
+
+            </LoadingView>
+
+        </Authorized>
+
+        <NotAuthorized>
+
+            <NotAuthorizedAlert />
+
+        </NotAuthorized>
+
+    </CustomAuthorizeView>
+
+</MainLayoutBody>

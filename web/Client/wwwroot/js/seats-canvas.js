@@ -9,6 +9,8 @@
     const canvas = document.getElementById(canvasId);
     const ctx = canvas.getContext("2d");
 
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     const maxColumns = Math.max(...seatsMap);
     const maxWidthPixels = marginX * maxColumns;
     const maxHeightPixels = marginY * seatsMap.length;
@@ -44,7 +46,7 @@
             return;
         }
 
-        //console.log("row: ", seat.row, "column: ", seat.column);
+        console.log("row: ", seat.row, "column: ", seat.column);
         dotnetHelper.invokeMethodAsync("HandleSeatClickAsync", seat.row, seat.column);
     }
 

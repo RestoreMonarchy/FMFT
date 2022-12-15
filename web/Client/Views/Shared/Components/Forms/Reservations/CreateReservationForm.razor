@@ -1,0 +1,44 @@
+﻿@using FMFT.Web.Client.Views.Shared.Components.Panzooms
+
+
+<EditForm Model="Model" OnValidSubmit="SubmitAsync">
+    <DataAnnotationsValidator />
+    
+    <div class="card-body">
+        <div class="mb-2">
+            <span class="form-label">Wydarzenie</span>
+            <select @onchange="HandleShowIdChangeAsync" class="form-select">
+                <option selected>Wybierz wydarzenie</option>
+                <Iterations Items="Shows.OrderBy(x => x.IsPast()).ThenBy(x => x.StartDateTime)" Context="show">
+                    <option value="@show.Id" disabled="@show.IsPast()">
+                        @show.Name (@show.StartDateTime.LocalDateTime.ToShortDateString())
+                    </option>
+                </Iterations>
+            </select>
+            <div class="text-danger">
+                <ValidationMessage For="@(() => Model.ShowId)" />
+            </div>
+        </div>
+
+        <Condition Evaluation="Model.ShowId.HasValue">
+            <Match>
+                <div class="mb-2">
+                    <AuditoriumSeatPanzoom @ref="AuditoriumSeatPanzoom" ReservedSeats="Show.ReservedSeats" Auditorium="Auditorium" @bind-SelectedSeats="Model.Seats" />
+                </div>
+            </Match>
+        </Condition>
+        
+
+    </div>
+    <div class="card-footer">
+        <div class="d-flex align-items-center">
+            <div>
+                <SubmitButtonBase @ref="SubmitButton" Class="btn btn-sm btn-primary">
+                    <i class="fa-solid fa-plus me-1"></i>
+                    Dodaj rezerwację
+                </SubmitButtonBase>
+            </div>
+        </div>
+    </div>
+
+</EditForm>
