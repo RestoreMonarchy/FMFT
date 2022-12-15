@@ -1,9 +1,14 @@
 ﻿
-<Condition Evaluation="IsLoading">
+<Condition Evaluation="IsHidden">
     <NotMatch>
-        @ChildContent
+        <Condition Evaluation="IsLoading">
+            <NotMatch>
+                @ChildContent
+            </NotMatch>
+            <Match>
+                <ProgressBar />
+            </Match>
+        </Condition>
     </NotMatch>
-    <Match>
-        <ProgressBar />
-    </Match>
 </Condition>
+

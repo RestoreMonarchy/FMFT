@@ -7,7 +7,10 @@ namespace FMFT.Extensions.Blazor.Bases.Loadings
         [Parameter]
         public RenderFragment ChildContent { get; set; }
 
+        [Parameter]
         public bool IsLoading { get; set; } = true;
+        [Parameter]
+        public bool IsHidden { get; set; } = false;
 
         public void StartLoading()
         {
@@ -18,6 +21,18 @@ namespace FMFT.Extensions.Blazor.Bases.Loadings
         public void StopLoading()
         {
             IsLoading = false;
+            InvokeAsync(StateHasChanged);
+        }
+
+        public void Hide()
+        {
+            IsHidden = true;
+            InvokeAsync(StateHasChanged);
+        }
+
+        public void Show()
+        {
+            IsHidden = false;
             InvokeAsync(StateHasChanged);
         }
     }

@@ -20,14 +20,12 @@
             </div>
         </div>
 
-        <Condition Evaluation="Model.ShowId.HasValue">
-            <Match>
-                <div class="mb-2">
-                    <AuditoriumSeatPanzoom @ref="AuditoriumSeatPanzoom" ReservedSeats="Show.ReservedSeats" Auditorium="Auditorium" @bind-SelectedSeats="Model.Seats" />
-                </div>
-            </Match>
-        </Condition>
-        
+        <LoadingView @ref="SeatSelectorLoadingView">
+            <div class="mb-2">
+                <AuditoriumSeatPanzoom @ref="AuditoriumSeatPanzoom" ReservedSeats="Show.ReservedSeats" Auditorium="Auditorium" @bind-SelectedSeats="Model.Seats" />
+            </div>
+        </LoadingView>
+
 
     </div>
     <div class="card-footer">

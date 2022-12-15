@@ -1,4 +1,4 @@
-﻿function InitializeSeatsCanvas(options, dotnetHelper) {
+﻿async function InitializeSeatsCanvas(options, dotnetHelper) {
 
     const canvasId = options.canvasId;
     const seatsMap = options.seatsMap;
@@ -7,9 +7,12 @@
     const defaultColor = options.defaultColor;
 
     const canvas = document.getElementById(canvasId);
+
     const ctx = canvas.getContext("2d");
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    //await new Promise(r => setTimeout(r, 1000));
 
     const maxColumns = Math.max(...seatsMap);
     const maxWidthPixels = marginX * maxColumns;
@@ -46,12 +49,11 @@
             return;
         }
 
-        console.log("row: ", seat.row, "column: ", seat.column);
+        //console.log("row: ", seat.row, "column: ", seat.column);
         dotnetHelper.invokeMethodAsync("HandleSeatClickAsync", seat.row, seat.column);
     }
 
     canvas.addEventListener("click", HandleClick);
-
 }
 
 function DrawSeat(options, row, column, color) {
@@ -86,7 +88,6 @@ function DrawSeat(options, row, column, color) {
     ctx.textBaseline = "middle";
     ctx.textAlign = "center";
     ctx.fillText(column, posX, posY);
-
 }
 
 function CalculateRowOffset(options, row) {

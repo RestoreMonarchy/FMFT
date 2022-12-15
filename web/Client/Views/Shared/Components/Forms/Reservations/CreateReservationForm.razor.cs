@@ -1,4 +1,5 @@
 ﻿using FMFT.Extensions.Blazor.Bases.Buttons;
+using FMFT.Extensions.Blazor.Bases.Loadings;
 using FMFT.Web.Client.Models.API.Auditoriums;
 using FMFT.Web.Client.Models.API.Reservations.Requests;
 using FMFT.Web.Client.Models.API.Seats;
@@ -7,6 +8,7 @@ using FMFT.Web.Client.Models.Forms.Reservations;
 using FMFT.Web.Client.Views.Shared.Components.Panzooms;
 using Microsoft.AspNetCore.Components;
 using System.Net.Http.Headers;
+using System.Threading;
 
 namespace FMFT.Web.Client.Views.Shared.Components.Forms.Reservations
 {
@@ -23,10 +25,28 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Reservations
         };
 
         public SubmitButtonBase SubmitButton { get; set; }
+        public LoadingView SeatSelectorLoadingView { get; set; }
         public AuditoriumSeatPanzoom AuditoriumSeatPanzoom { get; set; }
 
         public Show Show => Shows.First(x => x.Id == Model.ShowId);
         public Auditorium Auditorium => Auditoriums.First(x => x.Id == Show.AuditoriumId);
+
+        protected override void OnAfterRender(bool firstRender)
+        {
+            if (firstRender)
+            {
+                SeatSelectorLoadingView.Hide();
+            }
+
+            if (semaphoreSlim != null)
+            {
+                semaphoreSlim.Release();
+                semaphoreSlim = null;
+                Console.WriteLine("release");
+            }
+        }
+
+        private SemaphoreSlim semaphoreSlim = new(0);
 
         private async Task HandleShowIdChangeAsync(ChangeEventArgs args)
         {
@@ -38,11 +58,25 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Reservations
 
             Model.ShowId = value;
             Model.Seats = new();
-            
-            if (AuditoriumSeatPanzoom != null)
+
+            if (value == null)
             {
-                await AuditoriumSeatPanzoom.ReloadAsync();
+                SeatSelectorLoadingView.Hide();
+            } else
+            {
+                SeatSelectorLoadingView.Show();
             }
+
+            SeatSelectorLoadingView.StartLoading();
+
+            Console.WriteLine("Start Loading");
+
+            semaphoreSlim = new SemaphoreSlim(0);
+            await semaphoreSlim.WaitAsync();
+
+            Console.WriteLine("Stop Loading");
+
+            SeatSelectorLoadingView.StopLoading();      
         }
 
         private async Task SubmitAsync()
