@@ -14,6 +14,9 @@ namespace FMFT.Web.Client.Models.API.Reservations
 
         public Show Show { get; set; }
         public UserInfo User { get; set; }
+        public ReservationDetails Details { get; set; }
         public List<ReservationSeat> Seats { get; set; }
+
+        public string Email() => User != null ? User.Email : Details?.Email ?? null;
     }
 }

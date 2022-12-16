@@ -9,7 +9,7 @@ namespace FMFT.Web.Server.Controllers.Users
     public partial class UsersController
     {
         [HttpPost("{userId}/reservations/create")]
-        public async ValueTask<IActionResult> CreateReservation(int userId, [FromBody] CreateReservationParams @params)
+        public async ValueTask<IActionResult> CreateReservation(int userId, [FromBody] CreateUserReservationParams @params)
         {
             @params.UserId = userId;
 
@@ -18,7 +18,7 @@ namespace FMFT.Web.Server.Controllers.Users
                 Reservation reservation = await reservationCoordinationService.CreateUserReservationAsync(@params);
 
                 return Ok(reservation);
-            } catch (CreateReservationValidationException exception)
+            } catch (CreateUserReservationValidationException exception)
             {
                 return BadRequest(exception);
             } catch (SeatAlreadyReservedReservationException exception)

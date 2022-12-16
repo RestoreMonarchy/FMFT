@@ -1,7 +1,10 @@
 ﻿using FMFT.Extensions.Blazor.Bases.Buttons;
 using FMFT.Extensions.Blazor.Bases.Dialogs;
 using FMFT.Extensions.Blazor.Bases.Loadings;
+using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Auditoriums;
+using FMFT.Web.Client.Models.API.Reservations;
+using FMFT.Web.Client.Models.API.Reservations.Requests;
 using FMFT.Web.Client.Models.API.Shows;
 using FMFT.Web.Client.Models.Forms.Reservations;
 using FMFT.Web.Client.Views.Shared.Components.Panzooms;
@@ -41,7 +44,6 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Reservations
             {
                 semaphoreSlim.Release();
                 semaphoreSlim = null;
-                Console.WriteLine("release");
             }
         }
 
@@ -68,25 +70,38 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Reservations
 
             SeatSelectorLoadingView.StartLoading();
 
-            Console.WriteLine("Start Loading");
-
             semaphoreSlim = new SemaphoreSlim(0);
             await semaphoreSlim.WaitAsync();
-
-            Console.WriteLine("Stop Loading");
 
             SeatSelectorLoadingView.StopLoading();      
         }
 
         private async Task HandleSubmitAsync()
         {
-            Console.WriteLine("hello");
             StateHasChanged();
             await SubmitModalDialog.ShowAsync();
         }
 
         private async Task HandleConfirmSubmitAsync()
         {
+            SubmitConfirmButton.StartSpinning();
+
+            CreateReservationRequest request = new()
+            {
+                ShowId = Model.ShowId.Value,
+                UserId = Model.UserId,
+                SeatIds = Model.Seats.Select(x => x.Id).ToList(),
+                Email = Model.Email,
+                FirstName = Model.FirstName,
+                LastName = Model.LastName
+            };
+
+            APIResponse<Reservation> response = await APIBroker.CreateReservationAsync(request);
+
+            if (response.IsSuccessful)
+            {
+                NavigationBroker.NavigateTo($"/admin/reservations/{response.Object.Id}");
+            }
 
         }
     }

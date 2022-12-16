@@ -20,9 +20,15 @@ namespace FMFT.Web.Client.Brokers.APIs
             return await GetAsync<List<Reservation>>(ReservationsRelativeUrl);
         }
 
-        public async ValueTask<APIResponse<Reservation>> CreateReservationAsync(CreateReservationRequest request)
+        public async ValueTask<APIResponse<Reservation>> CreateUserReservationAsync(CreateUserReservationRequest request)
         {
             string url = $"api/users/{request.UserId}/reservations/create";
+            return await PostAsync<Reservation>(url, request);
+        }
+
+        public async ValueTask<APIResponse<Reservation>> CreateReservationAsync(CreateReservationRequest request)
+        {
+            string url = $"api/reservations/create";
             return await PostAsync<Reservation>(url, request);
         }
 

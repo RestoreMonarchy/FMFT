@@ -65,7 +65,7 @@
 
 <ModalDialog @ref="SubmitModalDialog" AlignCenter="true">
     <Title>
-        Dodaj rezerwację
+        Stwórz rezerwację
     </Title>
     <Body>
         <Condition Evaluation="Model.ShowId.HasValue">
@@ -86,7 +86,7 @@
                         <span class="fw-bold">Adres email: </span>
                         <Condition Evaluation="string.IsNullOrEmpty(Model.Email)">
                             <Match>
-                                <span class="text-muted">Nie podano</span>
+                                <span class="text-muted">nie podano</span>
                             </Match>
                             <NotMatch>
                                 <span>@Model.Email</span>
@@ -97,7 +97,7 @@
                         <span class="fw-bold">Imię: </span>
                         <Condition Evaluation="string.IsNullOrEmpty(Model.FirstName)">
                             <Match>
-                                <span class="text-muted">Nie podano</span>
+                                <span class="text-muted">nie podano</span>
                             </Match>
                             <NotMatch>
                                 <span>@Model.FirstName</span>
@@ -108,7 +108,7 @@
                         <span class="fw-bold">Nazwisko: </span>
                         <Condition Evaluation="string.IsNullOrEmpty(Model.LastName)">
                             <Match>
-                                <span class="text-muted">Nie podano</span>
+                                <span class="text-muted">nie podano</span>
                             </Match>
                             <NotMatch>
                                 <span>@Model.LastName</span>

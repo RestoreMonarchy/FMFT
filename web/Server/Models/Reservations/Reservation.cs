@@ -23,5 +23,7 @@ namespace FMFT.Web.Server.Models.Reservations
 
         [JsonIgnore]
         public Guid SecretCode { get; set; }
+
+        public int UserId() => User?.Id ?? 0;
     }
 }

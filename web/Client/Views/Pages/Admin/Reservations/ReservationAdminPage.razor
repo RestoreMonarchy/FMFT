@@ -89,41 +89,107 @@
                             </div>
 
                             <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-header">
-                                        Użytkownik
-                                    </div>
-                                    <div class="list-group list-group-flush">
-                                        <div class="list-group-item">
-                                            <span class="fw-bold">
-                                                Imię:
-                                            </span>
-                                            <span>
-                                                @Reservation.User.FirstName
-                                            </span>
+                                <Condition Evaluation="Reservation.User != null">
+                                    <Match>
+                                        <div class="card mb-2">
+                                            <div class="card-header">
+                                                Użytkownik
+                                            </div>
+                                            <div class="list-group list-group-flush">
+                                                <div class="list-group-item">
+                                                    <span class="fw-bold">
+                                                        Imię:
+                                                    </span>
+                                                    <span>
+                                                        @Reservation.User.FirstName
+                                                    </span>
+                                                </div>
+                                                <div class="list-group-item">
+                                                    <span class="fw-bold">
+                                                        Nazwisko:
+                                                    </span>
+                                                    <span>
+                                                        @Reservation.User.LastName
+                                                    </span>
+                                                </div>
+                                                <div class="list-group-item">
+                                                    <span class="fw-bold">
+                                                        Email:
+                                                    </span>
+                                                    <span>
+                                                        @Reservation.User.Email
+                                                    </span>
+                                                </div>
+                                                <a class="list-group-item list-group-item-action" href="/admin/users/@Reservation.User.Id">
+                                                    <i class="fa-solid fa-arrow-right-long me-1"></i>
+                                                    Przejdź do użytkownika
+                                                </a>
+                                            </div>
                                         </div>
-                                        <div class="list-group-item">
-                                            <span class="fw-bold">
-                                                Nazwisko:
-                                            </span>
-                                            <span>
-                                                @Reservation.User.LastName
-                                            </span>
+                                    </Match>
+                                </Condition>
+                                <Condition Evaluation="Reservation.Details != null">
+                                    <Match>
+                                        <div class="card mb-2">
+                                            <div class="card-header">
+                                                Osoba
+                                            </div>
+                                            <div class="list-group list-group-flush">
+                                                <div class="list-group-item">
+                                                    <span class="fw-bold">
+                                                        Imię:
+                                                    </span>
+                                                    <Condition Evaluation="string.IsNullOrEmpty(Reservation.Details.FirstName)">
+                                                        <Match>
+                                                            <span class="text-muted">
+                                                                nie podano
+                                                            </span>                                                            
+                                                        </Match>
+                                                        <NotMatch>
+                                                            <span>
+                                                                @Reservation.Details.FirstName
+                                                            </span>
+                                                        </NotMatch>
+                                                    </Condition>
+                                                </div>
+                                                <div class="list-group-item">
+                                                    <span class="fw-bold">
+                                                        Nazwisko:
+                                                    </span>
+                                                    <Condition Evaluation="string.IsNullOrEmpty(Reservation.Details.LastName)">
+                                                        <Match>
+                                                            <span class="text-muted">
+                                                                nie podano
+                                                            </span>                                                            
+                                                        </Match>
+                                                        <NotMatch>
+                                                            <span>
+                                                                @Reservation.Details.LastName
+                                                            </span>
+                                                        </NotMatch>
+                                                    </Condition>
+                                                </div>
+                                                <div class="list-group-item">
+                                                    <span class="fw-bold">
+                                                        Email:
+                                                    </span>
+                                                    <Condition Evaluation="string.IsNullOrEmpty(Reservation.Details.Email)">
+                                                        <Match>
+                                                            <span class="text-muted">
+                                                                nie podano
+                                                            </span>                                                            
+                                                        </Match>
+                                                        <NotMatch>
+                                                            <span>
+                                                                @Reservation.Details.Email
+                                                            </span>
+                                                        </NotMatch>
+                                                    </Condition>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="list-group-item">
-                                            <span class="fw-bold">
-                                                Email:
-                                            </span>
-                                            <span>
-                                                @Reservation.User.Email
-                                            </span>
-                                        </div>
-                                        <a class="list-group-item list-group-item-action" href="/admin/users/@Reservation.User.Id">
-                                            <i class="fa-solid fa-arrow-right-long me-1"></i>
-                                            Przejdź do użytkownika
-                                        </a>
-                                    </div>
-                                </div>
+                                    </Match>
+                                </Condition>
                             </div>
 
                         </div>

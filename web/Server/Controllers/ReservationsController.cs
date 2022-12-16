@@ -163,7 +163,7 @@ namespace FMFT.Web.Server.Controllers
 
                 return Ok(reservation);
             }
-            catch (CreateReservationValidationException exception)
+            catch (CreateUserReservationValidationException exception)
             {
                 return BadRequest(exception);
             }

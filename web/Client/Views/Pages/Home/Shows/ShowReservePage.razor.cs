@@ -103,14 +103,14 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
             BackButton.Disable();
             ConfirmButton.StartSpinning();
 
-            CreateReservationRequest request = new()
+            CreateUserReservationRequest request = new()
             {
                 ShowId = ShowId,
                 UserId = UserAccountState.UserAccount.UserId,
                 SeatIds = SelectedSeats.Select(x => x.Id).ToList()
             };
 
-            ReservationResponse = await APIBroker.CreateReservationAsync(request);
+            ReservationResponse = await APIBroker.CreateUserReservationAsync(request);
 
             Stepper.StepUp();
             Stepper.LockPast();

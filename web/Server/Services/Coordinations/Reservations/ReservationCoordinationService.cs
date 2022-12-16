@@ -28,7 +28,7 @@ namespace FMFT.Web.Server.Services.Coordinations.Reservations
         {
             Reservation reservation = await reservationService.RetrieveReservationByIdAsync(reservationId);
 
-            await userAccountService.AuthorizeUserAccountByUserIdOrRolesAsync(reservation.User.Id, UserRole.Admin);
+            await userAccountService.AuthorizeUserAccountByUserIdOrRolesAsync(reservation.UserId(), UserRole.Admin);
 
             return await reservationService.GenerateGuidQRCodeImageAsync(reservation.SecretCode);
         }
@@ -37,7 +37,7 @@ namespace FMFT.Web.Server.Services.Coordinations.Reservations
         {
             Reservation reservation = await reservationService.RetrieveReservationByIdAsync(reservationId);
 
-            await userAccountService.AuthorizeUserAccountByUserIdOrRolesAsync(reservation.User.Id, UserRole.Admin);
+            await userAccountService.AuthorizeUserAccountByUserIdOrRolesAsync(reservation.UserId(), UserRole.Admin);
 
             ReservationSeat reservationSeat = reservation.Seats.FirstOrDefault(x => x.Id == reservationSeatId);
 
@@ -53,7 +53,7 @@ namespace FMFT.Web.Server.Services.Coordinations.Reservations
         {
             Reservation reservation = await reservationService.RetrieveReservationByIdAsync(reservationId);
 
-            await userAccountService.AuthorizeUserAccountByUserIdOrRolesAsync(reservation.User.Id, UserRole.Admin);
+            await userAccountService.AuthorizeUserAccountByUserIdOrRolesAsync(reservation.UserId(), UserRole.Admin);
 
             ReservationSeat reservationSeat = reservation.Seats.FirstOrDefault(x => x.Id == reservationSeatId);
 
@@ -75,11 +75,11 @@ namespace FMFT.Web.Server.Services.Coordinations.Reservations
             return await reservationService.GenerateReservationTicketAsync(@params);
         }
 
-        public async ValueTask<Reservation> CreateUserReservationAsync(CreateReservationParams @params)
+        public async ValueTask<Reservation> CreateUserReservationAsync(CreateUserReservationParams @params)
         {
             await userAccountService.AuthorizeAccountByUserIdAsync(@params.UserId);
 
-            return await reservationService.CreateReservationAsync(@params);
+            return await reservationService.CreateUserReservationAsync(@params);
         }
 
         public async ValueTask<Reservation> CreateReservationAsync(CreateReservationParams @params)
@@ -100,7 +100,7 @@ namespace FMFT.Web.Server.Services.Coordinations.Reservations
         {
             Reservation reservation = await RetrieveReservationByIdAsync(reservationId);
 
-            await userAccountService.AuthorizeUserAccountByUserIdOrRolesAsync(reservation.User.Id, UserRole.Admin);
+            await userAccountService.AuthorizeUserAccountByUserIdOrRolesAsync(reservation.UserId(), UserRole.Admin);
 
             return await reservationService.CancelReservationAsync(reservationId);
         }
@@ -125,7 +125,7 @@ namespace FMFT.Web.Server.Services.Coordinations.Reservations
         {
             Reservation reservation = await reservationService.RetrieveReservationByIdAsync(reservationId);
 
-            await userAccountService.AuthorizeUserAccountByUserIdOrRolesAsync(reservation.User.Id, UserRole.Admin);
+            await userAccountService.AuthorizeUserAccountByUserIdOrRolesAsync(reservation.UserId(), UserRole.Admin);
 
             return reservation;
         }

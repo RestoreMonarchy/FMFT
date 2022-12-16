@@ -48,17 +48,6 @@ namespace FMFT.Web.Server.Services.Foundations.Reservations
 
         public async ValueTask<Reservation> CreateReservationAsync(CreateReservationParams @params)
         {
-            CreateReservationValidationException validationException = new();
-
-            const int maximumSeats = 3;
-
-            if (@params.SeatIds.Count > maximumSeats)
-            {
-                validationException.UpsertDataList("SeatIds", $"The maximum amount of seats that can be in a reservation is {maximumSeats}");
-            }
-
-            validationException.ThrowIfContainsErrors();
-
             CreateReservationDTO dto = new()
             {
                 ShowId = @params.ShowId,

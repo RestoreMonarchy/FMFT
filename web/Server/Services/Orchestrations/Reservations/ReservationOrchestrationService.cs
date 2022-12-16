@@ -3,6 +3,7 @@ using FMFT.Web.Server.Brokers.QRCodes;
 using FMFT.Web.Server.Models.QRCodes;
 using FMFT.Web.Server.Models.QRCodes.Params;
 using FMFT.Web.Server.Models.Reservations;
+using FMFT.Web.Server.Models.Reservations.Exceptions;
 using FMFT.Web.Server.Models.Reservations.Params;
 using FMFT.Web.Server.Models.Reservations.Requests;
 using FMFT.Web.Server.Models.Reservations.Results;
@@ -39,6 +40,29 @@ namespace FMFT.Web.Server.Services.Orchestrations.Reservations
         public async ValueTask<QRCodeImage> GenerateReservationTicketAsync(GenerateReservationTicketParams @params)
         {
             return await qrCodeService.GenerateReservationTicketAsync(@params);
+        }
+
+        public async ValueTask<Reservation> CreateUserReservationAsync(CreateUserReservationParams @params)
+        {
+            CreateUserReservationValidationException validationException = new();
+
+            const int maximumSeats = 3;
+
+            if (@params.SeatIds.Count > maximumSeats)
+            {
+                validationException.UpsertDataList("SeatIds", $"The maximum amount of seats that can be in a reservation is {maximumSeats}");
+            }
+
+            validationException.ThrowIfContainsErrors();
+
+            CreateReservationParams @params2 = new()
+            {
+                ShowId = @params.ShowId,
+                UserId = @params.UserId,
+                SeatIds  = @params.SeatIds
+            };
+
+            return await reservationService.CreateReservationAsync(@params2);
         }
 
         public async ValueTask<Reservation> CreateReservationAsync(CreateReservationParams @params)
