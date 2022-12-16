@@ -1,14 +1,11 @@
 ﻿using FMFT.Extensions.Blazor.Bases.Buttons;
+using FMFT.Extensions.Blazor.Bases.Dialogs;
 using FMFT.Extensions.Blazor.Bases.Loadings;
 using FMFT.Web.Client.Models.API.Auditoriums;
-using FMFT.Web.Client.Models.API.Reservations.Requests;
-using FMFT.Web.Client.Models.API.Seats;
 using FMFT.Web.Client.Models.API.Shows;
 using FMFT.Web.Client.Models.Forms.Reservations;
 using FMFT.Web.Client.Views.Shared.Components.Panzooms;
 using Microsoft.AspNetCore.Components;
-using System.Net.Http.Headers;
-using System.Threading;
 
 namespace FMFT.Web.Client.Views.Shared.Components.Forms.Reservations
 {
@@ -27,6 +24,8 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Reservations
         public SubmitButtonBase SubmitButton { get; set; }
         public LoadingView SeatSelectorLoadingView { get; set; }
         public AuditoriumSeatPanzoom AuditoriumSeatPanzoom { get; set; }
+        public ModalDialog SubmitModalDialog { get; set; }
+        public ButtonBase SubmitConfirmButton { get; set; }
 
         public Show Show => Shows.First(x => x.Id == Model.ShowId);
         public Auditorium Auditorium => Auditoriums.First(x => x.Id == Show.AuditoriumId);
@@ -79,9 +78,16 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Reservations
             SeatSelectorLoadingView.StopLoading();      
         }
 
-        private async Task SubmitAsync()
+        private async Task HandleSubmitAsync()
         {
             Console.WriteLine("hello");
+            StateHasChanged();
+            await SubmitModalDialog.ShowAsync();
+        }
+
+        private async Task HandleConfirmSubmitAsync()
+        {
+
         }
     }
 }
