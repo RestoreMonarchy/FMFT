@@ -2,7 +2,19 @@
 
 
 <div class="panzoom-parent">
-    <Panzoom @ref="Panzoom" WheelMode="WheelMode.ZoomWithWheel" PanzoomOptions="PanzoomOptions">
+    <div class="panzoom-toolbar">
+        <button class="panzoom-button" type="button" @onclick="HandleZoomInAsync">
+            <i class="fa-solid fa-magnifying-glass-plus"></i>
+        </button>
+        <button class="panzoom-button" type="button" @onclick="HandleZoomOutAsync">
+            <i class="fa-solid fa-magnifying-glass-minus"></i>
+        </button>
+        <button class="panzoom-button" type="button" @onclick="HandleResetAsync">
+            <i class="fa-solid fa-rotate-left"></i>
+        </button>
+    </div>
+
+    <Panzoom @ref="Panzoom" WheelMode="WheelMode.Custom" OnWheel="HandleOnWheelAsync" PanzoomOptions="PanzoomOptions">
         <div @ref="@context.ElementReference" class="panzoom">
             <canvas id="myCanvas"></canvas>
         </div>        

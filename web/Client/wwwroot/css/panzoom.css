@@ -20,3 +20,23 @@
         display: block;
         margin: 0 auto;
     }
+
+.panzoom-toolbar {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    z-index: 1;
+}
+
+.panzoom-button {
+    padding: 6px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    color: black;
+    background-color: white;
+    border: none;
+    font-size: 18px;
+    font-weight: 900;
+    border: 1px solid black;
+}

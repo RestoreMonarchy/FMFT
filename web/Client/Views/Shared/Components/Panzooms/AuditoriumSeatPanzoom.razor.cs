@@ -145,5 +145,29 @@ namespace FMFT.Web.Client.Views.Shared.Components.Panzooms
         {
             await JSRuntimeBroker.DrawSeatAsync(SeatsCanvasOptions, row, column, color);
         }
+
+        private async Task HandleZoomInAsync()
+        {
+            await Panzoom.ZoomInAsync();
+        }
+
+        private async Task HandleZoomOutAsync()
+        {
+            await Panzoom.ZoomOutAsync();
+        }
+
+        private async Task HandleResetAsync()
+        {
+            await Panzoom.ResetAsync();
+        }
+
+        private async Task HandleOnWheelAsync(CustomWheelEventArgs args)
+        {
+            if (!args.ShiftKey)
+            {
+                return;
+            }
+            await Panzoom.ZoomWithWheelAsync(args);
+        }
     }
 }
