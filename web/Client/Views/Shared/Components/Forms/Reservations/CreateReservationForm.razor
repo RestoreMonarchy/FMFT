@@ -129,7 +129,26 @@
                     </ul>
                 </div>
             </Match>
-        </Condition>        
+        </Condition>
+
+        <AlertGroupBase @ref="AlertGroup">
+            <AlertBase @ref="SeatAlertReservedAlert" Class="alert-danger">
+                Jedno lub kilka z wybranych miejsc jest już zajęta
+            </AlertBase>
+            <AlertBase @ref="SeatsNotProvidedAlert" Class="alert-danger">
+                Nie wybrano żadnego miejsca dla tej rezerwacji
+            </AlertBase>
+            <AlertBase @ref="UserAlreadyReservedAlert" Class="alert-danger">
+                Ten użytkownik posiada już rezerwację na to wydarzenie
+            </AlertBase>
+            <AlertBase @ref="ValidationErrorAlert" Class="alert-danger">
+                Problem z walidacją
+            </AlertBase>
+            <AlertBase @ref="SuccessAlert" Class="alert-success">
+                Dodawanie rejestracji przebiegło pomyślnie!
+            </AlertBase>
+        </AlertGroupBase>
+
     </Body>
     <Footer>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">

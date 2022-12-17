@@ -1,4 +1,5 @@
-﻿using FMFT.Extensions.Blazor.Bases.Buttons;
+﻿using FMFT.Extensions.Blazor.Bases.Alerts;
+using FMFT.Extensions.Blazor.Bases.Buttons;
 using FMFT.Extensions.Blazor.Bases.Dialogs;
 using FMFT.Extensions.Blazor.Bases.Loadings;
 using FMFT.Web.Client.Models.API;
@@ -29,6 +30,13 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Reservations
         public AuditoriumSeatPanzoom AuditoriumSeatPanzoom { get; set; }
         public ModalDialog SubmitModalDialog { get; set; }
         public ButtonBase SubmitConfirmButton { get; set; }
+
+        public AlertGroupBase AlertGroup { get; set; }
+        public AlertBase SeatAlertReservedAlert { get; set; }
+        public AlertBase UserAlreadyReservedAlert { get; set; }
+        public AlertBase SeatsNotProvidedAlert { get; set; }
+        public AlertBase ValidationErrorAlert { get; set; }
+        public AlertBase SuccessAlert { get; set; }
 
         public Show Show => Shows.First(x => x.Id == Model.ShowId);
         public Auditorium Auditorium => Auditoriums.First(x => x.Id == Show.AuditoriumId);
@@ -80,10 +88,12 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Reservations
         {
             StateHasChanged();
             await SubmitModalDialog.ShowAsync();
+            AlertGroup.HideAll();
         }
 
         private async Task HandleConfirmSubmitAsync()
         {
+            AlertGroup.HideAll();
             SubmitConfirmButton.StartSpinning();
 
             CreateReservationRequest request = new()
@@ -101,8 +111,28 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Reservations
             if (response.IsSuccessful)
             {
                 NavigationBroker.NavigateTo($"/admin/reservations/{response.Object.Id}");
+                SuccessAlert.Show();
+                return;
+            } else
+            {
+                switch (response.Error.Code)
+                {
+                    case "ERR035":
+                        ValidationErrorAlert.Show();
+                        break;
+                    case "ERR018":
+                        SeatAlertReservedAlert.Show();
+                        break;
+                    case "ERR033":
+                        SeatsNotProvidedAlert.Show();
+                        break;
+                    case "ERR019":
+                        UserAlreadyReservedAlert.Show();
+                        break;
+                }
             }
 
+            SubmitConfirmButton.StopSpinning();
         }
     }
 }
