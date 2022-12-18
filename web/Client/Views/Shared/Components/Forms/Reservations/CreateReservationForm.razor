@@ -7,9 +7,9 @@
     
     <div class="card-body">
 
-        <div class="mb-2">
-            <p class="text-muted">
-                Dane osoby
+        <div class="mb-3">
+            <p class="fs-5">
+                1. Dane osoby
             </p>
             <div class="mb-2">
                 <label class="form-label">Adres email</label>
@@ -25,9 +25,12 @@
             </div>
         </div>
 
-        <div class="mb-2">
+        <div class="mb-3">
+            <p class="fs-5">
+                2. Wybór miejsca
+            </p>
             <span class="form-label">Wydarzenie</span>
-            <select @onchange="HandleShowIdChangeAsync" class="form-select">
+            <select @onchange="HandleShowIdChangeAsync" class="form-select mt-2">
                 <option selected>Wybierz wydarzenie</option>
                 <Iterations Items="Shows.OrderBy(x => x.IsPast()).ThenBy(x => x.StartDateTime)" Context="show">
                     <option value="@show.Id" disabled="@show.IsPast()">
@@ -55,7 +58,7 @@
             <div>
                 <SubmitButtonBase @ref="SubmitButton" Class="btn btn-sm btn-primary">
                     <i class="fa-solid fa-plus me-1"></i>
-                    Dodaj rezerwację
+                    Utwórz rezerwację
                 </SubmitButtonBase>
             </div>
         </div>
@@ -65,13 +68,13 @@
 
 <ModalDialog @ref="SubmitModalDialog" AlignCenter="true">
     <Title>
-        Stwórz rezerwację
+        Utwórz rezerwację
     </Title>
     <Body>
         <Condition Evaluation="Model.ShowId.HasValue">
             <Match>
                 <div class="mb-3">
-                    Czy napewno chcesz stworzyć rezerwację?
+                    Czy napewno chcesz utworzyć rezerwację?
                 </div>
                 <div class="dropdown-divider"></div>
                 <div>
