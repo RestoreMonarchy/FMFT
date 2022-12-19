@@ -1,5 +1,7 @@
-﻿using FMFT.Web.Server.Brokers.Loggings;
+﻿using FluentAssertions;
+using FMFT.Web.Server.Brokers.Loggings;
 using FMFT.Web.Server.Brokers.QRCodes;
+using FMFT.Web.Server.Models.Emails;
 using FMFT.Web.Server.Models.Emails.Params;
 using FMFT.Web.Server.Models.QRCodes;
 using FMFT.Web.Server.Models.QRCodes.Params;
@@ -12,6 +14,8 @@ using FMFT.Web.Server.Services.Foundations.Accounts;
 using FMFT.Web.Server.Services.Foundations.Emails;
 using FMFT.Web.Server.Services.Foundations.QRCodes;
 using FMFT.Web.Server.Services.Foundations.Reservations;
+using MimeTypes;
+using System.Net.Mail;
 
 namespace FMFT.Web.Server.Services.Orchestrations.Reservations
 {
@@ -36,8 +40,18 @@ namespace FMFT.Web.Server.Services.Orchestrations.Reservations
             return await qrCodeService.GenerateGuidQRCodeImageAsync(guid);
         }
 
-        public async ValueTask<QRCodeImage> GenerateReservationTicketAsync(GenerateReservationTicketParams @params)
+        public async ValueTask<QRCodeImage> GenerateReservationTicketAsync(ReservationSeat reservationSeat, Reservation reservation)
         {
+            GenerateReservationTicketParams @params = new()
+            {
+                SecretCode = reservationSeat.SecretCode,
+                ShowName = reservation.Show.Name,
+                Date = reservation.Show.StartDateTime,
+                ReservationId = reservation.Id,
+                Number = reservationSeat.Seat.Number,
+                Row = reservationSeat.Seat.Row
+            };
+
             return await qrCodeService.GenerateReservationTicketAsync(@params);
         }
 
@@ -68,17 +82,32 @@ namespace FMFT.Web.Server.Services.Orchestrations.Reservations
         public async ValueTask<Reservation> CreateReservationAsync(CreateReservationParams @params)
         {
             Reservation reservation = await reservationService.CreateReservationAsync(@params);
-
-            
+                        
             string emailAddress = reservation.User?.Email ?? reservation.Details?.Email ?? null;
 
             if (!string.IsNullOrEmpty(emailAddress))
             {
-                ReservationSummaryEmailParams @params2 = MapReservationToReservationSummaryEmailParams(reservation);
-                await emailService.SendReservationSummaryEmailAsync(emailAddress, @params2);
+                await SendReservationSummaryEmailAsync(emailAddress, reservation);
             }
 
             return reservation;
+        }
+
+        private async ValueTask SendReservationSummaryEmailAsync(string emailAddress, Reservation reservation)
+        {
+            ReservationSummaryEmailParams @params = MapReservationToReservationSummaryEmailParams(reservation);
+            foreach (ReservationSeat reservationSeat in reservation.Seats)
+            {
+                QRCodeImage qrCodeImage = await GenerateReservationTicketAsync(reservationSeat, reservation);
+                @params.Attachments.Add(new EmailAttachment()
+                {
+                    Name = $"{reservation.Id}-r{reservationSeat.Seat.Row}-m{reservationSeat.Seat.Number}.{MimeTypeMap.GetExtension(qrCodeImage.ContentType)}",
+                    ContentType = qrCodeImage.ContentType,
+                    Content = qrCodeImage.Data
+                });
+            }
+
+            await emailService.SendReservationSummaryEmailAsync(emailAddress, @params);
         }
 
         // TODO: To be remade anyways

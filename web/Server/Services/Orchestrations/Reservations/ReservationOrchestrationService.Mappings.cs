@@ -12,7 +12,8 @@ namespace FMFT.Web.Server.Services.Orchestrations.Reservations
                 FirstName = reservation.User?.FirstName ?? reservation.Details?.FirstName ?? null,
                 ShowName = reservation.Show.Name,
                 ReservationId = reservation.Id,
-                ReservationSeats = new()
+                ReservationSeats = new(),
+                Attachments = new()
             };
 
             foreach (ReservationSeat reservationSeat in reservation.Seats)

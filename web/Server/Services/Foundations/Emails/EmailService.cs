@@ -7,7 +7,7 @@ using FMFT.Web.Server.Models.Emails.Params;
 
 namespace FMFT.Web.Server.Services.Foundations.Emails
 {
-    public class EmailService : IEmailService
+    public partial class EmailService : IEmailService
     {
         private readonly IEmailBroker emailBroker;
         private readonly IUrlBroker urlBroker;
@@ -107,7 +107,8 @@ namespace FMFT.Web.Server.Services.Foundations.Emails
             {
                 Subject = "Potwierdzenie rezerwacji",
                 EmailAddress = emailAddress,
-                Model = model
+                Model = model,
+                Attachments = MapEmailAttachmentsToHtmlEmailMessageAttachments(@params.Attachments)
             };
 
             loggingBroker.LogInformation("Sending ReservationSummaryEmail message...");

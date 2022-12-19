@@ -31,6 +31,21 @@ namespace FMFT.Extensions.EmailClients
             mailMessage.Body = emailMessage.Html;
             mailMessage.IsBodyHtml = true;
 
+            if (emailMessage.Attachments != null)
+            {
+                foreach (HtmlEmailMessageAttachment emailMessageAttachment in emailMessage.Attachments)
+                {
+                    MemoryStream contentStream = new(emailMessageAttachment.Content);
+                    contentStream.Seek(0, SeekOrigin.Begin);
+
+                    Attachment attachment = new(contentStream,
+                        emailMessageAttachment.Name,
+                        emailMessageAttachment.ContentType);
+
+                    mailMessage.Attachments.Add(attachment);
+                }
+            }
+
             await client.SendMailAsync(mailMessage);
         }
     }

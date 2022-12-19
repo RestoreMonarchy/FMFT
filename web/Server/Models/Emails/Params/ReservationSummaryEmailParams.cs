@@ -1,4 +1,6 @@
-﻿namespace FMFT.Web.Server.Models.Emails.Params
+﻿using Microsoft.AspNetCore.Mvc.ApplicationModels;
+
+namespace FMFT.Web.Server.Models.Emails.Params
 {
     public class ReservationSummaryEmailParams
     {
@@ -6,6 +8,8 @@
         public string ShowName { get; set; }
         public string ReservationId { get; set; }
         public List<ReservationSeat> ReservationSeats { get; set; }
+
+        public List<EmailAttachment> Attachments { get; set; }
 
         public class ReservationSeat
         {

@@ -62,17 +62,7 @@ namespace FMFT.Web.Server.Services.Coordinations.Reservations
                 throw new NotFoundSeatReservationException();
             }
 
-            GenerateReservationTicketParams @params = new()
-            {
-                SecretCode = reservationSeat.SecretCode,
-                ShowName = reservation.Show.Name,
-                Date = reservation.Show.StartDateTime,
-                ReservationId = reservation.Id,
-                Number = reservationSeat.Seat.Number,
-                Row = reservationSeat.Seat.Row
-            };
-
-            return await reservationService.GenerateReservationTicketAsync(@params);
+            return await reservationService.GenerateReservationTicketAsync(reservationSeat, reservation);
         }
 
         public async ValueTask<Reservation> CreateUserReservationAsync(CreateUserReservationParams @params)

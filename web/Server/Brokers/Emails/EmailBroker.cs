@@ -81,7 +81,8 @@ namespace FMFT.Web.Server.Brokers.Emails
             HtmlEmailMessage message = new()
             {
                 Subject = email.Subject,
-                EmailAddress = email.EmailAddress
+                EmailAddress = email.EmailAddress,
+                Attachments = email.Attachments
             };
 
             message.Html = await emailGenerator.GenerateReservationSummaryEmailHtmlAsync(email.Model);
