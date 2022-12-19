@@ -52,7 +52,7 @@
                                     <th scope="col">
                                         Wydarzenie
                                     </th>
-                                    <th scope="col" class="d-none d-md-table-cell">
+                                    <th scope="col" class="d-none d-lg-table-cell">
                                         Miejsca
                                      </th>
                                     <th scope="col"class="d-none d-sm-table-cell">
@@ -79,11 +79,16 @@
                                                     @reservation.Email()
                                                 </NotMatch>
                                             </Condition>
+                                            <Condition Evaluation="reservation.User != null">
+                                                <Match>
+                                                    <i class="fas fa-user text-muted" style="font-size: 10px;"></i>
+                                                </Match>
+                                            </Condition>
                                         </td>
                                         <td>
                                             @reservation.Show.Name
                                         </td>
-                                        <td class="d-none d-md-table-cell">
+                                        <td class="d-none d-lg-table-cell">
                                             @reservation.Seats.Count
                                         </td>
                                         <td class="d-none d-sm-table-cell">
