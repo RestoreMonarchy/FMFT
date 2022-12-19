@@ -4,6 +4,7 @@ using FMFT.Extensions.Blazor.Bases.Dialogs;
 using FMFT.Extensions.Blazor.Bases.Inputs;
 using FMFT.Extensions.Blazor.Bases.Loadings;
 using FMFT.Web.Client.Models.API;
+using FMFT.Web.Client.Models.API.Reservations;
 using FMFT.Web.Client.Models.API.Users;
 using FMFT.Web.Client.Models.API.Users.Requests;
 using FMFT.Web.Shared.Enums;
@@ -20,12 +21,15 @@ namespace FMFT.Web.Client.Views.Pages.Admin.Users
 
         public LoadingView LoadingView { get; set; }
         public LoadingView UserLoginsLoadingView { get; set; }
+        public LoadingView ReservationsLoadingView { get; set; }
 
         public APIResponse<User> UserResponse { get; set; }
         public APIResponse<List<UserLogin>> UserLoginsResponse { get; set; }
+        public APIResponse<List<Reservation>> ReservationsResponse { get; set; }
 
         public User User => UserResponse.Object;
         public List<UserLogin> UserLogins => UserLoginsResponse.Object;
+        public List<Reservation> Reservations => ReservationsResponse.Object;
 
         protected override async Task OnParametersSetAsync()
         {
@@ -49,6 +53,9 @@ namespace FMFT.Web.Client.Views.Pages.Admin.Users
                 UserLoginsResponse = await APIBroker.GetUserLoginsByUserIdAsync(UserId);
                 UserLoginsLoadingView.StopLoading();
             }
+
+            ReservationsResponse = await APIBroker.GetUserReservationsAsync(UserId);
+            ReservationsLoadingView.StopLoading();
         }
 
         public ModalDialog ChangeRoleModalDialog { get; set; }
@@ -102,6 +109,17 @@ namespace FMFT.Web.Client.Views.Pages.Admin.Users
             }
 
             ChangeRoleSelect.Enable();
+        }
+
+        private string GetReservationClass(Reservation reservation)
+        {
+            if (reservation.IsCanceled)
+            {
+                return "text-muted";
+            } else
+            {
+                return string.Empty;
+            }
         }
     }
 }

@@ -152,6 +152,50 @@
                                         </button>
                                     </div>
                                </div>
+
+                               <LoadingView @ref="ReservationsLoadingView">
+
+                                   <div class="card mb-3">
+                                       <div class="card-header">
+                                           Rezerwacje użytkownika
+                                       </div>
+                                        <Condition Evaluation="ReservationsResponse.IsSuccessful">
+                                            <Match>
+
+                                                <div class="list-group list-group-flush">
+                                                    <Condition Evaluation="Reservations.Any()">
+                                                        <Match>
+                                                            <Iterations Items="Reservations.OrderByDescending(x => x.CreateDate)" Context="reservation">
+                                                                <a class="list-group-item list-group-item-action d-flex align-items-center @GetReservationClass(reservation)"
+                                                                   href="/admin/reservations/@reservation.Id">
+                                                                    <div>
+                                                                        @reservation.Id
+                                                                    </div>
+                                                                    <div class="ms-auto small">
+                                                                        @reservation.Show.Name
+                                                                    </div>
+                                                                </a>
+                                                            </Iterations>
+                                                        </Match>
+                                                        <NotMatch>
+                                                            <div class="list-group-item">
+                                                                Użytkownik nie posiada żadnych rezerwacji
+                                                            </div>
+                                                        </NotMatch>
+                                                    </Condition>
+                                                </div>                                               
+                                                
+                                            </Match>
+                                            <NotMatch>
+                                                <ErrorResponseAlert />
+                                            </NotMatch>
+                                        </Condition>
+                                        
+                                   </div>
+
+                                   
+                               </LoadingView>
+
                            </div>
                        </div>
 
