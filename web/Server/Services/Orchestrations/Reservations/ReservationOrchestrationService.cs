@@ -150,6 +150,13 @@ namespace FMFT.Web.Server.Services.Orchestrations.Reservations
             return reservations;
         }
 
+        public async ValueTask<IEnumerable<Reservation>> RetrieveReservationsByUserAndShowIdAsync(int userId, int showId)
+        {
+            IEnumerable<Reservation> reservations = await reservationService.RetrieveReservationsByUserAndShowIdAsync(userId, showId);
+
+            return reservations;
+        }
+
         public async ValueTask<IEnumerable<Reservation>> RetrieveAllReservationsAsync()
         {
             IEnumerable<Reservation> reservations = await reservationService.RetrieveAllReservationsAsync();

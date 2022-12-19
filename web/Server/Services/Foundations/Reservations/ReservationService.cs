@@ -35,6 +35,11 @@ namespace FMFT.Web.Server.Services.Foundations.Reservations
             return await storageBroker.SelectReservationsByShowIdAsync(showId);
         }
 
+        public async ValueTask<IEnumerable<Reservation>> RetrieveReservationsByUserAndShowIdAsync(int userId, int showId)
+        {
+            return await storageBroker.SelectReservationsByUserAndShowIdAsync(userId, showId);
+        }
+
         public async ValueTask<Reservation> RetrieveReservationByIdAsync(string reservationId)
         {
             Reservation reservation = await storageBroker.SelectReservationByIdAsync(reservationId);

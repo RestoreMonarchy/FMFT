@@ -111,6 +111,13 @@ namespace FMFT.Web.Server.Services.Coordinations.Reservations
             return await reservationService.RetrieveReservationsByShowIdAsync(showId);
         }
 
+        public async ValueTask<IEnumerable<Reservation>> RetrieveReservationsByUserAndShowIdAsync(int userId, int showId)
+        {
+            await userAccountService.AuthorizeAccountByUserIdAsync(userId);
+
+            return await reservationService.RetrieveReservationsByUserAndShowIdAsync(userId, showId);
+        }
+
         public async ValueTask<Reservation> RetrieveReservationByIdAsync(string reservationId)
         {
             Reservation reservation = await reservationService.RetrieveReservationByIdAsync(reservationId);

@@ -24,5 +24,23 @@ namespace FMFT.Web.Server.Controllers.Shows
                 return Forbidden(exception);
             }
         }
+
+        [HttpGet("{showId}/users/{userId}/reservations")]
+        public async ValueTask<IActionResult> GetUserShowReservations(int showId, int userId)
+        {
+            try
+            {
+                IEnumerable<Reservation> reservations = await reservationCoordinationService.RetrieveReservationsByUserAndShowIdAsync(userId, showId);
+                return Ok(reservations);
+            }
+            catch (NotAuthenticatedAccountException exception)
+            {
+                return Unauthorized(exception);
+            }
+            catch (NotAuthorizedAccountException exception)
+            {
+                return Forbidden(exception);
+            }
+        }
     }
 }
