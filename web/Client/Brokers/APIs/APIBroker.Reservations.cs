@@ -15,6 +15,11 @@ namespace FMFT.Web.Client.Brokers.APIs
             return await GetAsync<Reservation>($"{ReservationsRelativeUrl}/{reservationId}");
         }
 
+        public async ValueTask<APIResponse<List<Reservation>>> GetReservationsByUserAndShowIdAsync(int userId, int showId)
+        {
+            return await GetAsync<List<Reservation>>($"api/shows/{showId}/users/{userId}/reservations");
+        }
+
         public async ValueTask<APIResponse<List<Reservation>>> GetAllReservationsAsync()
         {
             return await GetAsync<List<Reservation>>(ReservationsRelativeUrl);

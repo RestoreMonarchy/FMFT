@@ -33,6 +33,8 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
             {
                 AuditoriumResponse = await APIBroker.GetAuditoriumByIdAsync(Show.AuditoriumId);
                 ShowGalleryResponse = await APIBroker.GetShowGalleryByShowIdAsync(Show.Id);
+
+                
             }
             LoadingView.StopLoading();
         }

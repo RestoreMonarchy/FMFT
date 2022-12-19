@@ -29,11 +29,15 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
 
         public APIResponse<Show> ShowResponse { get; set; }
         public APIResponse<Auditorium> AuditoriumResponse { get; set; }
+        public APIResponse<List<Reservation>> UserReservationsResponse { get; set; }
         public APIResponse<Reservation> ReservationResponse { get; set; }
 
         public Show Show => ShowResponse.Object;
         public Auditorium Auditorium => AuditoriumResponse.Object;
+        public List<Reservation> UserReservations => UserReservationsResponse.Object;
         public Reservation Reservation => ReservationResponse.Object;
+
+        public Reservation UserReservation => UserReservations.OrderByDescending(x => x.CreateDate).FirstOrDefault(x => !x.IsCanceled);
 
         protected override async Task OnParametersSetAsync()
         {
@@ -48,13 +52,16 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
             {
                 AuditoriumResponse = await APIBroker.GetAuditoriumByIdAsync(Show.AuditoriumId);
             }
+
+            UserReservationsResponse = await APIBroker.GetReservationsByUserAndShowIdAsync(UserAccountState.UserAccount.UserId, ShowId);
+
             LoadingView.StopLoading();
         }
 
         public int TicketsCount { get; set; } = 1;
         private string TicketsCountString()
         {
-            string format = string.Empty;
+            string format;
             if (TicketsCount == 1)
             {
                 format = "{0} miejsce";
