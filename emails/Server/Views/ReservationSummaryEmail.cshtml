@@ -1,0 +1,25 @@
+﻿@using FMFT.Emails.Server.Models;
+
+@model ReservationSummaryEmailModel
+
+@if (!string.IsNullOrEmpty(Model.FirstName))
+{
+    <p>
+        Cześć @Model.FirstName,
+    </p>
+}
+
+<p>
+    Twoja rezerwacja na wydarzenie @Model.ShowName została przyjęta. <br />
+    ID rezerwacji: <strong>@Model.ReservationId</strong>
+</p>
+
+<p>
+    Szczegóły rezerwacji
+    <ul>
+        @foreach (ReservationSummaryEmailModel.ReservationSeat seat in Model.ReservationSeats.OrderBy(x => x.Row).ThenBy(x => x.Number))
+        {
+            <li>Rząd @seat.Row Miejsce @seat.Number</li>
+        }
+    </ul>
+</p>

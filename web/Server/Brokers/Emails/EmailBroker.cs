@@ -75,5 +75,18 @@ namespace FMFT.Web.Server.Brokers.Emails
 
             await emailClient.SendHtmlEmailMessageAsync(message);
         }
+
+        public async Task SendReservationSummaryEmailAsync(Email<ReservationSummaryEmailModel> email)
+        {
+            HtmlEmailMessage message = new()
+            {
+                Subject = email.Subject,
+                EmailAddress = email.EmailAddress
+            };
+
+            message.Html = await emailGenerator.GenerateReservationSummaryEmailHtmlAsync(email.Model);
+
+            await emailClient.SendHtmlEmailMessageAsync(message);
+        }
     }
 }

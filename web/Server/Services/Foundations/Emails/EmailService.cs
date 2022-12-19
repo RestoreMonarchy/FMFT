@@ -1,10 +1,9 @@
 ﻿using FMFT.Emails.Server.Models;
 using FMFT.Web.Server.Brokers.Emails;
+using FMFT.Web.Server.Brokers.Loggings;
 using FMFT.Web.Server.Brokers.Urls;
 using FMFT.Web.Server.Models.Emails;
 using FMFT.Web.Server.Models.Emails.Params;
-using System.ComponentModel.DataAnnotations;
-using System.Net.Mail;
 
 namespace FMFT.Web.Server.Services.Foundations.Emails
 {
@@ -12,11 +11,13 @@ namespace FMFT.Web.Server.Services.Foundations.Emails
     {
         private readonly IEmailBroker emailBroker;
         private readonly IUrlBroker urlBroker;
+        private readonly ILoggingBroker loggingBroker;
 
-        public EmailService(IEmailBroker emailBroker, IUrlBroker urlBroker)
+        public EmailService(IEmailBroker emailBroker, IUrlBroker urlBroker, ILoggingBroker loggingBroker)
         {
             this.emailBroker = emailBroker;
             this.urlBroker = urlBroker;
+            this.loggingBroker = loggingBroker;
         }
 
         public async ValueTask SendRegisterEmailAsync(string emailAddress, RegisterEmailParams @params)
@@ -35,7 +36,9 @@ namespace FMFT.Web.Server.Services.Foundations.Emails
                 Model = model
             };
 
+            loggingBroker.LogInformation("Sending RegisterEmail message...");
             await emailBroker.SendRegisterEmailAsync(email);
+            loggingBroker.LogInformation("RegisterEmail message has been sent!");
         }
 
         public async ValueTask SendResetPasswordEmailAsync(string emailAddress, ResetPasswordEmailParams @params)
@@ -55,7 +58,9 @@ namespace FMFT.Web.Server.Services.Foundations.Emails
                 Model = model
             };
 
+            loggingBroker.LogInformation("Sending ResetPasswordEmail message...");
             await emailBroker.SendResetPasswordEmailAsync(email);
+            loggingBroker.LogInformation("ResetPasswordEmail message has been sent!");
         }
 
         public async ValueTask SendRegisterExternalEmailAsync(string emailAddress, RegisterExternalEmailParams @params)
@@ -74,7 +79,40 @@ namespace FMFT.Web.Server.Services.Foundations.Emails
                 Model = model
             };
 
+            loggingBroker.LogInformation("Sending RegisterExternalEmail message...");
             await emailBroker.SendRegisterExternalEmailAsync(email);
+            loggingBroker.LogInformation("RegisterExternalEmail message has been sent!");
+        }
+        
+        public async ValueTask SendReservationSummaryEmailAsync(string emailAddress, ReservationSummaryEmailParams @params)
+        {
+            ReservationSummaryEmailModel model = new()
+            {
+                FirstName = @params.FirstName,
+                ShowName = @params.ShowName,
+                ReservationId = @params.ReservationId,
+                ReservationSeats = new()
+            };
+
+            foreach (ReservationSummaryEmailParams.ReservationSeat seat in  @params.ReservationSeats)
+            {
+                model.ReservationSeats.Add(new ReservationSummaryEmailModel.ReservationSeat()
+                {
+                    Row = seat.Row,
+                    Number = seat.Number
+                });
+            }
+
+            Email<ReservationSummaryEmailModel> email = new()
+            {
+                Subject = "Potwierdzenie rezerwacji",
+                EmailAddress = emailAddress,
+                Model = model
+            };
+
+            loggingBroker.LogInformation("Sending ReservationSummaryEmail message...");
+            await emailBroker.SendReservationSummaryEmailAsync(email);
+            loggingBroker.LogInformation("ReservationSummaryEmail message has been sent!");
         }
     }
 }

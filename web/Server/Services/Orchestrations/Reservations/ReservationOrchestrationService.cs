@@ -1,5 +1,6 @@
 ﻿using FMFT.Web.Server.Brokers.Loggings;
 using FMFT.Web.Server.Brokers.QRCodes;
+using FMFT.Web.Server.Models.Emails.Params;
 using FMFT.Web.Server.Models.QRCodes;
 using FMFT.Web.Server.Models.QRCodes.Params;
 using FMFT.Web.Server.Models.Reservations;
@@ -8,6 +9,7 @@ using FMFT.Web.Server.Models.Reservations.Params;
 using FMFT.Web.Server.Models.Reservations.Requests;
 using FMFT.Web.Server.Models.Reservations.Results;
 using FMFT.Web.Server.Services.Foundations.Accounts;
+using FMFT.Web.Server.Services.Foundations.Emails;
 using FMFT.Web.Server.Services.Foundations.QRCodes;
 using FMFT.Web.Server.Services.Foundations.Reservations;
 
@@ -16,20 +18,17 @@ namespace FMFT.Web.Server.Services.Orchestrations.Reservations
     public partial class ReservationOrchestrationService : IReservationOrchestrationService
     {
         private readonly IReservationService reservationService;
-        private readonly IAccountService accountService;
         private readonly IQRCodeService qrCodeService;
-        private readonly ILoggingBroker loggingBroker;
+        private readonly IEmailService emailService;
 
         public ReservationOrchestrationService(
             IReservationService reservationService,
-            IAccountService accountService,
-            ILoggingBroker loggingBroker,
-            IQRCodeService qrCodeService)
+            IQRCodeService qrCodeService,
+            IEmailService emailService)
         {
             this.reservationService = reservationService;
-            this.accountService = accountService;
-            this.loggingBroker = loggingBroker;
             this.qrCodeService = qrCodeService;
+            this.emailService = emailService;
         }
 
         public async ValueTask<QRCodeImage> GenerateGuidQRCodeImageAsync(Guid guid)
@@ -62,12 +61,24 @@ namespace FMFT.Web.Server.Services.Orchestrations.Reservations
                 SeatIds  = @params.SeatIds
             };
 
-            return await reservationService.CreateReservationAsync(@params2);
+
+            return await CreateReservationAsync(@params2);
         }
 
         public async ValueTask<Reservation> CreateReservationAsync(CreateReservationParams @params)
         {
-            return await reservationService.CreateReservationAsync(@params);
+            Reservation reservation = await reservationService.CreateReservationAsync(@params);
+
+            
+            string emailAddress = reservation.User?.Email ?? reservation.Details?.Email ?? null;
+
+            if (!string.IsNullOrEmpty(emailAddress))
+            {
+                ReservationSummaryEmailParams @params2 = MapReservationToReservationSummaryEmailParams(reservation);
+                await emailService.SendReservationSummaryEmailAsync(emailAddress, @params2);
+            }
+
+            return reservation;
         }
 
         // TODO: To be remade anyways
