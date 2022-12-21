@@ -72,12 +72,12 @@ namespace FMFT.Web.Client.Views.Pages.Account
         {
             CancelButton.StartSpinning();
 
-            CancelReservationRequest request = new()
+            CancelUserReservationRequest request = new()
             {
                 UserId = UserAccountState.UserAccount.UserId,
                 ReservationId = ReservationId
             };
-            ReservationResponse = await APIBroker.CancelReservationAsync(request);
+            ReservationResponse = await APIBroker.CancelUserReservationAsync(request);
              
             await CancelModalDialog.HideAsync();
         }

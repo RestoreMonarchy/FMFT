@@ -61,13 +61,17 @@ namespace FMFT.Web.Server.Controllers.Users
         {
             try
             {
-                Reservation reservation = await reservationCoordinationService.CancelReservationAsync(reservationId);
+                Reservation reservation = await reservationCoordinationService.CancelUserReservationAsync(reservationId);
 
                 return Ok(reservation);
             }
             catch (NotFoundReservationException exception)
             {
                 return NotFound(exception);
+            }
+            catch (AlreadyCanceledReservationException exception)
+            {
+                return Conflict(exception);
             }
             catch (NotAuthenticatedAccountException exception)
             {

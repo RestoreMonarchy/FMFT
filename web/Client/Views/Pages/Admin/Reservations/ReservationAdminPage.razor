@@ -1,4 +1,5 @@
 ﻿@page "/admin/reservations/{ReservationId}"
+@using FMFT.Extensions.Blazor.Bases.Dialogs
 
 <MainLayoutBody>
     <Breadcrumb>
@@ -89,9 +90,23 @@
                             </div>
 
                             <div class="col-md-6">
+
+                                <div class="card mb-3">
+                                    <div class="card-header">
+                                        Zarządzaj rezerwacją
+                                    </div>
+                                    <div class="list-group list-group-flush">
+                                        <button class="list-group-item list-group-item-action list-group-item-warning" href="javascript:void(0)"
+                                                @onclick="HandleCancelDialogAsync" disabled="@Reservation.IsCanceled">
+                                            <i class="fa-solid fa-xmark me-1"></i>
+                                            Anuluj rezerwację
+                                        </button>
+                                    </div>
+                                </div>
+
                                 <Condition Evaluation="Reservation.User != null">
                                     <Match>
-                                        <div class="card mb-2">
+                                        <div class="card mb-3">
                                             <div class="card-header">
                                                 Użytkownik
                                             </div>
@@ -130,7 +145,7 @@
                                 </Condition>
                                 <Condition Evaluation="Reservation.Details != null">
                                     <Match>
-                                        <div class="card mb-2">
+                                        <div class="card mb-3">
                                             <div class="card-header">
                                                 Osoba
                                             </div>
@@ -193,6 +208,35 @@
                             </div>
 
                         </div>
+
+                        <ModalDialog @ref="CancelModalDialog" AlignCenter="true">
+                            <Title>
+                                Anuluj rezerwację
+                            </Title>
+                            <Body>
+                                
+                                <p>
+                                    Czy napewno chcesz anulować tę rezerwację?
+                                </p>
+
+                                <Condition Evaluation="string.IsNullOrEmpty(Reservation.Email())">
+                                    <NotMatch>
+                                        <p>
+                                            Na email <span class="fw-bold">@Reservation.Email()</span> zostanie wysłana informacja o anulowaniu rezerwacji.
+                                        </p>
+                                    </NotMatch>
+                                </Condition>
+                                
+                            </Body>
+                            <Footer>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    Nie
+                                </button>
+                                <ButtonBase @ref="CancelButton" Class="btn btn-danger" OnClick="HandleCancelAsync">
+                                    Tak
+                                </ButtonBase>
+                            </Footer>
+                        </ModalDialog>
 
                     </Match>
                     <NotMatch>

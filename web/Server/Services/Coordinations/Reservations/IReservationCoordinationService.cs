@@ -7,7 +7,8 @@ namespace FMFT.Web.Server.Services.Coordinations.Reservations
 {
     public interface IReservationCoordinationService
     {
-        ValueTask<Reservation> CancelReservationAsync(string reservationId);
+        ValueTask<Reservation> CancelAdminReservationAsync(string reservationId);
+        ValueTask<Reservation> CancelUserReservationAsync(string reservationId);
         ValueTask<Reservation> CreateReservationAsync(CreateReservationParams @params);
         ValueTask<Reservation> CreateUserReservationAsync(CreateUserReservationParams @params);
         ValueTask<QRCodeImage> GenerateReservationQRCodeImageAsync(string reservationId);

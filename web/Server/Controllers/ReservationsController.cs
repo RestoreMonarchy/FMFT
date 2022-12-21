@@ -37,7 +37,7 @@ namespace FMFT.Web.Server.Controllers
             } catch (NotAuthorizedAccountException exception)
             {
                 return Forbidden(exception);
-            }            
+            }
         }
 
         [HttpGet("{reservationId}")]
@@ -55,6 +55,33 @@ namespace FMFT.Web.Server.Controllers
             {
                 return Unauthorized(exception);
             } catch (NotAuthorizedAccountException exception)
+            {
+                return Forbidden(exception);
+            }
+        }
+
+        [HttpPost("{reservationId}/cancel")]
+        public async ValueTask<IActionResult> CancelReservation(string reservationId)
+        {
+            try
+            {
+                Reservation reservation = await reservationCoordinationService.CancelAdminReservationAsync(reservationId);
+
+                return Ok(reservation);
+            }
+            catch (NotFoundReservationException exception)
+            {
+                return NotFound(exception);
+            }
+            catch (AlreadyCanceledReservationException exception)
+            {
+                return Conflict(exception);
+            }
+            catch (NotAuthenticatedAccountException exception)
+            {
+                return Unauthorized(exception);
+            }
+            catch (NotAuthorizedAccountException exception)
             {
                 return Forbidden(exception);
             }

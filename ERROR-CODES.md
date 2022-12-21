@@ -41,3 +41,4 @@ ERR032 | The media file is required
 ERR033 | The seats for the reservation were not provided
 ERR034 | Reservation seat not found
 ERR035 | Create user reservation validation problem
+ERR036 | Reservation is already canceled

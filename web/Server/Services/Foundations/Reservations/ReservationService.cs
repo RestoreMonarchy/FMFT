@@ -100,6 +100,16 @@ namespace FMFT.Web.Server.Services.Foundations.Reservations
         {
             StoredProcedureResult<Reservation> result = await storageBroker.CancelReservationAsync(reservationId);
 
+            if (result.ReturnValue == 1)
+            {
+                throw new NotFoundReservationException();
+            }
+
+            if (result.ReturnValue == 2)
+            {
+                throw new AlreadyCanceledReservationException();
+            }
+
             return result.Result;
         }
 
