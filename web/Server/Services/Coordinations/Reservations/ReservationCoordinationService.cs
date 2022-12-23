@@ -68,6 +68,7 @@ namespace FMFT.Web.Server.Services.Coordinations.Reservations
         public async ValueTask<Reservation> CreateUserReservationAsync(CreateUserReservationParams @params)
         {
             await userAccountService.AuthorizeAccountByUserIdAsync(@params.UserId);
+            await userAccountService.AuthorizeUserAccountByConfirmedEmailAsync();
 
             return await reservationService.CreateUserReservationAsync(@params);
         }

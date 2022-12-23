@@ -2,6 +2,7 @@
 using FMFT.Web.Server.Models.Reservations;
 using FMFT.Web.Server.Models.Reservations.Exceptions;
 using FMFT.Web.Server.Models.Reservations.Params;
+using FMFT.Web.Server.Models.UserAccounts.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FMFT.Web.Server.Controllers.Users
@@ -36,6 +37,9 @@ namespace FMFT.Web.Server.Controllers.Users
             } catch (NotAuthenticatedAccountException exception)
             {
                 return Unauthorized(exception);
+            } catch (NotConfirmedEmailUserAccountException exception)
+            {
+                return Forbidden(exception);
             }
         }
 

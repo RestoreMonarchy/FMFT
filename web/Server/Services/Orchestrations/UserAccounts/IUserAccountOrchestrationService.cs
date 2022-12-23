@@ -12,6 +12,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
     {
         ValueTask AuthorizeAccountAsync();
         ValueTask AuthorizeAccountByUserIdAsync(int userId);
+        ValueTask AuthorizeUserAccountByConfirmedEmailAsync();
         ValueTask AuthorizeUserAccountByRoleAsync(params UserRole[] authorizedRoles);
         ValueTask AuthorizeUserAccountByUserIdOrRolesAsync(int userId, params UserRole[] authorizedRoles);
         ValueTask ChangeUserAccountPasswordAsync(ChangeUserAccountPasswordRequest request);

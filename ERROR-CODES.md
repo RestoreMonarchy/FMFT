@@ -42,3 +42,4 @@ ERR033 | The seats for the reservation were not provided
 ERR034 | Reservation seat not found
 ERR035 | Create user reservation validation problem
 ERR036 | Reservation is already canceled
+ERR037 | User account does not have a confirmed email

@@ -211,6 +211,16 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
             }
         }
 
+        public async ValueTask AuthorizeUserAccountByConfirmedEmailAsync()
+        {
+            UserAccount userAccount = await RetrieveUserAccountAsync();
+
+            if (!userAccount.IsEmailConfirmed)
+            {
+                throw new NotConfirmedEmailUserAccountException();
+            }
+        }
+
         public async ValueTask AuthorizeUserAccountByUserIdOrRolesAsync(int userId, params UserRole[] authorizedRoles)
         {
             UserAccount userAccount = await RetrieveUserAccountAsync();
