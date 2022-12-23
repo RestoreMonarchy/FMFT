@@ -63,6 +63,21 @@
                             </div>
                             <div class="list-group-item">
                                 <span class="fw-bold">
+                                    Potwierdzony email:
+                                </span>
+                                <span>
+                                    <Condition Evaluation="UserAccountState.UserAccount.IsEmailConfirmed">
+                                        <Match>
+                                            <span>Tak</span>
+                                        </Match>
+                                        <NotMatch>
+                                            <span>Nie</span>
+                                        </NotMatch>
+                                    </Condition>
+                                </span>
+                            </div>
+                            <div class="list-group-item">
+                                <span class="fw-bold">
                                     Logowanie hasłem:
                                 </span>
                                 <span>
