@@ -1,8 +1,11 @@
 using FMFT.Web.Server.Extensions;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.OpenApi.Models;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilogLogging();
 
 // Add services to the container.
 

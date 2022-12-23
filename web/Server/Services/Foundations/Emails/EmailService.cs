@@ -37,7 +37,14 @@ namespace FMFT.Web.Server.Services.Foundations.Emails
             };
 
             loggingBroker.LogInformation("Sending RegisterEmail message...");
-            await emailBroker.SendRegisterEmailAsync(email);
+            try 
+            {
+                await emailBroker.SendRegisterEmailAsync(email);
+            } catch (FormatException)
+            {
+                loggingBroker.LogWarning($"Register Email couldn't be sent because '{email}' is not a valid email.");
+            }
+            
             loggingBroker.LogInformation("RegisterEmail message has been sent!");
         }
 
@@ -59,8 +66,14 @@ namespace FMFT.Web.Server.Services.Foundations.Emails
             };
 
             loggingBroker.LogInformation("Sending ResetPasswordEmail message...");
-            await emailBroker.SendResetPasswordEmailAsync(email);
-            loggingBroker.LogInformation("ResetPasswordEmail message has been sent!");
+            try
+            {
+                await emailBroker.SendResetPasswordEmailAsync(email);
+                loggingBroker.LogInformation("ResetPasswordEmail message has been sent!");
+            } catch (FormatException)
+            {
+                loggingBroker.LogWarning($"Reset Password Email couldn't be sent because '{email}' is not a valid email.");
+            }            
         }
 
         public async ValueTask SendRegisterExternalEmailAsync(string emailAddress, RegisterExternalEmailParams @params)
@@ -80,8 +93,14 @@ namespace FMFT.Web.Server.Services.Foundations.Emails
             };
 
             loggingBroker.LogInformation("Sending RegisterExternalEmail message...");
-            await emailBroker.SendRegisterExternalEmailAsync(email);
-            loggingBroker.LogInformation("RegisterExternalEmail message has been sent!");
+            try
+            {
+                await emailBroker.SendRegisterExternalEmailAsync(email);
+                loggingBroker.LogInformation("RegisterExternalEmail message has been sent!");
+            } catch (FormatException)
+            {
+                loggingBroker.LogWarning($"Register External Email couldn't be sent because '{email}' is not a valid email.");
+            }
         }
         
         public async ValueTask SendReservationSummaryEmailAsync(string emailAddress, ReservationSummaryEmailParams @params)
@@ -112,8 +131,14 @@ namespace FMFT.Web.Server.Services.Foundations.Emails
             };
 
             loggingBroker.LogInformation("Sending ReservationSummaryEmail message...");
-            await emailBroker.SendReservationSummaryEmailAsync(email);
-            loggingBroker.LogInformation("ReservationSummaryEmail message has been sent!");
+            try
+            {
+                await emailBroker.SendReservationSummaryEmailAsync(email);
+                loggingBroker.LogInformation("ReservationSummaryEmail message has been sent!");
+            } catch (FormatException)
+            {
+                loggingBroker.LogWarning($"Reservation Summary Email couldn't be sent because '{email}' is not a valid email.");
+            }
         }
     }
 }
