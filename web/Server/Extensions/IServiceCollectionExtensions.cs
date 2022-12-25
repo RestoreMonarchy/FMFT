@@ -35,18 +35,25 @@ using FMFT.Web.Server.Services.Orchestrations.ResetPasswordRequests;
 using FMFT.Web.Server.Services.Orchestrations.ShowGalleries;
 using FMFT.Web.Server.Services.Orchestrations.Shows;
 using FMFT.Web.Server.Services.Orchestrations.UserAccounts;
+using Hangfire;
 
 namespace FMFT.Web.Server.Extensions
 {
     public static class IServiceCollectionExtensions
     {
-        public static IServiceCollection AddDependencies(this IServiceCollection services)
+        public static IServiceCollection AddDependencies(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddHttpContextAccessor();
             services.AddServerEmailGenerator();
 
             services.AddTicketsFeatures();
-            
+
+            services.AddHangfire(x => 
+            {
+                x.UseSqlServerStorage(configuration.GetConnectionString("Default"));
+            });
+            services.AddHangfireServer();
+
             return services;
         }
 

@@ -5,9 +5,9 @@ namespace FMFT.Web.Server.Services.Foundations.Emails
 {
     public interface IEmailService
     {
-        ValueTask SendRegisterEmailAsync(string emailAddress, RegisterEmailParams @params);
-        ValueTask SendRegisterExternalEmailAsync(string emailAddress, RegisterExternalEmailParams @params);
-        ValueTask SendReservationSummaryEmailAsync(string emailAddress, ReservationSummaryEmailParams @params);
-        ValueTask SendResetPasswordEmailAsync(string emailAddress, ResetPasswordEmailParams resetPasswordEmailParams);
+        ValueTask EnqueueSendRegisterEmailAsync(string emailAddress, RegisterEmailParams @params);
+        ValueTask EnqueueSendRegisterExternalEmailAsync(string emailAddress, RegisterExternalEmailParams @params);
+        ValueTask EnqueueSendReservationSummaryAsync(string emailAddress, ReservationSummaryEmailParams @params);
+        ValueTask EnqueueSendResetPasswordEmailAsync(string emailAddress, ResetPasswordEmailParams @params);
     }
 }

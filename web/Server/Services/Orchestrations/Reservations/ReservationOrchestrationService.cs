@@ -107,7 +107,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.Reservations
                 });
             }
 
-            await emailService.SendReservationSummaryEmailAsync(emailAddress, @params);
+            await emailService.EnqueueSendReservationSummaryAsync(emailAddress, @params);
         }
 
         // TODO: To be remade anyways

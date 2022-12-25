@@ -1,4 +1,5 @@
 using FMFT.Web.Server.Extensions;
+using Hangfire;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -11,7 +12,7 @@ builder.Host.UseSerilogLogging();
 
 IConfiguration configuration = builder.Configuration;
 
-builder.Services.AddDependencies();
+builder.Services.AddDependencies(configuration);
 builder.Services.AddBrokers();
 builder.Services.AddFoundations();
 builder.Services.AddOrchestrations();
@@ -77,6 +78,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseHangfireDashboard();
 }
 else
 {

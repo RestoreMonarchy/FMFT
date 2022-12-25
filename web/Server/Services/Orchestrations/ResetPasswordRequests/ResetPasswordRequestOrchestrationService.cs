@@ -41,7 +41,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.ResetPasswordRequests
                 SecretKey = resetPasswordRequest.SecretKey
             };
 
-            await emailService.SendResetPasswordEmailAsync(resetPasswordRequest.User.Email, @resetPasswordEmailParams);
+            await emailService.EnqueueSendResetPasswordEmailAsync(resetPasswordRequest.User.Email, @resetPasswordEmailParams);
 
             return resetPasswordRequest;
         }

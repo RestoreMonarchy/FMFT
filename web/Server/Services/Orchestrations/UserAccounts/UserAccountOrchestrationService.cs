@@ -70,7 +70,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
                 ConfirmSecret = user.ConfirmEmailSecret
             };
 
-            await emailService.SendRegisterEmailAsync(user.Email, @registerEmailParams);
+            await emailService.EnqueueSendRegisterEmailAsync(user.Email, @registerEmailParams);
 
             Account account = MapUserToAccount(user);
             CreateTokenParams @createTokenParams = new()
@@ -125,7 +125,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
                 AuthenticationMethod = "Facebook"
             };
 
-            await emailService.SendRegisterExternalEmailAsync(user.Email, @registerExternalEmailParams);
+            await emailService.EnqueueSendRegisterExternalEmailAsync(user.Email, @registerExternalEmailParams);
 
             return user;
         }

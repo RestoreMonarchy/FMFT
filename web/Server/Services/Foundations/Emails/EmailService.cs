@@ -4,6 +4,7 @@ using FMFT.Web.Server.Brokers.Loggings;
 using FMFT.Web.Server.Brokers.Urls;
 using FMFT.Web.Server.Models.Emails;
 using FMFT.Web.Server.Models.Emails.Params;
+using Hangfire;
 
 namespace FMFT.Web.Server.Services.Foundations.Emails
 {
