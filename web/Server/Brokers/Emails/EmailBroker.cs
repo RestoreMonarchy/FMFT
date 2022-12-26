@@ -37,6 +37,19 @@ namespace FMFT.Web.Server.Brokers.Emails
             return new SmtpEmailClient(clientOptions);
         }
 
+        public async Task SendConfirmAccountEmailAsync(Email<ConfirmAccountEmailModel> email)
+        {
+            HtmlEmailMessage message = new()
+            {
+                Subject = email.Subject,
+                EmailAddress = email.EmailAddress
+            };
+
+            message.Html = await emailGenerator.GenerateConfirmAccountEmailHtmlAsync(email.Model);
+
+            await emailClient.SendHtmlEmailMessageAsync(message);
+        }
+
         public async Task SendRegisterEmailAsync(Email<RegisterEmailModel> email)
         {
             HtmlEmailMessage message = new()

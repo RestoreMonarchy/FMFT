@@ -1,4 +1,5 @@
 ﻿using FMFT.Web.Server.Models.Accounts.Exceptions;
+using FMFT.Web.Server.Models.UserAccounts.Exceptions;
 using FMFT.Web.Server.Models.Users;
 using FMFT.Web.Server.Models.Users.Exceptions;
 using FMFT.Web.Server.Models.Users.Params;
@@ -156,6 +157,29 @@ namespace FMFT.Web.Server.Controllers.Users
             catch (NotMatchConfirmEmailSecretUserException exception)
             {
                 return BadRequest(exception);
+            }
+        }
+
+        [HttpPost("{userId}/confirmemail/send")]
+        public async ValueTask<IActionResult> SendConfirmEmail(int userId)
+        {
+            try
+            {
+                await userAccountOrchestrationService.SendUserConfirmAccountEmailAsync(userId);
+                    
+                return Ok();
+            } catch (AlreadyConfirmedEmailUserException exception)
+            {
+                return Conflict(exception);
+            } catch (LimitConfirmEmailUserAccountException exception)
+            {
+                return Conflict(exception);
+            } catch (NotAuthorizedAccountException exception)
+            {
+                return Forbidden(exception);
+            } catch (NotAuthenticatedAccountException exception)
+            {
+                return Unauthorized(exception);
             }
         }
 

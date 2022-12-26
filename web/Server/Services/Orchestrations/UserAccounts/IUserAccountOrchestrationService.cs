@@ -19,6 +19,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
         ValueTask ConfirmEmailAsync(int userId, Guid secretKey);
         ValueTask<AccountToken> LoginWithFacebookAsync(LoginWithFacebookRequest request);
         ValueTask<AccountToken> RegisterWithPasswordAsync(RegisterUserWithPasswordRequest request);
+        ValueTask SendUserConfirmAccountEmailAsync(int userId);
         ValueTask<Account> RetrieveAccountAsync();
         ValueTask<IEnumerable<User>> RetrieveAllUsersAsync();
         ValueTask<UserAccount> RetrieveUserAccountAsync();

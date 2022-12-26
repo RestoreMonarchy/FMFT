@@ -204,5 +204,10 @@ namespace FMFT.Web.Server.Services.Foundations.Users
                 throw new AlreadyConfirmedEmailUserException();
             }
         }
+
+        public async ValueTask UpdateConfirmEmailSendDateAsync(int userId)
+        {
+            await storageBroker.UpdateUserConfirmEmailSendDateAsync(userId);
+        }
     }
 }

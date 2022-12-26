@@ -58,6 +58,34 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
             await userService.ConfirmEmailAsync(userId, secretKey);
         }
 
+        public async ValueTask SendUserConfirmAccountEmailAsync(int userId)
+        {
+            await AuthorizeAccountByUserIdAsync(userId);
+
+            User user = await userService.RetrieveUserByIdAsync(userId);
+
+            if (user.IsEmailConfirmed)
+            {
+                throw new AlreadyConfirmedEmailUserException();
+            }
+
+            if (user.ConfirmEmailSendDate < DateTimeOffset.Now.AddMinutes(5))
+            {
+                throw new LimitConfirmEmailUserAccountException();
+            }
+
+            await userService.UpdateConfirmEmailSendDateAsync(user.Id);
+
+            ConfirmAccountEmailParams @params = new()
+            {
+                FirstName = user.FirstName,
+                UserId = user.Id,
+                ConfirmSecret = user.ConfirmEmailSecret
+            };
+
+            await emailService.EnqueueSendConfirmAccountEmailAsync(user.Email, @params);
+        }
+
         public async ValueTask<AccountToken> RegisterWithPasswordAsync(RegisterUserWithPasswordRequest request)
         {
             User user = await userService.RegisterUserWithPasswordAsync(request);

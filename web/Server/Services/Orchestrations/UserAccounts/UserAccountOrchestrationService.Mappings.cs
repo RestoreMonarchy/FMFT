@@ -26,7 +26,9 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
                 CultureId = user.CultureId,
                 IsPasswordEnabled = user.IsPasswordEnabled,
                 IsEmailConfirmed = user.IsEmailConfirmed,
-                CreateDate = user.CreateDate
+                CreateDate = user.CreateDate,
+                ConfirmEmailSecret = user.ConfirmEmailSecret,
+                ConfirmEmailSendDate = user.ConfirmEmailSendDate
             };
         }
     }

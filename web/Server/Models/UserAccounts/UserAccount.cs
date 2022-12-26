@@ -1,4 +1,5 @@
 ﻿using FMFT.Web.Shared.Enums;
+using Newtonsoft.Json;
 
 namespace FMFT.Web.Server.Models.UserAccounts
 {
@@ -14,5 +15,9 @@ namespace FMFT.Web.Server.Models.UserAccounts
         public bool IsPasswordEnabled { get; set; }
         public bool IsEmailConfirmed { get; set; } 
         public DateTimeOffset CreateDate { get; set; }
+        public DateTimeOffset? ConfirmEmailSendDate { get; set; }
+
+        [JsonIgnore]
+        public Guid ConfirmEmailSecret { get; set; }        
     }
 }

@@ -14,6 +14,17 @@ namespace FMFT.Emails.Server.Services
             this.emailHtmlGenerator = emailHtmlGenerator;
         }
 
+        public async ValueTask<string> GenerateConfirmAccountEmailHtmlAsync(ConfirmAccountEmailModel model)
+        {
+            EmailTemplateBuilder emailTemplateBuilder = new();
+            emailTemplateBuilder.SetViewName("/Views/ConfirmAccountEmail.cshtml");
+            emailTemplateBuilder.SetCulture("pl-PL");
+
+            IEmailTemplate template = emailTemplateBuilder.Build();
+
+            return await emailHtmlGenerator.GenerateEmailAsync(template, model);
+        }
+            
         public async ValueTask<string> GenerateRegisterEmailHtmlAsync(RegisterEmailModel model)
         {
             EmailTemplateBuilder emailTemplateBuilder = new();

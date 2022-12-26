@@ -47,6 +47,12 @@ namespace FMFT.Web.Server.Brokers.Storages
             return await ExecuteStoredProcedureAsync(sql, new { UserId = userId, ConfirmSecret = confirmSecret });
         }
 
+        public async ValueTask UpdateUserConfirmEmailSendDateAsync(int userId)
+        {
+            const string sql = "UPDATE dbo.Users SET ConfirmEmailSendDate = SYSDATETIME() WHERE Id = @userId;";
+            await connection.ExecuteAsync(sql, new { userId });
+        }
+
         public async ValueTask<StoredProcedureResult<User>> RegisterUserWithPasswordAsync(
             RegisterUserWithPasswordParams @params)
         {

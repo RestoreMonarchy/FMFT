@@ -5,6 +5,13 @@ namespace FMFT.Web.Server.Services.Foundations.Emails
 {
     public partial class EmailService
     {
+        public ValueTask EnqueueSendConfirmAccountEmailAsync(string emailAddress, ConfirmAccountEmailParams @params)
+        {
+            BackgroundJob.Enqueue(() => SendConfirmAccountEmailJobAsync(emailAddress, @params));
+
+            return ValueTask.CompletedTask;
+        }
+
         public ValueTask EnqueueSendRegisterEmailAsync(string emailAddress, RegisterEmailParams @params)
         {
             BackgroundJob.Enqueue(() => SendRegisterEmailJobAsync(emailAddress, @params));
@@ -33,28 +40,64 @@ namespace FMFT.Web.Server.Services.Foundations.Emails
             return ValueTask.CompletedTask;
         }
 
+        [AutomaticRetry(Attempts = 3)]
+        public async Task SendConfirmAccountEmailJobAsync(string emailAddress, ConfirmAccountEmailParams @params)
+        {
+            try 
+            {
+                await SendConfirmAccountEmailAsync(emailAddress, @params);
+            } catch (FormatException)
+            {
+                loggingBroker.LogWarning($"Confirm Account Email couldn't be sent because '{emailAddress}' is not a valid email address.");
+            }
+        }
+
         [AutomaticRetry(Attempts = 5)]
         public async Task SendRegisterEmailJobAsync(string emailAddress, RegisterEmailParams @params)
         {
-            await SendRegisterEmailAsync(emailAddress, @params);
+            try
+            {
+                await SendRegisterEmailAsync(emailAddress, @params);
+            } catch (FormatException)
+            {
+                loggingBroker.LogWarning($"Register Email couldn't be sent because '{emailAddress}' is not a valid email address.");
+            }            
         }
 
         [AutomaticRetry(Attempts = 5)]
         public async Task SendRegisterExternalEmailJobAsync(string emailAddress, RegisterExternalEmailParams @params)
         {
-            await SendRegisterExternalEmailAsync(emailAddress, @params);
+            try
+            {
+                await SendRegisterExternalEmailAsync(emailAddress, @params);
+            } catch (FormatException)
+            {
+                loggingBroker.LogWarning($"Register External Email couldn't be sent because '{emailAddress}' is not a valid email address.");
+            }            
         }
 
         [AutomaticRetry(Attempts = 1)]
         public async Task SendResetPasswordEmailJobAsync(string emailAddress, ResetPasswordEmailParams @params)
         {
-            await SendResetPasswordEmailAsync(emailAddress, @params);
+            try
+            {
+                await SendResetPasswordEmailAsync(emailAddress, @params);
+            } catch (FormatException)
+            {
+                loggingBroker.LogWarning($"Reset Password Email couldn't be sent because '{emailAddress}' is not a valid email address.");
+            }
         }
 
         [AutomaticRetry(Attempts = 5)]
         public async Task SendReservationSummaryEmailJobAsync(string emailAddress, ReservationSummaryEmailParams @params)
         {
-            await SendReservationSummaryEmailAsync(emailAddress, @params);
+            try
+            {
+                await SendReservationSummaryEmailAsync(emailAddress, @params);
+            } catch (FormatException)
+            {
+                loggingBroker.LogWarning($"Reservation Summary Email couldn't be sent because '{emailAddress}' is not a valid email address.");
+            }
         }        
     }
 }

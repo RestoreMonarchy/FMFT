@@ -1,0 +1,12 @@
+﻿@using FMFT.Emails.Server.Models
+
+@model ConfirmAccountEmailModel
+
+<p>
+    Cześć @Model.FirstName,
+</p>
+
+<p>
+    Kliknij proszę w link poniżej w celu potwierdzenia swojego konta <br />
+    @Model.ConfirmLink
+</p>

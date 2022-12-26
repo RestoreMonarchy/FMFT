@@ -17,5 +17,6 @@ namespace FMFT.Web.Server.Brokers.Storages
         ValueTask<StoredProcedureResult> UpdateUserCultureAsync(UpdateUserCultureParams @params);
         ValueTask<StoredProcedureResult> UpdateUserPasswordAsync(UpdateUserPasswordParams @params);
         ValueTask<StoredProcedureResult> ConfirmEmailAsync(int userId, Guid confirmSecret);
+        ValueTask UpdateUserConfirmEmailSendDateAsync(int userId);
     }
 }
