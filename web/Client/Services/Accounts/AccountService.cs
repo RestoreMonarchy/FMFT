@@ -73,7 +73,7 @@ namespace FMFT.Web.Client.Services.Accounts
             userAccountStateContainer.UserAccount = null;
         }
 
-        private async ValueTask<bool> UpdateUserAccountAsync()
+        public async ValueTask<bool> UpdateUserAccountAsync()
         {
             APIResponse<UserAccount> response = await apiBroker.GetUserAccountAsync();
             if (response.IsSuccessful)

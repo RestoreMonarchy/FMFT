@@ -9,5 +9,6 @@ namespace FMFT.Web.Client.Services.Accounts
         ValueTask InitializeAsync();
         ValueTask LoginAsync(AccountToken accountToken);
         ValueTask LogoutAsync();
+        ValueTask<bool> UpdateUserAccountAsync();
     }
 }

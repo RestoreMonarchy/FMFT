@@ -41,6 +41,13 @@ namespace FMFT.Web.Client.Brokers.APIs
             return await PostAsync(url, null);
         }
 
+        public async ValueTask<APIResponse> SendConfirmUserEmailAsync(int userId)
+        {
+            string url = $"{UsersRelativeUrl}/{userId}/confirmemail/send";
+
+            return await PostAsync(url, null);
+        }
+
         public async ValueTask<APIResponse<List<UserLogin>>> GetUserLoginsByUserIdAsync(int userId)
         {
             string url = $"{UsersRelativeUrl}/{userId}/logins";

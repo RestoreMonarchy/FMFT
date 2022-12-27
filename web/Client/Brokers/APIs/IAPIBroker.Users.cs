@@ -12,5 +12,6 @@ namespace FMFT.Web.Client.Brokers.APIs
         ValueTask<APIResponse> UpdateUserRoleAsync(UpdateUserRoleRequest request);
         ValueTask<APIResponse> ConfirmUserEmailAsync(ConfirmUserEmailRequest request);
         ValueTask<APIResponse<List<UserLogin>>> GetUserLoginsByUserIdAsync(int userId);
+        ValueTask<APIResponse> SendConfirmUserEmailAsync(int userId);
     }
 }

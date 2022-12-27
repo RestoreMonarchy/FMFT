@@ -1,6 +1,7 @@
 ﻿using FMFT.Extensions.Blazor.Bases.Loadings;
 using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Users.Requests;
+using FMFT.Web.Client.Services.Accounts;
 using Microsoft.AspNetCore.Components;
 
 namespace FMFT.Web.Client.Views.Pages.Users
@@ -11,7 +12,10 @@ namespace FMFT.Web.Client.Views.Pages.Users
         public int UserId { get; set; }
         [Parameter]
         public string ConfirmSecret { get; set; }
-        
+
+        [Inject]
+        public IAccountService AccountService { get; set; }
+
         public LoadingSpinnerView LoadingSpinnerView { get; set; }
 
         public APIResponse ConfirmUserResponse { get; set; }
@@ -25,6 +29,10 @@ namespace FMFT.Web.Client.Views.Pages.Users
             };
 
             ConfirmUserResponse = await APIBroker.ConfirmUserEmailAsync(request);
+            if (ConfirmUserResponse.IsSuccessful)
+            {
+                await AccountService.UpdateUserAccountAsync();
+            }
             LoadingSpinnerView.StopLoading();
         }
     }

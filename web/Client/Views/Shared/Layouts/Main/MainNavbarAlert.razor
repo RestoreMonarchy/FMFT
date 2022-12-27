@@ -1,0 +1,21 @@
+﻿@using FMFT.Web.Client.Views.Shared.Components.Dialogs
+<Condition Evaluation="UserAccountState.IsAuthenticated && !UserAccountState.UserAccount.IsEmailConfirmed">
+    <Match>
+        <div style="padding-bottom: 29px;">
+            <div class="fixed-top" style="top: 56px;z-index: 999;">
+                <div class="w-100 small bg-warning p-1">
+                    <div class="container text-center">
+                        Potwierdź swój adres email!
+                        <a href="javascript:void(0)" class="text-decoration-none" @onclick="HandleShowDialogAsync">
+                            Wyślij ponownie
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <SendConfirmEmailDialog @ref="SendConfirmEmailDialog" />
+
+    </Match>
+</Condition>
+

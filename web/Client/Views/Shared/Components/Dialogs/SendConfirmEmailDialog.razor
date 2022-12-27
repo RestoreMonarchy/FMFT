@@ -1,0 +1,38 @@
+﻿@using FMFT.Extensions.Blazor.Bases.Dialogs
+
+<ModalDialog @ref="ModalDialog">
+    <Title>
+        Wyślij ponownie
+    </Title>
+    <Body>
+        <p>
+            Czy chcesz ponownie otrzymać wiadomość z linkiem do potwierdzenia konta?
+        </p>
+        <p>
+            Adres email: <span class="fw-bold">@UserAccountState.UserAccount.Email</span>
+        </p>
+
+        <AlertGroupBase @ref="AlertGroup">
+            <AlertBase @ref="LimitAlert" Class="alert-danger">
+                Wysłałeś już prośbę o wysłanie wiadomości w ciągu ostatnich 2 minut. Spróbuj ponownie później
+            </AlertBase>
+            <AlertBase @ref="AlreadyConfirmedAlert" Class="alert-warning">
+                Twoje konto jest już potwierdzone
+            </AlertBase>
+            <AlertBase @ref="ErrorAlert" Class="alert-danger">
+                Wystąpił błąd. Spróbuj ponownie później
+            </AlertBase>
+            <AlertBase @ref="SuccessAlert" Class="alert-success">
+                Email został wysłany na podany adres
+            </AlertBase>
+        </AlertGroupBase>
+    </Body>
+    <Footer>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Anuluj
+        </button>
+        <ButtonBase @ref="SendButton" Class="btn btn-primary" OnClick="HandleSendAsync" SpinningText="Wysyłanie...">
+            Wyślij
+        </ButtonBase>
+    </Footer>
+</ModalDialog>
