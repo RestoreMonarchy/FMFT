@@ -29,5 +29,6 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
         ValueTask UpdateUserCultureAsync(UpdateUserCultureParams @params);
         ValueTask UpdateUserPasswordAsync(UpdateUserPasswordRequest request);
         ValueTask UpdateUserRoleAsync(UpdateUserRoleParams @params);
+        ValueTask<AccountToken> LoginWithGoogleAsync(LoginWithGoogleRequest request);
     }
 }

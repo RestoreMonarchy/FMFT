@@ -37,6 +37,7 @@
     <ProjectReference Include="..\..\extensions\blazor\Bases\FMFT.Extensions.Blazor.Bases.csproj" />
     <ProjectReference Include="..\..\extensions\blazor\DataTables\FMFT.Extensions.Blazor.DataTables.csproj" />
     <ProjectReference Include="..\..\extensions\blazor\Facebook\FMFT.Extensions.Blazor.Facebook.csproj" />
+    <ProjectReference Include="..\..\extensions\blazor\Google\FMFT.Extensions.Blazor.Google.csproj" />
     <ProjectReference Include="..\Shared\FMFT.Web.Shared.csproj" />
   </ItemGroup>
 

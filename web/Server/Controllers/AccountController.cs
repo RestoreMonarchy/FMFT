@@ -131,5 +131,28 @@ namespace FMFT.Web.Server.Controllers
                 return BadRequest(exception);
             }            
         }
+
+        [HttpPost("login/google")]
+        public async ValueTask<IActionResult> LoginGoogle([FromBody] LoginWithGoogleRequest request)
+        {
+            try
+            {
+                AccountToken accountToken = await userAccountService.LoginWithGoogleAsync(request);
+
+                return Ok(accountToken);
+            }
+            catch (AlreadyExistsEmailUserException exception)
+            {
+                return Conflict(exception);
+            }
+            catch (AlreadyExistsUserExternalLoginException exception)
+            {
+                return Conflict(exception);
+            }
+            catch (RegisterUserWithLoginValidationException exception)
+            {
+                return BadRequest(exception);
+            }
+        }
     }
 }

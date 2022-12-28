@@ -1,6 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using BlazorPanzoom;
 using FMFT.Extensions.Blazor.Facebook.Extensions;
+using FMFT.Extensions.Blazor.Google.Extensions;
 using FMFT.Web.Client.Brokers.APIs;
 using FMFT.Web.Client.Brokers.ExternalLogins;
 using FMFT.Web.Client.Brokers.JSRuntimes;
@@ -41,6 +42,15 @@ namespace FMFT.Web.Client.Extensions
                 options.OnLogin = async (services, result) =>
                 {
                     await services.GetRequiredService<IAccountService>().HandleFacebookLoginAsync(result);
+                };
+            });
+
+            builder.Services.AddGoogle(options =>
+            {
+                options.ClientId = builder.Configuration["GoogleClientId"];
+                options.OnLogin = async (services, result) =>
+                {
+                    await services.GetRequiredService<IAccountService>().HandleGoogleLoginAsync(result);
                 };
             });
         }

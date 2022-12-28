@@ -11,5 +11,6 @@ namespace FMFT.Web.Client.Brokers.APIs
         ValueTask<APIResponse<AccountToken>> PostAccountRegisterAsync(RegisterWithPasswordRequest request);
         ValueTask<APIResponse> PostAccountChangePasswordAsync(ChangePasswordRequest request);
         ValueTask<APIResponse<AccountToken>> PostAccountFacebookLoginAsync(FacebookLoginRequest request);
+        ValueTask<APIResponse<AccountToken>> PostAccountGoogleLoginAsync(GoogleLoginRequest request);
     }
 }

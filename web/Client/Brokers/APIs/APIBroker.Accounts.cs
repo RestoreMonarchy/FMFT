@@ -42,5 +42,12 @@ namespace FMFT.Web.Client.Brokers.APIs
 
             return await PostAsync<AccountToken>(url, request);
         }
+
+        public async ValueTask<APIResponse<AccountToken>> PostAccountGoogleLoginAsync(GoogleLoginRequest request)
+        {
+            string url = $"{AccountsRelativeUrl}/login/google";
+
+            return await PostAsync<AccountToken>(url, request);
+        }
     }
 }

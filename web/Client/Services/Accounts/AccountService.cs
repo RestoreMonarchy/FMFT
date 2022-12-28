@@ -1,4 +1,5 @@
 ﻿using FMFT.Extensions.Blazor.Facebook.Models.Results;
+using FMFT.Extensions.Blazor.Google.Models.Results;
 using FMFT.Web.Client.Brokers.APIs;
 using FMFT.Web.Client.Brokers.Loggings;
 using FMFT.Web.Client.Brokers.Navigations;
@@ -96,7 +97,7 @@ namespace FMFT.Web.Client.Services.Accounts
                 loggingBroker.LogDebug($"The facebook result status is: {result.Status}");
                 return;
             }
-            
+
             if (userAccountStateContainer.IsAuthenticated)
             {
                 loggingBroker.LogDebug("The user is already authenticated, ignoring facebook login");
@@ -109,6 +110,32 @@ namespace FMFT.Web.Client.Services.Accounts
             };
 
             APIResponse<AccountToken> response = await apiBroker.PostAccountFacebookLoginAsync(request);
+
+            if (!response.IsSuccessful)
+            {
+                navigationBroker.NavigateTo($"account/externalloginerror/{response.Error.Code}");
+                loggingBroker.LogDebug(response.Error.Title);
+                return;
+            }
+
+            await LoginAsync(response.Object);
+            navigationBroker.NavigateTo("/");
+        }
+
+        public async ValueTask HandleGoogleLoginAsync(GoogleLoginResult result)
+        {
+            if (userAccountStateContainer.IsAuthenticated)
+            {
+                loggingBroker.LogDebug("The user is already authenticated, ignoring google login");
+                return;
+            }
+
+            GoogleLoginRequest request = new()
+            {
+                Credential = result.Credential
+            };
+
+            APIResponse<AccountToken> response = await apiBroker.PostAccountGoogleLoginAsync(request);
 
             if (!response.IsSuccessful)
             {

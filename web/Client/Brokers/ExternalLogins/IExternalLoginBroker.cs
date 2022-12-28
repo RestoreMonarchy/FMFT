@@ -3,6 +3,8 @@
     public interface IExternalLoginBroker
     {
         ValueTask InitializeFacebookAsync();
+        ValueTask InitializeGoogleAsync();
         ValueTask LoginFacebookAsync();
+        ValueTask LoginGoogleAsync();
     }
 }

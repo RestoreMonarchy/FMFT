@@ -5,6 +5,7 @@ using FMFT.Web.Server.Brokers.Converts;
 using FMFT.Web.Server.Brokers.Emails;
 using FMFT.Web.Server.Brokers.Encryptions;
 using FMFT.Web.Server.Brokers.Facebooks;
+using FMFT.Web.Server.Brokers.Googles;
 using FMFT.Web.Server.Brokers.Loggings;
 using FMFT.Web.Server.Brokers.QRCodes;
 using FMFT.Web.Server.Brokers.Storages;
@@ -21,6 +22,7 @@ using FMFT.Web.Server.Services.Foundations.Accounts;
 using FMFT.Web.Server.Services.Foundations.Auditoriums;
 using FMFT.Web.Server.Services.Foundations.Emails;
 using FMFT.Web.Server.Services.Foundations.Facebooks;
+using FMFT.Web.Server.Services.Foundations.Googles;
 using FMFT.Web.Server.Services.Foundations.Medias;
 using FMFT.Web.Server.Services.Foundations.QRCodes;
 using FMFT.Web.Server.Services.Foundations.Reservations;
@@ -82,6 +84,7 @@ namespace FMFT.Web.Server.Extensions
             services.AddScoped<IFacebookBroker, FacebookBroker>();
             services.AddScoped<IConvertBroker, ConvertBroker>();
             services.AddScoped<IQRCodeBroker, QRCodeBroker>();
+            services.AddScoped<IGoogleBroker, GoogleBroker>();
 
             return services;
         }
@@ -100,6 +103,7 @@ namespace FMFT.Web.Server.Extensions
             services.AddTransient<IMediaService, MediaService>();
             services.AddTransient<IShowGalleryService, ShowGalleryService>();
             services.AddTransient<IQRCodeService, QRCodeService>();
+            services.AddTransient<IGoogleService, GoogleService>();
 
             return services;
         }

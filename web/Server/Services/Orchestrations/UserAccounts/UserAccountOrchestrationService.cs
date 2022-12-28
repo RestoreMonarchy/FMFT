@@ -4,6 +4,7 @@ using FMFT.Web.Server.Models.Accounts;
 using FMFT.Web.Server.Models.Accounts.Params;
 using FMFT.Web.Server.Models.Emails.Params;
 using FMFT.Web.Server.Models.Facebooks;
+using FMFT.Web.Server.Models.Googles;
 using FMFT.Web.Server.Models.UserAccounts;
 using FMFT.Web.Server.Models.UserAccounts.Exceptions;
 using FMFT.Web.Server.Models.UserAccounts.Requests;
@@ -14,6 +15,7 @@ using FMFT.Web.Server.Models.Users.Requests;
 using FMFT.Web.Server.Services.Foundations.Accounts;
 using FMFT.Web.Server.Services.Foundations.Emails;
 using FMFT.Web.Server.Services.Foundations.Facebooks;
+using FMFT.Web.Server.Services.Foundations.Googles;
 using FMFT.Web.Server.Services.Foundations.Users;
 using FMFT.Web.Shared.Enums;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -26,17 +28,20 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
         private readonly IUserService userService;
         private readonly IEmailService emailService;
         private readonly IFacebookService facebookService;
+        private readonly IGoogleService googleService;
 
         public UserAccountOrchestrationService(
             IAccountService accountService,
             IUserService userService,
             IEmailService emailService,
-            IFacebookService facebookService)
+            IFacebookService facebookService,
+            IGoogleService googleService)
         {
             this.accountService = accountService;
             this.userService = userService;
             this.emailService = emailService;
             this.facebookService = facebookService;
+            this.googleService = googleService;
         }
 
         public async ValueTask<IEnumerable<User>> RetrieveAllUsersAsync()
@@ -128,6 +133,56 @@ namespace FMFT.Web.Server.Services.Orchestrations.UserAccounts
             };
 
             return await accountService.CreateTokenAsync(createTokenParams);
+        }
+
+        public async ValueTask<AccountToken> LoginWithGoogleAsync(LoginWithGoogleRequest request)
+        {
+            GoogleUser googleUser = await googleService.GetGoogleUserAsync(request.Credential);
+
+            User user;
+            try
+            {
+                user = await userService.RetrieveUserByLoginAsync("Google", googleUser.Id);
+            }
+            catch (NotFoundUserException)
+            {
+                user = await RegisterGoogleUserAsync(googleUser);
+            }
+
+            CreateTokenParams @createTokenParams = new()
+            {
+                Account = MapUserToAccount(user)
+            };
+
+            return await accountService.CreateTokenAsync(createTokenParams);
+        }
+
+        private async ValueTask<User> RegisterGoogleUserAsync(GoogleUser googleUser)
+        {
+            RegisterUserWithLoginParams @registerUserWithLoginParams = new()
+            {
+                Email = googleUser.Email,
+                FirstName = googleUser.FirstName,
+                LastName = googleUser.LastName,
+                Role = UserRole.Guest,
+                IsEmailConfirmed = true,
+                ProviderName = "Google",
+                ProviderKey = googleUser.Id,
+                FriendlyName = googleUser.Email
+            };
+
+            User user = await userService.RegisterUserWithLoginAsync(@registerUserWithLoginParams);
+
+            RegisterExternalEmailParams @registerExternalEmailParams = new()
+            {
+                Email = user.Email,
+                FirstName = user.FirstName,
+                AuthenticationMethod = "Google"
+            };
+
+            await emailService.EnqueueSendRegisterExternalEmailAsync(user.Email, @registerExternalEmailParams);
+
+            return user;
         }
 
         private async ValueTask<User> RegisterFacebookUserAsync(FacebookUser facebookUser)

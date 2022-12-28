@@ -16,6 +16,7 @@ namespace FMFT.Web.Client.Views.Pages.Account
         protected override async Task OnInitializedAsync()
         {
             await ExternalLoginBroker.InitializeFacebookAsync();
+            await ExternalLoginBroker.InitializeGoogleAsync();
         }
 
         private async Task HandleSuccessfullLoginAsync(AccountToken accountToken)
@@ -27,6 +28,11 @@ namespace FMFT.Web.Client.Views.Pages.Account
         private async Task HandleFacebookLoginAsync()
         {
             await ExternalLoginBroker.LoginFacebookAsync();
+        }
+
+        private async Task HandleGoogleLoginAsync()
+        {
+            await ExternalLoginBroker.LoginGoogleAsync();
         }
     }
 }

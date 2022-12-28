@@ -1,20 +1,20 @@
-﻿using FMFT.Extensions.Blazor.Facebook.Models.Options;
-using FMFT.Extensions.Blazor.Facebook.Models.Results;
+﻿using FMFT.Extensions.Blazor.Google.Models.Options;
+using FMFT.Extensions.Blazor.Google.Models.Results;
 using Microsoft.Extensions.Options;
 using Microsoft.JSInterop;
 using System.Text.Json;
 
-namespace FMFT.Extensions.Blazor.Facebook.Services
+namespace FMFT.Extensions.Blazor.Google.Services
 {
-    public class FacebookService
+    public class GoogleService
     {
-        private readonly FacebookOptions options;
+        private readonly GoogleOptions options;
         private readonly IJSRuntime jsRuntime;
         private readonly IServiceProvider serviceProvider;
 
-        private readonly DotNetObjectReference<FacebookService> objectReference;
+        private readonly DotNetObjectReference<GoogleService> objectReference;
 
-        public FacebookService(IOptions<FacebookOptions> options, IJSRuntime jsRuntime, IServiceProvider serviceProvider)
+        public GoogleService(IOptions<GoogleOptions> options, IJSRuntime jsRuntime, IServiceProvider serviceProvider)
         {
             this.options = options.Value;
             this.jsRuntime = jsRuntime;
@@ -30,23 +30,23 @@ namespace FMFT.Extensions.Blazor.Facebook.Services
             if (isInitialized)
                 return;
 
-            await jsRuntime.InvokeVoidAsync("fbAsyncInit", options.AppId);
+            await jsRuntime.InvokeVoidAsync("googleAsyncInit", options.ClientId, objectReference);
             isInitialized = true;
         }
 
         public async ValueTask LoginAsync()
         {
-            await jsRuntime.InvokeVoidAsync("fbLogin", objectReference);            
+            await jsRuntime.InvokeVoidAsync("googleLogin");
         }
 
         [JSInvokable]
-        public async Task HandleFacebookLoginCallbackAsync(FacebookLoginResult result)
+        public async Task HandleGoogleLoginCallbackAsync(GoogleLoginResult result)
         {
             await options.OnLogin(serviceProvider, result);
 
-            Console.WriteLine("===== FACEBOOK RESULT =====");
+            Console.WriteLine("===== GOOGLE RESULT =====");
             Console.WriteLine(result);
-            Console.WriteLine($"{JsonSerializer.Serialize(result)}");            
+            Console.WriteLine($"{JsonSerializer.Serialize(result)}");
             Console.WriteLine("===========================");
         }
     }

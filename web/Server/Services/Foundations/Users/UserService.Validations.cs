@@ -36,14 +36,15 @@ namespace FMFT.Web.Server.Services.Foundations.Users
             {
                 validationException.UpsertDataList("FirstName", "First name must be at least 2 characters long");
             }
-            if (validationBroker.IsStringNullOrEmpty(@params.LastName))
-            {
-                validationException.UpsertDataList("LastName", "Last name is required");
-            }
-            if (validationBroker.IsStringInvalid(@params.LastName, 255, 2))
-            {
-                validationException.UpsertDataList("LastName", "Last name must be at least 2 characters long");
-            }
+            // Remove because google accounts don't have to provide last names
+            //if (validationBroker.IsStringNullOrEmpty(@params.LastName))
+            //{
+            //    validationException.UpsertDataList("LastName", "Last name is required");
+            //}
+            //if (validationBroker.IsStringInvalid(@params.LastName, 255, 2))
+            //{
+            //    validationException.UpsertDataList("LastName", "Last name must be at least 2 characters long");
+            //}
             if (validationBroker.IsStringInvalid(@params.ProviderKey, true, 255, 0))
             {
                 validationException.UpsertDataList("ProviderKey", "Invalid");
