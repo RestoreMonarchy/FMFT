@@ -1,0 +1,29 @@
+﻿<CascadingValue Value="this">
+    @ChildContent
+</CascadingValue>
+
+<ul class="nav nav-pills d-md-flex d-none mb-3 bg-light p-2 border">
+    <Iterations Items="Items" Context="item">
+        <li class="nav-item">
+            <a class="nav-link @item.GetActiveClass()" href="javascript:void(0)" @onclick="() => HandleClickAsync(item)">
+                @item.Text
+            </a>
+        </li>
+    </Iterations> 
+</ul>
+
+<div class="mb-3 d-md-none d-block">
+    <select class="form-select" value="@ActiveItemId" @onchange="HandleSelectAsync">
+        <Iterations Items="Items" Context="item">
+            <option value="@item.ID">
+                @item.Text
+            </option>
+        </Iterations>
+    </select>
+</div>
+
+<Condition Evaluation="ActiveItem is not null">
+    <Match>
+        @ActiveItem.ChildContent
+    </Match>
+</Condition>
