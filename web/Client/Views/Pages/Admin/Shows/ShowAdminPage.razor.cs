@@ -1,10 +1,7 @@
-﻿using FMFT.Extensions.Blazor.Bases.Buttons;
-using FMFT.Extensions.Blazor.Bases.Dialogs;
-using FMFT.Extensions.Blazor.Bases.Loadings;
+﻿using FMFT.Extensions.Blazor.Bases.Loadings;
 using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Auditoriums;
 using FMFT.Web.Client.Models.API.Shows;
-using FMFT.Web.Client.Models.API.Shows.Requests;
 using FMFT.Web.Shared.Enums;
 using Microsoft.AspNetCore.Components;
 
@@ -22,10 +19,8 @@ namespace FMFT.Web.Client.Views.Pages.Admin.Shows
         public APIResponse<Show> ShowResponse { get; set; }
         public APIResponse<List<Auditorium>> AuditoriumsResponse { get; set; }
         
-
         public Show Show { get; set; }
-        public List<Auditorium> Auditoriums => AuditoriumsResponse.Object;
-        
+        public List<Auditorium> Auditoriums => AuditoriumsResponse.Object;        
 
         protected override async Task OnParametersSetAsync()
         {

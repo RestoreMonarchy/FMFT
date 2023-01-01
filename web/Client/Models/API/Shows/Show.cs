@@ -16,5 +16,6 @@ namespace FMFT.Web.Client.Models.API.Shows
 
 
         public bool IsPast() => StartDateTime.UtcDateTime < DateTime.UtcNow;
+        public TimeSpan Duration() => EndDateTime - StartDateTime;
     }
 }

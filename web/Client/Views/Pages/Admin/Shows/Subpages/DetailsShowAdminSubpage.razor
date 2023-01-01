@@ -1,13 +1,65 @@
-﻿<div class="card">
-    <div class="card-header">
-        Informacja
+﻿
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                Informacja o wydarzeniu
+            </div>
+            <div class="list-group-flush">
+                <div class="list-group-item">
+                    <span class="fw-bold">
+                        Nazwa:
+                    </span>
+                    <span>
+                        @Show.Name
+                    </span>
+                </div>
+                <div class="list-group-item">
+                    <span class="fw-bold">
+                        Audytorium:
+                    </span>
+                    <span>
+                        @Auditorium.Name
+                    </span>
+                </div>
+                <div class="list-group-item">
+                    <span class="fw-bold">
+                        Zajęte/wolne miejsca:
+                    </span>
+                    <span>
+                        @Show.ReservedSeats.Count/@Auditorium.Seats.Count
+                    </span>
+                </div>
+                <div class="list-group-item">
+                    <span class="fw-bold">
+                        Data rozpoczęcia:
+                    </span>
+                    <span>
+                        @Show.StartDateTime.LocalDateTime.ToLongDateString()
+                    </span>
+                </div>
+                <div class="list-group-item">
+                    <span class="fw-bold">
+                        Godzina rozpoczęcia:
+                    </span>
+                    <span>
+                        @Show.StartDateTime.LocalDateTime.ToShortTimeString()
+                    </span>
+                </div>
+                
+                <div class="list-group-item">
+                    <span class="fw-bold">
+                        Czas trwania:
+                    </span>
+                    <span>
+                        @Show.Duration().ToString("hh\\:mm")
+                    </span>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="card-body">
-        <div class="fs-5">
-            @Show.Name
-        </div>
-        <div>
-            @Show.Description
-        </div>
+    <div class="col-lg-4">
+
     </div>
 </div>
+
