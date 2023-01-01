@@ -18,11 +18,11 @@
     <CustomAuthorizeView>
         <Authorized>
             <LoadingView @ref="LoadingView">
-                <Condition Evaluation="ShowsResponse.IsSuccessful">
+                <Condition Evaluation="ShowsResponse.IsSuccessful && AuditoriumsResponse.IsSuccessful">
                     <Match>
                         <div class="mb-2 d-flex align-items-center">
                             <div class="text-muted">
-                                Lista wydarzeń
+                                Lista wydarzeń (@Shows.Count)
                             </div>
                             <div class="ms-auto">
                                 <a href="/admin/shows/new" class="btn btn-primary btn-sm">
@@ -31,17 +31,23 @@
                                 </a>
                             </div>
                         </div>
-                        <table class="table">
+                        <table class="table table-striped">
                             <thead class="table-dark">
                                 <tr>
                                     <th scope="col">
-                                        ID
-                                    </th>
-                                    <th scope="col">
                                         Nazwa
+                                    </th>
+                                    <th class="d-none d-md-table-cell">
+                                        Audytorium
+                                    </th>
+                                    <th class="d-none d-lg-table-cell">
+                                        Zajęte miejsca
                                     </th>
                                     <th scope="col" class="d-none d-sm-table-cell">
                                         Data
+                                    </th>
+                                    <th scope="col" class="d-none d-lg-table-cell">
+                                        Godzina
                                     </th>
                                 </tr>
                             </thead>
@@ -49,15 +55,24 @@
                                 <Iterations Items="Shows.OrderByDescending(x => x.EndDateTime > DateTime.Now).ThenBy(x => x.StartDateTime)" Context="show">
                                     <tr class="@GetRowClass(show)">
                                         <th>
-                                            @show.Id
-                                        </th>
-                                        <td>
                                             <a href="/admin/shows/@show.Id" class="text-decoration-none @GetLinkClass(show)">
                                                 @show.Name
                                             </a>
+                                            <span class="d-sm-none text-muted small">
+                                                @show.StartDateTime.LocalDateTime.ToShortDateString()
+                                            </span>
+                                        </th>
+                                        <td class="d-none d-md-table-cell">
+                                            @GetAuditoriumName(show)
+                                        </td>
+                                        <td class="d-none d-lg-table-cell">
+                                            @show.ReservedSeats.Count / @GetAuditoriumSeats(show)
                                         </td>
                                         <td class="d-none d-sm-table-cell">
                                             @show.StartDateTime.LocalDateTime.ToShortDateString()
+                                        </td>
+                                        <td class="d-none d-lg-table-cell">
+                                            @show.StartDateTime.LocalDateTime.ToShortTimeString()
                                         </td>
                                     </tr>
                                 </Iterations>
