@@ -15,6 +15,8 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Shows
         [Parameter]
         public Show Show { get; set; }
         [Parameter]
+        public EventCallback<Show> ShowChanged { get; set; }
+        [Parameter]
         public List<Auditorium> Audutoriums { get; set; }
 
         public AlertGroupBase AlertGroup { get; set; }
@@ -77,6 +79,9 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Shows
 
             if (Response.IsSuccessful)
             {
+                Show = Response.Object;
+                await ShowChanged.InvokeAsync(Show);
+
                 SuccessAlert.Show();
             } else
             {

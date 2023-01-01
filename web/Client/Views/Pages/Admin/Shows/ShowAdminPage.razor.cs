@@ -17,18 +17,15 @@ namespace FMFT.Web.Client.Views.Pages.Admin.Shows
 
         public string ShowName => ShowResponse?.Object?.Name ?? ShowId.ToString();
 
-        public LoadingView LoadingView { get; set; }
-        public ModalDialog PreviewShowGalleryModalDialog { get; set; }
-        public ModalDialog DeleteShowGalleryModalDialog { get; set; }
-        public ButtonBase DeleteShowGalleryButton { get; set; }
+        public LoadingView LoadingView { get; set; }        
 
         public APIResponse<Show> ShowResponse { get; set; }
         public APIResponse<List<Auditorium>> AuditoriumsResponse { get; set; }
-        public APIResponse<List<ShowGallery>> ShowGalleryResponse { get; set; }
+        
 
-        public Show Show => ShowResponse.Object;
+        public Show Show { get; set; }
         public List<Auditorium> Auditoriums => AuditoriumsResponse.Object;
-        public List<ShowGallery> ShowGallery => ShowGalleryResponse.Object;
+        
 
         protected override async Task OnParametersSetAsync()
         {
@@ -39,65 +36,13 @@ namespace FMFT.Web.Client.Views.Pages.Admin.Shows
 
             ShowResponse = await APIBroker.GetShowByIdAsync(ShowId);
             AuditoriumsResponse = await APIBroker.GetAllAuditoriumsAsync();
-            ShowGalleryResponse = await APIBroker.GetShowGalleryByShowIdAsync(ShowId);
+            
+            if (ShowResponse.IsSuccessful)
+            {
+                Show = ShowResponse.Object;
+            }
 
             LoadingView.StopLoading();
-        }
-
-        private ShowGallery previewShowGallery = null;
-        private ShowGallery deleteShowGallery = null;
-
-        private async Task HandleShowGalleryPreviewAsync(ShowGallery showGallery)
-        {
-            previewShowGallery = showGallery;
-            await PreviewShowGalleryModalDialog.ShowAsync();
-        }
-
-        private async Task HandleShowGalleryMediaAddAsync(Guid? mediaId)
-        {
-            if (!mediaId.HasValue)
-            {
-                return;
-            }
-
-            AddShowGalleryRequest request = new()
-            {
-                ShowId = ShowId,
-                MediaId = mediaId.Value
-            };
-
-            APIResponse showGalleryResponse = await APIBroker.AddShowGalleryAsync(request);
-
-            if (!showGalleryResponse.IsSuccessful)
-            {
-                return;
-            }
-
-            ShowGallery showGallery = await showGalleryResponse.ReadFromJsonAsync<ShowGallery>();
-            ShowGallery.Add(showGallery);
-        }
-
-        private async Task HandleShowGalleryDeleteModalAsync(ShowGallery showGallery)
-        {
-            deleteShowGallery = showGallery;
-            await DeleteShowGalleryModalDialog.ShowAsync();
-        }
-
-        private async Task HandleDeleteShowGalleryAsync()
-        {
-            DeleteShowGalleryButton.StartSpinning();
-
-            APIResponse response = await APIBroker.DeleteShowGalleryByIdAsync(deleteShowGallery.Id);
-            if (response.IsSuccessful)
-            {
-                ShowGallery.Remove(deleteShowGallery);
-            }            
-
-            await DeleteShowGalleryModalDialog.HideAsync();
-            deleteShowGallery = null;
-
-            DeleteShowGalleryButton.StopSpinning();
-
         }
     }
 }

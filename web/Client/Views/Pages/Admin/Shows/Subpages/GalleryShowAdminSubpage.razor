@@ -1,0 +1,86 @@
+﻿@using FMFT.Web.Client.Views.Shared.Components.Inputs
+@using FMFT.Extensions.Blazor.Bases.Dialogs
+
+<LoadingView @ref="LoadingView">
+    <Condition Evaluation="ShowGalleryResponse.IsSuccessful">
+        <Match>
+
+            <div class="card">
+                <div class="card-header">
+                    Galeria
+                </div>
+                <ul class="list-group list-group-flush">
+                    <Iterations Items="ShowGallery" Context="showGallery">
+                        <li class="list-group-item d-flex align-items-center">
+                            <div>
+                                <img src="@MediaService.GetMediaUrl(@showGallery.MediaId)" class="rounded-2 cursor-pointer" style="height: 50px;" @onclick="() => HandleShowGalleryPreviewAsync(showGallery)" />
+                            </div>
+                            <div class="ms-auto">
+                                <button class="btn btn-sm btn-danger" @onclick="() => HandleShowGalleryDeleteModalAsync(showGallery)">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </li>
+                    </Iterations>
+                </ul>
+                <div class="card-footer">
+                    <InputMediaFile ValueChanged="HandleShowGalleryMediaAddAsync" DisablePreview="true" Class="form-control" Accept="image/*" />
+                </div>
+            </div>
+
+            <ModalDialog @ref="PreviewShowGalleryModalDialog">
+                <Title>
+                    Podgląd obrazu
+                </Title>
+                <Body>
+                    <Condition Evaluation="previewShowGallery != null">
+                        <Match>
+                            <div class="text-center">
+                                <img src="@MediaService.GetMediaUrl(previewShowGallery.MediaId)" class="img-thumbnail" />
+                            </div>
+                        </Match>
+                    </Condition>
+                </Body>
+                <Footer>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Zamknij
+                    </button>
+                    <button type="button" class="btn btn-danger" @onclick="() => HandleShowGalleryDeleteModalAsync(previewShowGallery)">
+                        Usuń
+                    </button>
+                </Footer>
+            </ModalDialog>
+
+            <ModalDialog @ref="DeleteShowGalleryModalDialog" AlignCenter="true">
+                <Title>
+                    Usuń obraz z galerii
+                </Title>
+                <Body>
+                    <Condition Evaluation="deleteShowGallery != null">
+                        <Match>
+                            <div class="mb-2">
+                                Czy napewno chcesz usunąć ten obraz z galerii?
+                            </div>
+                            <div class="text-center">
+                                <img src="@MediaService.GetMediaUrl(deleteShowGallery.MediaId)" class="img-thumbnail" />
+                            </div>
+                        </Match>
+                    </Condition>
+                </Body>
+                <Footer>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Anuluj
+                    </button>
+                    <ButtonBase @ref="DeleteShowGalleryButton" Class="btn btn-danger" OnClick="HandleDeleteShowGalleryAsync">
+                        Usuń
+                    </ButtonBase>
+                </Footer>
+            </ModalDialog>
+
+        </Match>
+        <NotMatch>
+            <ErrorResponseAlert />
+        </NotMatch>
+    </Condition>
+
+</LoadingView>
