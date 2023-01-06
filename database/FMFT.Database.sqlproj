@@ -91,6 +91,7 @@
     <Build Include="dbo\tables\ReservationSeats.sql" />
     <Build Include="dbo\procedures\GetReservationBySecretKey.sql" />
     <Build Include="dbo\tables\ReservationDetails.sql" />
+    <Build Include="dbo\tables\ShowProducts.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FMFT.Database.publish.xml" />

@@ -29,6 +29,7 @@ using FMFT.Web.Server.Services.Foundations.Reservations;
 using FMFT.Web.Server.Services.Foundations.ResetPasswordRequests;
 using FMFT.Web.Server.Services.Foundations.Seats;
 using FMFT.Web.Server.Services.Foundations.ShowGalleries;
+using FMFT.Web.Server.Services.Foundations.ShowProducts;
 using FMFT.Web.Server.Services.Foundations.Shows;
 using FMFT.Web.Server.Services.Foundations.Users;
 using FMFT.Web.Server.Services.Orchestrations.Medias;
@@ -104,6 +105,7 @@ namespace FMFT.Web.Server.Extensions
             services.AddTransient<IShowGalleryService, ShowGalleryService>();
             services.AddTransient<IQRCodeService, QRCodeService>();
             services.AddTransient<IGoogleService, GoogleService>();
+            services.AddTransient<IShowProductService, ShowProductService>();
 
             return services;
         }
