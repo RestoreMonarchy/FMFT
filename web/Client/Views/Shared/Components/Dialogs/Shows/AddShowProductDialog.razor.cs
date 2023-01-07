@@ -1,13 +1,12 @@
 ﻿using FMFT.Extensions.Blazor.Bases.Alerts;
 using FMFT.Extensions.Blazor.Bases.Buttons;
-using FMFT.Web.Client.Models.API.ShowProducts.Requests;
-using FMFT.Web.Client.Models.API;
-using FMFT.Web.Client.Models.Forms.ShowProducts;
-using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Components;
-using FMFT.Web.Client.Models.API.ShowProducts;
-using FMFT.Web.Client.Models.API.Shows;
 using FMFT.Extensions.Blazor.Bases.Dialogs;
+using FMFT.Web.Client.Models.API;
+using FMFT.Web.Client.Models.API.ShowProducts;
+using FMFT.Web.Client.Models.API.ShowProducts.Requests;
+using FMFT.Web.Client.Models.API.Shows;
+using FMFT.Web.Client.Models.Forms.ShowProducts;
+using Microsoft.AspNetCore.Components;
 
 namespace FMFT.Web.Client.Views.Shared.Components.Dialogs.Shows
 {
@@ -44,8 +43,14 @@ namespace FMFT.Web.Client.Views.Shared.Components.Dialogs.Shows
 
         public async Task ShowAsync()
         {
+            await ModalDialog.ShowStaticAsync();
+        }
+
+        private async Task HideAsync()
+        {
             AlertGroup.HideAll();
-            await ModalDialog.ShowAsync();
+            ResetModel();
+            await ModalDialog.HideAsync();
         }
 
         private async Task SubmitAsync()

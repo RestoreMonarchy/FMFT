@@ -1,6 +1,7 @@
 ﻿@using FMFT.Extensions.Blazor.Bases.Dialogs
+
 <EditForm Model="Model" OnValidSubmit="SubmitAsync">
-    <ModalDialog @ref="ModalDialog">
+    <ModalDialog @ref="ModalDialog" HideCloseButton="true">
         <Title>
             Dodaj rodzaj biletu
         </Title>
@@ -45,6 +46,9 @@
 
         </Body>
         <Footer>
+            <ButtonBase Class="btn btn-secondary" OnClick="HideAsync">
+                Anuluj
+            </ButtonBase>
             <SubmitButtonBase @ref="SubmitButton" Class="btn btn-primary">
                 <i class="fa-solid fa-plus me-1"></i>
                 Dodaj
