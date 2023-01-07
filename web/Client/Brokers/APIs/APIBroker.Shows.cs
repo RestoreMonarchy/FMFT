@@ -64,5 +64,12 @@ namespace FMFT.Web.Client.Brokers.APIs
 
             return await PostAsync<ShowProduct>(url, request);
         }
+
+        public async ValueTask<APIResponse<ShowProduct>> ModifyShowProductAsync(ModifyShowProductRequest request)
+        {
+            string url = $"{ShowsRelativeUrl}/{request.ShowId}/products/modify";
+
+            return await PostAsync<ShowProduct>(url, request);
+        }
     }
 }

@@ -9,18 +9,18 @@
                 Rodzaje biletów
             </div>
             <div class="ms-auto">
-                <button class="btn btn-sm btn-primary" @onclick="HandleOpenAddModalDialogAsync">
+                <button class="btn btn-sm btn-primary" @onclick="HandleOpenAddDialogAsync">
                     Dodaj
                 </button>
             </div>
         </div>
 
         <table class="table table-bordered mb-0">
-            <thead>
+            <thead class="table-dark">
                 <tr>
                     <th class="w-auto">Nazwa</th>
                     <th class="w-auto">Cena</th>
-                    <th style="white-space: nowrap;width: 1%;">
+                    <th class="text-center" style="white-space: nowrap;width: 1%;">
                         <i class="fa-solid fa-screwdriver-wrench"></i>
                     </th>
                 </tr>
@@ -28,12 +28,12 @@
             <Condition Evaluation="ShowProducts.Any()">
                 <Match>
                     <tbody>
-                        <Iterations Context="showProduct" Items="ShowProducts">
+                        <Iterations Context="showProduct" Items="ShowProducts.OrderBy(x => x.Id)">
                             <tr>
                                 <td class="w-auto align-middle">@showProduct.Name</td>
                                 <td class="w-auto align-middle">@showProduct.Price.ToString("N2") PLN</td>
                                 <td style="white-space: nowrap;width: 1%;">
-                                    <button class="btn btn-sm btn-outline-success">
+                                    <button class="btn btn-sm btn-outline-success" @onclick="() => HandleOpenEditDialogAsync(showProduct)">
                                         Edytuj
                                     </button>
                                 </td>
@@ -47,5 +47,6 @@
     </div>
     
     <AddShowProductDialog @ref="AddShowProductDialog" Show="Show" OnShowProductAdded="HandleShowProductAddedAsync" />
+    <EditShowProductDialog @ref="EditShowProductDialog" OnShowProductUpdated="HandleShowProductUpdatedAsync" />
 
 </LoadingView>

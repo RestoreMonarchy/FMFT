@@ -14,6 +14,7 @@ namespace FMFT.Web.Client.Views.Pages.Admin.Shows.Subpages
 
         public LoadingView LoadingView { get; set; }
         public AddShowProductDialog AddShowProductDialog { get; set; }
+        public EditShowProductDialog EditShowProductDialog { get; set; }
 
         public APIResponse<List<ShowProduct>> ShowProductsResponse { get; set; }
 
@@ -26,14 +27,27 @@ namespace FMFT.Web.Client.Views.Pages.Admin.Shows.Subpages
             LoadingView.StopLoading();
         }
 
-        private async Task HandleOpenAddModalDialogAsync()
+        private async Task HandleOpenAddDialogAsync()
         {
             await AddShowProductDialog.ShowAsync();
+        }
+
+        private async Task HandleOpenEditDialogAsync(ShowProduct showProduct)
+        {
+            await EditShowProductDialog.ShowAsync(showProduct);
         }
 
         private Task HandleShowProductAddedAsync(ShowProduct showProduct)
         {
             ShowProducts.Add(showProduct);
+            return Task.CompletedTask;
+        }
+
+        private Task HandleShowProductUpdatedAsync(ShowProduct showProduct)
+        {
+            ShowProducts.RemoveAll(x => x.Id == showProduct.Id);
+            ShowProducts.Add(showProduct);
+
             return Task.CompletedTask;
         }
     }

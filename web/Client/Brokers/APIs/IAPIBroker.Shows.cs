@@ -19,5 +19,6 @@ namespace FMFT.Web.Client.Brokers.APIs
 
         ValueTask<APIResponse<List<ShowProduct>>> GetShowProductsByShowIdAsync(int showId);
         ValueTask<APIResponse<ShowProduct>> AddShowProductAsync(AddShowProductRequest request);
+        ValueTask<APIResponse<ShowProduct>> ModifyShowProductAsync(ModifyShowProductRequest request);
     }
 }

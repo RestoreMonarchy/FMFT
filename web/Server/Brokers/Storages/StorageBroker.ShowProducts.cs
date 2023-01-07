@@ -13,6 +13,13 @@ namespace FMFT.Web.Server.Brokers.Storages
             return await connection.QueryAsync<ShowProduct>(sql, new { showId });
         }
 
+        public async ValueTask<ShowProduct> SelectShowProductByIdAsync(int showProductId)
+        {
+            const string sql = "SELECT * FROM dbo.ShowProducts WHERE Id = @showProductId;";
+
+            return await connection.QuerySingleOrDefaultAsync<ShowProduct>(sql, new { showProductId });
+        }
+
         public async ValueTask<ShowProduct> InsertShowProductAsync(AddShowProductParams @params)
         {
             const string sql = "INSERT INTO dbo.ShowProducts (ShowId, Name, Price, IsEnabled) " +
@@ -27,7 +34,9 @@ namespace FMFT.Web.Server.Brokers.Storages
             const string sql = @"UPDATE dbo.ShowProducts SET Name = @Name, Price = @Price, IsEnabled = @IsEnabled 
                 WHERE Id = @Id AND ShowId = @ShowId;";
 
-            return await connection.QuerySingleOrDefaultAsync<ShowProduct>(sql, @params);
+            await connection.ExecuteAsync(sql, @params);
+
+            return await SelectShowProductByIdAsync(@params.Id);
         }
     }
 }
