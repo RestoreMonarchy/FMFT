@@ -2,6 +2,7 @@
 using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.ShowProducts;
 using FMFT.Web.Client.Models.API.Shows;
+using FMFT.Web.Client.Views.Shared.Components.Dialogs.Shows;
 using Microsoft.AspNetCore.Components;
 
 namespace FMFT.Web.Client.Views.Pages.Admin.Shows.Subpages
@@ -12,6 +13,7 @@ namespace FMFT.Web.Client.Views.Pages.Admin.Shows.Subpages
         public Show Show { get; set; }
 
         public LoadingView LoadingView { get; set; }
+        public AddShowProductDialog AddShowProductDialog { get; set; }
 
         public APIResponse<List<ShowProduct>> ShowProductsResponse { get; set; }
 
@@ -22,6 +24,17 @@ namespace FMFT.Web.Client.Views.Pages.Admin.Shows.Subpages
             ShowProductsResponse = await APIBroker.GetShowProductsByShowIdAsync(Show.Id);
 
             LoadingView.StopLoading();
+        }
+
+        private async Task HandleOpenAddModalDialogAsync()
+        {
+            await AddShowProductDialog.ShowAsync();
+        }
+
+        private Task HandleShowProductAddedAsync(ShowProduct showProduct)
+        {
+            ShowProducts.Add(showProduct);
+            return Task.CompletedTask;
         }
     }
 }

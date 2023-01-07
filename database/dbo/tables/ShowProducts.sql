@@ -5,4 +5,4 @@
 	Name NVARCHAR(255) NOT NULL,
 	Price DECIMAL(9,2) NOT NULL,
 	IsEnabled BIT NOT NULL
-)
+) 

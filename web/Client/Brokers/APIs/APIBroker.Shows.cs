@@ -1,5 +1,6 @@
 ﻿using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.ShowProducts;
+using FMFT.Web.Client.Models.API.ShowProducts.Requests;
 using FMFT.Web.Client.Models.API.Shows;
 using FMFT.Web.Client.Models.API.Shows.Requests;
 
@@ -55,6 +56,13 @@ namespace FMFT.Web.Client.Brokers.APIs
             string url = $"{ShowsRelativeUrl}/{showId}/products";
 
             return await GetAsync<List<ShowProduct>>(url);
+        }
+
+        public async ValueTask<APIResponse<ShowProduct>> AddShowProductAsync(AddShowProductRequest request)
+        {
+            string url = $"{ShowsRelativeUrl}/{request.ShowId}/products/add";
+
+            return await PostAsync<ShowProduct>(url, request);
         }
     }
 }
