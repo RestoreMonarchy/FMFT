@@ -71,5 +71,12 @@ namespace FMFT.Web.Client.Brokers.APIs
 
             return await PostAsync<ShowProduct>(url, request);
         }
+
+        public async ValueTask<APIResponse> DeleteShowProductAsync(int showId, int showProductId)
+        {
+            string url = $"{ShowsRelativeUrl}/{showId}/products/{showProductId}/delete";
+
+            return await DeleteAsync(url);
+        }
     }
 }

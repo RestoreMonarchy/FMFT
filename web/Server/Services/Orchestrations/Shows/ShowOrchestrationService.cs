@@ -55,5 +55,10 @@ namespace FMFT.Web.Server.Services.Orchestrations.Shows
         {
             return await showProductService.ModifyShowProductAsync(@params);
         }
+
+        public async ValueTask RemoveShowProductByIdAndShowIdAsync(int showProductId, int showId)
+        {
+            await showProductService.RemoveShowProductByIdAndShowIdAsync(showProductId, showId);
+        }
     }
 }

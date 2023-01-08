@@ -47,12 +47,18 @@
                             <AlertBase @ref="ErrorAlert" Class="alert-danger">
                                 Wystąpił błąd. Spróbuj ponownie później
                             </AlertBase>
+                            <AlertBase @ref="DeleteNotFoundAlert" Class="alert-danger">
+                                Ten produkt został już usunięty
+                            </AlertBase>
                         </AlertGroupBase>
                     </EditForm>
                 </NotMatch>
             </Condition>            
         </Body>
         <Footer>
+            <ButtonBase @ref="DeleteButton" Class="btn btn-danger me-auto" OnClick="HandleDeleteAsync">
+                Usuń
+            </ButtonBase>
             <ButtonBase Class="btn btn-secondary" OnClick="HideAsync">
                 Anuluj
             </ButtonBase>

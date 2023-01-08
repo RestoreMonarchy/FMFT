@@ -1,12 +1,12 @@
 ﻿@using FMFT.Extensions.Blazor.Bases.Dialogs
 
-<EditForm Model="Model" OnValidSubmit="SubmitAsync">
-    <ModalDialog @ref="ModalDialog" HideCloseButton="true">
-        <Title>
-            Dodaj rodzaj biletu
-        </Title>
-        <Body>
 
+<ModalDialog @ref="ModalDialog">
+    <Title>
+        Dodaj rodzaj biletu
+    </Title>
+    <Body>
+        <EditForm Model="Model" OnValidSubmit="SubmitAsync" id="addshowproduct-form">
             <DataAnnotationsValidator />
 
             <div class="mb-2">
@@ -43,16 +43,15 @@
                     Wystąpił błąd. Spróbuj ponownie później
                 </AlertBase>
             </AlertGroupBase>
-
-        </Body>
-        <Footer>
-            <ButtonBase Class="btn btn-secondary" OnClick="HideAsync">
-                Anuluj
-            </ButtonBase>
-            <SubmitButtonBase @ref="SubmitButton" Class="btn btn-primary">
-                <i class="fa-solid fa-plus me-1"></i>
-                Dodaj
-            </SubmitButtonBase>
-        </Footer>
-    </ModalDialog>
-</EditForm>
+        </EditForm>
+    </Body>
+    <Footer>
+        <ButtonBase Class="btn btn-secondary" OnClick="HideAsync">
+            Anuluj
+        </ButtonBase>
+        <SubmitButtonBase @ref="SubmitButton" Class="btn btn-primary" Form="addshowproduct-form">
+            <i class="fa-solid fa-plus me-1"></i>
+            Dodaj
+        </SubmitButtonBase>
+    </Footer>
+</ModalDialog>

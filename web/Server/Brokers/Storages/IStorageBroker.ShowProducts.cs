@@ -9,5 +9,6 @@ namespace FMFT.Web.Server.Brokers.Storages
         ValueTask<ShowProduct> SelectShowProductByIdAsync(int showProductId);
         ValueTask<ShowProduct> InsertShowProductAsync(AddShowProductParams @params);
         ValueTask<ShowProduct> UpdateShowProductAsync(UpdateShowProductParams @params);
+        ValueTask<bool> DeleteShowProductByIdAndShowIdAsync(int showProductId, int showId);
     }
 }

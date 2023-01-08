@@ -1,5 +1,6 @@
 ﻿using FMFT.Web.Server.Brokers.Storages;
 using FMFT.Web.Server.Models.ShowProducts;
+using FMFT.Web.Server.Models.ShowProducts.Exceptions;
 using FMFT.Web.Server.Models.ShowProducts.Params;
 
 namespace FMFT.Web.Server.Services.Foundations.ShowProducts
@@ -26,6 +27,16 @@ namespace FMFT.Web.Server.Services.Foundations.ShowProducts
         public async ValueTask<ShowProduct> ModifyShowProductAsync(UpdateShowProductParams @params)
         {
             return await storageBroker.UpdateShowProductAsync(@params);
+        }
+
+        public async ValueTask RemoveShowProductByIdAndShowIdAsync(int showProductId, int showId)
+        {
+            bool isDeleted = await storageBroker.DeleteShowProductByIdAndShowIdAsync(showProductId, showId);
+
+            if (!isDeleted)
+            {
+                throw new NotFoundShowProductException();
+            }
         }
     }
 }

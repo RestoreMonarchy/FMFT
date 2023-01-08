@@ -13,19 +13,23 @@ namespace FMFT.Web.Client.Views.Shared.Components.Dialogs.Shows
     {
         [Parameter]
         public EventCallback<ShowProduct> OnShowProductUpdated { get; set; }
+        [Parameter]
+        public EventCallback<ShowProduct> OnShowProductDeleted { get; set; }
 
         public ModalDialog ModalDialog { get; set; }
         public AlertGroupBase AlertGroup { get; set; }
         public AlertBase SuccessAlert { get; set; }
         public AlertBase ErrorAlert { get; set; }
         public SubmitButtonBase SubmitButton { get; set; }
-        
+        public AlertBase DeleteNotFoundAlert { get; set; }
+        public ButtonBase DeleteButton { get; set; }
+
         public ModifyShowProductFormModel Model { get; set; }
         public ShowProduct ShowProduct { get; set; }
 
         public async Task ShowAsync(ShowProduct showProduct)
         {
-            await ModalDialog.ShowAsync();
+            await ModalDialog.ShowStaticAsync();
             ShowProduct = showProduct;
             Model = new()
             {
@@ -39,6 +43,32 @@ namespace FMFT.Web.Client.Views.Shared.Components.Dialogs.Shows
         private async Task HideAsync()
         {
             await ModalDialog.HideAsync();
+        }
+
+        private async Task HandleDeleteAsync()
+        {
+            AlertGroup.HideAll();
+            DeleteButton.StartSpinning();
+
+            APIResponse response = await APIBroker.DeleteShowProductAsync(ShowProduct.ShowId, ShowProduct.Id);
+
+            if (response.IsSuccessful)
+            {
+                await OnShowProductDeleted.InvokeAsync(ShowProduct);
+                await HideAsync();
+            }
+            else
+            {
+                if (response.Error.Code == "ERR040")
+                {
+                    DeleteNotFoundAlert.Show();
+                } else
+                {
+                    ErrorAlert.Show();
+                }
+            }
+
+            DeleteButton.StopSpinning();
         }
 
         private async Task SubmitAsync()

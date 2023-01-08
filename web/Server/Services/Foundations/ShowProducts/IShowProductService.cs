@@ -8,5 +8,6 @@ namespace FMFT.Web.Server.Services.Foundations.ShowProducts
         ValueTask<ShowProduct> AddShowProductAsync(AddShowProductParams @params);
         ValueTask<IEnumerable<ShowProduct>> RetrieveShowProductsByShowIdAsync(int showId);
         ValueTask<ShowProduct> ModifyShowProductAsync(UpdateShowProductParams @params);
+        ValueTask RemoveShowProductByIdAndShowIdAsync(int showProductId, int showId);
     }
 }

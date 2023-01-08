@@ -38,5 +38,12 @@ namespace FMFT.Web.Server.Brokers.Storages
 
             return await SelectShowProductByIdAsync(@params.Id);
         }
+
+        public async ValueTask<bool> DeleteShowProductByIdAndShowIdAsync(int showProductId, int showId)
+        {
+            const string sql = @"DELETE FROM dbo.ShowProducts WHERE Id = @showProductId AND ShowId = @showId;";
+
+            return await connection.ExecuteAsync(sql, new { showProductId, showId }) == 1;
+        }
     }
 }

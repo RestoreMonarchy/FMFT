@@ -1,6 +1,7 @@
 ﻿@using FMFT.Extensions.Blazor.Bases.Dialogs
 @using FMFT.Web.Client.Views.Shared.Components.Dialogs.Shows
 @using FMFT.Web.Client.Views.Shared.Components.Forms.Shows
+
 <LoadingView @ref="LoadingView">
     <div class="card">
 
@@ -29,7 +30,7 @@
                 <Match>
                     <tbody>
                         <Iterations Context="showProduct" Items="ShowProducts.OrderBy(x => x.Id)">
-                            <tr>
+                            <tr class="@GetRowClass(showProduct)">
                                 <td class="w-auto align-middle">@showProduct.Name</td>
                                 <td class="w-auto align-middle">@showProduct.Price.ToString("N2") PLN</td>
                                 <td style="white-space: nowrap;width: 1%;">
@@ -47,6 +48,6 @@
     </div>
     
     <AddShowProductDialog @ref="AddShowProductDialog" Show="Show" OnShowProductAdded="HandleShowProductAddedAsync" />
-    <EditShowProductDialog @ref="EditShowProductDialog" OnShowProductUpdated="HandleShowProductUpdatedAsync" />
+    <EditShowProductDialog @ref="EditShowProductDialog" OnShowProductUpdated="HandleShowProductUpdatedAsync" OnShowProductDeleted="HandleShowProductDeletedAsync" />
 
 </LoadingView>

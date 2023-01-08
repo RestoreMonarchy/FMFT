@@ -62,5 +62,12 @@ namespace FMFT.Web.Server.Services.Coordinations.Shows
 
             return await showService.ModifyShowProductAsync(@params);
         }
+
+        public async ValueTask RemoveShowProductByIdAndShowIdAsync(int showProductId, int showId)
+        {
+            await userAccountService.AuthorizeUserAccountByRoleAsync(UserRole.Admin);
+
+            await showService.RemoveShowProductByIdAndShowIdAsync(showProductId, showId);
+        }
     }
 }

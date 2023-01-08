@@ -50,5 +50,17 @@ namespace FMFT.Web.Client.Views.Pages.Admin.Shows.Subpages
 
             return Task.CompletedTask;
         }
+
+        private Task HandleShowProductDeletedAsync(ShowProduct showProduct)
+        {
+            ShowProducts.RemoveAll(x => x.Id == showProduct.Id);
+
+            return Task.CompletedTask;
+        }
+
+        private string GetRowClass(ShowProduct showProduct)
+        {
+            return showProduct.IsEnabled ? "" : "text-muted";
+        }
     }
 }

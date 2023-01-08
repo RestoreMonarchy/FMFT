@@ -43,13 +43,13 @@ namespace FMFT.Web.Client.Views.Shared.Components.Dialogs.Shows
 
         public async Task ShowAsync()
         {
+            AlertGroup.HideAll();
+            ResetModel();
             await ModalDialog.ShowStaticAsync();
         }
 
         private async Task HideAsync()
         {
-            AlertGroup.HideAll();
-            ResetModel();
             await ModalDialog.HideAsync();
         }
 
