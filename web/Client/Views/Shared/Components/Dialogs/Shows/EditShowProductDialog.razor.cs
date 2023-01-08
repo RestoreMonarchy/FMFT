@@ -48,7 +48,7 @@ namespace FMFT.Web.Client.Views.Shared.Components.Dialogs.Shows
             ModifyShowProductRequest request = new()
             {
                 Id = ShowProduct.Id,
-                ShowId = ShowProduct.Id,
+                ShowId = ShowProduct.ShowId,
                 Name = Model.Name,
                 Price = Model.Price.Value,
                 IsEnabled = Model.IsEnabled
