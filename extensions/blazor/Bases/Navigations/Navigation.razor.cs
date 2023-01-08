@@ -7,52 +7,64 @@ namespace FMFT.Extensions.Blazor.Bases.Navigations
     {
         [Parameter]
         public RenderFragment ChildContent { get; set; }
+        [Parameter]
+        public string ActiveItemUrlId { get; set; }
+        [Parameter]
+        public EventCallback<NavigationItem> OnNavigate { get; set; }
 
         public List<NavigationItem> Items { get; set; } = new();
 
-        public void AddItem(NavigationItem item)
+        protected override void OnParametersSet()
         {
+            Console.WriteLine("Navigation OnParametersSet");
+        }
+
+        protected override void OnAfterRender(bool firstRender)
+        {
+            Console.WriteLine("Navigation OnAfterRender");
+        }
+
+        public async Task AddItem(NavigationItem item)
+        {
+            Console.WriteLine("Navigation AddItem");
+
             Items.Add(item);
 
-            if (item.IsActive)
+            if (item.UrlId.Equals(ActiveItemUrlId, StringComparison.OrdinalIgnoreCase))
             {
-                SetActiveItem(item);   
+                await SetActiveItemAsync(item);
             }
         }
 
-        public NavigationItem ActiveItem { get; set; }
-        public Guid ActiveItemId => ActiveItem?.ID ?? Guid.Empty;
+        public NavigationItem ActiveNavigationItem { get; set; }
+        public Guid ActiveItemId => ActiveNavigationItem?.ID ?? Guid.Empty;
 
-        public void SetActiveItem(NavigationItem item)
+        public async Task SetActiveItemAsync(NavigationItem item)
         {
-            if (ActiveItem == item)
+            if (ActiveNavigationItem == item)
             {
                 return;
             }
 
-            ActiveItem?.SetIsActive(false);
-            
-            ActiveItem = item;
-            ActiveItem.SetIsActive(true);
+            ActiveNavigationItem?.SetIsActive(false);
+                        
+            ActiveNavigationItem = item;
+            ActiveNavigationItem.SetIsActive(true);
 
-            StateHasChanged();
+            await OnNavigate.InvokeAsync(ActiveNavigationItem);
         }
 
-        public Task HandleClickAsync(NavigationItem item)
+        public async Task HandleClickAsync(NavigationItem item)
         {
-            SetActiveItem(item);
-
-            return Task.CompletedTask;
+            await SetActiveItemAsync(item);
         }
 
-        public Task HandleSelectAsync(ChangeEventArgs args)
+        public async Task HandleSelectAsync(ChangeEventArgs args)
         {
             Guid itemId = Guid.Parse(args.Value.ToString());
             NavigationItem item = Items.First(x => x.ID == itemId);
 
-            SetActiveItem(item);
-
-            return Task.CompletedTask;
+            await SetActiveItemAsync(item);
         }
     }
 }

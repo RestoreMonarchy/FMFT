@@ -22,8 +22,8 @@
     </select>
 </div>
 
-<Condition Evaluation="ActiveItem is not null">
+<Condition Evaluation="ActiveNavigationItem is not null">
     <Match>
-        @ActiveItem.ChildContent
+        @ActiveNavigationItem.ChildContent
     </Match>
 </Condition>

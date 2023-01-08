@@ -5,6 +5,8 @@ namespace FMFT.Extensions.Blazor.Bases.Navigations
     public partial class NavigationItem
     {
         [Parameter]
+        public string UrlId { get; set; }
+        [Parameter]
         public string Text { get; set; }
         [Parameter]
         public RenderFragment ChildContent { get; set; }
@@ -16,13 +18,15 @@ namespace FMFT.Extensions.Blazor.Bases.Navigations
 
         public Guid ID { get; } = Guid.NewGuid();
 
-        protected override void OnAfterRender(bool firstRender)
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
+            Console.WriteLine("NavigationItem OnAfterRender");
+
             if (!firstRender)
-                return;
+                return;            
 
             IsActive = Active;
-            Navigation.AddItem(this);
+            await Navigation.AddItem(this);
         }
 
         public bool IsActive { get; set; }
