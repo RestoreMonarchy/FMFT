@@ -14,13 +14,13 @@ namespace FMFT.Web.Client.Views.Pages.Admin.Shows
         [Parameter]
         public int ShowId { get; set; }
         [Parameter]
-        public string Subpage { get; set; }
+        public string ActiveKey { get; set; }
 
         protected override void OnParametersSet()
         {
-            if (string.IsNullOrEmpty(Subpage))
+            if (string.IsNullOrEmpty(ActiveKey))
             {
-                Subpage = "info";
+                ActiveKey = "info";
             }
         }
 
@@ -33,16 +33,10 @@ namespace FMFT.Web.Client.Views.Pages.Admin.Shows
         public APIResponse<List<Auditorium>> AuditoriumsResponse { get; set; }
         
         public Show Show { get; set; }
-        public List<Auditorium> Auditoriums => AuditoriumsResponse.Object;        
+        public List<Auditorium> Auditoriums => AuditoriumsResponse.Object;
 
-        protected override async Task OnParametersSetAsync()
+        protected override async Task OnInitializedAsync()
         {
-            Console.WriteLine("ShowAdminPage OnParametersSet");
-            if (ShowResponse != null)
-            {
-                return;
-            }
-
             if (!UserAccountState.IsInRole(UserRole.Admin))
             {
                 return;
@@ -50,7 +44,7 @@ namespace FMFT.Web.Client.Views.Pages.Admin.Shows
 
             ShowResponse = await APIBroker.GetShowByIdAsync(ShowId);
             AuditoriumsResponse = await APIBroker.GetAllAuditoriumsAsync();
-            
+
             if (ShowResponse.IsSuccessful)
             {
                 Show = ShowResponse.Object;
@@ -61,7 +55,7 @@ namespace FMFT.Web.Client.Views.Pages.Admin.Shows
 
         private async Task HandleNavigateAsync(NavigationItem item)
         {
-            NavigationBroker.NavigateTo($"/admin/shows/{ShowId}/{item.UrlId}");
+            NavigationBroker.NavigateTo($"/admin/shows/{ShowId}/{item.Key}");
         }
     }
 }

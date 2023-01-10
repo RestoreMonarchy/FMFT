@@ -6,7 +6,7 @@
     <Iterations Items="Items" Context="item">
         <li class="nav-item">
             <a class="nav-link @item.GetActiveClass()" href="javascript:void(0)" @onclick="() => HandleClickAsync(item)">
-                @item.Text
+                @item.Title
             </a>
         </li>
     </Iterations> 
@@ -16,7 +16,7 @@
     <select class="form-select" value="@ActiveItemId" @onchange="HandleSelectAsync">
         <Iterations Items="Items" Context="item">
             <option value="@item.ID">
-                @item.Text
+                @item.Title
             </option>
         </Iterations>
     </select>

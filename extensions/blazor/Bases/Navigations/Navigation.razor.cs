@@ -8,7 +8,8 @@ namespace FMFT.Extensions.Blazor.Bases.Navigations
         [Parameter]
         public RenderFragment ChildContent { get; set; }
         [Parameter]
-        public string ActiveItemUrlId { get; set; }
+        public string ActiveKey { get; set; }
+
         [Parameter]
         public EventCallback<NavigationItem> OnNavigate { get; set; }
 
@@ -16,47 +17,48 @@ namespace FMFT.Extensions.Blazor.Bases.Navigations
 
         protected override void OnParametersSet()
         {
-            Console.WriteLine("Navigation OnParametersSet");
+            SetActiveNavigationItem(ActiveKey);
         }
 
-        protected override void OnAfterRender(bool firstRender)
+        private void SetActiveNavigationItem(string key)
         {
-            Console.WriteLine("Navigation OnAfterRender");
+            NavigationItem navigationItem = Items.FirstOrDefault(x => x.Key == key);
+
+            if (navigationItem == ActiveNavigationItem)
+            {
+                return;
+            }
+
+            if (ActiveNavigationItem != null)
+            {
+                ActiveNavigationItem.SetIsActive(false);
+            }
+
+            navigationItem.SetIsActive(true);
+            ActiveNavigationItem = navigationItem;
         }
 
-        public async Task AddItem(NavigationItem item)
+        public void AddItem(NavigationItem item)
         {
-            Console.WriteLine("Navigation AddItem");
-
             Items.Add(item);
 
-            if (item.UrlId.Equals(ActiveItemUrlId, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(ActiveKey, item.Key))
             {
-                await SetActiveItemAsync(item);
+                SetActiveNavigationItem(ActiveKey);
             }
         }
 
         public NavigationItem ActiveNavigationItem { get; set; }
         public Guid ActiveItemId => ActiveNavigationItem?.ID ?? Guid.Empty;
 
-        public async Task SetActiveItemAsync(NavigationItem item)
+        public async Task HandleClickAsync(NavigationItem item)
         {
-            if (ActiveNavigationItem == item)
+            if (item == ActiveNavigationItem)
             {
                 return;
             }
 
-            ActiveNavigationItem?.SetIsActive(false);
-                        
-            ActiveNavigationItem = item;
-            ActiveNavigationItem.SetIsActive(true);
-
-            await OnNavigate.InvokeAsync(ActiveNavigationItem);
-        }
-
-        public async Task HandleClickAsync(NavigationItem item)
-        {
-            await SetActiveItemAsync(item);
+            await OnNavigate.InvokeAsync(item);
         }
 
         public async Task HandleSelectAsync(ChangeEventArgs args)
@@ -64,7 +66,12 @@ namespace FMFT.Extensions.Blazor.Bases.Navigations
             Guid itemId = Guid.Parse(args.Value.ToString());
             NavigationItem item = Items.First(x => x.ID == itemId);
 
-            await SetActiveItemAsync(item);
+            if (item == ActiveNavigationItem)
+            {
+                return;
+            }
+
+            await OnNavigate.InvokeAsync(item);
         }
     }
 }

@@ -22,7 +22,7 @@ namespace FMFT.Web.Client.Views.Pages.Admin.Shows.Subpages
 
         public List<ShowGallery> ShowGallery => ShowGalleryResponse.Object;
 
-        protected override async Task OnParametersSetAsync()
+        protected override async Task OnInitializedAsync()
         {
             ShowGalleryResponse = await APIBroker.GetShowGalleryByShowIdAsync(Show.Id);
 

@@ -5,11 +5,13 @@ namespace FMFT.Extensions.Blazor.Bases.Navigations
     public partial class NavigationItem
     {
         [Parameter]
-        public string UrlId { get; set; }
+        public string Key { get; set; }
         [Parameter]
-        public string Text { get; set; }
+        public string Title { get; set; }
+
         [Parameter]
         public RenderFragment ChildContent { get; set; }
+        
         [Parameter]
         public bool Active { get; set; }
 
@@ -26,7 +28,7 @@ namespace FMFT.Extensions.Blazor.Bases.Navigations
                 return;            
 
             IsActive = Active;
-            await Navigation.AddItem(this);
+            Navigation.AddItem(this);
         }
 
         public bool IsActive { get; set; }

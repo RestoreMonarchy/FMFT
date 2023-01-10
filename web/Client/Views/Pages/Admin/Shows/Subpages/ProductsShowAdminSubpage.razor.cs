@@ -20,7 +20,7 @@ namespace FMFT.Web.Client.Views.Pages.Admin.Shows.Subpages
 
         public List<ShowProduct> ShowProducts => ShowProductsResponse.Object;
 
-        protected override async Task OnParametersSetAsync()
+        protected override async Task OnInitializedAsync()
         {
             ShowProductsResponse = await APIBroker.GetShowProductsByShowIdAsync(Show.Id);
 
