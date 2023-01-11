@@ -28,15 +28,29 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
 
         protected override async Task OnParametersSetAsync()
         {
-            ShowResponse = await APIBroker.GetShowByIdAsync(ShowId);
-            if (ShowResponse.IsSuccessful)
-            {
-                AuditoriumResponse = await APIBroker.GetAuditoriumByIdAsync(Show.AuditoriumId);
-                ShowGalleryResponse = await APIBroker.GetShowGalleryByShowIdAsync(Show.Id);
+            Task[] getDataTasks = { 
+                                    GetShowResponseAsync(), 
+                                    GetAuditoriumResponseAsync(), 
+                                    GetShowGalleryResponseAsync() 
+                                  };
 
-                
-            }
+            await Task.WhenAll(getDataTasks);
+
             LoadingView.StopLoading();
+        }
+
+        private async Task GetShowResponseAsync()
+        {
+            ShowResponse = await APIBroker.GetShowByIdAsync(ShowId);
+        }
+        private async Task GetAuditoriumResponseAsync()
+        {
+            AuditoriumResponse = await APIBroker.GetAuditoriumByShowIdAsync(ShowId);
+        }
+
+        private async Task GetShowGalleryResponseAsync()
+        {
+            ShowGalleryResponse = await APIBroker.GetShowGalleryByShowIdAsync(ShowId);
         }
     }
 }
