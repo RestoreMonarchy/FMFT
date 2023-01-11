@@ -7,6 +7,7 @@ using FMFT.Web.Client.Models.API.Auditoriums;
 using FMFT.Web.Client.Models.API.Reservations;
 using FMFT.Web.Client.Models.API.Reservations.Requests;
 using FMFT.Web.Client.Models.API.Seats;
+using FMFT.Web.Client.Models.API.ShowProducts;
 using FMFT.Web.Client.Models.API.Shows;
 using Microsoft.AspNetCore.Components;
 using System.Runtime.Intrinsics.X86;
@@ -31,32 +32,62 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
         public APIResponse<Auditorium> AuditoriumResponse { get; set; }
         public APIResponse<List<Reservation>> UserReservationsResponse { get; set; }
         public APIResponse<Reservation> ReservationResponse { get; set; }
+        public APIResponse<List<ShowProduct>> ShowProductsResponse { get; set; }
 
         public Show Show => ShowResponse.Object;
         public Auditorium Auditorium => AuditoriumResponse.Object;
         public List<Reservation> UserReservations => UserReservationsResponse.Object;
         public Reservation Reservation => ReservationResponse.Object;
+        public List<ShowProduct> ShowProducts => ShowProductsResponse.Object;
 
         public Reservation UserReservation => UserReservations.OrderByDescending(x => x.CreateDate).FirstOrDefault(x => !x.IsCanceled);
 
         protected override async Task OnParametersSetAsync()
         {
-            ShowResponse = await APIBroker.GetShowByIdAsync(ShowId);
-            
             if (!UserAccountState.IsAuthenticated)
             {
                 return;
             }
 
-            if (ShowResponse.IsSuccessful)
+            Task[] getDataTasks = new Task[]
             {
-                AuditoriumResponse = await APIBroker.GetAuditoriumByIdAsync(Show.AuditoriumId);
-            }
+                GetShowResponseAsync(),
+                GetAuditoriumResponseAsync(),
+                GetUserReservationsResponseAsync(),
+                GetShowProductsResponseAsync()
+            };
 
-            UserReservationsResponse = await APIBroker.GetReservationsByUserAndShowIdAsync(UserAccountState.UserAccount.UserId, ShowId);
+            await Task.WhenAll(getDataTasks);
 
             LoadingView.StopLoading();
         }
+
+        private async Task GetShowResponseAsync()
+        {
+            ShowResponse = await APIBroker.GetShowByIdAsync(ShowId);
+        }
+
+        private async Task GetAuditoriumResponseAsync()
+        {
+            AuditoriumResponse = await APIBroker.GetAuditoriumByShowIdAsync(ShowId);
+        }
+
+        private async Task GetShowProductsResponseAsync()
+        {
+            ShowProductsResponse = await APIBroker.GetShowProductsByShowIdAsync(ShowId);
+        }
+
+        private async Task GetUserReservationsResponseAsync()
+        {
+            if (!UserAccountState.IsAuthenticated)
+            {
+                return;
+            }
+
+            UserReservationsResponse = await APIBroker.GetReservationsByUserAndShowIdAsync(UserAccountState.UserAccount.UserId, ShowId);
+        }
+
+
 
         public int TicketsCount { get; set; } = 1;
         private string TicketsCountString()

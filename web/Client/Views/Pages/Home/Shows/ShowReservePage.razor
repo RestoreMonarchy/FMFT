@@ -32,7 +32,7 @@
     <CustomAuthorizeView>
         <Authorized>
             <LoadingView @ref="LoadingView">
-                <Condition Evaluation="ShowResponse.IsSuccessful && AuditoriumResponse.IsSuccessful && UserReservationsResponse.IsSuccessful">
+                <Condition Evaluation="ShowResponse.IsSuccessful && AuditoriumResponse.IsSuccessful && UserReservationsResponse.IsSuccessful && ShowProductsResponse.IsSuccessful">
                     <Match>
 
                         <Condition Evaluation="UserReservation is not null">
@@ -56,6 +56,55 @@
                                                         Podaj ilość miejsc
                                                     </div>
                                                     <div class="mb-2">
+                                                        @*
+                                                        <table class="table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>
+                                                                        Rodzaj biletu
+                                                                    </th>
+                                                                    <th>
+                                                                        Cena
+                                                                    </th>
+                                                                    <th>
+                                                                        Ilość
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <Iterations Items="ShowProducts" Context="showProduct">
+                                                                    <tr>
+                                                                        <td class="align-middle">
+                                                                            @showProduct.Name
+                                                                        </td>
+                                                                        <td class="align-middle">
+                                                                            @showProduct.Price.ToString("N2") zł
+                                                                        </td>
+                                                                        <td class="align-middle">
+                                                                            <InputSelect @bind-Value="TicketsCount" class="form-select">
+                                                                                @for (int i = 1; i <= MaxSeats; i++)
+                                                                                {
+                                                                                    <option value="@i">@i</option>
+                                                                                }
+                                                                            </InputSelect>
+                                                                        </td>
+                                                                    </tr>
+                                                                </Iterations>
+                                                                <tr class="fw-bold">
+                                                                    <td>
+                                                                        W sumie
+                                                                    </td>
+                                                                    <td>
+
+                                                                    </td>
+                                                                    <td class="text-end">
+                                                                        30,00 zł
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>*@
+
+
                                                         <table class="table">
                                                             <thead>
                                                                 <tr>
