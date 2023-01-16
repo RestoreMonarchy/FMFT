@@ -5,16 +5,17 @@ BEGIN
 	SET NOCOUNT ON;
 	SET XACT_ABORT ON;
 
+	DECLARE @canceledReservationStatus TINYINT = 3;
+
 	DECLARE @isCanceled BIT;
 	DECLARE @retValue INT = 0;
 	DECLARE @resId CHAR(8) = '--------';
 	
-
 	SELECT
 		@resId = Id, 
-		@isCanceled = IsCanceled 
+		@isCanceled = CASE [Status] WHEN @canceledReservationStatus THEN 1 ELSE 0 END
 	FROM dbo.Reservations 
-	WHERE Id = @ReservationId
+	WHERE Id = @ReservationId;
 
 	IF @resId = '--------'
 	BEGIN
@@ -25,14 +26,16 @@ BEGIN
 	BEGIN
 		-- reservation was already canceled
 		SET @retValue = 2;
-	END
+	END;
 
 	IF @retValue = 0
 	BEGIN
 		UPDATE dbo.Reservations 
-		SET IsCanceled = 1 
+		SET 
+			[Status] = @canceledReservationStatus,
+			UpdateStatusDate = SYSDATETIME()
 		WHERE Id = @ReservationId;
-	END
+	END;
 
 	EXEC dbo.GetReservations @ReservationId = @resId;
 	RETURN @retValue;

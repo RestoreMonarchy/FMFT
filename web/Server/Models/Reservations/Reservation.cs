@@ -10,7 +10,6 @@ namespace FMFT.Web.Server.Models.Reservations
     {
         public string Id { get; set; }
         public ReservationStatus Status { get; set; }
-        public bool IsCanceled { get; set; }
         public DateTimeOffset CreateDate { get; set; }
         public DateTimeOffset? UpdateStatusDate { get; set; }
 

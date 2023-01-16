@@ -19,6 +19,7 @@
   
   <ItemGroup>
 	<PostDeploy Include="..\scripts\Script.PostDeployment.sql" />
+	<PreDeploy Include="..\scripts\Script.PreDeployment.sql" />
   </ItemGroup>
 
 </Project>

@@ -10,28 +10,34 @@ BEGIN
 	SET NOCOUNT ON;
 	SET XACT_ABORT ON;
 
+	DECLARE @validStatuses TABLE([Status] TINYINT);
 	DECLARE @ret INT = 0;
 	DECLARE @id CHAR(8) = '--------';
 	DECLARE @seatsTable TABLE(SeatId INT NOT NULL PRIMARY KEY);
+
+
+	-- Add Pending and Ok to valid statuses
+	INSERT INTO @validStatuses VALUES (0), (1);
 
 	INSERT INTO @seatsTable (SeatId) SELECT VALUE FROM STRING_SPLIT(@Seats, ',');
 
 	IF @@ROWCOUNT = 0
 		SET @ret = 3;
-
+	
+	-- some seat is already reserved
 	IF EXISTS(
 		SELECT * 
 		FROM dbo.Reservations r 
 		JOIN dbo.ReservationSeats rs ON rs.ReservationId = r.Id 
 		JOIN @seatsTable st ON st.SeatId = rs.SeatId
-		WHERE r.ShowId = @ShowId AND r.IsCanceled = 0
+		WHERE r.ShowId = @ShowId AND r.[Status] IN (SELECT Status FROM @validStatuses)
 		)
 	BEGIN
 		SET @ret = 1;
 	END;
 		
 
-	IF EXISTS(SELECT * FROM dbo.Reservations WHERE UserId = @UserId AND ShowId = @ShowId AND IsCanceled = 0)
+	IF EXISTS(SELECT * FROM dbo.Reservations WHERE UserId = @UserId AND ShowId = @ShowId AND [Status] IN (SELECT Status FROM @validStatuses))
 		SET @ret = 2;
 			
 	IF @ret = 0
