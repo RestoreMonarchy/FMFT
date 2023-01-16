@@ -1,0 +1,8 @@
+﻿CREATE TABLE dbo.OrderItems
+(
+	Id INT IDENTITY(1, 1) NOT NULL CONSTRAINT PK_OrderItems PRIMARY KEY,
+	OrderId INT NOT NULL CONSTRAINT FK_OrderItems_OrderId FOREIGN KEY REFERENCES dbo.Orders(Id),
+	ShowProductId INT NOT NULL CONSTRAINT FK_OrderItems_ShowProductId FOREIGN KEY REFERENCES dbo.ShowProducts(Id),
+	Price DECIMAL(9,2) NOT NULL,
+	Quantity INT NOT NULL
+)

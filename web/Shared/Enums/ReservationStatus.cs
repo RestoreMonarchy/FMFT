@@ -2,9 +2,9 @@
 {
     public enum ReservationStatus
     {
-        WaitingForAdminReview = 0,
-        Approved = 1,
-        Rejected = 2,
+        Pending = 0,
+        Valid = 1,
+        Expired = 2,
         Canceled = 3
     }
 }
