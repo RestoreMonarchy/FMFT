@@ -10,14 +10,9 @@ BEGIN
 	SET NOCOUNT ON;
 	SET XACT_ABORT ON;
 
-	DECLARE @validStatuses TABLE([Status] TINYINT);
 	DECLARE @ret INT = 0;
 	DECLARE @id CHAR(8) = '--------';
 	DECLARE @seatsTable TABLE(SeatId INT NOT NULL PRIMARY KEY);
-
-
-	-- Add Pending and Ok to valid statuses
-	INSERT INTO @validStatuses VALUES (0), (1);
 
 	INSERT INTO @seatsTable (SeatId) SELECT VALUE FROM STRING_SPLIT(@Seats, ',');
 
@@ -30,14 +25,14 @@ BEGIN
 		FROM dbo.Reservations r 
 		JOIN dbo.ReservationSeats rs ON rs.ReservationId = r.Id 
 		JOIN @seatsTable st ON st.SeatId = rs.SeatId
-		WHERE r.ShowId = @ShowId AND r.[Status] IN (SELECT Status FROM @validStatuses)
+		WHERE r.ShowId = @ShowId AND r.IsValid = 1
 		)
 	BEGIN
 		SET @ret = 1;
 	END;
 		
 
-	IF EXISTS(SELECT * FROM dbo.Reservations WHERE UserId = @UserId AND ShowId = @ShowId AND [Status] IN (SELECT Status FROM @validStatuses))
+	IF EXISTS(SELECT * FROM dbo.Reservations WHERE UserId = @UserId AND ShowId = @ShowId AND IsValid = 1)
 		SET @ret = 2;
 			
 	IF @ret = 0

@@ -10,7 +10,7 @@ BEGIN
 	BEGIN
 		SELECT s.*, rs.SeatId 
 		FROM dbo.Shows s 
-		LEFT JOIN dbo.Reservations r ON r.ShowId = s.Id 
+		LEFT JOIN dbo.Reservations r ON r.ShowId = s.Id AND r.IsValid = 1
 		LEFT JOIN dbo.ReservationSeats rs ON rs.ReservationId  = r.Id
 		WHERE s.Id = @ShowId;
 	END
@@ -18,7 +18,7 @@ BEGIN
 	BEGIN
 		SELECT s.*, rs.SeatId 
 		FROM dbo.Shows s 
-		LEFT JOIN dbo.Reservations r ON r.ShowId = s.Id 
+		LEFT JOIN dbo.Reservations r ON r.ShowId = s.Id AND r.IsValid = 1
 		LEFT JOIN dbo.ReservationSeats rs ON rs.ReservationId  = r.Id;
 	END;
 
