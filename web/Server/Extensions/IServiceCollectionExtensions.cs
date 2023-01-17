@@ -15,6 +15,7 @@ using FMFT.Web.Server.Models.Options;
 using FMFT.Web.Server.Models.Options.Authentications;
 using FMFT.Web.Server.Models.Options.Emails;
 using FMFT.Web.Server.Services.Coordinations.Medias;
+using FMFT.Web.Server.Services.Coordinations.Orders;
 using FMFT.Web.Server.Services.Coordinations.Reservations;
 using FMFT.Web.Server.Services.Coordinations.ShowGalleries;
 using FMFT.Web.Server.Services.Coordinations.Shows;
@@ -24,6 +25,7 @@ using FMFT.Web.Server.Services.Foundations.Emails;
 using FMFT.Web.Server.Services.Foundations.Facebooks;
 using FMFT.Web.Server.Services.Foundations.Googles;
 using FMFT.Web.Server.Services.Foundations.Medias;
+using FMFT.Web.Server.Services.Foundations.Orders;
 using FMFT.Web.Server.Services.Foundations.QRCodes;
 using FMFT.Web.Server.Services.Foundations.Reservations;
 using FMFT.Web.Server.Services.Foundations.ResetPasswordRequests;
@@ -33,6 +35,7 @@ using FMFT.Web.Server.Services.Foundations.ShowProducts;
 using FMFT.Web.Server.Services.Foundations.Shows;
 using FMFT.Web.Server.Services.Foundations.Users;
 using FMFT.Web.Server.Services.Orchestrations.Medias;
+using FMFT.Web.Server.Services.Orchestrations.Orders;
 using FMFT.Web.Server.Services.Orchestrations.Reservations;
 using FMFT.Web.Server.Services.Orchestrations.ResetPasswordRequests;
 using FMFT.Web.Server.Services.Orchestrations.ShowGalleries;
@@ -106,6 +109,7 @@ namespace FMFT.Web.Server.Extensions
             services.AddTransient<IQRCodeService, QRCodeService>();
             services.AddTransient<IGoogleService, GoogleService>();
             services.AddTransient<IShowProductService, ShowProductService>();
+            services.AddTransient<IOrderService, OrderService>();
 
             return services;
         }
@@ -118,6 +122,7 @@ namespace FMFT.Web.Server.Extensions
             services.AddTransient<IResetPasswordRequestOrchestrationService, ResetPasswordRequestOrchestrationService>();
             services.AddTransient<IMediaOrchestrationService, MediaOrchestrationService>();
             services.AddTransient<IShowGalleryOrchestrationService, ShowGalleryOrchestrationService>();
+            services.AddTransient<IOrderOrchestrationService, OrderOrchestrationService>();
 
             return services;
         }
@@ -128,6 +133,7 @@ namespace FMFT.Web.Server.Extensions
             services.AddTransient<IMediaCoordinationService, MediaCoordinationService>();
             services.AddTransient<IShowGalleryCoordinationService, ShowGalleryCoordinationService>();
             services.AddTransient<IShowCoordinationService, ShowCoordinationService>();
+            services.AddTransient<IOrderCoordinationService, OrderCoordinationService>();
 
             return services;
         }

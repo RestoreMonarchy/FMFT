@@ -20,5 +20,6 @@ namespace FMFT.Web.Server.Models.Orders
 
         public UserInfo User { get; set; }
         public List<OrderItem> Items { get; set;}
+        public int UserId() => User?.Id ?? 0;
     }
 }
