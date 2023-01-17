@@ -95,6 +95,7 @@
     <Build Include="dbo\tables\ShowProducts.sql" />
     <Build Include="dbo\tables\Orders.sql" />
     <Build Include="dbo\tables\OrderItems.sql" />
+    <Build Include="dbo\procedures\GetOrders.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FMFT.Database.publish.xml" />

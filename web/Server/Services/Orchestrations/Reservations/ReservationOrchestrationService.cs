@@ -142,7 +142,12 @@ namespace FMFT.Web.Server.Services.Orchestrations.Reservations
 
             return reservations;
         }
+        public async ValueTask<IEnumerable<Reservation>> RetrieveReservationsByOrderIdAsync(int orderId)
+        {
+            IEnumerable<Reservation> reservations = await reservationService.RetrieveReservationsByOrderIdAsync(orderId);
 
+            return reservations;
+        }
         public async ValueTask<IEnumerable<Reservation>> RetrieveReservationsByShowIdAsync(int showId)
         {
             IEnumerable<Reservation> reservations = await reservationService.RetrieveReservationsByShowIdAsync(showId);
