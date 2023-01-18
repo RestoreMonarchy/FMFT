@@ -1,6 +1,8 @@
 ﻿using Dapper;
 using FMFT.Web.Server.Models.Orders;
 using FMFT.Web.Server.Models.Orders.Params;
+using FMFT.Web.Server.Models.ShowProducts;
+using FMFT.Web.Server.Models.Shows;
 using FMFT.Web.Server.Models.Users;
 using System.Data;
 
@@ -35,7 +37,7 @@ namespace FMFT.Web.Server.Brokers.Storages
         {
             List<Order> orders = new();
 
-            await connection.QueryAsync<Order, UserInfo, OrderItem, Order>(sql, (o, u, i) =>
+            await connection.QueryAsync<Order, UserInfo, OrderItem, ShowProduct, Show, Order>(sql, (o, u, i, sp, s) =>
             {
                 Order order = orders.FirstOrDefault(x => x.Id == o.Id);
 
@@ -43,10 +45,15 @@ namespace FMFT.Web.Server.Brokers.Storages
                 {
                     order = o;
                     order.User = u;
+                    order.Items = new();
                 }
+
+                orders.Add(order);
 
                 if (i != null)
                 {
+                    i.ShowProduct = sp;
+                    i.Show = s;
                     order.Items.Add(i);
                 }
 

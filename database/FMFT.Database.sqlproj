@@ -61,6 +61,7 @@
     <Folder Include="dbo\tables" />
     <Folder Include="dbo\procedures" />
     <Folder Include="scripts" />
+    <Folder Include="dbo\views" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\tables\Seats.sql" />
@@ -96,6 +97,8 @@
     <Build Include="dbo\tables\Orders.sql" />
     <Build Include="dbo\tables\OrderItems.sql" />
     <Build Include="dbo\procedures\GetOrders.sql" />
+    <Build Include="dbo\procedures\CreateOrder.sql" />
+    <Build Include="dbo\views\Tally.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FMFT.Database.publish.xml" />
