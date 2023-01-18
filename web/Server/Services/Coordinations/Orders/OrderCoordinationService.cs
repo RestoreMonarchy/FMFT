@@ -1,5 +1,6 @@
 ﻿using FMFT.Web.Server.Brokers.Loggings;
 using FMFT.Web.Server.Models.Orders;
+using FMFT.Web.Server.Models.Orders.Params;
 using FMFT.Web.Server.Services.Orchestrations.Orders;
 using FMFT.Web.Server.Services.Orchestrations.Reservations;
 using FMFT.Web.Server.Services.Orchestrations.UserAccounts;
@@ -23,6 +24,15 @@ namespace FMFT.Web.Server.Services.Coordinations.Orders
             this.orderService = orderService;
             this.reservationService = reservationService;
             this.userAccountService = userAccountService;
+        }
+
+        public async ValueTask<Order> CreateOrderAsync(CreateOrderParams @params)
+        {
+            Order order = await orderService.CreateOrderAsync(@params);
+
+            await reservationService.SendReservationSummaryEmailForOrderAsync(order);
+
+            return order;
         }
 
         public async ValueTask<Order> RetrieveOrderByIdAsync(int orderId)

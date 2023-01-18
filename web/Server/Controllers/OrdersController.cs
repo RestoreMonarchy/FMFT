@@ -2,7 +2,9 @@ using FMFT.Web.Server.Brokers.Loggings;
 using FMFT.Web.Server.Models.Accounts.Exceptions;
 using FMFT.Web.Server.Models.Orders;
 using FMFT.Web.Server.Models.Orders.Exceptions;
+using FMFT.Web.Server.Models.Orders.Params;
 using FMFT.Web.Server.Models.Reservations;
+using FMFT.Web.Server.Models.Reservations.Exceptions;
 using FMFT.Web.Server.Services.Coordinations.Orders;
 using FMFT.Web.Server.Services.Coordinations.Reservations;
 using Microsoft.AspNetCore.Mvc;
@@ -66,6 +68,40 @@ namespace FMFT.Web.Server.Controllers
             catch (NotAuthorizedAccountException exception)
             {
                 return Forbidden(exception);
+            }
+        }
+
+        [HttpPost("create")]
+        public async ValueTask<IActionResult> CreateOrder([FromBody] CreateOrderParams @params)
+        {
+            try
+            {
+                Order order = await orderService.CreateOrderAsync(@params);
+                return Ok(order);
+            }
+            catch (CreateUserReservationValidationException exception)
+            {
+                return BadRequest(exception);
+            }
+            catch (SeatAlreadyReservedReservationException exception)
+            {
+                return Conflict(exception);
+            }
+            catch (UserAlreadyReservedReservationException exception)
+            {
+                return Conflict(exception);
+            }
+            catch (SeatsNotProvidedReservationException exception)
+            {
+                return BadRequest(exception);
+            }
+            catch (NotAuthorizedAccountException exception)
+            {
+                return Forbidden(exception);
+            }
+            catch (NotAuthenticatedAccountException exception)
+            {
+                return Unauthorized(exception);
             }
         }
     }

@@ -1,6 +1,6 @@
 ﻿using FMFT.Web.Server.Brokers.Loggings;
 using FMFT.Web.Server.Models.Orders;
-using FMFT.Web.Server.Services.Foundations.Emails;
+using FMFT.Web.Server.Models.Orders.Params;
 using FMFT.Web.Server.Services.Foundations.Orders;
 
 namespace FMFT.Web.Server.Services.Orchestrations.Orders
@@ -14,6 +14,13 @@ namespace FMFT.Web.Server.Services.Orchestrations.Orders
         {
             this.loggingBroker = loggingBroker;
             this.orderService = orderService;
+        }
+
+        public async ValueTask<Order> CreateOrderAsync(CreateOrderParams @params)
+        {
+            Order order = await orderService.CreateOrderAsync(@params);
+
+            return order;
         }
 
         public async ValueTask<Order> RetrieveOrderByIdAsync(int orderId)

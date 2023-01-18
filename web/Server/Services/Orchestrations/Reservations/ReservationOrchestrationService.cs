@@ -3,6 +3,7 @@ using FMFT.Web.Server.Brokers.Loggings;
 using FMFT.Web.Server.Brokers.QRCodes;
 using FMFT.Web.Server.Models.Emails;
 using FMFT.Web.Server.Models.Emails.Params;
+using FMFT.Web.Server.Models.Orders;
 using FMFT.Web.Server.Models.QRCodes;
 using FMFT.Web.Server.Models.QRCodes.Params;
 using FMFT.Web.Server.Models.Reservations;
@@ -91,6 +92,16 @@ namespace FMFT.Web.Server.Services.Orchestrations.Reservations
             }
 
             return reservation;
+        }
+
+        public async ValueTask SendReservationSummaryEmailForOrderAsync(Order order)
+        {
+            IEnumerable<Reservation> orderReservations = await reservationService.RetrieveReservationsByOrderIdAsync(order.Id);
+
+            foreach(Reservation reservation in orderReservations)
+            {
+                await SendReservationSummaryEmailAsync(order.User.Email, reservation);
+            }
         }
 
         private async ValueTask SendReservationSummaryEmailAsync(string emailAddress, Reservation reservation)

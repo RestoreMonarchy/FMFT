@@ -1,4 +1,5 @@
-﻿using FMFT.Web.Server.Models.QRCodes;
+﻿using FMFT.Web.Server.Models.Orders;
+using FMFT.Web.Server.Models.QRCodes;
 using FMFT.Web.Server.Models.QRCodes.Params;
 using FMFT.Web.Server.Models.Reservations;
 using FMFT.Web.Server.Models.Reservations.Params;
@@ -22,5 +23,6 @@ namespace FMFT.Web.Server.Services.Orchestrations.Reservations
         ValueTask<IEnumerable<Reservation>> RetrieveReservationsByOrderIdAsync(int orderId);
         ValueTask<Reservation> UpdateReservationStatusAsync(UpdateReservationStatusRequest request);
         ValueTask<ValidateReservationSecretCodeResult> ValidateReservationSecretCodeAsync(Guid secretCode);
+        ValueTask SendReservationSummaryEmailForOrderAsync(Order order);
     }
 }

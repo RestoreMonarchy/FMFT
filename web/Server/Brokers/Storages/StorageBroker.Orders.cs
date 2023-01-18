@@ -1,10 +1,14 @@
 ﻿using Dapper;
+using FMFT.Web.Server.Models.Database;
 using FMFT.Web.Server.Models.Orders;
+using FMFT.Web.Server.Models.Orders.DTOs;
 using FMFT.Web.Server.Models.Orders.Params;
+using FMFT.Web.Server.Models.Reservations.DTOs;
 using FMFT.Web.Server.Models.ShowProducts;
 using FMFT.Web.Server.Models.Shows;
 using FMFT.Web.Server.Models.Users;
 using System.Data;
+using System.Text.Json;
 
 namespace FMFT.Web.Server.Brokers.Storages
 {
@@ -20,6 +24,23 @@ namespace FMFT.Web.Server.Brokers.Storages
             return await GetOrderAsync(@params);
         }
 
+        public async ValueTask<StoredProcedureResult<Order>> CreateOrderAsync(CreateOrderDTO dto)
+        {
+            string createOrderJSON = JsonSerializer.Serialize(dto);
+
+            const string sql = "dbo.CreateOrder";
+            StoredProcedureResult<Order> result = new();
+
+            DynamicParameters parameters = new();
+            parameters.Add(name: "@Order", dbType: DbType.String, value: createOrderJSON);
+            parameters.Add(name: "@ReturnValue", dbType: DbType.Int32, direction: ParameterDirection.ReturnValue);
+
+            result.Result = await QueryOrderAsync(sql, parameters, CommandType.StoredProcedure);
+            result.ReturnValue = GetReturnValue(parameters);
+
+            return result;
+        }
+
         private async ValueTask<Order> GetOrderAsync(GetOrderParams @params)
         {
             IEnumerable<Order> orders = await GetOrdersAsync(@params);
@@ -32,7 +53,31 @@ namespace FMFT.Web.Server.Brokers.Storages
 
             return await QueryOrdersAsync(sql, @params, CommandType.StoredProcedure);
         }
+        private async ValueTask<Order> QueryOrderAsync(string sql, object param = null, CommandType? commandType = null)
+        {
+            Order order = null;
 
+            await connection.QueryAsync<Order, UserInfo, OrderItem, ShowProduct, Show, Order>(sql, (o, u, i, sp, s) =>
+            {
+                if (order == null)
+                {
+                    order = o;
+                    order.User = u;
+                    order.Items = new();
+                }
+
+                if (i != null)
+                {
+                    i.ShowProduct = sp;
+                    i.Show = s;
+                    order.Items.Add(i);
+                }
+
+                return null;
+            }, param, commandType: commandType);
+
+            return order;
+        }
         private async ValueTask<IEnumerable<Order>> QueryOrdersAsync(string sql, object param = null, CommandType? commandType = null)
         {
             List<Order> orders = new();
