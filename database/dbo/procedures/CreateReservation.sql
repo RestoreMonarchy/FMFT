@@ -69,8 +69,8 @@ BEGIN
 		IF @isExternalTransaction = 0
 			BEGIN TRAN;
 
-		INSERT INTO dbo.Reservations (Id, ShowId, UserId)
-		VALUES (@reservationId, @ShowId, @UserId);
+		INSERT INTO dbo.Reservations (Id, ShowId, UserId, OrderId)
+		VALUES (@reservationId, @ShowId, @UserId, @OrderId);
 
 		INSERT INTO dbo.ReservationSeats (ReservationId, SeatId)
 		SELECT @reservationId, SeatId FROM @seatsTable;
