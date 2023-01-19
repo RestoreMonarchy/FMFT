@@ -89,7 +89,7 @@ BEGIN
 	END;
 
 	UPDATE o
-	SET o.ShowId = s.ShowId,
+	SET o.ShowId = s.Id,
 		o.ShowEndDateTime = s.EndDateTime
 	FROM @OrderItems o
 	JOIN dbo.ShowProducts p ON p.Id = o.ShowProductId
@@ -108,10 +108,10 @@ BEGIN
 	END;
 
 	SELECT @sumOrderItemsAmount = SUM(Quantity * Price)	FROM @OrderItems;
-	
+
 	IF @amount <> @sumOrderItemsAmount
 	BEGIN 
-		PRINT FORMATMESSAGE('Order amount %d does not match order amount calculated as sum of items %d', 
+		PRINT FORMATMESSAGE('Order amount %s does not match order amount calculated as sum of items %s', 
 							FORMAT(@amount, 'N', 'en-us'), 
 							FORMAT(@sumOrderItemsAmount, 'N', 'en-us'));
 		SET @ret = 105;
@@ -120,7 +120,7 @@ BEGIN
 	SELECT TOP (1) 
 		@completedShowId = ShowId 
 	FROM @OrderItems 
-	WHERE ShowEndDateTime > SYSDATETIME();
+	WHERE ShowEndDateTime < SYSDATETIME();
 
 	IF @completedShowId IS NOT NULL
 	BEGIN
@@ -134,7 +134,9 @@ BEGIN
 		WITH CTE_Tally AS (
 			SELECT * FROM dbo.Tally WHERE N <= @sumOrderQuantity
 		), CTE_OrderItemsSplit AS (
-			SELECT * 
+			SELECT 
+				RowNum = ROW_NUMBER() OVER(ORDER BY o.ShowProductId), 
+				o.* 
 			FROM @OrderItems o
 			JOIN dbo.Tally t ON t.N <= o.Quantity
 		)
@@ -143,7 +145,7 @@ BEGIN
 			s.ShowProductId = o.ShowProductId,
 			s.ShowId = o.ShowId
 		FROM @Seats s
-		JOIN CTE_OrderItemsSplit o ON o.N = s.RowNum;
+		JOIN CTE_OrderItemsSplit o ON o.RowNum = s.RowNum;
 
 		IF @isExternalTransaction = 0
 			BEGIN TRAN; 
@@ -201,6 +203,9 @@ BEGIN
 		END;
 	END; -- IF @ret = 0
 
+	IF @OrderId IS NULL
+		SET @OrderId = -1;
+
 	EXEC dbo.GetOrders @OrderId = @orderId;
 
 	RETURN @ret;
@@ -212,7 +217,7 @@ GO
 
 DECLARE @Order NVARCHAR(MAX) = N'{  
     "UserId":1,  
-    "Amount":123.12, 
+    "Amount":146.12, 
 	"Currency":"PLN",
 	"PaymentMethod":"0",
 	"ExpireDate":"2023-01-17T20:01:12",
@@ -226,11 +231,10 @@ DECLARE @Order NVARCHAR(MAX) = N'{
 		"Price":23.00,  
 		"Quantity":2
     }],
-	"SeatIds": [10,11,12]
+	"SeatIds": [47,48,49]
   }';
   DECLARE @ret INT;
   EXEC @ret = dbo.CreateOrder @Order = @Order;
   SELECT @ret;
-
 
 */
