@@ -46,3 +46,8 @@ ERR037 | User account does not have a confirmed email
 ERR039 | You have already requested a confirm account link in the last 5 minutes. Try again later
 ERR040 | Show product not found
 ERR041 | Order not found
+ERR042 | Sum of order quantity does not match reserved sets count
+ERR043 | Sum of order quantity is too big. It must not exceed 100 for a single order
+ERR044 | Invalid value of ShowProductId
+ERR045 | Order amount must be greater than 0
+ERR046 | Order amount does not match order amount calculated as sum of items

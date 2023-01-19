@@ -1,7 +1,10 @@
 ﻿using FMFT.Web.Server.Brokers.Loggings;
 using FMFT.Web.Server.Models.Orders;
+using FMFT.Web.Server.Models.Orders.Exceptions;
 using FMFT.Web.Server.Models.Orders.Params;
+using FMFT.Web.Server.Models.Reservations.Exceptions;
 using FMFT.Web.Server.Services.Foundations.Orders;
+using System.ComponentModel.DataAnnotations;
 
 namespace FMFT.Web.Server.Services.Orchestrations.Orders
 {
@@ -18,6 +21,15 @@ namespace FMFT.Web.Server.Services.Orchestrations.Orders
 
         public async ValueTask<Order> CreateOrderAsync(CreateOrderParams @params)
         {
+            CreateUserOrderReservationValidationException validationException = new();
+            const int maximumSeats = 100;
+            const int minimumSeats = 1;
+
+            if (@params.SeatIds.Count > maximumSeats || @params.SeatIds.Count < minimumSeats)
+            {
+                validationException.UpsertDataList("SeatIds", $"The amount of seats that can be reserved in one order must be in range between {minimumSeats} and {maximumSeats}");
+            }
+
             Order order = await orderService.CreateOrderAsync(@params);
 
             return order;

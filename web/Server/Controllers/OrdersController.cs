@@ -4,7 +4,6 @@ using FMFT.Web.Server.Models.Orders;
 using FMFT.Web.Server.Models.Orders.Exceptions;
 using FMFT.Web.Server.Models.Orders.Params;
 using FMFT.Web.Server.Models.Reservations;
-using FMFT.Web.Server.Models.Reservations.Exceptions;
 using FMFT.Web.Server.Services.Coordinations.Orders;
 using FMFT.Web.Server.Services.Coordinations.Reservations;
 using Microsoft.AspNetCore.Mvc;
@@ -79,19 +78,15 @@ namespace FMFT.Web.Server.Controllers
                 Order order = await orderService.CreateOrderAsync(@params);
                 return Ok(order);
             }
-            catch (CreateUserReservationValidationException exception)
+            catch (CreateUserOrderReservationValidationException exception)
             {
                 return BadRequest(exception);
             }
-            catch (SeatAlreadyReservedReservationException exception)
+            catch (SeatAlreadyReservedOrderReservationException exception)
             {
                 return Conflict(exception);
             }
-            catch (UserAlreadyReservedReservationException exception)
-            {
-                return Conflict(exception);
-            }
-            catch (SeatsNotProvidedReservationException exception)
+            catch (SeatsNotProvidedOrderReservationException exception)
             {
                 return BadRequest(exception);
             }
@@ -102,6 +97,26 @@ namespace FMFT.Web.Server.Controllers
             catch (NotAuthenticatedAccountException exception)
             {
                 return Unauthorized(exception);
+            }
+            catch (NotMatchOrderedItemsQtyWithSeatsOrderException exception)
+            {
+                return BadRequest(exception);
+            }
+            catch (OrderedQtyTooLargeOrderException exception)
+            {
+                return BadRequest(exception);
+            }
+            catch (InvalidShowProductIdOrderException exception)
+            {
+                return BadRequest(exception);
+            }
+            catch (OrderAmountInvalidException exception)
+            {
+                return BadRequest(exception);
+            }
+            catch (OrderAmountMismatchException exception)
+            {
+                return BadRequest(exception);
             }
         }
     }

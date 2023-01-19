@@ -2,8 +2,7 @@
 {
     public class NotFoundOrderException : Exception
     {
-        public NotFoundOrderException() 
-            : base("ERR041: Order not found")
+        public NotFoundOrderException() : base("ERR041: Order not found")
         { 
 
         }

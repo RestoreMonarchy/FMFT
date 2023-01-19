@@ -5,9 +5,6 @@ using FMFT.Web.Server.Models.Orders;
 using FMFT.Web.Server.Models.Orders.DTOs;
 using FMFT.Web.Server.Models.Orders.Exceptions;
 using FMFT.Web.Server.Models.Orders.Params;
-using FMFT.Web.Server.Models.Reservations.DTOs;
-using FMFT.Web.Server.Models.Reservations.Exceptions;
-using FMFT.Web.Server.Models.Reservations.Params;
 
 namespace FMFT.Web.Server.Services.Foundations.Orders
 {
@@ -52,17 +49,42 @@ namespace FMFT.Web.Server.Services.Foundations.Orders
 
             if (result.ReturnValue == 1)
             {
-                throw new SeatAlreadyReservedReservationException();
+                throw new SeatAlreadyReservedOrderReservationException();
             }
 
             if (result.ReturnValue == 2)
             {
-                throw new UserAlreadyReservedReservationException();
+                throw new UserAlreadyReservedOrderReservationException();
             }
 
             if (result.ReturnValue == 3)
             {
-                throw new SeatsNotProvidedReservationException();
+                throw new SeatsNotProvidedOrderReservationException();
+            }
+
+            if (result.ReturnValue == 101)
+            {
+                throw new NotMatchOrderedItemsQtyWithSeatsOrderException();
+            }
+
+            if (result.ReturnValue == 102)
+            {
+                throw new OrderedQtyTooLargeOrderException();
+            }
+
+            if (result.ReturnValue == 103)
+            {
+                throw new InvalidShowProductIdOrderException();
+            }
+
+            if (result.ReturnValue == 104)
+            {
+                throw new OrderAmountInvalidException();
+            }
+
+            if (result.ReturnValue == 105)
+            {
+                throw new OrderAmountMismatchException();
             }
 
             return result.Result;
