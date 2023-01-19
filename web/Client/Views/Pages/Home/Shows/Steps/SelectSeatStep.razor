@@ -1,0 +1,59 @@
+﻿@using FMFT.Web.Client.Views.Shared.Components.Panzooms
+
+<div class="mb-3">
+    <div class="d-md-flex d-block align-items-center">
+        <div class="fs-4 mb-2 mb-md-0">
+            Wybierz @TicketsCountString()
+        </div>
+        <div class="ms-md-auto d-md-flex d-block align-items-center">
+            <div class="me-md-1 w-100 w-md-auto mb-1 mb-md-0">
+                <button class="btn btn-secondary w-100" @onclick="BackToSelectProduct">
+                    Powrót
+                </button>
+            </div>
+            <div class="w-100 w-md-auto">
+                <button class="btn btn-primary text-nowrap w-100" @onclick="NextToConfirm" disabled="@(!HasSelectedSeats)">
+                    Przejdź dalej
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mb-3">
+    <AuditoriumSeatPanzoom Auditorium="Auditorium" ReservedSeats="Show.ReservedSeats" MaxAmount="TicketsCount" @bind-SelectedSeats="SelectedSeats" />
+</div>
+
+<div class="card mb-3">
+    <div class="card-header">
+        Legenda
+    </div>
+    <div class="card-body">
+        <ul>
+            <li>
+                zielony - wolne miejsce
+            </li>
+            <li>
+                pomarańczowy - wybrane miejsce
+            </li>
+            <li>
+                szary - zajęte miejsce
+            </li>
+        </ul>
+    </div>
+</div>
+
+<Condition Evaluation="SelectedSeats is not null">
+    <Match>
+        <div class="d-flex align-items-center">
+            <button class="btn btn-secondary" @onclick="BackToSelectProduct">
+                Powrót
+            </button>
+            <div class="ms-auto">
+                <button class="btn btn-primary" disabled="@(!HasSelectedSeats)" @onclick="NextToConfirm">
+                    Przejdź dalej
+                </button>
+            </div>
+        </div>
+    </Match>
+</Condition>

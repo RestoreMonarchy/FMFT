@@ -1,0 +1,71 @@
+﻿<div class="mb-3">
+    <div class="fs-4 mb-2">
+        Wybierz bilety
+    </div>
+    <div class="mb-2">
+
+        <table class="table mb-1">
+            <thead class="table-dark">
+                <tr>
+                    <th>
+                        Rodzaj biletu
+                    </th>
+                    <th>
+                        Cena
+                    </th>
+                    <th>
+                        Ilość
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <Iterations Items="ShowProducts" Context="showProduct">
+                    <tr>
+                        <td class="align-middle">
+                            @showProduct.Name
+                        </td>
+                        <td class="align-middle">
+                            @showProduct.Price.ToString("N2") zł
+                        </td>
+                        <td class="align-middle">
+                            <InputSelect @bind-Value="orderItems[showProduct.Id].Quantity" class="form-select">
+                                @for (int i = 0; i <= MaxQuantity; i++)
+                                {
+                                    <option value="@i">@i</option>
+                                }
+                            </InputSelect>
+                        </td>
+                    </tr>
+                </Iterations>
+
+                @*<tr class="fw-bold bg-light">
+                    <td>
+                        W sumie
+                    </td>
+                    <td>
+                        @GetTotalPrice().ToString("N2") zł
+                    </td>
+                    <td>
+                        @GetTotalQuantity()
+                    </td>
+                </tr>*@
+
+            </tbody>
+        </table>
+
+        <div class="text-end fw-bold mb-3">
+            W sumie: @GetTotalPrice().ToString("N2") zł
+        </div>
+
+    </div>
+    <div class="d-flex align-items-center">
+        <a class="btn btn-secondary" href="/shows/@Show.Id">
+            Zrezygnuj
+        </a>
+        <div class="ms-auto">
+            <button class="btn btn-primary" disabled="@NextDisabled" @onclick="HandleShowSelectSeats">
+                Przejdź dalej
+            </button>
+        </div>
+    </div>
+</div>

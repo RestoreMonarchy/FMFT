@@ -2,8 +2,8 @@
 {
     public enum PaymentMethod
     {
-        Mock = 0,
-        Przelewy24 = 1
+        None = 0,
+        Mock = 1,
+        Przelewy24 = 2
     }
-
 }
