@@ -1,6 +1,7 @@
 ﻿using FMFT.Extensions.Blazor.Bases.Buttons;
 using FMFT.Extensions.Blazor.Bases.Loadings;
 using FMFT.Extensions.Blazor.Bases.Steppers;
+using FMFT.Web.Client.Brokers.Storages;
 using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Auditoriums;
 using FMFT.Web.Client.Models.API.Reservations;
@@ -46,14 +47,18 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
                 return;
             }
 
-            OrderState = new();
+            OrderState = await StorageBroker.GetOrderStateAsync(ShowId);
+            if (OrderState == null)
+            {
+                OrderState = new();
+            }
 
             Task[] getDataTasks = new Task[]
             {
                 GetShowResponseAsync(),
                 GetAuditoriumResponseAsync(),
-                GetUserReservationsResponseAsync(),
-                GetShowProductsResponseAsync()
+                GetShowProductsResponseAsync(),
+                GetUserReservationsResponseAsync()
             };
 
             await Task.WhenAll(getDataTasks);

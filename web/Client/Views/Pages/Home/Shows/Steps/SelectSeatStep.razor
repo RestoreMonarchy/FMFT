@@ -21,7 +21,7 @@
 </div>
 
 <div class="mb-3">
-    <AuditoriumSeatPanzoom Auditorium="Auditorium" ReservedSeats="Show.ReservedSeats" MaxAmount="TicketsCount" @bind-SelectedSeats="SelectedSeats" />
+    <AuditoriumSeatPanzoom Auditorium="Auditorium" ReservedSeats="Show.ReservedSeats" MaxAmount="TicketsCount" @bind-SelectedSeats="OrderState.Seats" />
 </div>
 
 <div class="card mb-3">
@@ -43,7 +43,7 @@
     </div>
 </div>
 
-<Condition Evaluation="SelectedSeats is not null">
+<Condition Evaluation="OrderState.Seats is not null">
     <Match>
         <div class="d-flex align-items-center">
             <button class="btn btn-secondary" @onclick="BackToSelectProduct">

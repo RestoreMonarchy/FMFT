@@ -18,6 +18,14 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Steps
         [Parameter]
         public Show Show { get; set; }
 
+        protected override void OnParametersSet()
+        {
+            if (TicketsCount < OrderState.Seats.Count)
+            {
+                OrderState.Seats.Clear();
+            }
+        }
+
         public int TicketsCount => OrderState.Items.Sum(x => x.Quantity);
         private string TicketsCountString()
         {
@@ -38,21 +46,17 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Steps
             return string.Format(format, TicketsCount);
         }
 
-        private bool HasSelectedSeats => SelectedSeats.Count == TicketsCount;
-
-        public List<Seat> SelectedSeats { get; set; } = new();
+        private bool HasSelectedSeats => OrderState.Seats.Count == TicketsCount;
 
         private void BackToSelectProduct()
         {
             Stepper.StepDown();
         }
 
-        private Task NextToConfirm()
+        private async Task NextToConfirm()
         {
-            OrderState.SeatIds = SelectedSeats.Select(x => x.Id).ToList();
+            await StorageBroker.SetOrderStateAsync(Show.Id, OrderState);
             Stepper.StepUp();
-
-            return Task.CompletedTask;
         }
     }
 }

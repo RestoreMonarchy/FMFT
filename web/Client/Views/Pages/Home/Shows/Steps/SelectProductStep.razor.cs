@@ -1,4 +1,5 @@
 ﻿using FMFT.Extensions.Blazor.Bases.Steppers;
+using FMFT.Web.Client.Models.API.Reservations;
 using FMFT.Web.Client.Models.API.ShowProducts;
 using FMFT.Web.Client.Models.API.Shows;
 using FMFT.Web.Client.Models.Services.Orders;
@@ -16,6 +17,10 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Steps
         public Show Show { get; set; }
         [Parameter]
         public List<ShowProduct> ShowProducts { get; set; }
+        [Parameter]
+        public List<Reservation> UserReservations { get; set; }
+
+        private IEnumerable<Reservation> ActiveUserReservations => UserReservations.Where(x => !x.IsCanceled);
 
         protected override void OnParametersSet()
         {
@@ -63,8 +68,9 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Steps
             return orderItems.Values.Sum(x => x.Quantity);
         }
 
-        private void HandleShowSelectSeats()
+        private async Task HandleShowSelectSeats()
         {
+            await StorageBroker.SetOrderStateAsync(Show.Id, OrderState);
             Stepper.StepUp();
         }
     }

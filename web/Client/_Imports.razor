@@ -4,6 +4,7 @@
 @using FMFT.Web.Client.Brokers.JSRuntimes
 @using FMFT.Web.Client.Brokers.Loggings
 @using FMFT.Web.Client.Brokers.Navigations
+@using FMFT.Web.Client.Brokers.Storages;
 @using FMFT.Web.Client.Services.Medias;
 @using FMFT.Web.Client.StateContainers.UserAccounts
 @using Microsoft.AspNetCore.Components.Forms
@@ -37,3 +38,4 @@
 @inject IUserAccountStateContainer UserAccountState
 @inject IMediaService MediaService
 @inject IConfiguration Configuration
+@inject IStorageBroker StorageBroker

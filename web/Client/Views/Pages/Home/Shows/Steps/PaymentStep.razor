@@ -4,6 +4,25 @@
     </div>
     <div class="col-md-3">
         <div class="bg-light border p-2">
+            <div class="list-group">
+                <Iterations Items="OrderItems" Context="orderItem">
+                    <div class="list-group-item d-flex align-items-center">
+                        <div>
+                            @orderItem.ShowProduct.Name
+                        </div>
+                        <div class="small ms-auto">
+                            <div>
+                                @orderItem.ShowProduct.Price
+                            </div>
+                            <div>
+                                <span>x</span>@orderItem.Quantity
+                            </div>
+                        </div>
+                    </div>
+                </Iterations>
+            </div>
+            
+
             <div class="d-flex align-items-center fw-bold">
                 <div>
                     Do zapłaty

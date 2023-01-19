@@ -19,7 +19,7 @@
                 @ShowName
             </BreadcrumbItem>
             <BreadcrumbItem Active="true" Class="d-none d-md-block">
-                Zarezerwuj
+                Kup bilety
             </BreadcrumbItem>
         </Breadcrumb>
     </div>
@@ -34,38 +34,23 @@
             <LoadingView @ref="LoadingView">
                 <Condition Evaluation="ShowResponse.IsSuccessful && AuditoriumResponse.IsSuccessful && UserReservationsResponse.IsSuccessful && ShowProductsResponse.IsSuccessful">
                     <Match>
+                        <Stepper @ref="Stepper">
+                            <StepperItem Text="Bilety">
 
-                        <Condition Evaluation="UserReservation is not null">
+                                <SelectProductStep OrderState="OrderState" Stepper="Stepper" Show="Show" ShowProducts="ShowProducts" UserReservations="UserReservations" />
 
-                            <Match>
-                                <InfoAlert>
-                                    Posiadasz już rezerwację na to wydarzenie. Przejdź do rezerwacji klikając <a href="/account/reservations/@UserReservation.Id">tutaj</a>
-                                </InfoAlert>
-                            </Match>
+                            </StepperItem>
+                            <StepperItem Text="Miejsca">
 
-                            <NotMatch>
+                                <SelectSeatStep OrderState="OrderState" Stepper="Stepper" Show="Show" Auditorium="Auditorium" />
 
-                                <Stepper @ref="Stepper">
-                                    <StepperItem Text="Bilety">
+                            </StepperItem>
+                            <StepperItem Text="Płatność">
 
-                                        <SelectProductStep OrderState="OrderState" Stepper="Stepper" Show="Show" ShowProducts="ShowProducts" />
+                                <PaymentStep OrderState="OrderState" Show="Show" />
 
-                                    </StepperItem>
-                                    <StepperItem Text="Miejsca">
-
-                                        <SelectSeatStep OrderState="OrderState" Stepper="Stepper" Show="Show" Auditorium="Auditorium" />
-
-                                    </StepperItem>
-                                    <StepperItem Text="Płatność">
-
-                                        <PaymentStep OrderState="OrderState" Show="Show" />
-
-                                    </StepperItem>
-                                </Stepper>
-
-                            </NotMatch>
-
-                        </Condition>
+                            </StepperItem>
+                        </Stepper>
                     </Match>
                     <NotMatch>
                         <ErrorResponseAlert />

@@ -2,6 +2,15 @@
     <div class="fs-4 mb-2">
         Wybierz bilety
     </div>
+
+    <Condition Evaluation="ActiveUserReservations.Any()">
+        <Match>
+            <InfoAlert>
+                Posiadasz już <strong>@ActiveUserReservations.Count()</strong> aktywne rezerwacje na to wydarzenie
+            </InfoAlert>
+        </Match>
+    </Condition>
+
     <div class="mb-2">
 
         <table class="table mb-1">
