@@ -39,7 +39,7 @@ namespace FMFT.Web.Server.Services.Foundations.Orders
                 Amount = @params.Amount,
                 Currency = @params.Currency,
                 PaymentMethod = @params.PaymentMethod,
-                ExpireDate = @params.ExpireDate,
+                ExpireDate = DateTime.Now.AddMinutes(15),
                 Items = orderItems,
                 SeatIds = @params.SeatIds,
 

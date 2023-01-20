@@ -46,6 +46,8 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Steps
                 });
             }
 
+            Console.WriteLine(createOrderRequest);
+
             APIResponse<Order> response = await APIBroker.CreateOrderAsync(createOrderRequest);
         }
     }
