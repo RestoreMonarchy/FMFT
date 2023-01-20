@@ -16,16 +16,14 @@ namespace FMFT.Extensions.Blazor.Bases.Navigations
         public bool Active { get; set; }
 
         [CascadingParameter]
-        public Navigation Navigation { get; set; }
+        public NavigationBase Navigation { get; set; }
 
         public Guid ID { get; } = Guid.NewGuid();
 
-        protected override async Task OnAfterRenderAsync(bool firstRender)
+        protected override void OnAfterRender(bool firstRender)
         {
-            Console.WriteLine("NavigationItem OnAfterRender");
-
             if (!firstRender)
-                return;            
+                return;
 
             IsActive = Active;
             Navigation.AddItem(this);
@@ -42,6 +40,5 @@ namespace FMFT.Extensions.Blazor.Bases.Navigations
         {
             return IsActive ? "active" : string.Empty;
         }
-
     }
 }

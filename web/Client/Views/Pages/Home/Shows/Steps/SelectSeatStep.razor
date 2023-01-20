@@ -7,7 +7,7 @@
         </div>
         <div class="ms-md-auto d-md-flex d-block align-items-center">
             <div class="me-md-1 w-100 w-md-auto mb-1 mb-md-0">
-                <button class="btn btn-secondary w-100" @onclick="BackToSelectProduct">
+                <button class="btn btn-secondary w-100" @onclick="BackToSelectProductAsync">
                     Powrót
                 </button>
             </div>
@@ -46,7 +46,7 @@
 <Condition Evaluation="OrderState.Seats is not null">
     <Match>
         <div class="d-flex align-items-center">
-            <button class="btn btn-secondary" @onclick="BackToSelectProduct">
+            <button class="btn btn-secondary" @onclick="BackToSelectProductAsync">
                 Powrót
             </button>
             <div class="ms-auto">

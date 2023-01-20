@@ -1,4 +1,5 @@
-﻿using FMFT.Extensions.Blazor.Bases.Steppers;
+﻿using FMFT.Extensions.Blazor.Bases.Navigations;
+using FMFT.Extensions.Blazor.Bases.Steppers;
 using FMFT.Web.Client.Models.API.Auditoriums;
 using FMFT.Web.Client.Models.API.Seats;
 using FMFT.Web.Client.Models.API.Shows;
@@ -12,7 +13,7 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Steps
         [Parameter]
         public OrderState OrderState { get; set; }
         [Parameter]
-        public Stepper Stepper { get; set; }
+        public NavigationStepper Stepper { get; set; }
         [Parameter]
         public Auditorium Auditorium { get; set; }
         [Parameter]
@@ -48,15 +49,15 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Steps
 
         private bool HasSelectedSeats => OrderState.Seats.Count == TicketsCount;
 
-        private void BackToSelectProduct()
+        private async Task BackToSelectProductAsync()
         {
-            Stepper.StepDown();
+            await Stepper.StepDownAsync();
         }
 
         private async Task NextToConfirm()
         {
             await StorageBroker.SetOrderStateAsync(Show.Id, OrderState);
-            Stepper.StepUp();
+            await Stepper.StepUpAsync();
         }
     }
 }

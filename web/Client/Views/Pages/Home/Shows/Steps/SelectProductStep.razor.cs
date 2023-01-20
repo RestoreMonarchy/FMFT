@@ -1,4 +1,5 @@
-﻿using FMFT.Extensions.Blazor.Bases.Steppers;
+﻿using FMFT.Extensions.Blazor.Bases.Navigations;
+using FMFT.Extensions.Blazor.Bases.Steppers;
 using FMFT.Web.Client.Models.API.Reservations;
 using FMFT.Web.Client.Models.API.ShowProducts;
 using FMFT.Web.Client.Models.API.Shows;
@@ -12,7 +13,7 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Steps
         [Parameter]
         public OrderState OrderState { get; set; }
         [Parameter]
-        public Stepper Stepper { get; set; }
+        public NavigationStepper Stepper { get; set; }
         [Parameter]
         public Show Show { get; set; }
         [Parameter]
@@ -71,7 +72,7 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Steps
         private async Task HandleShowSelectSeats()
         {
             await StorageBroker.SetOrderStateAsync(Show.Id, OrderState);
-            Stepper.StepUp();
+            await Stepper.StepUpAsync();
         }
     }
 }

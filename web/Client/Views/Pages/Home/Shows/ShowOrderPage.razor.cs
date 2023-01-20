@@ -1,5 +1,6 @@
 ﻿using FMFT.Extensions.Blazor.Bases.Buttons;
 using FMFT.Extensions.Blazor.Bases.Loadings;
+using FMFT.Extensions.Blazor.Bases.Navigations;
 using FMFT.Extensions.Blazor.Bases.Steppers;
 using FMFT.Web.Client.Brokers.Storages;
 using FMFT.Web.Client.Models.API;
@@ -16,11 +17,13 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
     {
         [Parameter]
         public int ShowId { get; set; }
+        [Parameter]
+        public string ActiveNavigationKey { get; set; } = "tickets";
 
         private string ShowName => ShowResponse?.Object?.Name ?? ShowId.ToString();
 
         private LoadingView LoadingView { get; set; }
-        private Stepper Stepper { get; set; }
+        private NavigationStepper Stepper { get; set; }
         public ButtonBase ConfirmButton { get; set; }
         public ButtonBase BackButton { get; set; }
 
@@ -89,6 +92,11 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
             }
 
             UserReservationsResponse = await APIBroker.GetReservationsByUserAndShowIdAsync(UserAccountState.UserAccount.UserId, ShowId);
+        }
+
+        private async Task HandleNavigateAsync(NavigationItem navigationItem)
+        {
+            NavigationBroker.NavigateTo($"/shows/{ShowId}/order/{navigationItem.Key}");
         }
     }
 }

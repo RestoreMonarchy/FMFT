@@ -1,6 +1,6 @@
-﻿@page "/shows/{ShowId:int}/order"
+﻿@page "/shows/{ShowId:int}/order/{ActiveNavigationKey?}"
 @using FMFT.Extensions.Blazor.Bases.Conditions
-@using FMFT.Extensions.Blazor.Bases.Steppers
+@using FMFT.Extensions.Blazor.Bases.Navigations
 @using BlazorPanzoom
 @using FMFT.Web.Client.Views.Pages.Home.Shows.Steps
 @using FMFT.Web.Client.Views.Shared.Components.Panzooms
@@ -34,23 +34,23 @@
             <LoadingView @ref="LoadingView">
                 <Condition Evaluation="ShowResponse.IsSuccessful && AuditoriumResponse.IsSuccessful && UserReservationsResponse.IsSuccessful && ShowProductsResponse.IsSuccessful">
                     <Match>
-                        <Stepper @ref="Stepper">
-                            <StepperItem Text="Bilety">
+                        <NavigationStepper @ref="Stepper" ActiveKey="@ActiveNavigationKey" OnNavigate="HandleNavigateAsync">
+                            <NavigationItem Key="tickets" Title="Bilety">
 
                                 <SelectProductStep OrderState="OrderState" Stepper="Stepper" Show="Show" ShowProducts="ShowProducts" UserReservations="UserReservations" />
 
-                            </StepperItem>
-                            <StepperItem Text="Miejsca">
+                            </NavigationItem>
+                            <NavigationItem Key="seats" Title="Miejsca">
 
                                 <SelectSeatStep OrderState="OrderState" Stepper="Stepper" Show="Show" Auditorium="Auditorium" />
 
-                            </StepperItem>
-                            <StepperItem Text="Płatność">
+                            </NavigationItem>
+                            <NavigationItem Key="payment" Title="Płatność">
 
                                 <PaymentStep OrderState="OrderState" Show="Show" />
 
-                            </StepperItem>
-                        </Stepper>
+                            </NavigationItem>
+                        </NavigationStepper>
                     </Match>
                     <NotMatch>
                         <ErrorResponseAlert />
