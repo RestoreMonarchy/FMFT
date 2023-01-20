@@ -8,7 +8,6 @@ namespace FMFT.Web.Client.Models.API.Orders.Requests
         public decimal Amount { get; set; }
         public string Currency { get; set; }
         public PaymentMethod PaymentMethod { get; set; }
-        public DateTime ExpireDate { get; set; }
         public List<Item> Items { get; set; }
         public List<int> SeatIds { get; set; }
 
