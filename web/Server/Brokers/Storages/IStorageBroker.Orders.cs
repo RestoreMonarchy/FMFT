@@ -6,7 +6,9 @@ namespace FMFT.Web.Server.Brokers.Storages
 {
     public partial interface IStorageBroker
     {
+        ValueTask<IEnumerable<Order>> SelectAllOrdersAsync();
         ValueTask<Order> SelectOrderByIdAsync(int orderId);
+        ValueTask<IEnumerable<Order>> SelectOrdersByUserIdAsync(int userId);
         ValueTask<StoredProcedureResult<Order>> CreateOrderAsync(CreateOrderDTO dto);
     }
 }

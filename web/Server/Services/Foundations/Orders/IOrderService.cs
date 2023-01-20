@@ -6,6 +6,8 @@ namespace FMFT.Web.Server.Services.Foundations.Orders
     public interface IOrderService
     {
         ValueTask<Order> CreateOrderAsync(CreateOrderParams @params);
+        ValueTask<IEnumerable<Order>> RetrieveAllOrdersAsync();
         ValueTask<Order> RetrieveOrderByIdAsync(int orderId);
+        ValueTask<IEnumerable<Order>> RetrieveOrdersByUserIdAsync(int userId);
     }
 }

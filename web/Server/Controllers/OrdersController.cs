@@ -28,6 +28,25 @@ namespace FMFT.Web.Server.Controllers
             this.loggingBroker = loggingBroker;
         }
 
+        [HttpGet]
+        public async ValueTask<IActionResult> GetAllOrders()
+        {
+            try
+            {
+                IEnumerable<Order> orders = await orderService.RetrieveAllOrdersAsync();
+
+                return Ok(orders);
+            }
+            catch (NotAuthenticatedAccountException exception)
+            {
+                return Unauthorized(exception);
+            }
+            catch (NotAuthorizedAccountException exception)
+            {
+                return Forbidden(exception);
+            }
+        }
+
         [HttpGet("{orderId}")]
         public async ValueTask<IActionResult> GetOrder(int orderId)
         {
@@ -40,6 +59,25 @@ namespace FMFT.Web.Server.Controllers
             catch (NotFoundOrderException exception)
             {
                 return NotFound(exception);
+            }
+            catch (NotAuthenticatedAccountException exception)
+            {
+                return Unauthorized(exception);
+            }
+            catch (NotAuthorizedAccountException exception)
+            {
+                return Forbidden(exception);
+            }
+        }
+
+        [HttpGet("myorders")]
+        public async ValueTask<IActionResult> GetMyOrders()
+        {
+            try
+            {
+                IEnumerable<Order> orders = await orderService.RetrieveOrdersForCurrentUserAsync();
+
+                return Ok(orders);
             }
             catch (NotAuthenticatedAccountException exception)
             {

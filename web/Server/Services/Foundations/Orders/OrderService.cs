@@ -19,6 +19,27 @@ namespace FMFT.Web.Server.Services.Foundations.Orders
             this.storageBroker = storageBroker;
         }
 
+        public async ValueTask<IEnumerable<Order>> RetrieveAllOrdersAsync()
+        {
+            return await storageBroker.SelectAllOrdersAsync();
+        }
+        public async ValueTask<Order> RetrieveOrderByIdAsync(int orderId)
+        {
+            Order order = await storageBroker.SelectOrderByIdAsync(orderId);
+
+            if (order == null)
+            {
+                throw new NotFoundOrderException();
+            }
+
+            return order;
+        }
+
+        public async ValueTask<IEnumerable<Order>> RetrieveOrdersByUserIdAsync(int userId)
+        {
+            return await storageBroker.SelectOrdersByUserIdAsync(userId);
+        }
+
         public async ValueTask<Order> CreateOrderAsync(CreateOrderParams @params)
         {
 
@@ -90,16 +111,5 @@ namespace FMFT.Web.Server.Services.Foundations.Orders
             return result.Result;
         }
 
-        public async ValueTask<Order> RetrieveOrderByIdAsync(int orderId)
-        {
-            Order order = await storageBroker.SelectOrderByIdAsync(orderId);
-
-            if (order == null)
-            {
-                throw new NotFoundOrderException();
-            }
-
-            return order;
-        }
     }
 }
