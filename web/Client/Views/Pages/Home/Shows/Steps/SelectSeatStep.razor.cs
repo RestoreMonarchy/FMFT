@@ -1,5 +1,4 @@
 ﻿using FMFT.Extensions.Blazor.Bases.Navigations;
-using FMFT.Extensions.Blazor.Bases.Steppers;
 using FMFT.Web.Client.Models.API.Auditoriums;
 using FMFT.Web.Client.Models.API.Seats;
 using FMFT.Web.Client.Models.API.Shows;
@@ -13,17 +12,38 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Steps
         [Parameter]
         public OrderState OrderState { get; set; }
         [Parameter]
+        public EventCallback<OrderState> OrderStateChanged { get; set; }
+        [Parameter]
         public NavigationStepper Stepper { get; set; }
         [Parameter]
         public Auditorium Auditorium { get; set; }
         [Parameter]
         public Show Show { get; set; }
 
-        protected override void OnParametersSet()
+        private async Task InvokeOrderStateChangedAsync() 
         {
-            if (TicketsCount < OrderState.Seats.Count)
+            await OrderStateChanged.InvokeAsync(OrderState);
+        }
+
+        private async Task HandleSelectedSeatsChangedAsync(List<Seat> seats)
+        {
+            OrderState.Seats = seats;
+            await InvokeOrderStateChangedAsync();
+        }
+
+        protected override async Task OnParametersSetAsync()
+        {
+            int ticketsCount = TicketsCount;
+
+            if (ticketsCount < OrderState.Seats.Count)
             {
                 OrderState.Seats.Clear();
+                await InvokeOrderStateChangedAsync();
+            }
+
+            if (ticketsCount == 0)
+            {
+                await BackToSelectProductAsync();
             }
         }
 
@@ -56,7 +76,7 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Steps
 
         private async Task NextToConfirm()
         {
-            await StorageBroker.SetOrderStateAsync(Show.Id, OrderState);
+            await InvokeOrderStateChangedAsync();
             await Stepper.StepUpAsync();
         }
     }

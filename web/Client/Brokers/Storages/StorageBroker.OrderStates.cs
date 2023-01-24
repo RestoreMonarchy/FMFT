@@ -4,20 +4,20 @@ namespace FMFT.Web.Client.Brokers.Storages
 {
     public partial class StorageBroker
     {
-        private const string OrderStateKey = "OrderState-{0}";
+        private const string OrderStateDataKey = "OrderStateData-{0}";
 
-        public async ValueTask SetOrderStateAsync(int showId, OrderState orderState) 
+        public async ValueTask SetOrderStateDataAsync(int showId, OrderStateData orderState) 
         {
-            string key = string.Format(OrderStateKey, showId);
+            string key = string.Format(OrderStateDataKey, showId);
 
             await SetLocalItemAsync(key, orderState);
         }
 
-        public async ValueTask<OrderState> GetOrderStateAsync(int showId)
+        public async ValueTask<OrderStateData> GetOrderStateDataAsync(int showId)
         {
-            string key = string.Format(OrderStateKey, showId);
+            string key = string.Format(OrderStateDataKey, showId);
 
-            return await GetLocalItemAsync<OrderState>(key);
+            return await GetLocalItemAsync<OrderStateData>(key);
         }
     }
 }

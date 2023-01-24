@@ -34,20 +34,32 @@
             <LoadingView @ref="LoadingView">
                 <Condition Evaluation="ShowResponse.IsSuccessful && AuditoriumResponse.IsSuccessful && UserReservationsResponse.IsSuccessful && ShowProductsResponse.IsSuccessful">
                     <Match>
-                        <NavigationStepper @ref="Stepper" ActiveKey="@ActiveNavigationKey" OnNavigate="HandleNavigateAsync">
+                        <NavigationStepper @ref="Stepper" ActiveKey="@ActiveNavigationKey" OnNavigate="HandleNavigate">
                             <NavigationItem Key="tickets" Title="Bilety">
 
-                                <SelectProductStep OrderState="OrderState" Stepper="Stepper" Show="Show" ShowProducts="ShowProducts" UserReservations="UserReservations" />
+                                <SelectProductStep 
+                                    OrderState="OrderState" 
+                                    Stepper="Stepper" 
+                                    Show="Show" 
+                                    ShowProducts="ShowProducts" 
+                                    UserReservations="UserReservations" />
 
                             </NavigationItem>
                             <NavigationItem Key="seats" Title="Miejsca">
 
-                                <SelectSeatStep OrderState="OrderState" Stepper="Stepper" Show="Show" Auditorium="Auditorium" />
+                                <SelectSeatStep  
+                                    OrderState="OrderState" 
+                                    OrderStateChanged="SaveOrderStateAsync" 
+                                    Stepper="Stepper" 
+                                    Show="Show" 
+                                    Auditorium="Auditorium" />
 
                             </NavigationItem>
                             <NavigationItem Key="payment" Title="Płatność">
 
-                                <PaymentStep OrderState="OrderState" Show="Show" />
+                                <PaymentStep 
+                                    OrderState="OrderState" 
+                                    Show="Show" />
 
                             </NavigationItem>
                         </NavigationStepper>

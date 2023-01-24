@@ -4,7 +4,7 @@ namespace FMFT.Web.Client.Brokers.Storages
 {
     public partial interface IStorageBroker
     {
-        ValueTask SetOrderStateAsync(int showId, OrderState orderState);
-        ValueTask<OrderState> GetOrderStateAsync(int showId);
+        ValueTask SetOrderStateDataAsync(int showId, OrderStateData orderStateData);
+        ValueTask<OrderStateData> GetOrderStateDataAsync(int showId);
     }
 }

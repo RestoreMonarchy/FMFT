@@ -6,6 +6,7 @@ using FMFT.Web.Client.Brokers.Storages;
 using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Auditoriums;
 using FMFT.Web.Client.Models.API.Reservations;
+using FMFT.Web.Client.Models.API.Seats;
 using FMFT.Web.Client.Models.API.ShowProducts;
 using FMFT.Web.Client.Models.API.Shows;
 using FMFT.Web.Client.Models.Services.Orders;
@@ -50,11 +51,7 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
                 return;
             }
 
-            OrderState = await StorageBroker.GetOrderStateAsync(ShowId);
-            if (OrderState == null)
-            {
-                OrderState = new();
-            }
+            await RetrieveOrderStateAsync();
 
             Task[] getDataTasks = new Task[]
             {
@@ -67,6 +64,60 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
             await Task.WhenAll(getDataTasks);
 
             LoadingView.StopLoading();
+        }
+
+        private async Task RetrieveOrderStateAsync()
+        {
+            OrderStateData orderStateData = await StorageBroker.GetOrderStateDataAsync(ShowId);
+
+            OrderState = new();
+            if (orderStateData != null)
+            {
+                foreach (OrderStateItemData item in orderStateData.Items)
+                {
+                    if (item.ShowId != ShowId)
+                    {
+                        continue;
+                    }
+
+                    ShowProduct showProduct = ShowProducts.FirstOrDefault(x => x.Id == item.ShowProductId);
+
+                    if (showProduct == null)
+                    {
+                        continue;
+                    }
+
+                    OrderState.Items.Add(new OrderItemState()
+                    {
+                        Show = Show,
+                        ShowProduct = showProduct,
+                        Quantity = item.Quantity
+                    });
+                }
+
+                foreach (int seatId in orderStateData.SeatIds)
+                {
+                    Seat seat = Auditorium.Seats.FirstOrDefault(x => x.Id == seatId);
+
+                    if (seat == null)
+                    {
+                        continue;
+                    }
+
+                    OrderState.Seats.Add(seat);
+                }
+
+                if (OrderState.Items.Count != orderStateData.Items.Count
+                    || OrderState.Seats.Count != orderStateData.SeatIds.Count)
+                {
+                    await StorageBroker.SetOrderStateDataAsync(ShowId, OrderState.ToOrderStateData());
+                }
+            }
+        }
+
+        private async Task SaveOrderStateAsync(OrderState orderState)
+        {
+            await StorageBroker.SetOrderStateDataAsync(ShowId, orderState.ToOrderStateData());
         }
 
         private async Task GetShowResponseAsync()
@@ -94,7 +145,7 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
             UserReservationsResponse = await APIBroker.GetReservationsByUserAndShowIdAsync(UserAccountState.UserAccount.UserId, ShowId);
         }
 
-        private async Task HandleNavigateAsync(NavigationItem navigationItem)
+        private void HandleNavigate(NavigationItem navigationItem)
         {
             NavigationBroker.NavigateTo($"/shows/{ShowId}/order/{navigationItem.Key}");
         }

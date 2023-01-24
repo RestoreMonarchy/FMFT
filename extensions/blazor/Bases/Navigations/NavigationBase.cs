@@ -23,7 +23,7 @@ namespace FMFT.Extensions.Blazor.Bases.Navigations
         {
             NavigationItem navigationItem = Items.FirstOrDefault(x => x.Key == key);
 
-            if (navigationItem == null && ActiveNavigationItem == null)
+            if (navigationItem == null)
             {
                 navigationItem = Items.FirstOrDefault();
             }

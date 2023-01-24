@@ -21,7 +21,13 @@
 </div>
 
 <div class="mb-3">
-    <AuditoriumSeatPanzoom Auditorium="Auditorium" ReservedSeats="Show.ReservedSeats" MaxAmount="TicketsCount" @bind-SelectedSeats="OrderState.Seats" />
+    <AuditoriumSeatPanzoom 
+        Auditorium="Auditorium" 
+        ReservedSeats="Show.ReservedSeats" 
+        MaxAmount="TicketsCount"
+        SelectedSeats="OrderState.Seats"
+        SelectedSeatsChanged="HandleSelectedSeatsChangedAsync"  
+    />
 </div>
 
 <div class="card mb-3">

@@ -82,8 +82,14 @@ namespace FMFT.Web.Client.Views.Shared.Components.Panzooms
                 }
             }
 
-            foreach (Seat seat in SelectedSeats)
+            foreach (Seat seat in SelectedSeats.ToList())
             {
+                if (ReservedSeats.Any(x => x.SeatId == seat.Id))
+                {
+                    await RemoveSeatAsync(seat);
+                    break;
+                }
+
                 await DrawSeatAsync(seat.Row, seat.Number, "orange");
             }
         }

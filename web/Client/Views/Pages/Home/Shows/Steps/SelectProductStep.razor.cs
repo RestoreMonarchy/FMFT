@@ -13,6 +13,8 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Steps
         [Parameter]
         public OrderState OrderState { get; set; }
         [Parameter]
+        public EventCallback<OrderState> OrderStateChanged { get; set; }
+        [Parameter]
         public NavigationStepper Stepper { get; set; }
         [Parameter]
         public Show Show { get; set; }
@@ -22,6 +24,11 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Steps
         public List<Reservation> UserReservations { get; set; }
 
         private IEnumerable<Reservation> ActiveUserReservations => UserReservations.Where(x => !x.IsCanceled);
+
+        private async Task InvokeOrderStateChangedAsync()
+        {
+            await OrderStateChanged.InvokeAsync(OrderState);
+        }
 
         protected override void OnParametersSet()
         {
@@ -71,7 +78,7 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Steps
 
         private async Task HandleShowSelectSeats()
         {
-            await StorageBroker.SetOrderStateAsync(Show.Id, OrderState);
+            await InvokeOrderStateChangedAsync();
             await Stepper.StepUpAsync();
         }
     }
