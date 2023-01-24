@@ -51,8 +51,6 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
                 return;
             }
 
-            await RetrieveOrderStateAsync();
-
             Task[] getDataTasks = new Task[]
             {
                 GetShowResponseAsync(),
@@ -62,6 +60,8 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
             };
 
             await Task.WhenAll(getDataTasks);
+
+            await RetrieveOrderStateAsync();
 
             LoadingView.StopLoading();
         }
@@ -110,8 +110,12 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
                 if (OrderState.Items.Count != orderStateData.Items.Count
                     || OrderState.Seats.Count != orderStateData.SeatIds.Count)
                 {
-                    await StorageBroker.SetOrderStateDataAsync(ShowId, OrderState.ToOrderStateData());
+                    await SaveOrderStateAsync(OrderState);
                 }
+            } else
+            {
+                OrderState = new();
+                await SaveOrderStateAsync(OrderState);
             }
         }
 

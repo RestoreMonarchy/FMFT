@@ -38,7 +38,8 @@
                             <NavigationItem Key="tickets" Title="Bilety">
 
                                 <SelectProductStep 
-                                    OrderState="OrderState" 
+                                    OrderState="OrderState"
+                                    OrderStateChanged="SaveOrderStateAsync"
                                     Stepper="Stepper" 
                                     Show="Show" 
                                     ShowProducts="ShowProducts" 
