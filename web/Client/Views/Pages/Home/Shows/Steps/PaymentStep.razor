@@ -1,52 +1,12 @@
-﻿<div class="row">
+﻿@using FMFT.Web.Client.Views.Shared.Components.Inputs
+<div class="row">
     <div class="col-lg-8">
         <div class="mb-3">
             <div class="fs-5 mb-2">
                 Wybierz metodę płatności
             </div>
             <div class="dropdown-divider"></div>
-            <div class="list-group">
-                <label class="list-group-item d-flex align-items-center" style="cursor: pointer;">
-                    <div>
-                        <input class="form-check-input me-2" type="radio">
-                    </div>
-                    <div>
-                        <span style="font-weight: 600;">Blik</span>
-                    </div>
-                    <div class="ms-auto d-inline-flex align-items-center">
-                        <span style="height: 25px;" class="position-relative d-inline-flex align-items-center justify-content-center">
-                            <img class="h-100 w-auto position-relative" src="/img/brandings/payments/blik.svg">
-                        </span>
-                    </div>
-                </label>
-                <label class="list-group-item d-flex align-items-center" style="cursor: pointer;">
-                    <div>
-                        <input class="form-check-input me-2" type="radio">
-                    </div>
-                    <div>
-                        <span style="font-weight: 600;">Karta płatnicza</span>
-                    </div>
-                    <div class="ms-auto d-inline-flex align-items-center">
-                        <span style="height: 25px;" class="position-relative d-inline-flex align-items-center justify-content-center">
-                            <img class="w-auto position-relative me-2" style="max-height: 20px;" src="/img/brandings/payments/visa.svg">
-                            <img class="h-100 w-auto position-relative" src="/img/brandings/payments/mastercard.svg">
-                        </span>
-                    </div>
-                </label>    
-                <label class="list-group-item d-flex align-items-center" style="cursor: pointer;">
-                    <div>
-                        <input class="form-check-input me-2" type="radio">
-                    </div>
-                    <div>
-                        <span style="font-weight: 600;">Przelewy24</span>
-                    </div>
-                    <div class="ms-auto d-inline-flex align-items-center">
-                        <span style="height: 25px;" class="position-relative d-inline-flex align-items-center justify-content-center">
-                            <img class="h-100 w-auto position-relative" src="/img/brandings/payments/p24.svg">
-                        </span>
-                    </div>
-                </label>
-            </div>
+            <PaymentMethodSelect PaymentMethod="OrderState.PaymentMethod" PaymentMethodChanged="HandlePaymentMethodChangedAsync" />
         </div>
         <div class="mb-3">
             <div class="fs-5 mb-2">

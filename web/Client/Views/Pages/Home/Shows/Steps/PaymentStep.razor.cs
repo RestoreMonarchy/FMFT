@@ -4,6 +4,7 @@ using FMFT.Web.Client.Models.API.Orders.Requests;
 using FMFT.Web.Client.Models.API.ShowProducts;
 using FMFT.Web.Client.Models.API.Shows;
 using FMFT.Web.Client.Models.Services.Orders;
+using FMFT.Web.Shared.Enums;
 using Microsoft.AspNetCore.Components;
 
 namespace FMFT.Web.Client.Views.Pages.Home.Shows.Steps
@@ -13,11 +14,32 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Steps
         [Parameter]
         public OrderState OrderState { get; set; }
         [Parameter]
+        public EventCallback<OrderState> OrderStateChanged { get; set; }
+        [Parameter]
         public Show Show { get; set; }
 
         private Order order;
 
         public IEnumerable<OrderItemState> OrderItems => OrderState.Items.Where(x => x.Quantity > 0);
+
+        protected override void OnParametersSet()
+        {
+            if (OrderState.PaymentMethod == PaymentMethod.None)
+            {
+                OrderState.PaymentMethod = PaymentMethod.Blik;
+            }
+        }
+
+        private async Task InvokeOrderStateChangedAsync()
+        {
+            await OrderStateChanged.InvokeAsync(OrderState);
+        }
+
+        private async Task HandlePaymentMethodChangedAsync(PaymentMethod paymentMethod)
+        {
+            OrderState.PaymentMethod = paymentMethod;
+            await InvokeOrderStateChangedAsync();
+        }
 
         private async Task CreateOrderTmp()
         {

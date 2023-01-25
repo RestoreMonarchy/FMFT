@@ -59,7 +59,8 @@
                             <NavigationItem Key="payment" Title="Płatność">
 
                                 <PaymentStep 
-                                    OrderState="OrderState" 
+                                    OrderState="OrderState"
+                                    OrderStateChanged="SaveOrderStateAsync"
                                     Show="Show" />
 
                             </NavigationItem>

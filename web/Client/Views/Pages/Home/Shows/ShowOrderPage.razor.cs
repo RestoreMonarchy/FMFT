@@ -73,6 +73,8 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
             OrderState = new();
             if (orderStateData != null)
             {
+                OrderState.PaymentMethod = orderStateData.PaymentMethod;
+
                 foreach (OrderStateItemData item in orderStateData.Items)
                 {
                     if (item.ShowId != ShowId)
