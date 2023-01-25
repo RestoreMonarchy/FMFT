@@ -44,7 +44,7 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
 
         public OrderState OrderState { get; set; }
 
-        protected override async Task OnParametersSetAsync()
+        protected override async Task OnInitializedAsync()
         {
             if (!UserAccountState.IsAuthenticated)
             {
