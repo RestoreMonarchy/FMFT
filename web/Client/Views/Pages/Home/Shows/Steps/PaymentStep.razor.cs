@@ -1,4 +1,6 @@
-﻿using FMFT.Web.Client.Models.API;
+﻿using FMFT.Extensions.Blazor.Bases.Alerts;
+using FMFT.Extensions.Blazor.Bases.Buttons;
+using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Orders;
 using FMFT.Web.Client.Models.API.Orders.Requests;
 using FMFT.Web.Client.Models.API.ShowProducts;
@@ -18,9 +20,13 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Steps
         [Parameter]
         public Show Show { get; set; }
 
-        private Order order;
+        public ButtonBase PayButton { get; set; }
+        public AlertGroupBase AlertGroup { get; set; }
+        public AlertBase ErrorAlert { get; set; }
 
         public IEnumerable<OrderItemState> OrderItems => OrderState.Items.Where(x => x.Quantity > 0);
+
+        private bool IsPayButtonDisabled => !OrderState.IsAgreeTerms;
 
         protected override void OnParametersSet()
         {
@@ -43,6 +49,9 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Steps
 
         private async Task CreateOrderTmp()
         {
+            AlertGroup.HideAll();
+            PayButton.StartSpinning();
+
             CreateOrderRequest createOrderRequest = new()
             {
                 Amount = OrderState.TotalPrice,
@@ -68,9 +77,15 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Steps
                 });
             }
 
-            Console.WriteLine(createOrderRequest);
-
             APIResponse<Order> response = await APIBroker.CreateOrderAsync(createOrderRequest);
+            if (response.IsSuccessful)
+            {
+                
+            } else
+            {
+                ErrorAlert.Show();
+                PayButton.StopSpinning();
+            }
         }
     }
 }

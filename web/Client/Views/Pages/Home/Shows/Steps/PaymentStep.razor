@@ -1,6 +1,12 @@
 ﻿@using FMFT.Web.Client.Views.Shared.Components.Inputs
 <div class="row">
     <div class="col-lg-8">
+        <AlertGroupBase @ref="AlertGroup">
+            <AlertBase @ref="ErrorAlert" Class="alert-danger">
+                Wystąpił błąd. Spróbuj ponownie później
+            </AlertBase>
+        </AlertGroupBase>
+
         <div class="mb-3">
             <div class="fs-5 mb-2">
                 Wybierz metodę płatności
@@ -64,13 +70,18 @@
                     <li>
                         <a href="javascript:void(0)" class="text-decoration-none">
                             Regulamin Sklepu Internetowego
-                        </a>                        
+                        </a>
                     </li>
                 </ul>
                 <div class="form-check ms-2">
-                    <input class="form-check-input" type="checkbox" id="TermsAndConditionsCheckbox" style="cursor: pointer;">
+                    <input class="form-check-input" type="checkbox" id="TermsAndConditionsCheckbox" style="cursor: pointer;" @bind="OrderState.IsAgreeTerms">
                     <label class="form-check-label" for="TermsAndConditionsCheckbox" style="cursor: pointer;">
-                        Zgadzam się z warunkami sprzedaży i regulaminem sklepu<span class="text-danger fw-bold"> *</span>
+                        Zgadzam się z warunkami sprzedaży i regulaminem sklepu
+                        <Condition Evaluation="OrderState.IsAgreeTerms">
+                            <NotMatch>
+                                <span class="text-danger fw-bold"> *</span>
+                            </NotMatch>
+                        </Condition>
                     </label>
                 </div>
             </div>
@@ -109,10 +120,20 @@
 
             <div class="dropdown-divider"></div>
 
-            <div>
-                <button class="btn btn-success w-100" @onclick="CreateOrderTmp">
+            <div class="mb-2">
+                <ButtonBase @ref="PayButton" Class="btn btn-success w-100" OnClick="CreateOrderTmp" IsDisabled="@IsPayButtonDisabled" SpinningText="Oczekiwanie na operatora">
                     Zapłać
-                </button>
+                </ButtonBase>
+            </div>
+            <div class="text-small">
+                <Condition Evaluation="OrderState.IsAgreeTerms">
+                    <NotMatch>
+                        <div class="text-danger">
+                            <i class="fa-solid fa-exclamation me-1"></i>
+                            Musisz się zgodzić z warunkami sprzedaży
+                        </div>
+                    </NotMatch>
+                </Condition>
             </div>
         </div>
     </div>

@@ -64,8 +64,26 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
             await RetrieveOrderStateAsync();
 
             LoadingView.StopLoading();
+
+            CheckActiveStep();
         }
 
+        private void CheckActiveStep()
+        {
+            if (string.IsNullOrEmpty(OrderState.CurrentStepKey))
+            {
+                return;
+            }
+
+            if (OrderState.CurrentStepKey.Equals(ActiveNavigationKey, StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
+
+            ActiveNavigationKey = OrderState.CurrentStepKey;
+            NavigateToStepKey(OrderState.CurrentStepKey);
+        }
+            
         private async Task RetrieveOrderStateAsync()
         {
             OrderStateData orderStateData = await StorageBroker.GetOrderStateDataAsync(ShowId);
@@ -73,6 +91,7 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
             OrderState = new();
             if (orderStateData != null)
             {
+                OrderState.CurrentStepKey = orderStateData.CurrentStepKey;
                 OrderState.PaymentMethod = orderStateData.PaymentMethod;
 
                 foreach (OrderStateItemData item in orderStateData.Items)
@@ -106,6 +125,11 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
                         continue;
                     }
 
+                    if (Show.ReservedSeats.Exists(x => x.SeatId == seat.Id))
+                    {
+                        continue;
+                    }
+
                     OrderState.Seats.Add(seat);
                 }
 
@@ -123,6 +147,7 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
 
         private async Task SaveOrderStateAsync(OrderState orderState)
         {
+            OrderState.CurrentStepKey = ActiveNavigationKey;
             await StorageBroker.SetOrderStateDataAsync(ShowId, orderState.ToOrderStateData());
         }
 
@@ -153,7 +178,12 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
 
         private void HandleNavigate(NavigationItem navigationItem)
         {
-            NavigationBroker.NavigateTo($"/shows/{ShowId}/order/{navigationItem.Key}");
+            NavigateToStepKey(navigationItem.Key);
+        }
+
+        private void NavigateToStepKey(string stepKey)
+        {
+            NavigationBroker.NavigateTo($"/shows/{ShowId}/order/{stepKey}");
         }
     }
 }
