@@ -21,6 +21,13 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
         [Parameter]
         public string ActiveNavigationKey { get; set; } = "tickets";
 
+        private string[] steps = new string[]
+        {
+            "tickets",
+            "seats",
+            "payment"
+        };
+
         private string ShowName => ShowResponse?.Object?.Name ?? ShowId.ToString();
 
         private LoadingView LoadingView { get; set; }
@@ -70,6 +77,11 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
 
         private void CheckActiveStep()
         {
+            if (steps.Any(x => x.Equals(ActiveNavigationKey, StringComparison.OrdinalIgnoreCase)))
+            {
+                return;
+            }
+
             if (string.IsNullOrEmpty(OrderState.CurrentStepKey))
             {
                 return;
@@ -176,14 +188,17 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
             UserReservationsResponse = await APIBroker.GetReservationsByUserAndShowIdAsync(UserAccountState.UserAccount.UserId, ShowId);
         }
 
-        private void HandleNavigate(NavigationItem navigationItem)
+        private async Task HandleNavigate(NavigationItem navigationItem)
         {
             NavigateToStepKey(navigationItem.Key);
+
+            OrderState.CurrentStepKey = navigationItem.Key;
+            await SaveOrderStateAsync(OrderState);
         }
 
         private void NavigateToStepKey(string stepKey)
-        {
-            NavigationBroker.NavigateTo($"/shows/{ShowId}/order/{stepKey}");
+        {            
+            NavigationBroker.NavigateTo($"/shows/{ShowId}/order/{stepKey}");            
         }
     }
 }
