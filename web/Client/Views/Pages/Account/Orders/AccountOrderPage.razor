@@ -102,25 +102,30 @@
                                             @FormatHelper.TranslateOrderStatus(Order.Status)
                                         </div>
                                         <div>
-                                            Dokończ dokonywanie płatności na stronie operatora przed upływem czasu
+                                            @OrderStatusDescriptions[Order.Status]
                                         </div>
                                     </div>
-                                    <div class="list-group list-group-flush">
-                                        <div class="list-group-item d-flex align-items-center">
-                                            <div>
-                                                Pozostały czas
+                                    <Condition Evaluation="Order.IsExpired">
+                                        <NotMatch>
+                                            <div class="list-group list-group-flush">
+                                                <div class="list-group-item d-flex align-items-center">
+                                                    <div>
+                                                        Pozostały czas
+                                                    </div>
+                                                    <div class="ms-auto">
+                                                        <Countdown Class="fw-bold" 
+                                                            TargetDate="@Order.ExpireDate.LocalDateTime"
+                                                            OnTimeElapsed="HandleTimeElapsed"/>
+                                                    </div>
+                                                </div>
+                                                <a class="list-group-item list-group-item-action list-group-item-info" href="javascript:void(0)">
+                                                    <i class="fa-solid fa-arrow-right-long me-1"></i>
+                                                    Przejdź do płatności
+                                                </a>
                                             </div>
-                                            <div class="ms-auto">
-                                                <Countdown TargetDate="@Order.ExpireDate.LocalDateTime" Class="fw-bold" />
-                                            </div>                                            
-                                        </div>
-                                        <a class="list-group-item list-group-item-action list-group-item-info" href="javascript:void(0)">
-                                            <i class="fa-solid fa-arrow-right-long me-1"></i>
-                                            Przejdź do płatności
-                                        </a>
-                                    </div>
-                                </div>
-                                
+                                        </NotMatch>
+                                    </Condition>                                    
+                                </div>                                
                             </div>
 
                         </div>
