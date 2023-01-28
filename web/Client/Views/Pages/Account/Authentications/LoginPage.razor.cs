@@ -4,7 +4,7 @@ using FMFT.Web.Client.Models.API.Accounts;
 using FMFT.Web.Client.Services.Accounts;
 using Microsoft.AspNetCore.Components;
 
-namespace FMFT.Web.Client.Views.Pages.Account
+namespace FMFT.Web.Client.Views.Pages.Account.Authentications
 {
     public partial class LoginPage
     {

@@ -13,10 +13,10 @@ namespace FMFT.Web.Client.Models.API.Orders
         public Guid SessionId { get; set; }
         public string PaymentUrl { get; set; }
         public string PaymentToken { get; set; }
-        public DateTime ExpireDate { get; set; }
+        public DateTimeOffset ExpireDate { get; set; }
         public bool IsExpired { get; set; }
-        public DateTime UpdateDate { get; set; }
-        public DateTime CreateDate { get; set; }
+        public DateTimeOffset UpdateDate { get; set; }
+        public DateTimeOffset CreateDate { get; set; }
 
         public UserInfo User { get; set; }
         public List<OrderItem> Items { get; set; }

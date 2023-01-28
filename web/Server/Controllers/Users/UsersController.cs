@@ -4,6 +4,7 @@ using FMFT.Web.Server.Models.Users;
 using FMFT.Web.Server.Models.Users.Exceptions;
 using FMFT.Web.Server.Models.Users.Params;
 using FMFT.Web.Server.Models.Users.Requests;
+using FMFT.Web.Server.Services.Coordinations.Orders;
 using FMFT.Web.Server.Services.Coordinations.Reservations;
 using FMFT.Web.Server.Services.Orchestrations.Reservations;
 using FMFT.Web.Server.Services.Orchestrations.UserAccounts;
@@ -19,13 +20,16 @@ namespace FMFT.Web.Server.Controllers.Users
     {
         private readonly IUserAccountOrchestrationService userAccountOrchestrationService;
         private readonly IReservationCoordinationService reservationCoordinationService;
+        private readonly IOrderCoordinationService orderCoordinationService;
 
         public UsersController(
-            IReservationCoordinationService reservationCoordinationService, 
-            IUserAccountOrchestrationService userAccountOrchestrationService)
+            IReservationCoordinationService reservationCoordinationService,
+            IUserAccountOrchestrationService userAccountOrchestrationService,
+            IOrderCoordinationService orderCoordinationService)
         {
             this.reservationCoordinationService = reservationCoordinationService;
             this.userAccountOrchestrationService = userAccountOrchestrationService;
+            this.orderCoordinationService = orderCoordinationService;
         }
 
         [HttpGet]

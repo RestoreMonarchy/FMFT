@@ -8,7 +8,7 @@ using FMFT.Web.Client.Models.API.Reservations.Requests;
 using FMFT.Web.Client.Models.API.Shows;
 using Microsoft.AspNetCore.Components;
 
-namespace FMFT.Web.Client.Views.Pages.Account
+namespace FMFT.Web.Client.Views.Pages.Account.Reservations
 {
     public partial class AccountReservationPage
     {

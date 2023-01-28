@@ -18,8 +18,6 @@
         </BreadcrumbItem>
     </Breadcrumb>
 
-
-
     <CustomAuthorizeView>
         <Authorized>
             <LoadingView @ref="LoadingView">
@@ -45,6 +43,14 @@
                                             </span>
                                             <span>
                                                 @Reservation.Id
+                                            </span>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <span class="fw-bold">
+                                                Status:
+                                            </span>
+                                            <span>
+                                                @FormatHelper.TranslateReservationStatus(Reservation.Status)
                                             </span>
                                         </div>
                                         <div class="list-group-item">

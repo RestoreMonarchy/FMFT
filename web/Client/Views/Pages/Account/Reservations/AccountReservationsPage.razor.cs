@@ -1,8 +1,9 @@
 ﻿using FMFT.Extensions.Blazor.Bases.Loadings;
 using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Reservations;
+using FMFT.Web.Shared.Enums;
 
-namespace FMFT.Web.Client.Views.Pages.Account
+namespace FMFT.Web.Client.Views.Pages.Account.Reservations
 {
     public partial class AccountReservationsPage
     {
@@ -12,6 +13,8 @@ namespace FMFT.Web.Client.Views.Pages.Account
 
         public List<Reservation> Reservations => ReservationsResponse.Object;
 
+        public IEnumerable<Reservation> ValidReservations => Reservations.Where(x => x.IsValid);
+        
         protected override async Task OnInitializedAsync()
         {
             if (!UserAccountState.IsAuthenticated)
@@ -23,21 +26,13 @@ namespace FMFT.Web.Client.Views.Pages.Account
             LoadingView.StopLoading();
         }
 
-        private void GoToReservation(Reservation reservation)
-        {
-            NavigationBroker.NavigateTo($"/account/reservations/{reservation.Id}");
-        }
-
-        public string GetClasses(Reservation reservation)
+        public string GetReservationClasses(Reservation reservation)
         {
             List<string> classes = new();
 
             if (reservation.IsCanceled)
             {
                 classes.Add("list-group-item-light");
-            } else
-            {
-                classes.Add("");
             }
 
             return string.Join(", ", classes);

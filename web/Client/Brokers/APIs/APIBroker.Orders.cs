@@ -21,7 +21,15 @@ namespace FMFT.Web.Client.Brokers.APIs
         public async ValueTask<APIResponse<Order>> CreateOrderAsync(CreateOrderRequest request)
         {
             string url = $"{OrdersRelativeUrl}/create";
+
             return await PostAsync<Order>(url, request);
+        }
+
+        public async ValueTask<APIResponse<List<Order>>> GetOrdersByUserIdAsync(int userId)
+        {
+            string url = $"api/users/{userId}/orders";
+
+            return await GetAsync<List<Order>>(url);
         }
     }
 }

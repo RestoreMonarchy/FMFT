@@ -4,6 +4,7 @@
     {
         PaymentWaiting = 0,
         PaymentReceived = 1,
-        Completed = 2
+        Completed = 2,
+        Expired = 3
     }
 }

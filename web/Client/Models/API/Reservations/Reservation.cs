@@ -18,6 +18,8 @@ namespace FMFT.Web.Client.Models.API.Reservations
 
         [JsonIgnore]
         public bool IsCanceled => Status == ReservationStatus.Canceled;
+        [JsonIgnore]
+        public bool IsValid => Status is ReservationStatus.Ok or ReservationStatus.Canceled;
         public string Email() => User != null ? User.Email : Details?.Email ?? null;
     }
 }

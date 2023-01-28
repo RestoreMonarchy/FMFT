@@ -93,6 +93,7 @@ namespace FMFT.Web.Server.Brokers.Storages
 
             return order;
         }
+
         private async ValueTask<IEnumerable<Order>> QueryOrdersAsync(string sql, object param = null, CommandType? commandType = null)
         {
             List<Order> orders = new();
@@ -106,9 +107,8 @@ namespace FMFT.Web.Server.Brokers.Storages
                     order = o;
                     order.User = u;
                     order.Items = new();
-                }
-
-                orders.Add(order);
+                    orders.Add(order);
+                }                
 
                 if (i != null)
                 {

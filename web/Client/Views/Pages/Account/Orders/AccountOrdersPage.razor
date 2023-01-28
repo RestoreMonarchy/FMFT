@@ -1,4 +1,4 @@
-﻿@page "/account/reservations"
+﻿@page "/account/orders"
 
 <MainLayoutBody>
     <Breadcrumb>
@@ -9,47 +9,47 @@
             Konto
         </BreadcrumbItem>
         <BreadcrumbItem Active="true">
-            Rezerwacje
+            Zamówienia
         </BreadcrumbItem>
     </Breadcrumb>
 
     <CustomAuthorizeView>
         <Authorized>
+
             <LoadingView @ref="LoadingView">
-                <Condition Evaluation="ReservationsResponse.IsSuccessful">
+
+                <Condition Evaluation="OrdersResponse.IsSuccessful">
+                    
                     <Match>
-                        <Condition Evaluation="Reservations.Any()">
+                        <Condition Evaluation="Orders.Any()">
                             <Match>
 
                                 <div class="mb-2 text-muted">
-                                    Twoje rezerwacje
+                                    Twoje zamówienia
                                 </div>
 
                                 <div class="list-group">
-                                    <Iterations Items="Reservations.OrderByDescending(x => x.CreateDate)" Context="reservation">
-                                        <a class="list-group-item list-group-item-action @GetClasses(reservation)" href="/account/reservations/@reservation.Id">
+                                    <Iterations Items="Orders.OrderByDescending(x => x.CreateDate)" Context="order">
+                                        <a 
+                                            class="list-group-item list-group-item-action 
+                                            @GetOrderClasses(order)" 
+                                            href="/account/orders/@order.Id">
                                             <div class="d-flex align-items-center">
                                                 <div class="small">
                                                     <div class="fw-bold">
-                                                        @reservation.Id
+                                                        @FormatHelper.OrderId(order.Id)
                                                     </div>
                                                     <div>
-                                                        <Condition Evaluation="@reservation.IsCanceled">
-                                                            <Match>
-                                                                Anulowana
-                                                            </Match>
-                                                            <NotMatch>
-                                                                Ważna
-                                                            </NotMatch>
-                                                        </Condition>
+                                                        @FormatHelper.TranslateOrderStatus(order.Status)
                                                     </div>
                                                 </div>
                                                 <div class="ms-auto text-end small">
                                                     <div>
-                                                        @reservation.Show.Name
+                                                        @order.Amount.ToString("N2") @order.Currency
                                                     </div>
                                                     <div>
-                                                        @reservation.Show.StartDateTime.LocalDateTime.ToShortDateString()
+                                                        @order.CreateDate.LocalDateTime.ToShortDateString()
+                                                        @order.CreateDate.LocalDateTime.ToShortTimeString()
                                                     </div>
                                                 </div>
                                             </div>
@@ -64,15 +64,19 @@
                             </NotMatch>
                         </Condition>
                     </Match>
+
                     <NotMatch>
                         <ErrorResponseAlert />
                     </NotMatch>
+
                 </Condition>
+
             </LoadingView>
+
         </Authorized>
         <NotAuthorized>
             <NotAuthenticatedAlert />
         </NotAuthorized>
     </CustomAuthorizeView>
-    
+
 </MainLayoutBody>

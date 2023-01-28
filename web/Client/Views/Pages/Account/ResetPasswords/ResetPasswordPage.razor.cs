@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace FMFT.Web.Client.Views.Pages.Account
+namespace FMFT.Web.Client.Views.Pages.Account.ResetPasswords
 {
     public partial class ResetPasswordPage
     {
