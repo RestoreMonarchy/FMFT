@@ -99,6 +99,7 @@
     <Build Include="dbo\procedures\GetOrders.sql" />
     <Build Include="dbo\procedures\CreateOrder.sql" />
     <Build Include="dbo\views\Tally.sql" />
+    <Build Include="dbo\procedures\UpdateOrderPaymentToken.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FMFT.Database.publish.xml" />

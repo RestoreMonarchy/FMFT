@@ -9,5 +9,6 @@ namespace FMFT.Web.Server.Services.Orchestrations.Orders
         ValueTask<IEnumerable<Order>> RetrieveAllOrdersAsync();
         ValueTask<Order> RetrieveOrderByIdAsync(int orderId);
         ValueTask<IEnumerable<Order>> RetrieveOrdersByUserIdAsync(int userId);
+        ValueTask<Order> UpdateOrderPaymentTokenAsync(UpdateOrderPaymentTokenParams @params);
     }
 }

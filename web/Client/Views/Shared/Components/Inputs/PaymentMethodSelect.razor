@@ -1,6 +1,22 @@
 ﻿<div class="list-group">
     <label class="list-group-item d-flex align-items-center" style="cursor: pointer;">
         <div>
+            <input class="form-check-input me-2"
+                   type="radio"
+                   @onchange="() => ChangePaymentMethod(PaymentMethod.Mock)"
+                   checked="@Checked(PaymentMethod.Mock)">
+        </div>
+        <div>
+            <span style="font-weight: 600;">Mock</span>
+        </div>
+        <div class="ms-auto d-inline-flex align-items-center">
+            <span style="height: 25px;" class="position-relative d-inline-flex align-items-center justify-content-center">
+                <img class="h-100 w-auto position-relative" src="/img/brandings/payments/mock.svg">
+            </span>
+        </div>
+    </label>
+    <label class="list-group-item d-flex align-items-center" style="cursor: pointer;">
+        <div>
             <input class="form-check-input me-2" 
                 type="radio" 
                 @onchange="() => ChangePaymentMethod(PaymentMethod.Blik)" 

@@ -10,12 +10,6 @@ namespace FMFT.Web.Client.Views.Shared.Components.Inputs
         [Parameter]
         public EventCallback<PaymentMethod> PaymentMethodChanged { get; set; }
 
-        public IEnumerable<PaymentMethod> PaymentMethods { get; set; } = new PaymentMethod[]
-        {
-            PaymentMethod.Mock,
-            PaymentMethod.Przelewy24
-        };
-
         private async Task ChangePaymentMethod(PaymentMethod paymentMethod)
         {
             PaymentMethod = paymentMethod;

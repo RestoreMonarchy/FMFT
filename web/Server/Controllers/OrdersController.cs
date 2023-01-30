@@ -3,6 +3,7 @@ using FMFT.Web.Server.Models.Accounts.Exceptions;
 using FMFT.Web.Server.Models.Orders;
 using FMFT.Web.Server.Models.Orders.Exceptions;
 using FMFT.Web.Server.Models.Orders.Params;
+using FMFT.Web.Server.Models.Payments;
 using FMFT.Web.Server.Models.Reservations;
 using FMFT.Web.Server.Services.Coordinations.Orders;
 using FMFT.Web.Server.Services.Coordinations.Reservations;
@@ -108,12 +109,36 @@ namespace FMFT.Web.Server.Controllers
             }
         }
 
+        [HttpGet("{orderId}/pay")]
+        public async ValueTask<IActionResult> OrderPay(int orderId)
+        {
+            try
+            {
+                PaymentUrl paymentUrl = await orderService.GetOrderPaymentUrlAsync(orderId);
+
+                return Redirect(paymentUrl.Url);
+            } 
+            catch (NotFoundOrderException exception)
+            {
+                return NotFound(exception);
+            }
+            catch (NotAuthenticatedAccountException exception)
+            {
+                return Unauthorized(exception);
+            }
+            catch (NotAuthorizedAccountException exception)
+            {
+                return Forbidden(exception);
+            }
+        }
+
         [HttpPost("create")]
         public async ValueTask<IActionResult> CreateOrder([FromBody] CreateOrderParams @params)
         {
             try
             {
                 Order order = await orderService.CreateOrderAsync(@params);
+
                 return Ok(order);
             }
             catch (CreateUserOrderReservationValidationException exception)

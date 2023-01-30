@@ -40,6 +40,13 @@ namespace FMFT.Web.Server.Services.Foundations.Orders
             return await storageBroker.SelectOrdersByUserIdAsync(userId);
         }
 
+        public async ValueTask<Order> UpdateOrderPaymentTokenAsync(UpdateOrderPaymentTokenParams @params)
+        {
+            StoredProcedureResult<Order> result = await storageBroker.UpdateOrderPaymentTokenAsync(@params);
+
+            return result.Result;
+        }
+
         public async ValueTask<Order> CreateOrderAsync(CreateOrderParams @params)
         {
 

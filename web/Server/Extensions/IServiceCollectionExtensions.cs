@@ -8,6 +8,7 @@ using FMFT.Web.Server.Brokers.Encryptions;
 using FMFT.Web.Server.Brokers.Facebooks;
 using FMFT.Web.Server.Brokers.Googles;
 using FMFT.Web.Server.Brokers.Loggings;
+using FMFT.Web.Server.Brokers.Payments;
 using FMFT.Web.Server.Brokers.QRCodes;
 using FMFT.Web.Server.Brokers.Storages;
 using FMFT.Web.Server.Brokers.Urls;
@@ -27,6 +28,7 @@ using FMFT.Web.Server.Services.Foundations.Facebooks;
 using FMFT.Web.Server.Services.Foundations.Googles;
 using FMFT.Web.Server.Services.Foundations.Medias;
 using FMFT.Web.Server.Services.Foundations.Orders;
+using FMFT.Web.Server.Services.Foundations.Payments;
 using FMFT.Web.Server.Services.Foundations.QRCodes;
 using FMFT.Web.Server.Services.Foundations.Reservations;
 using FMFT.Web.Server.Services.Foundations.ResetPasswordRequests;
@@ -37,6 +39,7 @@ using FMFT.Web.Server.Services.Foundations.Shows;
 using FMFT.Web.Server.Services.Foundations.Users;
 using FMFT.Web.Server.Services.Orchestrations.Medias;
 using FMFT.Web.Server.Services.Orchestrations.Orders;
+using FMFT.Web.Server.Services.Orchestrations.Payments;
 using FMFT.Web.Server.Services.Orchestrations.Reservations;
 using FMFT.Web.Server.Services.Orchestrations.ResetPasswordRequests;
 using FMFT.Web.Server.Services.Orchestrations.ShowGalleries;
@@ -93,6 +96,7 @@ namespace FMFT.Web.Server.Extensions
             services.AddScoped<IConvertBroker, ConvertBroker>();
             services.AddScoped<IQRCodeBroker, QRCodeBroker>();
             services.AddScoped<IGoogleBroker, GoogleBroker>();
+            services.AddScoped<IPaymentBroker, PaymentBroker>();
 
             return services;
         }
@@ -114,6 +118,7 @@ namespace FMFT.Web.Server.Extensions
             services.AddTransient<IGoogleService, GoogleService>();
             services.AddTransient<IShowProductService, ShowProductService>();
             services.AddTransient<IOrderService, OrderService>();
+            services.AddTransient<IPaymentService, PaymentService>();
 
             return services;
         }
@@ -127,6 +132,7 @@ namespace FMFT.Web.Server.Extensions
             services.AddTransient<IMediaOrchestrationService, MediaOrchestrationService>();
             services.AddTransient<IShowGalleryOrchestrationService, ShowGalleryOrchestrationService>();
             services.AddTransient<IOrderOrchestrationService, OrderOrchestrationService>();
+            services.AddTransient<IPaymentOrchestrationService, PaymentOrchestrationService>();
 
             return services;
         }

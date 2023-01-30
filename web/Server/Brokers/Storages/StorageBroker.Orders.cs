@@ -56,18 +56,37 @@ namespace FMFT.Web.Server.Brokers.Storages
             return result;
         }
 
+        public async ValueTask<StoredProcedureResult<Order>> UpdateOrderPaymentTokenAsync(UpdateOrderPaymentTokenParams @params)
+        {
+            const string sql = "dbo.UpdateOrderPaymentToken";
+
+            StoredProcedureResult<Order> result = new();
+
+            DynamicParameters parameters = new();
+            parameters.Add(name: "@OrderId", dbType: DbType.Int32, value: @params.OrderId);
+            parameters.Add(name: "@PaymentToken", dbType: DbType.String, value: @params.PaymentToken);
+            parameters.Add(name: "@ReturnValue", dbType: DbType.Int32, direction: ParameterDirection.ReturnValue);
+
+            result.Result = await QueryOrderAsync(sql, parameters, CommandType.StoredProcedure);
+            result.ReturnValue = GetReturnValue(parameters);
+
+            return result;
+        }
+
         private async ValueTask<Order> GetOrderAsync(GetOrderParams @params)
         {
             IEnumerable<Order> orders = await GetOrdersAsync(@params);
 
             return orders.FirstOrDefault();
         }
+        
         private async ValueTask<IEnumerable<Order>> GetOrdersAsync(GetOrderParams @params)
         {
             const string sql = "dbo.GetOrders";
 
             return await QueryOrdersAsync(sql, @params, CommandType.StoredProcedure);
         }
+
         private async ValueTask<Order> QueryOrderAsync(string sql, object param = null, CommandType? commandType = null)
         {
             Order order = null;
