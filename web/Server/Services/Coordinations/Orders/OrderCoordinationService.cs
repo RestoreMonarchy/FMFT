@@ -60,6 +60,8 @@ namespace FMFT.Web.Server.Services.Coordinations.Orders
         {
             Order order = await orderService.CreateOrderAsync(@params);
 
+            
+
             await reservationService.SendReservationSummaryEmailForOrderAsync(order);
 
             return order;

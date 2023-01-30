@@ -43,6 +43,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FMFT.Features.Tickets", "fe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FMFT.Extensions.Blazor.Google", "extensions\blazor\Google\FMFT.Extensions.Blazor.Google.csproj", "{2079873A-38BD-4409-9336-D9B9E34A43AA}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FMFT.Extensions.Payments", "extensions\Payments\FMFT.Extensions.Payments.csproj", "{B4664FFC-EDDC-431C-8E3A-972B9ECD12B9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -103,6 +105,10 @@ Global
 		{2079873A-38BD-4409-9336-D9B9E34A43AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2079873A-38BD-4409-9336-D9B9E34A43AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2079873A-38BD-4409-9336-D9B9E34A43AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4664FFC-EDDC-431C-8E3A-972B9ECD12B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4664FFC-EDDC-431C-8E3A-972B9ECD12B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4664FFC-EDDC-431C-8E3A-972B9ECD12B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4664FFC-EDDC-431C-8E3A-972B9ECD12B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -122,6 +128,7 @@ Global
 		{61414B40-B71D-4617-85C7-1C8D97602180} = {D7DF90A7-6221-4CCF-90E2-E5E06B3B57A6}
 		{4886CE4B-F923-4382-B97B-9F3BCEBBF914} = {2848C346-7BC0-4AA8-BD14-8AD57F2CCE5F}
 		{2079873A-38BD-4409-9336-D9B9E34A43AA} = {D7DF90A7-6221-4CCF-90E2-E5E06B3B57A6}
+		{B4664FFC-EDDC-431C-8E3A-972B9ECD12B9} = {A7DBB44D-AE92-4CA3-B5F4-D55C422CC8EF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {81FEE0D1-B373-4D86-8197-E4065AEF25AD}

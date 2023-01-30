@@ -1,4 +1,5 @@
 ﻿using FMFT.Emails.Server.Extensions;
+using FMFT.Extensions.Payments.Extensions;
 using FMFT.Features.Tickets.Extensions;
 using FMFT.Web.Server.Brokers.Authentications;
 using FMFT.Web.Server.Brokers.Converts;
@@ -59,6 +60,9 @@ namespace FMFT.Web.Server.Extensions
                 x.UseSqlServerStorage(configuration.GetConnectionString("Default"));
             });
             services.AddHangfireServer();
+
+            services.AddPaymentProviders()
+                .AddMock();
 
             return services;
         }
