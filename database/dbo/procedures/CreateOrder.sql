@@ -9,6 +9,7 @@ BEGIN
 	DECLARE @amount DECIMAL(9,2);
 	DECLARE @currency CHAR(3);
 	DECLARE @paymentMethod VARCHAR(255);
+	DECLARE @paymentProvider TINYINT;
 	DECLARE @expireDate DATETIME2(0);
 	DECLARE @orderItemsJSON NVARCHAR(max);
 	DECLARE @seatIdsJSON NVARCHAR(max);
@@ -38,6 +39,7 @@ BEGIN
 		@amount = Amount,
 		@currency = Currency,
 		@paymentMethod = PaymentMethod,
+		@paymentProvider = PaymentProvider,
 		@expireDate = [ExpireDate],
 		@orderItemsJSON = [Items],
 		@seatIdsJSON = SeatIds 
@@ -47,6 +49,7 @@ BEGIN
 		Amount DECIMAL(9,2) '$.Amount',
 		Currency CHAR(3) '$.Currency',
 		PaymentMethod VARCHAR(255) '$.PaymentMethod',
+		PaymentProvider TINYINT '$.PaymentProvider',
 		[ExpireDate] DATETIME2(0) '$.ExpireDate',
 		[Items] NVARCHAR(MAX) AS JSON, 
 		SeatIds NVARCHAR(MAX) AS JSON
@@ -150,9 +153,9 @@ BEGIN
 		IF @isExternalTransaction = 0
 			BEGIN TRAN; 
 
-		INSERT INTO dbo.Orders (UserId, Amount, Currency, PaymentMethod, [ExpireDate])
-		VALUES (@UserId, @Amount, @Currency, @PaymentMethod, @ExpireDate);
-
+		INSERT INTO dbo.Orders (UserId, Amount, Currency, PaymentMethod, PaymentProvider, [ExpireDate])
+		VALUES (@UserId, @Amount, @Currency, @PaymentMethod, @PaymentProvider, @ExpireDate);
+		
 		SET @orderId = SCOPE_IDENTITY();
 
 		INSERT INTO dbo.OrderItems (OrderId, ShowProductId, Price, Quantity)
@@ -219,7 +222,8 @@ DECLARE @Order NVARCHAR(MAX) = N'{
     "UserId":1,  
     "Amount":146.12, 
 	"Currency":"PLN",
-	"PaymentMethod":"0",
+	"PaymentMethod":"1",
+	"PaymentProvider": 1,
 	"ExpireDate":"2023-01-17T20:01:12",
     "Items": [{  
 		"ShowProductId":1,

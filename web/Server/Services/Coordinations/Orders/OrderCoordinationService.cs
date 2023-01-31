@@ -82,7 +82,7 @@ namespace FMFT.Web.Server.Services.Coordinations.Orders
                 PaymentToken = registeredPayment.Token
             };
 
-            order = await orderService.UpdateOrderPaymentTokenAsync(updateOrderPaymentTokenParams);            
+            order = await orderService.UpdateOrderPaymentTokenAsync(@updateOrderPaymentTokenParams);            
 
             return order;
         }
