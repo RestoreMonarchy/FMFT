@@ -60,5 +60,10 @@ namespace FMFT.Web.Server.Services.Orchestrations.Orders
         {
             return await orderService.UpdateOrderPaymentTokenAsync(@params);
         }
+
+        public async ValueTask<Order> UpdateOrderStatusAsync(UpdateOrderStatusParams @params)
+        {
+            return await orderService.UpdateOrderStatusAsync(@params);
+        }
     }
 }

@@ -1,6 +1,6 @@
-﻿CREATE PROCEDURE dbo.UpdateOrderPaymentToken
+﻿CREATE PROCEDURE dbo.UpdateOrderStatus
 	@OrderId INT,
-	@PaymentToken VARCHAR(255)
+	@Status TINYINT
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -17,11 +17,11 @@ BEGIN
 		SET @id = @OrderId;
 
         UPDATE dbo.Orders SET 
-		PaymentToken = @PaymentToken,
+		Status = @Status,
 		UpdateDate = SYSDATETIME()
 		WHERE Id = @OrderId;
 	END;
 
-	EXEC dbo.GetOrders @OrderId = @id;    
+	EXEC dbo.GetOrders @OrderId = @id;
     RETURN @ret;
 END

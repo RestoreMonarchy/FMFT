@@ -44,6 +44,23 @@ namespace FMFT.Web.Server.Services.Foundations.Orders
         {
             StoredProcedureResult<Order> result = await storageBroker.UpdateOrderPaymentTokenAsync(@params);
 
+            if (result.ReturnValue == 1)
+            {
+                throw new NotFoundOrderException();
+            }
+
+            return result.Result;
+        }
+
+        public async ValueTask<Order> UpdateOrderStatusAsync(UpdateOrderStatusParams @params)
+        {
+            StoredProcedureResult<Order> result = await storageBroker.UpdateOrderStatusAsync(@params);
+
+            if (result.ReturnValue == 1)
+            {
+                throw new NotFoundOrderException();
+            }
+
             return result.Result;
         }
 

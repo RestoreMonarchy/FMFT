@@ -12,5 +12,6 @@ namespace FMFT.Web.Server.Brokers.Storages
         ValueTask<IEnumerable<Order>> SelectOrdersByUserIdAsync(int userId);
         ValueTask<StoredProcedureResult<Order>> CreateOrderAsync(CreateOrderDTO dto);
         ValueTask<StoredProcedureResult<Order>> UpdateOrderPaymentTokenAsync(UpdateOrderPaymentTokenParams @params);
+        ValueTask<StoredProcedureResult<Order>> UpdateOrderStatusAsync(UpdateOrderStatusParams @params);
     }
 }

@@ -68,6 +68,9 @@ namespace FMFT.Web.Server.Services.Coordinations.Orders
             await userAccountService.AuthorizeAccountAsync();
 
             Order order = await orderService.CreateOrderAsync(@params);
+
+            await EnqueueExecuteOrderExpireAsync(order.Id, order.ExpireDate);
+
             await reservationService.SendReservationSummaryEmailForOrderAsync(order);
 
             RegisterPaymentParams @registerPaymentParams = MapOrderToRegisterPaymentParams(order);
@@ -80,7 +83,9 @@ namespace FMFT.Web.Server.Services.Coordinations.Orders
                 PaymentToken = registeredPayment.Token
             };
 
-            order = await orderService.UpdateOrderPaymentTokenAsync(updateOrderPaymentTokenParams);           
+            order = await orderService.UpdateOrderPaymentTokenAsync(updateOrderPaymentTokenParams);
+
+            
 
             return order;
         }

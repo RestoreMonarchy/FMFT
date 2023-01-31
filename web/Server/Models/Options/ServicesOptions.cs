@@ -9,11 +9,15 @@
 
         public string GetAPIUrl(string append)
         {
+            append = "/" + append.TrimStart('/');
+
             return APIBaseUrl.TrimEnd('/') + append;
         }
 
         public string GetClientUrl(string append)
         {
+            append = "/" + append.TrimStart('/');
+
             return ClientBaseUrl.TrimEnd('/') + append;
         }
     }
