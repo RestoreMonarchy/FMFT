@@ -22,7 +22,7 @@ namespace FMFT.Extensions.Payments.Services.Providers
         {
             GetPaymentUrlResult result = new()
             {
-                Url = ""
+                Url = "https://google.com"
             };
 
             return ValueTask.FromResult(result);

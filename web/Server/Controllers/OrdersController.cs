@@ -117,7 +117,7 @@ namespace FMFT.Web.Server.Controllers
             {
                 PaymentUrl paymentUrl = await orderService.GetOrderPaymentUrlAsync(orderId);
 
-                return Redirect(paymentUrl.Url);
+                return Ok(paymentUrl);
             } 
             catch (NotFoundOrderException exception)
             {

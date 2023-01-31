@@ -10,6 +10,7 @@ namespace FMFT.Web.Client.Brokers.APIs
         ValueTask<APIResponse<List<Reservation>>> GetOrderReservationsByIdAsync(int orderId);
         ValueTask<APIResponse<Order>> GetOrderByIdAsync(int orderId);
         ValueTask<APIResponse<Order>> CreateOrderAsync(CreateOrderRequest request);
+        ValueTask<APIResponse<PaymentUrl>> GetOrderPaymentUrlAsync(int orderId);
         ValueTask<APIResponse<List<Order>>> GetOrdersByUserIdAsync(int userId);
     }
 }

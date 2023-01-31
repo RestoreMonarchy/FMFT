@@ -25,6 +25,13 @@ namespace FMFT.Web.Client.Brokers.APIs
             return await PostAsync<Order>(url, request);
         }
 
+        public async ValueTask<APIResponse<PaymentUrl>> GetOrderPaymentUrlAsync(int orderId)
+        {
+            string url = $"{OrdersRelativeUrl}/{orderId}/pay";
+
+            return await GetAsync<PaymentUrl>(url);
+        }
+
         public async ValueTask<APIResponse<List<Order>>> GetOrdersByUserIdAsync(int userId)
         {
             string url = $"api/users/{userId}/orders";

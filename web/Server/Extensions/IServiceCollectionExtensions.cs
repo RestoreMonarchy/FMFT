@@ -64,8 +64,10 @@ namespace FMFT.Web.Server.Extensions
             });
             services.AddHangfireServer();
 
-            services.AddPaymentProviders()
-                .AddMock();
+            services.AddPaymentProviders(options => 
+            {
+                options.MockPaymentUrl = configuration.GetSection(ServicesOptions.SectionKey)["Client"];
+            }).AddMock();
 
             return services;
         }

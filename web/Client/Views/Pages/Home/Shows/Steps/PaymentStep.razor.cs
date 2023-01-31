@@ -80,7 +80,9 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Steps
             APIResponse<Order> response = await APIBroker.CreateOrderAsync(createOrderRequest);
             if (response.IsSuccessful)
             {
-                
+                Order order = response.Object;
+                APIResponse<PaymentUrl> paymentResponse = await APIBroker.GetOrderPaymentUrlAsync(order.Id);
+                NavigationBroker.NavigateTo(paymentResponse.Object.Url);
             } else
             {
                 ErrorAlert.Show();
