@@ -1,8 +1,10 @@
 ﻿using FMFT.Extensions.Payments.Models.Arguments;
 using FMFT.Extensions.Payments.Models.Enums;
+using FMFT.Extensions.Payments.Models.Exceptions;
 using FMFT.Extensions.Payments.Models.Results;
 using FMFT.Web.Server.Brokers.Payments;
 using FMFT.Web.Server.Models.Payments;
+using FMFT.Web.Server.Models.Payments.Exceptions;
 using FMFT.Web.Server.Models.Payments.Params;
 using FMFT.Web.Shared.Enums;
 
@@ -22,9 +24,15 @@ namespace FMFT.Web.Server.Services.Foundations.Payments
             RegisterPaymentArguments arguments = MapRegisterPaymentParamsToArguments(@params);
             PaymentProviderId paymentProviderId = MapPaymentMethodToPaymentProviderId(@params.PaymentMethod);
 
-            RegisterPaymentResult result = await paymentBroker.RegisterPaymentAsync(paymentProviderId, arguments);
+            try
+            {
+                RegisterPaymentResult result = await paymentBroker.RegisterPaymentAsync(paymentProviderId, arguments);
 
-            return MapRegisterPaymentResultToRegisteredPayment(result);
+                return MapRegisterPaymentResultToRegisteredPayment(result);
+            } catch (PaymentProviderNotSupportedException)
+            {
+                throw new NotSupportedProviderPaymentException();
+            }            
         }
 
         public async ValueTask<PaymentUrl> GetPaymentUrlAsync(GetPaymentUrlParams @params)
@@ -32,9 +40,15 @@ namespace FMFT.Web.Server.Services.Foundations.Payments
             GetPaymentUrlArguments arguments = MapGetPaymentUrlParamsToArguments(@params);
             PaymentProviderId paymentProviderId = MapPaymentMethodToPaymentProviderId(@params.PaymentMethod);
 
-            GetPaymentUrlResult result = await paymentBroker.GetPaymentUrlAsync(paymentProviderId, arguments);
+            try
+            {
+                GetPaymentUrlResult result = await paymentBroker.GetPaymentUrlAsync(paymentProviderId, arguments);
 
-            return MapGetPaymentUrlResultToPaymentUrl(result);
+                return MapGetPaymentUrlResultToPaymentUrl(result);
+            } catch (PaymentProviderNotSupportedException)
+            {
+                throw new NotSupportedProviderPaymentException();
+            }            
         }
 
         private PaymentUrl MapGetPaymentUrlResultToPaymentUrl(GetPaymentUrlResult result)

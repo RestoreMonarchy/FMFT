@@ -4,6 +4,7 @@ using FMFT.Web.Server.Models.Orders;
 using FMFT.Web.Server.Models.Orders.Exceptions;
 using FMFT.Web.Server.Models.Orders.Params;
 using FMFT.Web.Server.Models.Payments;
+using FMFT.Web.Server.Models.Payments.Exceptions;
 using FMFT.Web.Server.Models.Reservations;
 using FMFT.Web.Server.Services.Coordinations.Orders;
 using FMFT.Web.Server.Services.Coordinations.Reservations;
@@ -122,6 +123,10 @@ namespace FMFT.Web.Server.Controllers
             {
                 return NotFound(exception);
             }
+            catch (NotSupportedProviderPaymentException exception)
+            {
+                return ServiceUnavailable(exception);
+            }
             catch (NotAuthenticatedAccountException exception)
             {
                 return Unauthorized(exception);
@@ -140,6 +145,10 @@ namespace FMFT.Web.Server.Controllers
                 Order order = await orderService.CreateOrderAsync(@params);
 
                 return Ok(order);
+            }
+            catch (NotSupportedProviderPaymentException exception)
+            {
+                return ServiceUnavailable(exception);
             }
             catch (CreateUserOrderReservationValidationException exception)
             {

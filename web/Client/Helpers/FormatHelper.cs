@@ -9,6 +9,23 @@ namespace FMFT.Web.Client.Helpers
             return orderId.ToString().PadLeft(6, '0');
         }
 
+        public static string TranslatePaymentMethod(PaymentMethod paymentMethod)
+        {
+            switch (paymentMethod)
+            {
+                case PaymentMethod.Blik:
+                    return "Blik";
+                case PaymentMethod.Przelewy24:
+                    return "Przelewy24";
+                case PaymentMethod.Mock:
+                    return "Mock";
+                case PaymentMethod.CreditDebitCard:
+                    return "Karta płatnicza";
+                default:
+                    return "???";
+            }
+        }
+
         public static string TranslateOrderStatus(OrderStatus orderStatus)
         {
             switch (orderStatus)
