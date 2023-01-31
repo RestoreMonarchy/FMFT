@@ -36,5 +36,25 @@ namespace FMFT.Extensions.Payments.Services.Providers
 
             return ValueTask.FromResult(result);
         }
+
+        public ValueTask<ProcessPaymentNotificationResult> ProcessPaymentNotificationAsync(ProcessPaymentNotificationArguments arguments)
+        {
+            ProcessPaymentNotificationResult result = new()
+            {
+                PaymentStatus = PaymentStatusId.Completed
+            };
+
+            return ValueTask.FromResult(result);
+        }
+
+        public ValueTask<GetPaymentInfoResult> GetPaymentInfoAsync(GetPaymentInfoArguments arguments)
+        {
+            GetPaymentInfoResult result = new()
+            {
+                PaymentStatus = PaymentStatusId.Completed
+            };
+
+            return ValueTask.FromResult(result);
+        }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using FMFT.Web.Server.Models.Emails.Params;
 using FMFT.Web.Server.Models.Orders;
 using FMFT.Web.Server.Models.Orders.Params;
+using FMFT.Web.Server.Models.Payments;
+using FMFT.Web.Server.Models.Payments.Params;
 using FMFT.Web.Server.Models.Reservations;
 using FMFT.Web.Server.Models.Reservations.Requests;
 using FMFT.Web.Shared.Enums;
@@ -27,6 +29,17 @@ namespace FMFT.Web.Server.Services.Coordinations.Orders
                 // Order has been completed or canceled already
                 return;
             }
+
+            GetPaymentInfoParams @getPaymentInfoParams = new()
+            {
+                PaymentMethod = order.PaymentMethod,
+                SessionId = order.SessionId.ToString(),
+                PaymentToken = order.PaymentToken
+            };
+
+            PaymentInfo paymentInfo = await paymentService.GetPaymentInfoAsync(@getPaymentInfoParams);
+
+            
 
             UpdateOrderStatusParams @updateOrderStatusParams = new()
             {

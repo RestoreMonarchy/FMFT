@@ -27,5 +27,21 @@ namespace FMFT.Web.Server.Brokers.Payments
 
             return result;
         }
+
+        public async ValueTask<GetPaymentInfoResult> GetPaymentInfoAsync(PaymentProviderId paymentProviderId, GetPaymentInfoArguments arguments)
+        {
+            GetPaymentInfoResult result = await paymentProviders.GetPaymentInfoAsync(paymentProviderId, arguments);
+
+            return result;
+        }
+
+        public async ValueTask<ProcessPaymentNotificationResult> ProcessPaymentNotificationAsync(
+            PaymentProviderId paymentProviderId,
+            ProcessPaymentNotificationArguments arguments)
+        {
+            ProcessPaymentNotificationResult result = await paymentProviders.ProcessPaymentNotificationAsync(paymentProviderId, arguments);
+
+            return result;
+        }
     }
 }

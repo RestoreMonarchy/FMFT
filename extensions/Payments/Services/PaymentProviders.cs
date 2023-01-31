@@ -19,6 +19,22 @@ namespace FMFT.Extensions.Payments.Services
             this.paymentProviders = paymentProviders;
         }
 
+        public ValueTask<ProcessPaymentNotificationResult> ProcessPaymentNotificationAsync(
+            PaymentProviderId paymentProviderId, 
+            ProcessPaymentNotificationArguments arguments)
+        {
+            IPaymentProvider paymentProvider = GetPaymentProvider(paymentProviderId);
+
+            return paymentProvider.ProcessPaymentNotificationAsync(arguments);
+        }
+
+        public ValueTask<GetPaymentInfoResult> GetPaymentInfoAsync(PaymentProviderId paymentProviderId, GetPaymentInfoArguments arguments)
+        {
+            IPaymentProvider paymentProvider = GetPaymentProvider(paymentProviderId);
+
+            return paymentProvider.GetPaymentInfoAsync(arguments);
+        }
+
         public ValueTask<GetPaymentUrlResult> GetPaymentUrlAsync(PaymentProviderId paymentProviderId, GetPaymentUrlArguments arguments)
         {
             IPaymentProvider paymentProvider = GetPaymentProvider(paymentProviderId);

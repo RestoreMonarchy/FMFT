@@ -13,10 +13,37 @@ namespace FMFT.Web.Server.Services.Foundations.Payments
     public class PaymentService : IPaymentService
     {
         private readonly IPaymentBroker paymentBroker;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public PaymentService(IPaymentBroker paymentBroker)
+        public PaymentService(IPaymentBroker paymentBroker, IHttpContextAccessor httpContextAccessor)
         {
             this.paymentBroker = paymentBroker;
+            this.httpContextAccessor = httpContextAccessor;
+        }
+
+        public async ValueTask<PaymentInfo> GetPaymentInfoAsync(GetPaymentInfoParams @params)
+        {
+            GetPaymentInfoArguments arguments = MapGetPaymentInfoParamsToArguments(@params);
+            PaymentProviderId paymentProviderId = MapPaymentMethodToPaymentProviderId(@params.PaymentMethod);
+
+            GetPaymentInfoResult result = await paymentBroker.GetPaymentInfoAsync(paymentProviderId, arguments);
+
+            return MapGetPaymentInfoResultToPaymentInfo(result);
+        }
+
+        public async ValueTask<ProcessedPayment> ProcessPaymentNotificationAsync(ProcessPaymentNotificationParams @params)
+        {
+            HttpContext httpContext = httpContextAccessor.HttpContext;
+
+            ProcessPaymentNotificationArguments arguments = new()
+            {
+                Request = httpContext.Request
+            };
+            PaymentProviderId paymentProviderId = MapPaymentMethodToPaymentProviderId(@params.PaymentMethod);
+
+            ProcessPaymentNotificationResult result = await paymentBroker.ProcessPaymentNotificationAsync(paymentProviderId, arguments);
+
+            return MapProcessPaymentNotificationResultToProcessedPayment(result);
         }
 
         public async ValueTask<RegisteredPayment> RegisterPaymentAsync(RegisterPaymentParams @params)
@@ -51,6 +78,22 @@ namespace FMFT.Web.Server.Services.Foundations.Payments
             }            
         }
 
+        private PaymentInfo MapGetPaymentInfoResultToPaymentInfo(GetPaymentInfoResult result)
+        {
+            return new()
+            {
+                PaymentStatus = MapPaymentStatusIdToPaymentStatus(result.PaymentStatus)
+            };
+        }
+
+        private ProcessedPayment MapProcessPaymentNotificationResultToProcessedPayment(ProcessPaymentNotificationResult result)
+        {
+            return new()
+            {
+                PaymentStatus = MapPaymentStatusIdToPaymentStatus(result.PaymentStatus)
+            };
+        }
+
         private PaymentUrl MapGetPaymentUrlResultToPaymentUrl(GetPaymentUrlResult result)
         {
             return new()
@@ -67,7 +110,20 @@ namespace FMFT.Web.Server.Services.Foundations.Payments
                 SessionId = @params.SessionId
             };
         }
-                
+        
+        private GetPaymentInfoArguments MapGetPaymentInfoParamsToArguments(GetPaymentInfoParams @params)
+        {
+            return new()
+            {
+                PaymentToken = @params.PaymentToken,
+                SessionId = @params.SessionId
+            };
+        }                
+
+        private PaymentStatus MapPaymentStatusIdToPaymentStatus(PaymentStatusId paymentStatusId)
+        {
+            return (PaymentStatus)paymentStatusId;
+        }
 
         private PaymentProviderId MapPaymentMethodToPaymentProviderId(PaymentMethod paymentMethod)
         {

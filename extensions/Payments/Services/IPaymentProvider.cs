@@ -8,7 +8,9 @@ namespace FMFT.Extensions.Payments.Services
     {
         PaymentProviderId Id { get; }
 
+        ValueTask<GetPaymentInfoResult> GetPaymentInfoAsync(GetPaymentInfoArguments arguments);
         ValueTask<GetPaymentUrlResult> GetPaymentUrlAsync(GetPaymentUrlArguments arguments);
         ValueTask<RegisterPaymentResult> RegisterPaymentAsync(RegisterPaymentArguments arguments);
+        ValueTask<ProcessPaymentNotificationResult> ProcessPaymentNotificationAsync(ProcessPaymentNotificationArguments arguments);
     }
 }

@@ -10,8 +10,8 @@ namespace FMFT.Web.Server.Models.Orders
         public decimal Amount { get; set; }
         public string Currency { get; set; }
         public PaymentMethod PaymentMethod { get; set; }
+        public PaymentProvider PaymentProvider { get; set; }
         public Guid SessionId { get; set; }
-        public string PaymentUrl { get; set; }
         public string PaymentToken { get; set; }
         public DateTime ExpireDate { get; set; }
         public bool IsExpired { get; set; }

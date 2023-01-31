@@ -6,6 +6,7 @@
 	Amount DECIMAL(9,2) NOT NULL,
 	Currency CHAR(3) NOT NULL,
 	PaymentMethod VARCHAR(255) NOT NULL,
+	PaymentProvider TINYINT NOT NULL CONSTRAINT DF_Orders_PaymentProvider DEFAULT 0,
 	PaymentToken NVARCHAR(255) NULL,
 	Status TINYINT NOT NULL CONSTRAINT DF_Orders_Status DEFAULT 0,
 	ExpireDate DATETIME2(0) NOT NULL,

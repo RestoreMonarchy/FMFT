@@ -1,4 +1,5 @@
-﻿using FMFT.Web.Server.Brokers.Loggings;
+﻿using FMFT.Extensions.Payments.Models.Enums;
+using FMFT.Web.Server.Brokers.Loggings;
 using FMFT.Web.Server.Models.Orders;
 using FMFT.Web.Server.Models.Orders.Params;
 using FMFT.Web.Server.Models.Payments;
@@ -71,8 +72,6 @@ namespace FMFT.Web.Server.Services.Coordinations.Orders
 
             await EnqueueExecuteOrderExpireAsync(order.Id, order.ExpireDate);
 
-            await reservationService.SendReservationSummaryEmailForOrderAsync(order);
-
             RegisterPaymentParams @registerPaymentParams = MapOrderToRegisterPaymentParams(order);
 
             RegisteredPayment registeredPayment = await paymentService.RegisterPaymentAsync(registerPaymentParams);
@@ -83,11 +82,14 @@ namespace FMFT.Web.Server.Services.Coordinations.Orders
                 PaymentToken = registeredPayment.Token
             };
 
-            order = await orderService.UpdateOrderPaymentTokenAsync(updateOrderPaymentTokenParams);
-
-            
+            order = await orderService.UpdateOrderPaymentTokenAsync(updateOrderPaymentTokenParams);            
 
             return order;
+        }
+
+        public async ValueTask ProcessPaymentNotificationAsync(PaymentProvider paymentProvider)
+        {
+
         }
 
         public async ValueTask<PaymentUrl> GetOrderPaymentUrlAsync(int orderId)
@@ -99,7 +101,6 @@ namespace FMFT.Web.Server.Services.Coordinations.Orders
             GetPaymentUrlParams @params = MapOrderToGetPaymentUrlParams(order);
             
             return await paymentService.GetPaymentUrlAsync(@params);
-        } 
-
+        }
     }
 }
