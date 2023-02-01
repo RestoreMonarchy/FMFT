@@ -89,7 +89,23 @@ namespace FMFT.Web.Server.Services.Coordinations.Orders
 
         public async ValueTask ProcessPaymentNotificationAsync(PaymentProvider paymentProvider)
         {
+            ProcessedPayment payment = await paymentService.ProcessPaymentNotificationAsync(paymentProvider);
 
+            if (payment == null)
+            {
+                return;
+            }
+
+            Guid sessionId = payment.SessionId;
+            Order order = await orderService.RetrieveOrderBySessionIdAsync(sessionId);
+
+            UpdateOrderStatusParams @updateOrderStatusParams = new()
+            {
+                OrderId = order.Id,
+                Status = OrderStatus.PaymentReceived
+            };
+
+            await orderService.UpdateOrderStatusAsync(@updateOrderStatusParams);            
         }
 
         public async ValueTask<PaymentUrl> GetOrderPaymentUrlAsync(int orderId)

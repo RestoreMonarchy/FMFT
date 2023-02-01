@@ -8,7 +8,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.Payments
     {
         ValueTask<PaymentInfo> GetPaymentInfoAsync(GetPaymentInfoParams @params);
         ValueTask<PaymentUrl> GetPaymentUrlAsync(GetPaymentUrlParams @params);
-        ValueTask<ProcessedPayment> ProcessPaymentNotificationAsync(PaymentMethod paymentMethod);
+        ValueTask<ProcessedPayment> ProcessPaymentNotificationAsync(PaymentProvider paymentProvider);
         ValueTask<RegisteredPayment> RegisterPaymentAsync(RegisterPaymentParams @params);
     }
 }

@@ -6,11 +6,10 @@ using FMFT.Web.Server.Brokers.Payments;
 using FMFT.Web.Server.Models.Payments;
 using FMFT.Web.Server.Models.Payments.Exceptions;
 using FMFT.Web.Server.Models.Payments.Params;
-using FMFT.Web.Shared.Enums;
 
 namespace FMFT.Web.Server.Services.Foundations.Payments
 {
-    public class PaymentService : IPaymentService
+    public partial class PaymentService : IPaymentService
     {
         private readonly IPaymentBroker paymentBroker;
         private readonly IHttpContextAccessor httpContextAccessor;
@@ -37,9 +36,9 @@ namespace FMFT.Web.Server.Services.Foundations.Payments
 
             ProcessPaymentNotificationArguments arguments = new()
             {
-                Request = httpContext.Request
+                HttpContext = httpContext
             };
-            PaymentProviderId paymentProviderId = MapPaymentMethodToPaymentProviderId(@params.PaymentMethod);
+            PaymentProviderId paymentProviderId = MapPaymentProviderToPaymentProviderId(@params.PaymentProvider);
 
             ProcessPaymentNotificationResult result = await paymentBroker.ProcessPaymentNotificationAsync(paymentProviderId, arguments);
 
@@ -76,106 +75,6 @@ namespace FMFT.Web.Server.Services.Foundations.Payments
             {
                 throw new NotSupportedProviderPaymentException();
             }            
-        }
-
-        private PaymentInfo MapGetPaymentInfoResultToPaymentInfo(GetPaymentInfoResult result)
-        {
-            return new()
-            {
-                PaymentStatus = MapPaymentStatusIdToPaymentStatus(result.PaymentStatus)
-            };
-        }
-
-        private ProcessedPayment MapProcessPaymentNotificationResultToProcessedPayment(ProcessPaymentNotificationResult result)
-        {
-            return new()
-            {
-                PaymentStatus = MapPaymentStatusIdToPaymentStatus(result.PaymentStatus)
-            };
-        }
-
-        private PaymentUrl MapGetPaymentUrlResultToPaymentUrl(GetPaymentUrlResult result)
-        {
-            return new()
-            {
-                Url = result.Url
-            };
-        }
-
-        private GetPaymentUrlArguments MapGetPaymentUrlParamsToArguments(GetPaymentUrlParams @params)
-        {
-            return new()
-            {
-                PaymentToken = @params.PaymentToken,
-                SessionId = @params.SessionId
-            };
-        }
-        
-        private GetPaymentInfoArguments MapGetPaymentInfoParamsToArguments(GetPaymentInfoParams @params)
-        {
-            return new()
-            {
-                PaymentToken = @params.PaymentToken,
-                SessionId = @params.SessionId
-            };
-        }                
-
-        private PaymentStatus MapPaymentStatusIdToPaymentStatus(PaymentStatusId paymentStatusId)
-        {
-            return (PaymentStatus)paymentStatusId;
-        }
-
-        private PaymentProviderId MapPaymentMethodToPaymentProviderId(PaymentMethod paymentMethod)
-        {
-            if (paymentMethod is PaymentMethod.Mock)
-            {
-                return PaymentProviderId.Mock;
-            }
-
-            if (paymentMethod is PaymentMethod.Blik or PaymentMethod.Przelewy24 or PaymentMethod.CreditDebitCard)
-            {
-                return PaymentProviderId.Przelewy24;
-            }
-
-            throw new NotImplementedException($"Payment method {paymentMethod} does not have a matching provider");
-        }
-
-        private RegisteredPayment MapRegisterPaymentResultToRegisteredPayment(RegisterPaymentResult result)
-        {
-            return new RegisteredPayment()
-            {
-                Token = result.Token
-            };
-        }
-
-        private RegisterPaymentArguments MapRegisterPaymentParamsToArguments(RegisterPaymentParams @params)
-        {
-            RegisterPaymentArguments arguments = new()
-            {
-                OrderId = @params.OrderId,
-                SessionId = @params.SessionId,
-                Amount = @params.Amount,
-                Currency = @params.Currency,
-                CustomerEmailAddress = @params.CustomerEmailAddress,
-                CustomerFirstName = @params.CustomerFirstName,
-                CustomerLastName = @params.CustomerLastName,
-                CustomerId = @params.CustomerId,
-                ExpireDate = @params.ExpireDate,
-                Items = new()
-            };
-
-            foreach (RegisterPaymentParams.Item item in @params.Items)
-            {
-                arguments.Items.Add(new RegisterPaymentArguments.Item()
-                {
-                    Id = item.Id,
-                    Name = item.Name,
-                    Price = item.Price,
-                    Quantity = item.Quantity
-                });
-            }
-
-            return arguments;
-        }
+        }        
     }
 }

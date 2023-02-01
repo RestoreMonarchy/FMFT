@@ -1,6 +1,7 @@
 ﻿CREATE PROCEDURE dbo.GetOrders
     @OrderId INT = NULL,
-    @UserId INT = NULL
+    @UserId INT = NULL,
+    @SessionId UNIQUEIDENTIFIER = NULL
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -27,6 +28,17 @@ BEGIN
         LEFT JOIN dbo.ShowProducts sp ON sp.Id = i.ShowProductId
         LEFT JOIN dbo.Shows s ON s.Id = sp.ShowId
         WHERE o.Id = @OrderId
+        ORDER BY o.Id, i.Id;
+    END
+    ELSE IF @SessionId IS NOT NULL
+    BEGIN
+        SELECT o.*, u.*, i.*,sp.*,s.*
+        FROM dbo.Orders o
+        LEFT JOIN dbo.Users u ON u.Id = o.UserId
+        LEFT JOIN dbo.OrderItems i ON i.OrderId = o.Id
+        LEFT JOIN dbo.ShowProducts sp ON sp.Id = i.ShowProductId
+        LEFT JOIN dbo.Shows s ON s.Id = sp.ShowId
+        WHERE o.SessionId = @SessionId
         ORDER BY o.Id, i.Id;
     END
     ELSE

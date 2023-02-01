@@ -10,5 +10,6 @@ namespace FMFT.Extensions.Payments.Models.Results
     public class ProcessPaymentNotificationResult
     {
         public PaymentStatusId PaymentStatus { get; set; }
+        public string SessionId { get; set; }
     }
 }

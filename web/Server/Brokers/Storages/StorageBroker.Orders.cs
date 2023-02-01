@@ -14,12 +14,12 @@ namespace FMFT.Web.Server.Brokers.Storages
 {
     public partial class StorageBroker
     {
-
         public async ValueTask<IEnumerable<Order>> SelectAllOrdersAsync()
         {
             GetOrderParams @params = new();
             return await GetOrdersAsync(@params);
         }
+
         public async ValueTask<Order> SelectOrderByIdAsync(int orderId)
         {
             GetOrderParams @params = new()
@@ -29,6 +29,17 @@ namespace FMFT.Web.Server.Brokers.Storages
 
             return await GetOrderAsync(@params);
         }
+
+        public async ValueTask<Order> SelectOrderBySessionIdAsync(Guid sessionId)
+        {
+            GetOrderParams @params = new()
+            {
+                SessionId = sessionId
+            };
+
+            return await GetOrderAsync(@params);
+        }
+
         public async ValueTask<IEnumerable<Order>> SelectOrdersByUserIdAsync(int userId)
         {
             GetOrderParams @params = new()

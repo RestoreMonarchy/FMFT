@@ -24,11 +24,11 @@ namespace FMFT.Web.Server.Services.Orchestrations.Payments
             return await paymentService.RegisterPaymentAsync(@params);
         }
 
-        public async ValueTask<ProcessedPayment> ProcessPaymentNotificationAsync(PaymentMethod paymentMethod)
+        public async ValueTask<ProcessedPayment> ProcessPaymentNotificationAsync(PaymentProvider paymentProvider)
         {
             ProcessPaymentNotificationParams @params = new()
             {
-                PaymentMethod = paymentMethod
+                PaymentProvider = paymentProvider
             };
 
             return await paymentService.ProcessPaymentNotificationAsync(@params);

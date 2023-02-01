@@ -8,6 +8,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.Orders
         ValueTask<Order> CreateOrderAsync(CreateOrderParams @params);
         ValueTask<IEnumerable<Order>> RetrieveAllOrdersAsync();
         ValueTask<Order> RetrieveOrderByIdAsync(int orderId);
+        ValueTask<Order> RetrieveOrderBySessionIdAsync(Guid sessionId);
         ValueTask<IEnumerable<Order>> RetrieveOrdersByUserIdAsync(int userId);
         ValueTask<Order> UpdateOrderPaymentTokenAsync(UpdateOrderPaymentTokenParams @params);
         ValueTask<Order> UpdateOrderStatusAsync(UpdateOrderStatusParams @params);

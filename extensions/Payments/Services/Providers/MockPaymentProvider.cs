@@ -1,8 +1,12 @@
-﻿using FMFT.Extensions.Payments.Models.Arguments;
+﻿using FMFT.Extensions.Payments.Extensions;
+using FMFT.Extensions.Payments.Models.Arguments;
 using FMFT.Extensions.Payments.Models.Enums;
 using FMFT.Extensions.Payments.Models.Options;
 using FMFT.Extensions.Payments.Models.Results;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json.Linq;
+using System.Runtime.InteropServices.JavaScript;
+using System.Text;
 
 namespace FMFT.Extensions.Payments.Services.Providers
 {
@@ -37,14 +41,19 @@ namespace FMFT.Extensions.Payments.Services.Providers
             return ValueTask.FromResult(result);
         }
 
-        public ValueTask<ProcessPaymentNotificationResult> ProcessPaymentNotificationAsync(ProcessPaymentNotificationArguments arguments)
+        public async ValueTask<ProcessPaymentNotificationResult> ProcessPaymentNotificationAsync(ProcessPaymentNotificationArguments arguments)
         {
+            string json = await arguments.HttpContext.Request.ReadBodyToStringAsync();
+
+            JObject jObject = JObject.Parse(json);
+
             ProcessPaymentNotificationResult result = new()
             {
-                PaymentStatus = PaymentStatusId.Completed
+                PaymentStatus = PaymentStatusId.Completed,
+                SessionId = jObject["SessionId"].Value<string>()
             };
 
-            return ValueTask.FromResult(result);
+            return result;
         }
 
         public ValueTask<GetPaymentInfoResult> GetPaymentInfoAsync(GetPaymentInfoArguments arguments)

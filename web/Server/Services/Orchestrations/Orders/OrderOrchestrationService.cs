@@ -33,6 +33,11 @@ namespace FMFT.Web.Server.Services.Orchestrations.Orders
             return order;
         }
 
+        public async ValueTask<Order> RetrieveOrderBySessionIdAsync(Guid sessionId)
+        {
+            return await orderService.RetrieveOrderBySessionIdAsync(sessionId);
+        }
+
         public async ValueTask<IEnumerable<Order>> RetrieveOrdersByUserIdAsync(int userId)
         {
             IEnumerable<Order> orders = await orderService.RetrieveOrdersByUserIdAsync(userId);

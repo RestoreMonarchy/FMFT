@@ -4,6 +4,6 @@ namespace FMFT.Web.Server.Models.Payments.Params
 {
     public class ProcessPaymentNotificationParams
     {
-        public PaymentMethod PaymentMethod { get; set; }
+        public PaymentProvider PaymentProvider { get; set; }
     }
 }

@@ -4,6 +4,6 @@ namespace FMFT.Extensions.Payments.Models.Arguments
 {
     public class ProcessPaymentNotificationArguments
     {
-        public HttpRequest Request { get; set; }
+        public HttpContext HttpContext { get; set; }
     }
 }
