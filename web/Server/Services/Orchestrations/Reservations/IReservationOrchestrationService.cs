@@ -21,8 +21,8 @@ namespace FMFT.Web.Server.Services.Orchestrations.Reservations
         ValueTask<IEnumerable<Reservation>> RetrieveReservationsByUserAndShowIdAsync(int userId, int showId);
         ValueTask<IEnumerable<Reservation>> RetrieveReservationsByUserIdAsync(int userId);
         ValueTask<IEnumerable<Reservation>> RetrieveReservationsByOrderIdAsync(int orderId);
-        ValueTask<Reservation> UpdateReservationStatusAsync(UpdateReservationStatusRequest request);
         ValueTask<ValidateReservationSecretCodeResult> ValidateReservationSecretCodeAsync(Guid secretCode);
-        ValueTask SendReservationSummaryEmailForOrderAsync(Order order);
+        ValueTask<Reservation> UpdateReservationStatusAsync(UpdateReservationStatusParams @params);
+        ValueTask SendReservationSummaryEmailAsync(string emailAddress, Reservation reservation);
     }
 }

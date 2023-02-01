@@ -76,7 +76,6 @@ namespace FMFT.Web.Server.Services.Orchestrations.Reservations
                 SeatIds  = @params.SeatIds
             };
 
-
             return await CreateReservationAsync(@params2);
         }
 
@@ -94,17 +93,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.Reservations
             return reservation;
         }
 
-        public async ValueTask SendReservationSummaryEmailForOrderAsync(Order order)
-        {
-            IEnumerable<Reservation> orderReservations = await reservationService.RetrieveReservationsByOrderIdAsync(order.Id);
-
-            foreach(Reservation reservation in orderReservations)
-            {
-                await SendReservationSummaryEmailAsync(order.User.Email, reservation);
-            }
-        }
-
-        private async ValueTask SendReservationSummaryEmailAsync(string emailAddress, Reservation reservation)
+        public async ValueTask SendReservationSummaryEmailAsync(string emailAddress, Reservation reservation)
         {
             ReservationSummaryEmailParams @params = MapReservationToReservationSummaryEmailParams(reservation);
             foreach (ReservationSeat reservationSeat in reservation.Seats)
@@ -121,19 +110,8 @@ namespace FMFT.Web.Server.Services.Orchestrations.Reservations
             await emailService.EnqueueSendReservationSummaryAsync(emailAddress, @params);
         }
 
-        // TODO: To be remade anyways
-        public async ValueTask<Reservation> UpdateReservationStatusAsync(UpdateReservationStatusRequest request)
+        public async ValueTask<Reservation> UpdateReservationStatusAsync(UpdateReservationStatusParams @params)
         {
-            //await accountService.AuthorizeAccountByRoleAsync(UserRole.Admin);
-
-            UpdateReservationStatusParams @params = new()
-            {
-                ReservationId = request.ReservationId,
-                ReservationStatus = request.Status,
-                UpdateStatusDate = DateTimeOffset.Now,
-                //AdminUserId = account.UserId
-            };
-
             return await reservationService.UpdateReservationStatusAsync(@params);
         }
 

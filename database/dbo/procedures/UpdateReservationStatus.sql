@@ -1,7 +1,6 @@
 ﻿CREATE PROCEDURE [dbo].[UpdateReservationStatus]
 	@ReservationId CHAR(8),
     @ReservationStatus INT,
-    @UpdateStatusDate DATETIME2(0),
     @AdminUserId INT NULL
 AS
 BEGIN
@@ -20,7 +19,7 @@ BEGIN
 
         UPDATE dbo.Reservations 
         SET Status = @ReservationStatus, 
-        UpdateStatusDate = @UpdateStatusDate,
+        UpdateStatusDate = SYSDATETIME(),
         AdminUserId = @AdminUserId
         WHERE Id = @id;
     END;

@@ -4,6 +4,8 @@ using FMFT.Web.Server.Models.Orders;
 using FMFT.Web.Server.Models.Orders.Params;
 using FMFT.Web.Server.Models.Payments;
 using FMFT.Web.Server.Models.Payments.Params;
+using FMFT.Web.Server.Models.Reservations;
+using FMFT.Web.Server.Models.Reservations.Params;
 using FMFT.Web.Server.Models.UserAccounts;
 using FMFT.Web.Server.Services.Orchestrations.Orders;
 using FMFT.Web.Server.Services.Orchestrations.Payments;
@@ -105,7 +107,30 @@ namespace FMFT.Web.Server.Services.Coordinations.Orders
                 Status = OrderStatus.PaymentReceived
             };
 
-            await orderService.UpdateOrderStatusAsync(@updateOrderStatusParams);            
+            order = await orderService.UpdateOrderStatusAsync(@updateOrderStatusParams);
+
+            IEnumerable<Reservation> reservations = await reservationService.RetrieveReservationsByOrderIdAsync(order.Id);
+
+            foreach (Reservation reservation in reservations)
+            {
+                UpdateReservationStatusParams @updateReservationStatusParams = new()
+                {
+                    ReservationId = reservation.Id,
+                    ReservationStatus = ReservationStatus.Ok
+                };
+
+                Reservation updatedReservation = await reservationService.UpdateReservationStatusAsync(updateReservationStatusParams);
+                await reservationService.SendReservationSummaryEmailAsync(updatedReservation.User.Email, updatedReservation);
+            }
+
+            updateOrderStatusParams = new()
+            {
+                OrderId = order.Id,
+                Status = OrderStatus.Completed
+            };
+
+            order = await orderService.UpdateOrderStatusAsync(updateOrderStatusParams);
+            // Send order summary email
         }
 
         public async ValueTask<PaymentUrl> GetOrderPaymentUrlAsync(int orderId)
