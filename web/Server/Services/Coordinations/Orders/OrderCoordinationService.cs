@@ -66,6 +66,15 @@ namespace FMFT.Web.Server.Services.Coordinations.Orders
             return await orderService.RetrieveOrdersByUserIdAsync(userId);
         }
 
+        public async ValueTask<Order> RetrieveOrderBySessionIdAsync(Guid sessionId)
+        {
+            Order order = await orderService.RetrieveOrderBySessionIdAsync(sessionId);
+
+            await userAccountService.AuthorizeUserAccountByUserIdOrRolesAsync(order.UserId(), UserRole.Admin);
+
+            return order;
+        }
+
         public async ValueTask<Order> CreateOrderAsync(CreateOrderParams @params)
         {
             await userAccountService.AuthorizeAccountAsync();

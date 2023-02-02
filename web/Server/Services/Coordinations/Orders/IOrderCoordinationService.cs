@@ -12,6 +12,7 @@ namespace FMFT.Web.Server.Services.Coordinations.Orders
         ValueTask ProcessPaymentNotificationAsync(PaymentProvider paymentProvider);
         ValueTask<IEnumerable<Order>> RetrieveAllOrdersAsync();
         ValueTask<Order> RetrieveOrderByIdAsync(int orderId);
+        ValueTask<Order> RetrieveOrderBySessionIdAsync(Guid sessionId);
         ValueTask<IEnumerable<Order>> RetrieveOrdersByUserIdAsync(int userId);
         ValueTask<IEnumerable<Order>> RetrieveOrdersForCurrentUserAsync();
     }

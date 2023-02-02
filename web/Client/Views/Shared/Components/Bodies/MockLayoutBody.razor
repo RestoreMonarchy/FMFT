@@ -1,0 +1,24 @@
+﻿
+<main class="form-signin text-center bg-light rounded rounded-3">
+    <Condition Evaluation="Header != null">
+        <Match>
+            <div class="fs-5 mb-3">
+                @Header
+            </div>
+        </Match>
+    </Condition>
+    
+    <div class="mb-3">
+        @Content
+    </div>
+    
+    <Condition Evaluation="Footer != null">
+        <Match>
+            <div>
+                @Footer
+            </div>
+        </Match>
+    </Condition>
+</main>
+
+

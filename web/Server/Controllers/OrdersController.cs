@@ -72,6 +72,29 @@ namespace FMFT.Web.Server.Controllers
             }
         }
 
+        [HttpGet("session/{sessionId}")]
+        public async ValueTask<IActionResult> GetOrderBySessionId(Guid sessionId)
+        {
+            try
+            {
+                Order order = await orderService.RetrieveOrderBySessionIdAsync(sessionId);
+
+                return Ok(order);
+            }
+            catch (NotFoundOrderException exception)
+            {
+                return NotFound(exception);
+            }
+            catch (NotAuthenticatedAccountException exception)
+            {
+                return Unauthorized(exception);
+            }
+            catch (NotAuthorizedAccountException exception)
+            {
+                return Forbidden(exception);
+            }
+        }
+
         [HttpGet("myorders")]
         public async ValueTask<IActionResult> GetMyOrders()
         {

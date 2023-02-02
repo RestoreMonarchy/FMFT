@@ -1,0 +1,64 @@
+﻿@page "/mock/payment/{SessionId}"
+@using FMFT.Web.Client.Views.Shared.Layouts.Mock;
+@layout MockLayout
+
+<MockLayoutBody>
+    <Header>
+        Płatność Mock
+    </Header>
+    <Content>
+
+        <LoadingView @ref="LoadingView">
+            <Condition Evaluation="OrderResponse.IsSuccessful">
+                <Match>
+                    <div class="text-start">
+                        <div>
+                            Zamówienie <span class="fw-bold">@FormatHelper.OrderId(Order.Id)</span>
+                        </div>
+                        <div>
+                            Status: <span class="fw-bold">@FormatHelper.TranslateOrderStatus(Order.Status)</span>
+                        </div>
+                        <div class="dropdown-divider border"></div>
+                        <table class="table">
+                            <tbody>
+                                <Iterations Items="Order.Items" Context="orderItem">
+                                    <tr>
+                                        <td>
+                                            <div>
+                                                @orderItem.ShowProduct.Name
+                                            </div>
+                                            <div class="small">
+                                                @orderItem.Show.Name
+                                            </div>                                            
+                                        </td>
+                                        <td class="text-end">
+                                            <div>
+                                                @Order.Amount.ToString("N2") @Order.Currency
+                                            </div>
+                                            <div class="small">
+                                                <span>x</span>@orderItem.Quantity
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </Iterations>
+                            </tbody>
+                        </table>
+
+                        <div class="">
+                            <button class="btn btn-primary float-end">Zapłać</button>
+                        </div>
+                    </div>
+
+                </Match>
+                <NotMatch>
+                    <ErrorResponseAlert />
+                </NotMatch>
+            </Condition>
+        </LoadingView>
+    </Content>
+    <Footer>
+        <div class="small">
+            
+        </div>
+    </Footer>
+</MockLayoutBody>
