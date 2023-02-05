@@ -8,6 +8,7 @@ namespace FMFT.Web.Server.Models.Orders.Params
         public decimal Amount { get; set; }
         public string Currency { get; set; }
         public PaymentMethod PaymentMethod { get; set; }
+        public PaymentProvider PaymentProvider { get; set; }
         public List<Item> Items { get; set; }
         public List<int> SeatIds { get; set; }
 

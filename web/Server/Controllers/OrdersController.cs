@@ -146,7 +146,7 @@ namespace FMFT.Web.Server.Controllers
             {
                 return NotFound(exception);
             }
-            catch (NotSupportedProviderPaymentException exception)
+            catch (NotSupportedPaymentProviderException exception)
             {
                 return ServiceUnavailable(exception);
             }
@@ -169,7 +169,7 @@ namespace FMFT.Web.Server.Controllers
 
                 return Ok(order);
             }
-            catch (NotSupportedProviderPaymentException exception)
+            catch (NotSupportedPaymentProviderException exception)
             {
                 return ServiceUnavailable(exception);
             }

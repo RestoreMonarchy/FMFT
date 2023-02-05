@@ -51,3 +51,5 @@ ERR043 | Sum of order quantity is too big. It must not exceed 100 for a single o
 ERR044 | Invalid value of ShowProductId
 ERR045 | Order amount must be greater than 0
 ERR046 | Order amount does not match order amount calculated as sum of items
+ERR047 | Payment provider is not supported
+ERR048 | Payment method is not supported

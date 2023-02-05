@@ -7,6 +7,7 @@ namespace FMFT.Web.Server.Models.Orders.DTOs
 		public int UserId { get; set; }
 		public decimal Amount { get; set; }
 		public string Currency { get; set; }
+		public PaymentProvider PaymentProvider { get; set; }
 		public PaymentMethod PaymentMethod { get; set; }
 		public DateTime ExpireDate { get; set;}
 		public List<CreateOrderItemDTO> Items { get; set; }

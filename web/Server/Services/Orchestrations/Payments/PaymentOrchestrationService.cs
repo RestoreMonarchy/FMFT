@@ -38,5 +38,10 @@ namespace FMFT.Web.Server.Services.Orchestrations.Payments
         {
             return await paymentService.GetPaymentInfoAsync(@params);
         }
+
+        public PaymentProvider GetPaymentProviderFromPaymentMethod(PaymentMethod paymentMethod)
+        {
+            return paymentService.GetPaymentProviderFromPaymentMethod(paymentMethod);
+        }
     }
 }

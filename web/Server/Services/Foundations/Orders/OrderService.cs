@@ -101,7 +101,7 @@ namespace FMFT.Web.Server.Services.Foundations.Orders
                 ExpireDate = DateTime.Now.AddMinutes(15),
                 Items = orderItems,
                 SeatIds = @params.SeatIds,
-
+                PaymentProvider = @params.PaymentProvider
             };
 
             StoredProcedureResult<Order> result = await storageBroker.CreateOrderAsync(dto);

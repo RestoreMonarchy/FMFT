@@ -79,6 +79,8 @@ namespace FMFT.Web.Server.Services.Coordinations.Orders
         {
             await userAccountService.AuthorizeAccountAsync();
 
+            @params.PaymentProvider = paymentService.GetPaymentProviderFromPaymentMethod(@params.PaymentMethod);
+
             Order order = await orderService.CreateOrderAsync(@params);
 
             await EnqueueExecuteOrderExpireAsync(order.Id, order.ExpireDate);

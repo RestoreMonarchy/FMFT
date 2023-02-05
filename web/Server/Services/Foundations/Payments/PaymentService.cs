@@ -6,6 +6,7 @@ using FMFT.Web.Server.Brokers.Payments;
 using FMFT.Web.Server.Models.Payments;
 using FMFT.Web.Server.Models.Payments.Exceptions;
 using FMFT.Web.Server.Models.Payments.Params;
+using FMFT.Web.Shared.Enums;
 
 namespace FMFT.Web.Server.Services.Foundations.Payments
 {
@@ -18,6 +19,21 @@ namespace FMFT.Web.Server.Services.Foundations.Payments
         {
             this.paymentBroker = paymentBroker;
             this.httpContextAccessor = httpContextAccessor;
+        }
+
+        public PaymentProvider GetPaymentProviderFromPaymentMethod(PaymentMethod paymentMethod)
+        {
+            if (paymentMethod is PaymentMethod.Mock)
+            {
+                return PaymentProvider.Mock;
+            }
+
+            if (paymentMethod is PaymentMethod.Blik or PaymentMethod.Przelewy24 or PaymentMethod.CreditDebitCard)
+            {
+                return PaymentProvider.Przelewy24;
+            }
+
+            throw new NotSupportedPaymentMethodException();
         }
 
         public async ValueTask<PaymentInfo> GetPaymentInfoAsync(GetPaymentInfoParams @params)
@@ -57,7 +73,7 @@ namespace FMFT.Web.Server.Services.Foundations.Payments
                 return MapRegisterPaymentResultToRegisteredPayment(result);
             } catch (PaymentProviderNotSupportedException)
             {
-                throw new NotSupportedProviderPaymentException();
+                throw new NotSupportedPaymentProviderException();
             }            
         }
 
@@ -73,7 +89,7 @@ namespace FMFT.Web.Server.Services.Foundations.Payments
                 return MapGetPaymentUrlResultToPaymentUrl(result);
             } catch (PaymentProviderNotSupportedException)
             {
-                throw new NotSupportedProviderPaymentException();
+                throw new NotSupportedPaymentProviderException();
             }            
         }        
     }
