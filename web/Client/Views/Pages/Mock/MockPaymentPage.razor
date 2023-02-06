@@ -33,7 +33,7 @@
                                         </td>
                                         <td class="text-end">
                                             <div>
-                                                @Order.Amount.ToString("N2") @Order.Currency
+                                                @orderItem.Price.ToString("N2") @Order.Currency
                                             </div>
                                             <div class="small">
                                                 <span>x</span>@orderItem.Quantity
@@ -41,11 +41,30 @@
                                         </td>
                                     </tr>
                                 </Iterations>
+                                <tr class="fw-bold">
+                                    <td>
+                                        W sumie:
+                                    </td>
+                                    <td class="text-end">
+                                        @Order.Amount.ToString("N2") @Order.Currency
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
 
                         <div class="">
-                            <button class="btn btn-primary float-end">Zapłać</button>
+                            <Condition Evaluation="Order.Status == OrderStatus.PaymentWaiting">
+                                <Match>
+                                    <ButtonBase @ref="PayButton" Class="btn btn-primary float-end" OnClick="PayAsync">
+                                        Zapłać
+                                    </ButtonBase>
+                                </Match>
+                                <NotMatch>
+                                    <a class="btn btn-secondary float-end" href="/account/orders/@Order.Id">
+                                        Przejdź do zamówienia
+                                    </a>
+                                </NotMatch>
+                            </Condition>                            
                         </div>
                     </div>
 

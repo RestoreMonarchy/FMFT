@@ -33,9 +33,11 @@ namespace FMFT.Extensions.Payments.Services.Providers
 
         public ValueTask<GetPaymentUrlResult> GetPaymentUrlAsync(GetPaymentUrlArguments arguments)
         {
+            string url = string.Format(options.MockPaymentUrl, arguments.SessionId);
+
             GetPaymentUrlResult result = new()
             {
-                Url = options.MockPaymentUrl
+                Url = url
             };
 
             return ValueTask.FromResult(result);
@@ -50,7 +52,7 @@ namespace FMFT.Extensions.Payments.Services.Providers
             ProcessPaymentNotificationResult result = new()
             {
                 PaymentStatus = PaymentStatusId.Completed,
-                SessionId = jObject["SessionId"].Value<string>()
+                SessionId = jObject["sessionId"].Value<string>()
             };
 
             return result;

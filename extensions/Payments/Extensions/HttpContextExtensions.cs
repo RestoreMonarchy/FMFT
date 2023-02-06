@@ -14,8 +14,6 @@ namespace FMFT.Extensions.Payments.Extensions
                 bodyString = await reader.ReadToEndAsync();
             }
 
-            request.Body.Position = 0;
-
             return bodyString;
         }
     }

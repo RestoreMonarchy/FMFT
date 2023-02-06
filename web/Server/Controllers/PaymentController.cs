@@ -9,9 +9,9 @@ namespace FMFT.Web.Server.Controllers
     [Route("api/[controller]")]
     public class PaymentController : RESTFulController
     {
-        private readonly OrderCoordinationService orderCoordinationService;
+        private readonly IOrderCoordinationService orderCoordinationService;
 
-        public PaymentController(OrderCoordinationService orderCoordinationService)
+        public PaymentController(IOrderCoordinationService orderCoordinationService)
         {
             this.orderCoordinationService = orderCoordinationService;
         }
