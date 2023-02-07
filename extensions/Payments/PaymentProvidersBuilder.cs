@@ -34,5 +34,14 @@ namespace FMFT.Extensions.Payments
 
             return this;
         }
+
+        public PaymentProvidersBuilder AddPrzelewy24(Action<Przelewy24Options> configureOptions)
+        {
+            services.Configure(configureOptions);
+
+            services.AddTransient<IPaymentProvider, Przelewy24PaymentProvider>();
+
+            return this;
+        }
     }
 }

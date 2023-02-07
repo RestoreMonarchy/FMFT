@@ -1,5 +1,7 @@
 ﻿using FMFT.Emails.Server.Extensions;
+using FMFT.Extensions.Payments;
 using FMFT.Extensions.Payments.Extensions;
+using FMFT.Extensions.Payments.Models.Options;
 using FMFT.Features.Tickets.Extensions;
 using FMFT.Web.Server.Brokers.Authentications;
 using FMFT.Web.Server.Brokers.Converts;
@@ -64,13 +66,33 @@ namespace FMFT.Web.Server.Extensions
             });
             services.AddHangfireServer();
 
-            services.AddPaymentProviders(options => 
+            PaymentProvidersBuilder paymentProvidersBuilder = services.AddPaymentProviders(options =>
             {
                 ServicesOptions config = configuration.GetSection(ServicesOptions.SectionKey).Get<ServicesOptions>();
                 options.MockPaymentUrl = config.GetClientUrl("/mock/payment/{0}");
                 options.ReturnUrl = config.GetClientUrl("/account/orders/{0}");
                 options.NotifyUrl = config.GetAPIUrl("/api/orders/notify/{0}");
-            }).AddMock();
+            });
+
+            if (configuration.GetSection("Payments:Mock").GetValue<bool>("IsEnabled"))
+            {
+                paymentProvidersBuilder.AddMock();
+            }
+
+            if (configuration.GetSection("Payments:Przelewy24").GetValue<bool>("IsEnabled"))
+            {
+                paymentProvidersBuilder.AddPrzelewy24(options => 
+                {
+                    IConfigurationSection section = configuration.GetSection("Payments:Przelewy24");
+
+                    options.Username = section.GetValue<int>("Username");
+                    options.UserSecret = section.GetValue<string>("UserSecret");
+                    options.CRC = section.GetValue<string>("CRC");
+                    options.MerchantId = section.GetValue<int>("MerchantId");
+                    options.PosId = section.GetValue<int>("PosId");
+                    options.UseSandbox = section.GetValue<bool>("UseSandbox");
+                });
+            }
 
             return services;
         }

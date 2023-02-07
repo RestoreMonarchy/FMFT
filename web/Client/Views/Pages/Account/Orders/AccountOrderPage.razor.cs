@@ -44,7 +44,7 @@ namespace FMFT.Web.Client.Views.Pages.Account.Orders
                 {
                     Order.Status = OrderStatus.Expired;
                 }
-            }
+            } 
 
             LoadingView.StopLoading();
         }

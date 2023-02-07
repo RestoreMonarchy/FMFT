@@ -4,6 +4,7 @@ using FMFT.Web.Client.Models.API.Reservations;
 using FMFT.Web.Client.Models.API.ShowProducts;
 using FMFT.Web.Client.Models.API.Shows;
 using FMFT.Web.Client.Models.Services.Orders;
+using FMFT.Web.Shared.Enums;
 using Microsoft.AspNetCore.Components;
 
 namespace FMFT.Web.Client.Views.Pages.Home.Shows.Steps
@@ -23,7 +24,7 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Steps
         [Parameter]
         public List<Reservation> UserReservations { get; set; }
 
-        private IEnumerable<Reservation> ActiveUserReservations => UserReservations.Where(x => !x.IsCanceled);
+        private IEnumerable<Reservation> ActiveUserReservations => UserReservations.Where(x => x.Status == ReservationStatus.Ok);
 
         private async Task InvokeOrderStateChangedAsync()
         {
