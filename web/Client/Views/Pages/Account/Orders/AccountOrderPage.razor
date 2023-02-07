@@ -121,8 +121,8 @@
                                             @OrderStatusDescriptions[Order.Status]
                                         </div>
                                     </div>
-                                    <Condition Evaluation="Order.IsExpired">
-                                        <NotMatch>
+                                    <Condition Evaluation="Order.Status == OrderStatus.PaymentWaiting">
+                                        <Match>
                                             <div class="list-group list-group-flush">
                                                 <div class="list-group-item d-flex align-items-center">
                                                     <div>
@@ -139,7 +139,7 @@
                                                     Przejdź do płatności
                                                 </a>
                                             </div>
-                                        </NotMatch>
+                                        </Match>
                                     </Condition>                                    
                                 </div>                                
                             </div>

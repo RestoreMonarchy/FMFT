@@ -11,7 +11,6 @@ namespace FMFT.Web.Client.Models.API.Orders
         public string Currency { get; set; }
         public PaymentMethod PaymentMethod { get; set; }
         public Guid SessionId { get; set; }
-        public string PaymentUrl { get; set; }
         public string PaymentToken { get; set; }
         public DateTimeOffset ExpireDate { get; set; }
         public bool IsExpired { get; set; }
