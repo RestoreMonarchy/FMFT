@@ -8,6 +8,7 @@ namespace FMFT.Web.Client.Models.API.Reservations
     public class Reservation
     {
         public string Id { get; set; }
+        public bool IsValid { get; set; }
         public ReservationStatus Status { get; set; }
         public DateTimeOffset CreateDate { get; set; }
 
@@ -18,8 +19,6 @@ namespace FMFT.Web.Client.Models.API.Reservations
 
         [JsonIgnore]
         public bool IsCanceled => Status == ReservationStatus.Canceled;
-        [JsonIgnore]
-        public bool IsValid => Status is ReservationStatus.Ok or ReservationStatus.Canceled;
         public string Email() => User != null ? User.Email : Details?.Email ?? null;
     }
 }

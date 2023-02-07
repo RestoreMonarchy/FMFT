@@ -5,8 +5,6 @@ using FMFT.Extensions.Payments.Models.Options;
 using FMFT.Extensions.Payments.Models.Results;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
-using System.Runtime.InteropServices.JavaScript;
-using System.Text;
 
 namespace FMFT.Extensions.Payments.Services.Providers
 {

@@ -13,7 +13,8 @@ namespace FMFT.Web.Client.Views.Pages.Account.Reservations
 
         public List<Reservation> Reservations => ReservationsResponse.Object;
 
-        public IEnumerable<Reservation> ValidReservations => Reservations.Where(x => x.IsValid);
+        public IEnumerable<Reservation> ValidReservations 
+            => Reservations.Where(x => x.Status is ReservationStatus.Ok or ReservationStatus.Canceled);
         
         protected override async Task OnInitializedAsync()
         {
