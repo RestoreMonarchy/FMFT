@@ -4,7 +4,6 @@ using FMFT.Extensions.Payments.Models.Exceptions;
 using FMFT.Extensions.Payments.Models.Options;
 using FMFT.Extensions.Payments.Models.Results;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using P24;
@@ -21,6 +20,13 @@ namespace FMFT.Extensions.Payments.Services.Providers
 
         private readonly string baseUrl;
         private Przelewy24 Client => new(GetBaseP24Url(options.UseSandbox), options.UserName, options.UserSecret, options.CRC);
+
+        public PaymentMethodId[] SupportedPaymentMethodIds => new PaymentMethodId[]
+        {
+            PaymentMethodId.CreditDebitCard,
+            PaymentMethodId.Blik,
+            PaymentMethodId.Przelewy24
+        };
 
         public Przelewy24PaymentProvider(IOptions<Przelewy24Options> options,
             IConfiguration configuration)
@@ -58,10 +64,17 @@ namespace FMFT.Extensions.Payments.Services.Providers
             return ValueTask.FromResult(result);
         }
 
-        public async ValueTask<RegisterPaymentResult> RegisterPaymentAsync(RegisterPaymentArguments arguments)
+        public async ValueTask<RegisterPaymentResult> RegisterPaymentAsync(PaymentMethodId paymentMethodId, RegisterPaymentArguments arguments)
         {
 
             Przelewy24 client = Client;
+            int p24Method = paymentMethodId switch
+            {
+                PaymentMethodId.Przelewy24 => 0,
+                PaymentMethodId.Blik => 153,
+                PaymentMethodId.CreditDebitCard => 0,
+                _ => 0,
+            };
 
             P24TransactionRequest request = new()
             {
@@ -74,8 +87,10 @@ namespace FMFT.Extensions.Payments.Services.Providers
                 Email = arguments.CustomerEmailAddress,
                 Country = "PL",
                 Language = "pl",
-                UrlReturn = string.Concat(baseUrl, "/orders/", arguments.OrderId),
-                UrlStatus = string.Concat(baseUrl, "/api/orders/pay/przelewy24")
+                UrlReturn = string.Concat(baseUrl, "/account/orders/", arguments.OrderId),
+                UrlStatus = string.Concat(baseUrl, "/api/orders/pay/przelewy24"),
+                Method = p24Method,
+                Channel = 65 // 1 - karty + ApplePay + GooglePay, 64 – tylko metody pay-by-link
             };
 
             P24TransactionResponse response = await client.NewTransactionAsync(request);

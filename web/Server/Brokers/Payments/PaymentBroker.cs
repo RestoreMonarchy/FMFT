@@ -14,9 +14,11 @@ namespace FMFT.Web.Server.Brokers.Payments
             this.paymentProviders = paymentProviders;
         }
 
-        public async ValueTask<RegisterPaymentResult> RegisterPaymentAsync(PaymentProviderId paymentProviderId, RegisterPaymentArguments arguments)
+        public async ValueTask<RegisterPaymentResult> RegisterPaymentAsync(PaymentProviderId paymentProviderId, 
+            PaymentMethodId paymentMethodId,
+            RegisterPaymentArguments arguments)
         {
-            RegisterPaymentResult result = await paymentProviders.RegisterPaymentAsync(paymentProviderId, arguments);
+            RegisterPaymentResult result = await paymentProviders.RegisterPaymentAsync(paymentProviderId, paymentMethodId, arguments);
 
             return result;
         }

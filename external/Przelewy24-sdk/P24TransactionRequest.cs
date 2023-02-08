@@ -22,11 +22,11 @@ namespace P24
         public string Country { get; set; }
         //public string Phone { get; set; }
         public string Language { get; set; }
-        //public int Method { get; set; }
+        public int Method { get; set; }
         public string UrlReturn { get; set; }
         public string UrlStatus { get; set; }
         //public int TimeLimit { get; set; }
-        //public int Channel { get; set; }
+        public int Channel { get; set; }
         //public bool WaitForResult { get; set; }
         //public bool RegulationAccept { get; set; }
         //public int Shipping { get; set; }

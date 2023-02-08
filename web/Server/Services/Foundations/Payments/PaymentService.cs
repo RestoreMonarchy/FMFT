@@ -39,7 +39,7 @@ namespace FMFT.Web.Server.Services.Foundations.Payments
         public async ValueTask<PaymentInfo> GetPaymentInfoAsync(GetPaymentInfoParams @params)
         {
             GetPaymentInfoArguments arguments = MapGetPaymentInfoParamsToArguments(@params);
-            PaymentProviderId paymentProviderId = MapPaymentMethodToPaymentProviderId(@params.PaymentMethod);
+            PaymentProviderId paymentProviderId = MapPaymentMethodToPaymentProviderId(@params.PaymentMethod);            
 
             GetPaymentInfoResult result = await paymentBroker.GetPaymentInfoAsync(paymentProviderId, arguments);
 
@@ -65,10 +65,11 @@ namespace FMFT.Web.Server.Services.Foundations.Payments
         {
             RegisterPaymentArguments arguments = MapRegisterPaymentParamsToArguments(@params);
             PaymentProviderId paymentProviderId = MapPaymentMethodToPaymentProviderId(@params.PaymentMethod);
+            PaymentMethodId paymentMethodId = MapPaymentMethodToPaymentMethodId(@params.PaymentMethod);
 
             try
             {
-                RegisterPaymentResult result = await paymentBroker.RegisterPaymentAsync(paymentProviderId, arguments);
+                RegisterPaymentResult result = await paymentBroker.RegisterPaymentAsync(paymentProviderId, paymentMethodId, arguments);
 
                 return MapRegisterPaymentResultToRegisteredPayment(result);
             } catch (PaymentProviderNotSupportedException)

@@ -85,6 +85,19 @@ namespace FMFT.Web.Server.Services.Foundations.Payments
             throw new NotImplementedException($"Payment method {paymentMethod} does not have a matching provider");
         }
 
+        private PaymentMethodId MapPaymentMethodToPaymentMethodId(PaymentMethod paymentMethod)
+        {
+            return paymentMethod switch
+            {
+                PaymentMethod.Mock => PaymentMethodId.Mock,
+                PaymentMethod.None => PaymentMethodId.None,
+                PaymentMethod.CreditDebitCard => PaymentMethodId.CreditDebitCard,
+                PaymentMethod.Przelewy24 => PaymentMethodId.Przelewy24,
+                PaymentMethod.Blik => PaymentMethodId.Blik,
+                _ => PaymentMethodId.None,
+            };
+        }
+
         private RegisteredPayment MapRegisterPaymentResultToRegisteredPayment(RegisterPaymentResult result)
         {
             return new RegisteredPayment()

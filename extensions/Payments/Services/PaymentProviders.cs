@@ -2,11 +2,6 @@
 using FMFT.Extensions.Payments.Models.Enums;
 using FMFT.Extensions.Payments.Models.Exceptions;
 using FMFT.Extensions.Payments.Models.Results;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FMFT.Extensions.Payments.Services
 {
@@ -42,11 +37,18 @@ namespace FMFT.Extensions.Payments.Services
             return paymentProvider.GetPaymentUrlAsync(arguments);
         }
 
-        public ValueTask<RegisterPaymentResult> RegisterPaymentAsync(PaymentProviderId paymentProviderId, RegisterPaymentArguments arguments)
+        public ValueTask<RegisterPaymentResult> RegisterPaymentAsync(PaymentProviderId paymentProviderId, 
+            PaymentMethodId paymentMethodId, 
+            RegisterPaymentArguments arguments)
         {
             IPaymentProvider paymentProvider = GetPaymentProvider(paymentProviderId);
 
-            return paymentProvider.RegisterPaymentAsync(arguments);
+            if (!paymentProvider.SupportedPaymentMethodIds.Contains(paymentMethodId))
+            {
+                throw new PaymentMethodNotSupportedException(paymentMethodId, paymentProviderId);
+            }
+
+            return paymentProvider.RegisterPaymentAsync(paymentMethodId, arguments);
         }
 
         private IPaymentProvider GetPaymentProvider(PaymentProviderId paymentProvider)

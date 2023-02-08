@@ -12,6 +12,10 @@ namespace FMFT.Extensions.Payments.Services.Providers
     {
         public PaymentProviderId Id => PaymentProviderId.Mock;
 
+        public PaymentMethodId[] SupportedPaymentMethodIds => new PaymentMethodId[] {
+            PaymentMethodId.Mock
+        };
+
         private readonly PaymentProviderOptions options;
 
         public MockPaymentProvider(IOptions<PaymentProviderOptions> options)
@@ -19,7 +23,7 @@ namespace FMFT.Extensions.Payments.Services.Providers
             this.options = options.Value;
         }
 
-        public ValueTask<RegisterPaymentResult> RegisterPaymentAsync(RegisterPaymentArguments arguments)
+        public ValueTask<RegisterPaymentResult> RegisterPaymentAsync(PaymentMethodId paymentMethodId, RegisterPaymentArguments arguments)
         {
             RegisterPaymentResult result = new()
             {
