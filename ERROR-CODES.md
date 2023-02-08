@@ -53,3 +53,4 @@ ERR045 | Order amount must be greater than 0
 ERR046 | Order amount does not match order amount calculated as sum of items
 ERR047 | Payment provider is not supported
 ERR048 | Payment method is not supported
+ERR049 | Error when trying to register payment at payment provided

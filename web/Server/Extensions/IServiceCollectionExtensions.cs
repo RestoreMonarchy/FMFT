@@ -85,7 +85,7 @@ namespace FMFT.Web.Server.Extensions
                 {
                     IConfigurationSection section = configuration.GetSection("Payments:Przelewy24");
 
-                    options.Username = section.GetValue<int>("Username");
+                    options.UserName = section.GetValue<int>("Username");
                     options.UserSecret = section.GetValue<string>("UserSecret");
                     options.CRC = section.GetValue<string>("CRC");
                     options.MerchantId = section.GetValue<int>("MerchantId");
