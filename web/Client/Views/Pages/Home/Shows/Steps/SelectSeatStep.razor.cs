@@ -33,17 +33,22 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Steps
 
         protected override async Task OnParametersSetAsync()
         {
-            int ticketsCount = TicketsCount;
 
-            if (ticketsCount < OrderState.Seats.Count)
+            if (TicketsCount < OrderState.Seats.Count)
             {
                 OrderState.Seats.Clear();
                 await InvokeOrderStateChangedAsync();
             }
+        }
 
-            if (ticketsCount == 0)
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
             {
-                await BackToSelectProductAsync();
+                if (TicketsCount == 0)
+                {
+                    await BackToSelectProductAsync();
+                }
             }
         }
 

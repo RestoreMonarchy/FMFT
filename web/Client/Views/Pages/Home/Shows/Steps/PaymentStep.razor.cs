@@ -38,10 +38,16 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Steps
             {
                 OrderState.PaymentMethod = PaymentMethod.Blik;
             }
+        }
 
-            if (OrderState.Items.Sum(x => x.Quantity) != OrderState.Seats.Count)
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
             {
-                await Stepper.StepDownAsync();
+                if (!OrderItems.Any() || OrderState.Items.Sum(x => x.Quantity) != OrderState.Seats.Count)
+                {
+                    await Stepper.StepDownAsync();
+                }
             }
         }
 
