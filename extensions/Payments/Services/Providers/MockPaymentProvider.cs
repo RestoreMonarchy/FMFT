@@ -35,7 +35,7 @@ namespace FMFT.Extensions.Payments.Services.Providers
 
         public ValueTask<GetPaymentUrlResult> GetPaymentUrlAsync(GetPaymentUrlArguments arguments)
         {
-            string url = string.Format(options.MockPaymentUrl, arguments.SessionId);
+            string url = options.GetMockPaymentUrl(arguments.SessionId);
 
             GetPaymentUrlResult result = new()
             {

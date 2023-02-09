@@ -16,9 +16,9 @@ namespace FMFT.Extensions.Payments.Services.Providers
         private readonly string sandboxUrl =  "https://sandbox.przelewy24.pl";
         private readonly string productionUrl = "https://secure.przelewy24.pl";
 
+        private readonly PaymentProviderOptions generalOptions;
         private readonly Przelewy24Options options;
 
-        private readonly string baseUrl;
         private Przelewy24 Client => new(GetBaseP24Url(options.UseSandbox), options.UserName, options.UserSecret, options.CRC);
 
         public PaymentMethodId[] SupportedPaymentMethodIds => new PaymentMethodId[]
@@ -28,12 +28,10 @@ namespace FMFT.Extensions.Payments.Services.Providers
             PaymentMethodId.Przelewy24
         };
 
-        public Przelewy24PaymentProvider(IOptions<Przelewy24Options> options,
-            IConfiguration configuration)
-
+        public Przelewy24PaymentProvider(IOptions<PaymentProviderOptions> generalOptions, IOptions<Przelewy24Options> options)
         {
+            this.generalOptions = generalOptions.Value;
             this.options = options.Value;
-            this.baseUrl = configuration["BaseUrl"].TrimEnd('/');
         }
 
         public ValueTask<GetPaymentInfoResult> GetPaymentInfoAsync(GetPaymentInfoArguments arguments)
@@ -66,7 +64,6 @@ namespace FMFT.Extensions.Payments.Services.Providers
 
         public async ValueTask<RegisterPaymentResult> RegisterPaymentAsync(PaymentMethodId paymentMethodId, RegisterPaymentArguments arguments)
         {
-
             Przelewy24 client = Client;
             int p24Method = paymentMethodId switch
             {
@@ -87,8 +84,8 @@ namespace FMFT.Extensions.Payments.Services.Providers
                 Email = arguments.CustomerEmailAddress,
                 Country = "PL",
                 Language = "pl",
-                UrlReturn = string.Concat(baseUrl, "/account/orders/", arguments.OrderId),
-                UrlStatus = string.Concat(baseUrl, "/api/orders/pay/przelewy24"),
+                UrlReturn = generalOptions.GetReturnUrl(arguments.OrderId),
+                UrlStatus = generalOptions.GetNotifyUrl("przelewy24"),
                 Method = p24Method,
                 Channel = 65 // 1 - karty + ApplePay + GooglePay, 64 – tylko metody pay-by-link
             };

@@ -69,9 +69,9 @@ namespace FMFT.Web.Server.Extensions
             PaymentProvidersBuilder paymentProvidersBuilder = services.AddPaymentProviders(options =>
             {
                 ServicesOptions config = configuration.GetSection(ServicesOptions.SectionKey).Get<ServicesOptions>();
-                options.MockPaymentUrl = config.GetClientUrl("/mock/payment/{0}");
-                options.ReturnUrl = config.GetClientUrl("/account/orders/{0}");
-                options.NotifyUrl = config.GetAPIUrl("/api/orders/notify/{0}");
+                options.ReturnUrl = config.GetClientUrl("/account/orders/{orderId}");
+                options.NotifyUrl = config.GetAPIUrl("/api/orders/notify/{paymentProvider}");
+                options.MockPaymentUrl = config.GetClientUrl("/mock/payment/{sessionId}");
             });
 
             if (configuration.GetSection("Payments:Mock").GetValue<bool>("IsEnabled"))
