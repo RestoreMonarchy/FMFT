@@ -1,5 +1,7 @@
 ﻿using FMFT.Extensions.Blazor.Bases.Alerts;
 using FMFT.Extensions.Blazor.Bases.Buttons;
+using FMFT.Extensions.Blazor.Bases.Navigations;
+using FMFT.Extensions.Blazor.Bases.Steppers;
 using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Orders;
 using FMFT.Web.Client.Models.API.Orders.Requests;
@@ -18,6 +20,8 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Steps
         [Parameter]
         public EventCallback<OrderState> OrderStateChanged { get; set; }
         [Parameter]
+        public NavigationStepper Stepper { get; set; }
+        [Parameter]
         public Show Show { get; set; }
 
         public ButtonBase PayButton { get; set; }
@@ -28,11 +32,16 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Steps
 
         private bool IsPayButtonDisabled => !OrderState.IsAgreeTerms;
 
-        protected override void OnParametersSet()
+        protected override async Task OnParametersSetAsync()
         {
             if (OrderState.PaymentMethod == PaymentMethod.None)
             {
                 OrderState.PaymentMethod = PaymentMethod.Blik;
+            }
+
+            if (OrderState.Items.Sum(x => x.Quantity) != OrderState.Seats.Count)
+            {
+                await Stepper.StepDownAsync();
             }
         }
 

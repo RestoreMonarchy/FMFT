@@ -82,5 +82,12 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Steps
             await InvokeOrderStateChangedAsync();
             await Stepper.StepUpAsync();
         }
+
+        private async Task HandleQuantityChangeAsync(ShowProduct showProduct, ChangeEventArgs args)
+        {
+            int.TryParse(args.Value.ToString(), out int quantity);
+            orderItems[showProduct.Id].Quantity = quantity;
+            await InvokeOrderStateChangedAsync();
+        }
     }
 }

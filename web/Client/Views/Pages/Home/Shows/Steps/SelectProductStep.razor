@@ -37,12 +37,12 @@
                             @showProduct.Price.ToString("N2") zł
                         </td>
                         <td class="align-middle">
-                            <InputSelect @bind-Value="orderItems[showProduct.Id].Quantity" class="form-select">
+                            <select @onchange="(args) => HandleQuantityChangeAsync(showProduct, args)" value="@orderItems[showProduct.Id].Quantity" class="form-select">
                                 @for (int i = 0; i <= MaxQuantity; i++)
                                 {
                                     <option value="@i">@i</option>
                                 }
-                            </InputSelect>
+                            </select>
                         </td>
                     </tr>
                 </Iterations>
