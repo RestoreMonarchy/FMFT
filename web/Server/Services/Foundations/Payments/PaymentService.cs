@@ -7,6 +7,7 @@ using FMFT.Web.Server.Models.Payments;
 using FMFT.Web.Server.Models.Payments.Exceptions;
 using FMFT.Web.Server.Models.Payments.Params;
 using FMFT.Web.Shared.Enums;
+using System.Linq.Expressions;
 
 namespace FMFT.Web.Server.Services.Foundations.Payments
 {
@@ -56,9 +57,16 @@ namespace FMFT.Web.Server.Services.Foundations.Payments
             };
             PaymentProviderId paymentProviderId = MapPaymentProviderToPaymentProviderId(@params.PaymentProvider);
 
-            ProcessPaymentNotificationResult result = await paymentBroker.ProcessPaymentNotificationAsync(paymentProviderId, arguments);
+            try
+            {
+                ProcessPaymentNotificationResult result = await paymentBroker.ProcessPaymentNotificationAsync(paymentProviderId, arguments);
 
-            return MapProcessPaymentNotificationResultToProcessedPayment(result);
+                return MapProcessPaymentNotificationResultToProcessedPayment(result);
+            }            
+            catch (PaymentProviderNotificationException)
+            {
+                throw new InvalidNotificationPaymentProviderException();
+            }
         }
 
         public async ValueTask<RegisteredPayment> RegisterPaymentAsync(RegisterPaymentParams @params)

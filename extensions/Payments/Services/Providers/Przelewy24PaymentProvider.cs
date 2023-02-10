@@ -1,12 +1,16 @@
-﻿using FMFT.Extensions.Payments.Models.Arguments;
+﻿using FMFT.Extensions.Payments.Extensions;
+using FMFT.Extensions.Payments.Models.Arguments;
 using FMFT.Extensions.Payments.Models.Enums;
 using FMFT.Extensions.Payments.Models.Exceptions;
 using FMFT.Extensions.Payments.Models.Options;
 using FMFT.Extensions.Payments.Models.Results;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using P24;
+using System.Text;
 
 namespace FMFT.Extensions.Payments.Services.Providers
 {
@@ -53,13 +57,49 @@ namespace FMFT.Extensions.Payments.Services.Providers
             return ValueTask.FromResult(result);
         }
 
-        public ValueTask<ProcessPaymentNotificationResult> ProcessPaymentNotificationAsync(ProcessPaymentNotificationArguments arguments)
-        {
-            ProcessPaymentNotificationResult result = new()
+        public async ValueTask<ProcessPaymentNotificationResult> ProcessPaymentNotificationAsync(ProcessPaymentNotificationArguments arguments)
+        {            
+            string requestBody = await arguments.HttpContext.Request.ReadBodyToStringAsync();
+
+            P24Notification notification = JsonConvert.DeserializeObject<P24Notification>(requestBody);
+
+            Console.WriteLine("[Przelewy24] Notification Statement: {0}", notification.Statement);
+            Console.WriteLine("[Przelewy24] Notification Method Id: {0}", notification.MethodId);
+            Console.WriteLine("[Przelewy24] Notification Session Id: {0}", notification.SessionId);
+            
+            string json = JsonConvert.SerializeObject(notification, Formatting.Indented);
+
+            Console.WriteLine("[Przelewy24] Notification:\n{0}", json);
+
+            Przelewy24 client = Client;
+
+            P24TransactionVerifyRequest request = new()
             {
+                OrderId = notification.OrderId,
+                MerchantId = notification.MerchantId,
+                PosId = notification.PosId,
+                Sign = notification.Sign,
+                SessionId = notification.SessionId,
+                Amount = notification.Amount,
+                Currency = notification.Currency
             };
 
-            return ValueTask.FromResult(result);
+            P24TransactionVerifyResponse response = await client.TransactionVerifyAsync(request);
+            if (response.Data == null || response.Data.Status != "success")
+            {
+                throw new PaymentProviderNotificationException();
+            }
+
+            string sessionId = notification.SessionId;
+            PaymentStatusId paymentStatus = PaymentStatusId.Completed;
+            
+            ProcessPaymentNotificationResult result = new()
+            {
+                SessionId = sessionId,
+                PaymentStatus = paymentStatus
+            };
+
+            return result;
         }
 
         public async ValueTask<RegisterPaymentResult> RegisterPaymentAsync(PaymentMethodId paymentMethodId, RegisterPaymentArguments arguments)
