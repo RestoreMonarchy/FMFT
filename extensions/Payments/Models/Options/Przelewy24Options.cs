@@ -8,5 +8,6 @@
         public int MerchantId { get; set; }
         public int PosId { get; set; }
         public bool UseSandbox { get; set; }
+        public string NotifyUrl { get; set; }
     }
 }

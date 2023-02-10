@@ -130,10 +130,13 @@ namespace FMFT.Extensions.Payments.Services.Providers
                 Channel = 65 // 1 - karty + ApplePay + GooglePay, 64 – tylko metody pay-by-link
             };
 
+            string requestJson = JsonConvert.SerializeObject(request);
+            Console.WriteLine("[Przelewy24] [Order #{0}] Transaction request: \n{1}", arguments.OrderId, requestJson);
+
             P24TransactionResponse response = await client.NewTransactionAsync(request);
 
-            string json = JsonConvert.SerializeObject(response);
-            Console.WriteLine("[Przelewy24] [Order #{0}] Transaction response:\n{1}", arguments.OrderId, json);
+            string responseJson = JsonConvert.SerializeObject(response);
+            Console.WriteLine("[Przelewy24] [Order #{0}] Transaction response:\n{1}", arguments.OrderId, responseJson);
 
             if (response.Data == null)
             {

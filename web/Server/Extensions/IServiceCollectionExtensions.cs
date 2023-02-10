@@ -66,12 +66,13 @@ namespace FMFT.Web.Server.Extensions
             });
             services.AddHangfireServer();
 
+            ServicesOptions servicesConfig = configuration.GetSection(ServicesOptions.SectionKey).Get<ServicesOptions>();
+
             PaymentProvidersBuilder paymentProvidersBuilder = services.AddPaymentProviders(options =>
             {
-                ServicesOptions config = configuration.GetSection(ServicesOptions.SectionKey).Get<ServicesOptions>();
-                options.ReturnUrl = config.GetClientUrl("/account/orders/{orderId}");
-                options.NotifyUrl = config.GetAPIUrl("/api/orders/notify/{paymentProvider}");
-                options.MockPaymentUrl = config.GetClientUrl("/mock/payment/{sessionId}");
+                options.ReturnUrl = servicesConfig.GetClientUrl("/account/orders/{orderId}");
+                options.NotifyUrl = servicesConfig.GetAPIUrl("/api/payment/notifications/{paymentProvider}");
+                options.MockPaymentUrl = servicesConfig.GetClientUrl("/mock/payment/{sessionId}");
             });
 
             if (configuration.GetSection("Payments:Mock").GetValue<bool>("IsEnabled"))

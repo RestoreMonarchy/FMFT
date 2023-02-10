@@ -8,7 +8,7 @@
 
         public string GetNotifyUrl(string paymentProvider)
         {
-            return NotifyUrl.Replace("{paymentProviderId}", paymentProvider);
+            return NotifyUrl.Replace("{paymentProvider}", paymentProvider);
         }
 
         public string GetReturnUrl(int orderId)
