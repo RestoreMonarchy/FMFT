@@ -134,10 +134,14 @@
                                                             OnTimeElapsed="HandleTimeElapsed"/>
                                                     </div>
                                                 </div>
-                                                <a class="list-group-item list-group-item-action list-group-item-info" href="javascript:void(0)">
-                                                    <i class="fa-solid fa-arrow-right-long me-1"></i>
-                                                    Przejdź do płatności
-                                                </a>
+                                                <Condition Evaluation="PaymentUrlResposne.IsSuccessful">
+                                                    <Match>
+                                                        <a class="list-group-item list-group-item-action list-group-item-info" href="@PaymentUrl.Url">
+                                                            <i class="fa-solid fa-arrow-right-long me-1"></i>
+                                                            Przejdź do płatności
+                                                        </a>
+                                                    </Match>
+                                                </Condition> 
                                             </div>
                                         </Match>
                                     </Condition>                                    

@@ -16,9 +16,12 @@ namespace FMFT.Web.Client.Views.Pages.Account.Orders
 
         public APIResponse<Order> OrderResponse { get; set; }
         public APIResponse<List<Reservation>> OrderReservationsResponse { get; set; }
+        public APIResponse<PaymentUrl> PaymentUrlResposne { get; set; }
 
         public Order Order => OrderResponse.Object;
         public List<Reservation> OrderReservations => OrderReservationsResponse.Object;
+        public PaymentUrl PaymentUrl =>  PaymentUrlResposne.Object;
+
         private Dictionary<OrderStatus, string> OrderStatusDescriptions { get; } = new()
         {
             { OrderStatus.Completed, "Zamówienie zostało zrealizowane" },
@@ -44,7 +47,12 @@ namespace FMFT.Web.Client.Views.Pages.Account.Orders
                 {
                     Order.Status = OrderStatus.Expired;
                 }
-            } 
+            }
+
+            if (Order.Status == OrderStatus.PaymentWaiting)
+            {
+                PaymentUrlResposne = await APIBroker.GetOrderPaymentUrlAsync(Order.Id);
+            }
 
             LoadingView.StopLoading();
         }
