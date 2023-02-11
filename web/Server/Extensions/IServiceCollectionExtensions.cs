@@ -129,6 +129,7 @@ namespace FMFT.Web.Server.Extensions
             return services;
         }
 
+
         public static IServiceCollection AddFoundations(this IServiceCollection services)
         {
             services.AddTransient<ISeatService, SeatService>();

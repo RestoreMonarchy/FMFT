@@ -26,7 +26,7 @@ namespace FMFT.Web.Client.Models.Services.Orders
             {
                 CurrentStepKey = CurrentStepKey,
                 PaymentMethod = PaymentMethod,
-                Items = Items.Select(x => new OrderStateItemData() 
+                Items = Items.Select(x => new OrderItemStateData() 
                 { 
                     ShowId = x.Show.Id,
                     ShowProductId = x.ShowProduct.Id,

@@ -1,0 +1,21 @@
+﻿@page "/shows/{ShowId:int}/order/payment"
+@using FMFT.Extensions.Blazor.Bases.Steppers
+
+<MainLayoutBody>
+
+    <CustomAuthorizeView>
+        <Authorized>
+            <Stepper>
+                <StepperItem Text="Bilety" Url="@GetUrl("products")" />
+                <StepperItem Text="Miejsca" Url="@GetUrl("seats")" />
+                <StepperItem Text="Płatność" Url="@GetUrl("payment")" Active="true" />
+            </Stepper>
+
+
+        </Authorized>
+        <NotAuthorized>
+            <NotAuthorizedAlert />
+        </NotAuthorized>
+    </CustomAuthorizeView>
+
+</MainLayoutBody>

@@ -2,7 +2,7 @@
 
 namespace FMFT.Web.Client.Models.Services.Orders
 {
-    public class OrderStateItemData
+    public class OrderItemStateData
     {
         public int ShowProductId { get; set; }
         public int ShowId { get; set; }

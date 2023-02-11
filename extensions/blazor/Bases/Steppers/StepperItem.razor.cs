@@ -7,7 +7,11 @@ namespace FMFT.Extensions.Blazor.Bases.Steppers
         [Parameter]
         public string Text { get; set; }
         [Parameter]
-        public RenderFragment ChildContent { get; set; }
+        public bool Active { get; set; }
+        [Parameter]
+        public bool Disabled { get; set; }
+        [Parameter]
+        public string Url { get; set; }
 
         [CascadingParameter]
         public Stepper Stepper { get; set; }
@@ -20,69 +24,26 @@ namespace FMFT.Extensions.Blazor.Bases.Steppers
             Stepper.AddItem(this);
         }
 
-        public bool IsActive { get; set; }
-        public bool IsDisabled { get; set; }
-
-        public void SetActive(bool active)
-        {
-            IsActive = active;
-            InvokeAsync(StateHasChanged);
-        }
-
-        public void SetDisabled(bool disabled)
-        {
-            IsDisabled = disabled;
-            InvokeAsync(StateHasChanged);
-        }
-
-        private Task HandleClickAsync()
-        {
-            if (IsDisabled)
-            {
-                return Task.CompletedTask;
-            }
-
-            if (Stepper.IsPast(this))
-            {
-                Stepper.Step(this);
-            }
-
-            return Task.CompletedTask;
-        }
-
         private string GetClasses()
         {
             List<string> classes = new();
 
-            bool isPast = Stepper.IsPast(this);
-
-            if (IsActive)
+            if (Active)
             {
                 classes.Add("border-2");
                 classes.Add("border-dark");
                 classes.Add("fw-bold");
-            } else
-            {
-                if (isPast)
-                {
-                    classes.Add("border-dark");
-                } else
-                {
-                    classes.Add("text-muted");
-                }                
-            }
-
-            if (IsDisabled)
+                classes.Add("text-black");
+            } else if (Disabled)
             {
                 classes.Add("disabled");
                 classes.Add("text-muted");
             } else
             {
-                if (isPast)
-                {
-                    classes.Add("text-black");
-                    classes.Add("cursor-pointer");
-                }                
+                classes.Add("border-1");
+                classes.Add("border-dark");
+                classes.Add("text-black");
+                classes.Add("cursor-pointer");
             }
 
             return string.Join(' ', classes);

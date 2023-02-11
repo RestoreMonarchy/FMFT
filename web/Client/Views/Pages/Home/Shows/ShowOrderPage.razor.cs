@@ -106,7 +106,7 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
                 OrderState.CurrentStepKey = orderStateData.CurrentStepKey;
                 OrderState.PaymentMethod = orderStateData.PaymentMethod;
 
-                foreach (OrderStateItemData item in orderStateData.Items)
+                foreach (OrderItemStateData item in orderStateData.Items)
                 {
                     if (item.ShowId != ShowId)
                     {

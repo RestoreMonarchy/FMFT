@@ -1,0 +1,97 @@
+﻿@page "/shows/{ShowId:int}/order"
+@page "/shows/{ShowId:int}/order/products"
+@using FMFT.Extensions.Blazor.Bases.Steppers
+
+<MainLayoutBody>
+
+    <CustomAuthorizeView>
+        <Authorized>
+
+            <Stepper>
+                <StepperItem Text="Bilety" Url="@GetUrl("products")" Active="true" />
+                <StepperItem Text="Miejsca" Url="@GetUrl("seats")" Disabled="true" />
+                <StepperItem Text="Płatność" Url="@GetUrl("payment")" Disabled="true" />
+            </Stepper>
+
+            
+
+            <LoadingView @ref="LoadingView">
+                <div>
+                    <div class="fs-4 mb-2">
+                        Wybierz bilety
+                    </div>
+
+                    <Condition Evaluation="ActiveUserReservations.Any()">
+                        <Match>
+                            <InfoAlert>
+                                Posiadasz już <strong>@ActiveUserReservations.Count()</strong> aktywne rezerwacje na to wydarzenie
+                            </InfoAlert>
+                        </Match>
+                    </Condition>
+
+                    <div class="mb-2">
+
+                        <table class="table mb-1">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>
+                                        Rodzaj biletu
+                                    </th>
+                                    <th>
+                                        Cena
+                                    </th>
+                                    <th>
+                                        Ilość
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <Iterations Items="ShowProducts" Context="showProduct">
+                                    <tr>
+                                        <td class="align-middle">
+                                            @showProduct.Name
+                                        </td>
+                                        <td class="align-middle">
+                                            @showProduct.Price.ToString("N2") zł
+                                        </td>
+                                        <td class="align-middle">
+                                            <select @onchange="(args) => HandleQuantityChangeAsync(showProduct, args)" value="@GetQuantity(showProduct.Id)" class="form-select">
+                                                @for (int i = 0; i <= MaxQuantity; i++)
+                                                {
+                                                    <option value="@i">@i</option>
+                                                }
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </Iterations>
+
+                            </tbody>
+                        </table>
+
+                        <div class="text-end fw-bold mb-3">
+                            W sumie: @GetTotalPrice().ToString("N2") zł
+                        </div>
+
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <a class="btn btn-secondary" href="/shows/@Show.Id">
+                            Zrezygnuj
+                        </a>
+                        <div class="ms-auto">
+                            <a class="btn btn-primary @NextDisabled()" href="@GetUrl("seats")">
+                                Przejdź dalej
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </LoadingView>
+
+        </Authorized>
+        <NotAuthorized>
+            <NotAuthorizedAlert />
+        </NotAuthorized>
+    </CustomAuthorizeView>
+
+
+
+</MainLayoutBody>

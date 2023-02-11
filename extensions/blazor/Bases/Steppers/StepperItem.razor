@@ -1,5 +1,16 @@
 ﻿<div class="col-lg">
-    <div class="p-2 text-center bg-light border border-1 rounded @GetClasses()" @onclick="HandleClickAsync">
-        @Text
-    </div>
+    <Condition Evaluation="Disabled">
+        <Match>
+            <div class="p-2 text-center bg-light border border-1 rounded @GetClasses()">
+                @Text
+            </div>
+        </Match>
+        <NotMatch>
+            <a class="text-decoration-none" href="@Url">
+                <div class="p-2 text-center bg-light border border-1 rounded @GetClasses()">
+                    @Text
+                </div>
+            </a>
+        </NotMatch>
+    </Condition>
 </div>
