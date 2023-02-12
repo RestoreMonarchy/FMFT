@@ -144,6 +144,8 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
             APIResponse<Order> response = await APIBroker.CreateOrderAsync(createOrderRequest);
             if (response.IsSuccessful)
             {
+                await OrderingPageService.ResetOrderStateDataAsync(ShowId);
+
                 Order order = response.Object;
                 APIResponse<PaymentUrl> paymentResponse = await APIBroker.GetOrderPaymentUrlAsync(order.Id);
                 NavigationBroker.NavigateTo(paymentResponse.Object.Url);

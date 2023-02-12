@@ -6,5 +6,6 @@ namespace FMFT.Web.Client.Brokers.Storages
     {
         ValueTask SetOrderStateDataAsync(int showId, OrderStateData orderStateData);
         ValueTask<OrderStateData> GetOrderStateDataAsync(int showId);
+        ValueTask RemoveOrderStateDataAsync(int showId);
     }
 }

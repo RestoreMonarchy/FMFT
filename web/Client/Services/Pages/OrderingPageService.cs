@@ -35,5 +35,10 @@ namespace FMFT.Web.Client.Services.Pages
         {
             await storageBroker.SetOrderStateDataAsync(orderStateData.ShowId, orderStateData);
         }
+
+        public async ValueTask ResetOrderStateDataAsync(int showId)
+        {
+            await storageBroker.RemoveOrderStateDataAsync(showId);
+        }
     }
 }

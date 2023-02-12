@@ -85,9 +85,9 @@
 
                     </div>
                     <div class="d-flex align-items-center">
-                        <a class="btn btn-secondary" href="/shows/@Show.Id">
+                        <button class="btn btn-secondary" @onclick="HandleCancelAsync">
                             Zrezygnuj
-                        </a>
+                        </button>
                         <div class="ms-auto">
                             <a class="btn btn-primary @NextDisabled()" href="@GetUrl("seats")">
                                 Przejdź dalej

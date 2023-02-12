@@ -133,6 +133,12 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
             return Task.CompletedTask;
         }
 
+        private async Task HandleCancelAsync()
+        {
+            await OrderingPageService.ResetOrderStateDataAsync(ShowId);
+            NavigationBroker.NavigateTo($"/shows/{ShowId}");
+        }
+
         private async Task UpdateOrderStateDataAsync()
         {
             OrderStateData.CurrentStepKey = PageKey;

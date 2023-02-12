@@ -19,5 +19,12 @@ namespace FMFT.Web.Client.Brokers.Storages
 
             return await GetLocalItemAsync<OrderStateData>(key);
         }
+
+        public async ValueTask RemoveOrderStateDataAsync(int showId)
+        {
+            string key = string.Format(OrderStateDataKey, showId);
+
+            await RemoveLocalItemAsync(key);
+        }
     }
 }
