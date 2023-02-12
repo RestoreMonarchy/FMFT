@@ -1,0 +1,164 @@
+﻿@page "/shows/{ShowId:int}/order/payment"
+@using FMFT.Extensions.Blazor.Bases.Steppers
+@using FMFT.Web.Client.Views.Shared.Components.Inputs
+
+<MainLayoutBody>
+
+    <CustomAuthorizeView>
+        <Authorized>
+            <Stepper>
+                <StepperItem Text="Bilety" Url="@GetUrl("products")" />
+                <StepperItem Text="Miejsca" Url="@GetUrl("seats")" />
+                <StepperItem Text="Płatność" Url="@GetUrl("payment")" Active="true" />
+            </Stepper>
+
+            <LoadingView @ref="LoadingView">
+
+                <div class="row">
+                    <div class="col-lg-8">
+                        <AlertGroupBase @ref="AlertGroup">
+                            <AlertBase @ref="ErrorAlert" Class="alert-danger">
+                                Wystąpił błąd. Spróbuj ponownie później
+                            </AlertBase>
+                        </AlertGroupBase>
+
+                        <div class="mb-3">
+                            <div class="fs-5 mb-2">
+                                Wybierz metodę płatności
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <PaymentMethodSelect PaymentMethod="OrderStateData.PaymentMethod" PaymentMethodChanged="HandlePaymentMethodChangedAsync" />
+                        </div>
+                        <div class="mb-3">
+                            <div class="fs-5 mb-2">
+                                Informacje o wydarzeniu
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <div>
+                                <div class="small text-muted">
+                                    Nazwa
+                                </div>
+                                <div>
+                                    @Show.Name
+                                </div>
+                                <div class="small text-muted">
+                                    Data
+                                </div>
+                                <div>
+                                    @Show.StartDateTime.LocalDateTime.ToLongDateString()
+                                </div>
+                                <div class="small text-muted">
+                                    Godzina rozpoczęcia
+                                </div>
+                                <div>
+                                    @Show.StartDateTime.LocalDateTime.ToString("t")
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="fs-5 mb-2">
+                                Informacje o kupującym
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <div>
+                                <div class="small text-muted">
+                                    Imię i Nazwisko
+                                </div>
+                                <div>
+                                    @UserAccountState.UserAccount.FirstName @UserAccountState.UserAccount.LastName
+                                </div>
+                                <div class="small text-muted">
+                                    Adres Email
+                                </div>
+                                <div>
+                                    @UserAccountState.UserAccount.Email
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="fs-5 mb-2">
+                                Zgody formalne
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <div>
+                                <ul>
+                                    <li>
+                                        <a href="javascript:void(0)" class="text-decoration-none">
+                                            Regulamin Sklepu Internetowego
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="form-check ms-2">
+                                    <input class="form-check-input" type="checkbox" id="TermsAndConditionsCheckbox" style="cursor: pointer;" @bind="OrderStateData.IsAgreeTerms">
+                                    <label class="form-check-label" for="TermsAndConditionsCheckbox" style="cursor: pointer;">
+                                        Zgadzam się z warunkami sprzedaży i regulaminem sklepu
+                                        <Condition Evaluation="OrderStateData.IsAgreeTerms">
+                                            <NotMatch>
+                                                <span class="text-danger fw-bold"> *</span>
+                                            </NotMatch>
+                                        </Condition>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="border p-2">
+                            <div class="list-group mb-2">
+                                <Iterations Items="OrderStateData.Items" Context="orderItem">
+                                    <div class="list-group-item d-flex align-items-center">
+                                        <div class="small">
+                                            <div>
+                                                @GetShowProduct(orderItem.ShowProductId).Name
+                                            </div>
+                                            <div>
+                                                <span>x</span>@orderItem.Quantity
+                                            </div>
+
+                                        </div>
+                                        <div class="ms-auto">
+                                            @GetShowProduct(orderItem.ShowProductId).Price.ToString("N2") zł
+                                        </div>
+                                    </div>
+                                </Iterations>
+                            </div>
+
+
+                            <div class="d-flex align-items-center fw-bold">
+                                <div>
+                                    Do zapłaty
+                                </div>
+                                <div class="ms-auto">
+                                    @TotalPrice.ToString("N2") zł
+                                </div>
+                            </div>
+
+                            <div class="dropdown-divider"></div>
+
+                            <div class="mb-2">
+                                <ButtonBase @ref="PayButton" Class="btn btn-success w-100" OnClick="HandlePayAsync" IsDisabled="@PayDisabled" SpinningText="Oczekiwanie na operatora">
+                                    Zapłać
+                                </ButtonBase>
+                            </div>
+                            <div class="text-small">
+                                <Condition Evaluation="OrderStateData.IsAgreeTerms">
+                                    <NotMatch>
+                                        <div class="text-danger">
+                                            <i class="fa-solid fa-exclamation me-1"></i>
+                                            Musisz się zgodzić z warunkami sprzedaży
+                                        </div>
+                                    </NotMatch>
+                                </Condition>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </LoadingView>
+
+        </Authorized>
+        <NotAuthorized>
+            <NotAuthorizedAlert />
+        </NotAuthorized>
+    </CustomAuthorizeView>
+
+</MainLayoutBody>

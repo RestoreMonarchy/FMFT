@@ -1,47 +1,47 @@
 ﻿using FMFT.Web.Server.Models.Accounts.Exceptions;
 using FMFT.Web.Server.Models.Reservations;
 using FMFT.Web.Server.Models.Reservations.Exceptions;
-using FMFT.Web.Server.Models.Reservations.Params;
-using FMFT.Web.Server.Models.UserAccounts.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FMFT.Web.Server.Controllers.Users
 {
     public partial class UsersController
     {
-        [HttpPost("{userId}/reservations/create")]
-        public async ValueTask<IActionResult> CreateReservation(int userId, [FromBody] CreateUserReservationParams @params)
-        {
-            @params.UserId = userId;
+        // Create reservation by user should not be possible since there are payments for them now
 
-            try
-            {
-                Reservation reservation = await reservationCoordinationService.CreateUserReservationAsync(@params);
+        //[HttpPost("{userId}/reservations/create")]
+        //public async ValueTask<IActionResult> CreateReservation(int userId, [FromBody] CreateUserReservationParams @params)
+        //{
+        //    @params.UserId = userId;
 
-                return Ok(reservation);
-            } catch (CreateUserReservationValidationException exception)
-            {
-                return BadRequest(exception);
-            } catch (SeatAlreadyReservedReservationException exception)
-            {
-                return Conflict(exception);
-            } catch (UserAlreadyReservedReservationException exception)
-            {
-                return Conflict(exception);
-            } catch (SeatsNotProvidedReservationException exception)
-            {
-                return BadRequest(exception);
-            } catch (NotAuthorizedAccountException exception)
-            {
-                return Forbidden(exception);
-            } catch (NotAuthenticatedAccountException exception)
-            {
-                return Unauthorized(exception);
-            } catch (NotConfirmedEmailUserAccountException exception)
-            {
-                return Forbidden(exception);
-            }
-        }
+        //    try
+        //    {
+        //        Reservation reservation = await reservationCoordinationService.CreateUserReservationAsync(@params);
+
+        //        return Ok(reservation);
+        //    } catch (CreateUserReservationValidationException exception)
+        //    {
+        //        return BadRequest(exception);
+        //    } catch (SeatAlreadyReservedReservationException exception)
+        //    {
+        //        return Conflict(exception);
+        //    } catch (UserAlreadyReservedReservationException exception)
+        //    {
+        //        return Conflict(exception);
+        //    } catch (SeatsNotProvidedReservationException exception)
+        //    {
+        //        return BadRequest(exception);
+        //    } catch (NotAuthorizedAccountException exception)
+        //    {
+        //        return Forbidden(exception);
+        //    } catch (NotAuthenticatedAccountException exception)
+        //    {
+        //        return Unauthorized(exception);
+        //    } catch (NotConfirmedEmailUserAccountException exception)
+        //    {
+        //        return Forbidden(exception);
+        //    }
+        //}
 
         [HttpGet("{userId}/reservations")]
         public async ValueTask<IActionResult> GetUserReservations(int userId)

@@ -1,4 +1,4 @@
-﻿@page "/admin/shows/{ShowId:int}"
+﻿@page "/admin/shows/{ShowId:int}/{ActiveKey?}"
 @using FMFT.Extensions.Blazor.Bases.Dialogs
 @using FMFT.Extensions.Blazor.Bases.Navigations
 @using FMFT.Extensions.Blazor.DataTables
@@ -29,15 +29,18 @@
                 <Condition Evaluation="ShowResponse.IsSuccessful && AuditoriumsResponse.IsSuccessful">
                     <Match>
 
-                        <Navigation>
-                            <NavigationItem Text="Informacja" Active="true">
+                        <Navigation ActiveKey="@ActiveKey" OnNavigate="HandleNavigateAsync">
+                            <NavigationItem Key="info" Title="Informacja">
                                 <DetailsShowAdminSubpage Show="Show" Auditoriums="Auditoriums" />
                             </NavigationItem>
-                            <NavigationItem Text="Edycja">
+                            <NavigationItem Key="edit" Title="Edycja">
                                 <EditShowAdminSubpage @bind-Show="Show" Auditoriums="Auditoriums" />
                             </NavigationItem>
-                            <NavigationItem Text="Galeria">
+                            <NavigationItem Key="gallery" Title="Galeria">
                                 <GalleryShowAdminSubpage Show="Show" />
+                            </NavigationItem>
+                            <NavigationItem Key="tickets" Title="Bilety">
+                                <ProductsShowAdminSubpage Show="Show" />
                             </NavigationItem>
                         </Navigation>                        
                                     

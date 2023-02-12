@@ -6,7 +6,6 @@ namespace FMFT.Web.Client.Services.Medias
     public interface IMediaService
     {
         string GetMediaUrl(Guid mediaId);
-        string GetReservationTicketUrl(string reservationId, int reservationSeatId);
         ValueTask<APIResponse> UploadBrowserFileAsync(IBrowserFile browserFile);
     }
 }

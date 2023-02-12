@@ -20,5 +20,10 @@ namespace FMFT.Web.Client.Brokers.Storages
         {
             return await localStorage.GetItemAsync<T>(key);
         }
+
+        private async ValueTask RemoveLocalItemAsync(string key)
+        {
+            await localStorage.RemoveItemAsync(key);
+        }
     }
 }

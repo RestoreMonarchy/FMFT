@@ -1,0 +1,95 @@
+﻿@page "/shows/{ShowId:int}/order/seats"
+@using FMFT.Extensions.Blazor.Bases.Steppers
+@using FMFT.Web.Client.Views.Shared.Components.Panzooms
+
+<MainLayoutBody>
+
+    <CustomAuthorizeView>
+        <Authorized>
+            <Stepper>
+                <StepperItem Text="Bilety" Url="@GetUrl("products")" />
+                <StepperItem Text="Miejsca" Url="@GetUrl("seats")" Active="true" />
+                <StepperItem Text="Płatność" Url="@GetUrl("payment")" Disabled="true" />
+            </Stepper>
+
+            <LoadingView @ref="LoadingView">
+
+                <div class="w-100 p-2 bg-dark text-white border rounded mb-2">
+                    <div class="fw-bold mb-1">
+                        @Show.Name
+                    </div>
+                    <div class="mb-1">
+                        @Show.StartDateTime.LocalDateTime.ToShortDateString() @Show.StartDateTime.LocalDateTime.ToShortTimeString()
+                        <a href="/shows/@ShowId" class="text-white ms-1">
+                            Więcej informacji
+                        </a>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <div class="d-md-flex d-block align-items-center">
+                        <div class="fs-4 mb-2 mb-md-0">
+                            Wybierz @TicketsCountString()
+                        </div>
+                        <div class="ms-md-auto d-md-flex d-block align-items-center">
+                            <div class="me-md-1 w-100 w-md-auto mb-1 mb-md-0">
+                                <a class="btn btn-secondary w-100" href="@BackUrl">
+                                    Powrót
+                                </a>
+                            </div>
+                            <div class="w-100 w-md-auto">
+                                <a class="btn btn-primary text-nowrap w-100 @NextDisabled()" href="@NextUrl">
+                                    Przejdź dalej
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <AuditoriumSeatPanzoom Auditorium="Auditorium"
+                                           ReservedSeats="Show.ReservedSeats"
+                                           MaxAmount="MaxSeatsAmount"
+                                           SelectedSeats="OriginalSelectedSeats"
+                                           SelectedSeatsChanged="HandleSelectedSeatsChangedAsync" />
+                </div>
+
+                <div class="card mb-3">
+                    <div class="card-header">
+                        Legenda
+                    </div>
+                    <div class="card-body">
+                        <ul>
+                            <li>
+                                zielony - wolne miejsce
+                            </li>
+                            <li>
+                                pomarańczowy - wybrane miejsce
+                            </li>
+                            <li>
+                                szary - zajęte miejsce
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-center">
+                    <div>
+                        <a class="btn btn-secondary" href="@BackUrl">
+                            Powrót
+                        </a>
+                    </div>
+                    <div class="ms-auto">
+                        <a class="btn btn-primary @NextDisabled()" href="@NextUrl">
+                            Przejdź dalej
+                        </a>
+                    </div>
+                </div>
+            </LoadingView>
+        </Authorized>
+        <NotAuthorized>
+            <NotAuthorizedAlert />
+        </NotAuthorized>
+    </CustomAuthorizeView>
+
+</MainLayoutBody>

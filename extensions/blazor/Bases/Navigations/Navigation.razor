@@ -1,4 +1,6 @@
-﻿<CascadingValue Value="this">
+﻿@inherits NavigationBase
+
+<CascadingValue Value="this">
     @ChildContent
 </CascadingValue>
 
@@ -6,7 +8,7 @@
     <Iterations Items="Items" Context="item">
         <li class="nav-item">
             <a class="nav-link @item.GetActiveClass()" href="javascript:void(0)" @onclick="() => HandleClickAsync(item)">
-                @item.Text
+                @item.Title
             </a>
         </li>
     </Iterations> 
@@ -16,14 +18,14 @@
     <select class="form-select" value="@ActiveItemId" @onchange="HandleSelectAsync">
         <Iterations Items="Items" Context="item">
             <option value="@item.ID">
-                @item.Text
+                @item.Title
             </option>
         </Iterations>
     </select>
 </div>
 
-<Condition Evaluation="ActiveItem is not null">
+<Condition Evaluation="ActiveNavigationItem is not null">
     <Match>
-        @ActiveItem.ChildContent
+        @ActiveNavigationItem.ChildContent
     </Match>
 </Condition>

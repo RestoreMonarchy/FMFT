@@ -27,6 +27,17 @@ namespace FMFT.Web.Server.Services.Foundations.Auditoriums
             return auditorium;
         }
 
+        public async ValueTask<Auditorium> RetrieveAuditoriumByShowIdAsync(int showId)
+        {
+            Auditorium auditorium = await storageBroker.SelectAuditoriumByShowIdAsync(showId);
+            if (auditorium == null)
+            {
+                throw new NotFoundAuditoriumException();
+            }
+
+            return auditorium;
+        }
+
         public async ValueTask<IEnumerable<Auditorium>> RetrieveAllAuditoriumsAsync()
         {
             IEnumerable<Auditorium> auditoriums = await storageBroker.SelectAllAuditoriumsAsync();

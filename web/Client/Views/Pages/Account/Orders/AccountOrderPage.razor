@@ -1,0 +1,170 @@
+﻿@page "/account/orders/{OrderId:int}"
+@using FMFT.Extensions.Blazor.Bases.Countdowns
+
+<MainLayoutBody>
+    <Breadcrumb>
+        <BreadcrumbItem Link="/">
+            Home
+        </BreadcrumbItem>
+        <BreadcrumbItem Link="/account">
+            Konto
+        </BreadcrumbItem>
+        <BreadcrumbItem Link="/account/orders">
+            Zamówienia
+        </BreadcrumbItem>
+        <BreadcrumbItem Active="true">
+            @FormatHelper.OrderId(OrderId)
+        </BreadcrumbItem>
+    </Breadcrumb>
+
+    <CustomAuthorizeView>
+        
+        <Authorized>
+            <LoadingView @ref="LoadingView">
+                
+                <Condition Evaluation="OrderResponse.IsSuccessful">
+                    
+                    <Match>
+
+                        <div class="row">
+                            
+                            <div class="col-md-6">
+                                
+                                <div class="card mb-3">
+                                    <div class="card-header">
+                                        Informacje o zamówieniu
+                                    </div>
+
+                                    <div class="list-group list-group-flush">
+                                        <div class="list-group-item">
+                                            <span class="fw-bold">
+                                                ID:
+                                            </span>
+                                            <span>
+                                                @FormatHelper.OrderId(Order.Id)
+                                            </span>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <span class="fw-bold">
+                                                Metoda płatności:
+                                            </span>
+                                            <span>
+                                                @FormatHelper.TranslatePaymentMethod(Order.PaymentMethod)
+                                            </span>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <span class="fw-bold">
+                                                Status:
+                                            </span>
+                                            <span>
+                                                @FormatHelper.TranslateOrderStatus(Order.Status)
+                                            </span>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <span class="fw-bold">
+                                                Data utworzenia:
+                                            </span>
+                                            <span>
+                                                @Order.CreateDate.LocalDateTime.ToShortDateString()
+                                                @Order.CreateDate.LocalDateTime.ToShortTimeString()
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card mb-3">
+                                    <div class="card-header">
+                                        Pozycje zamówienia (@Order.Items.Sum(x => x.Quantity))
+                                    </div>
+                                    <div class="list-group list-group-flush">
+                                        <Iterations Items="Order.Items" Context="orderItem">
+                                            <div class="list-group-item d-flex align-items-center justify-content-between">
+                                                <div class="small">
+                                                    <div>
+                                                        @orderItem.ShowProduct.Name
+                                                    </div>
+                                                    <div>
+                                                        @orderItem.Show.Name
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    @orderItem.Quantity
+                                                    <span>x</span>
+                                                    @orderItem.Price.ToString("N2") @Order.Currency
+                                                </div>
+
+                                            </div>
+                                        </Iterations>
+                                        <div class="list-group-item d-flex align-items-center fw-bold">
+                                            <div>
+                                                Razem
+                                            </div>
+                                            <div class="ms-auto">
+                                                @Order.Amount.ToString("N2") @Order.Currency
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <div class="card">
+                                    <div class="card-header">
+                                        Status płatności
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="fs-5">
+                                            @FormatHelper.TranslateOrderStatus(Order.Status)
+                                        </div>
+                                        <div>
+                                            @OrderStatusDescriptions[Order.Status]
+                                        </div>
+                                    </div>
+                                    <Condition Evaluation="Order.Status == OrderStatus.PaymentWaiting">
+                                        <Match>
+                                            <div class="list-group list-group-flush">
+                                                <div class="list-group-item d-flex align-items-center">
+                                                    <div>
+                                                        Pozostały czas
+                                                    </div>
+                                                    <div class="ms-auto">
+                                                        <Countdown Class="fw-bold" 
+                                                            TargetDate="@Order.ExpireDate.LocalDateTime"
+                                                            OnTimeElapsed="HandleTimeElapsed"/>
+                                                    </div>
+                                                </div>
+                                                <Condition Evaluation="PaymentUrlResposne.IsSuccessful">
+                                                    <Match>
+                                                        <a class="list-group-item list-group-item-action list-group-item-info" href="@PaymentUrl.Url">
+                                                            <i class="fa-solid fa-arrow-right-long me-1"></i>
+                                                            Przejdź do płatności
+                                                        </a>
+                                                    </Match>
+                                                </Condition> 
+                                            </div>
+                                        </Match>
+                                    </Condition>                                    
+                                </div>                                
+                            </div>
+
+                        </div>
+
+                    </Match>
+
+                    <NotMatch>
+                        <ErrorResponseAlert />
+                    </NotMatch>
+
+                </Condition>
+
+            </LoadingView>
+        </Authorized>
+
+        <NotAuthorized>
+            <NotAuthenticatedAlert />
+        </NotAuthorized>
+
+    </CustomAuthorizeView>
+
+</MainLayoutBody>

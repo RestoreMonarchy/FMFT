@@ -1,0 +1,70 @@
+﻿@using FMFT.Extensions.Blazor.Bases.Dialogs
+
+
+    <ModalDialog @ref="ModalDialog">
+        <Title>
+            Edytuj rodzaj biletu
+        </Title>
+        <Body>
+            <Condition Evaluation="Model == null">
+                <Match>
+                    <ProgressBar />
+                </Match>
+                <NotMatch>
+                    <EditForm Model="Model" OnValidSubmit="SubmitAsync" id="editshowproduct-form">
+                        <DataAnnotationsValidator />
+
+                        <div class="mb-2">
+                            <span class="form-label">Nazwa</span>
+                            <InputText class="form-control" @bind-Value="Model.Name" />
+                            <div class="text-danger">
+                                <ValidationMessage For="@(() => Model.Name)" />
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <span class="form-label">Cena</span>
+                            <div class="input-group">
+                                <InputNumber class="form-control" @bind-Value="Model.Price" />
+                                <span class="input-group-text">PLN</span>
+                            </div>
+                            <div class="text-danger">
+                                <ValidationMessage For="@(() => Model.Price)" />
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <div class="form-check form-switch">
+                                <InputCheckbox id="editshowproduct-isenabled" class="form-check-input" @bind-Value="Model.IsEnabled" />
+                                <label class="form-check-label" for="editshowproduct-isenabled">
+                                    Aktywny
+                                </label>
+                            </div>
+                        </div>
+
+                        <AlertGroupBase @ref="AlertGroup">
+                            <AlertBase @ref="SuccessAlert" Class="alert-success">
+                                Pomyślnie zauktualizowano produkt
+                            </AlertBase>
+                            <AlertBase @ref="ErrorAlert" Class="alert-danger">
+                                Wystąpił błąd. Spróbuj ponownie później
+                            </AlertBase>
+                            <AlertBase @ref="DeleteNotFoundAlert" Class="alert-danger">
+                                Ten produkt został już usunięty
+                            </AlertBase>
+                        </AlertGroupBase>
+                    </EditForm>
+                </NotMatch>
+            </Condition>            
+        </Body>
+        <Footer>
+            <ButtonBase @ref="DeleteButton" Class="btn btn-danger me-auto" OnClick="HandleDeleteAsync">
+                Usuń
+            </ButtonBase>
+            <ButtonBase Class="btn btn-secondary" OnClick="HideAsync">
+                Anuluj
+            </ButtonBase>
+            <SubmitButtonBase @ref="SubmitButton" Class="btn btn-primary" Form="editshowproduct-form">
+                <i class="fa-regular fa-floppy-disk me-1"></i>
+                Zapisz
+            </SubmitButtonBase>
+        </Footer>
+    </ModalDialog>

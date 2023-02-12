@@ -14,3 +14,4 @@ namespace FMFT.Web.Client.Views.Pages.Admin.Shows.Subpages
         public Auditorium Auditorium => Auditoriums.First(x => x.Id == Show.AuditoriumId);
     }
 }
+    

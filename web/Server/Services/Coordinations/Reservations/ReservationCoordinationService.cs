@@ -5,6 +5,7 @@ using FMFT.Web.Server.Models.Reservations.Exceptions;
 using FMFT.Web.Server.Models.Reservations.Params;
 using FMFT.Web.Server.Models.Reservations.Results;
 using FMFT.Web.Server.Models.Seats.Exceptions;
+using FMFT.Web.Server.Models.UserAccounts;
 using FMFT.Web.Server.Services.Orchestrations.Reservations;
 using FMFT.Web.Server.Services.Orchestrations.UserAccounts;
 using FMFT.Web.Shared.Enums;
@@ -87,9 +88,21 @@ namespace FMFT.Web.Server.Services.Coordinations.Reservations
             return await reservationService.RetrieveReservationsByUserIdAsync(userId);
         }
 
+        public async ValueTask<IEnumerable<Reservation>> RetrieveReservationsByOrderIdAsync(int orderId)
+        {
+            IEnumerable<Reservation> orderReservations = await reservationService.RetrieveReservationsByOrderIdAsync(orderId);
+
+            if (orderReservations.Any())
+            {
+                int orderUserId = orderReservations.First().UserId();
+                await userAccountService.AuthorizeUserAccountByUserIdOrRolesAsync(orderId, UserRole.Admin);  
+            }
+
+            return orderReservations;
+        }
         public async ValueTask<Reservation> CancelUserReservationAsync(string reservationId)
         {
-            Reservation reservation = await RetrieveReservationByIdAsync(reservationId);
+            Reservation reservation = await reservationService.RetrieveReservationByIdAsync(reservationId);
 
             await userAccountService.AuthorizeAccountByUserIdAsync(reservation.UserId());
 

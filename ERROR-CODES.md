@@ -44,3 +44,14 @@ ERR035 | Create user reservation validation problem
 ERR036 | Reservation is already canceled
 ERR037 | User account does not have a confirmed email
 ERR039 | You have already requested a confirm account link in the last 5 minutes. Try again later
+ERR040 | Show product not found
+ERR041 | Order not found
+ERR042 | Sum of order quantity does not match reserved sets count
+ERR043 | Sum of order quantity is too big. It must not exceed 100 for a single order
+ERR044 | Invalid value of ShowProductId
+ERR045 | Order amount must be greater than 0
+ERR046 | Order amount does not match order amount calculated as sum of items
+ERR047 | Payment provider is not supported
+ERR048 | Payment method is not supported
+ERR049 | Error when trying to register payment at payment provided
+ERR050 | The payment provider notification could not be verified

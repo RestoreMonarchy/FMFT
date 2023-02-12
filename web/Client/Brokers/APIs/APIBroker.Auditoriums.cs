@@ -11,7 +11,10 @@ namespace FMFT.Web.Client.Brokers.APIs
         {
             return await GetAsync<Auditorium>($"{AuditoriumsRelativeUrl}/{auditoriumId}");
         }
-
+        public async ValueTask<APIResponse<Auditorium>> GetAuditoriumByShowIdAsync(int showId)
+        {
+            return await GetAsync<Auditorium>($"{AuditoriumsRelativeUrl}/showid/{showId}");
+        }
         public async ValueTask<APIResponse<List<Auditorium>>> GetAllAuditoriumsAsync()
         {
             return await GetAsync<List<Auditorium>>(AuditoriumsRelativeUrl);

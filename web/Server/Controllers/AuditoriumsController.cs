@@ -38,5 +38,20 @@ namespace FMFT.Web.Server.Controllers
                 return NotFound(exception);
             }
         }
+
+        [HttpGet("showid/{showId}")]
+        public async ValueTask<IActionResult> GetAuditoriumByShowId(int showId)
+        {
+            try
+            {
+                Auditorium auditorium = await auditoriumService.RetrieveAuditoriumByShowIdAsync(showId);
+
+                return Ok(auditorium);
+            }
+            catch (NotFoundAuditoriumException exception)
+            {
+                return NotFound(exception);
+            }
+        }
     }
 }

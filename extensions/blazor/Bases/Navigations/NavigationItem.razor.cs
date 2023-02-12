@@ -5,14 +5,18 @@ namespace FMFT.Extensions.Blazor.Bases.Navigations
     public partial class NavigationItem
     {
         [Parameter]
-        public string Text { get; set; }
+        public string Key { get; set; }
+        [Parameter]
+        public string Title { get; set; }
+
         [Parameter]
         public RenderFragment ChildContent { get; set; }
+        
         [Parameter]
         public bool Active { get; set; }
 
         [CascadingParameter]
-        public Navigation Navigation { get; set; }
+        public NavigationBase Navigation { get; set; }
 
         public Guid ID { get; } = Guid.NewGuid();
 
@@ -36,6 +40,5 @@ namespace FMFT.Extensions.Blazor.Bases.Navigations
         {
             return IsActive ? "active" : string.Empty;
         }
-
     }
 }

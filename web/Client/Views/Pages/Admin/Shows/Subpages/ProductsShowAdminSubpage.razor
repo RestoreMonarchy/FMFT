@@ -1,0 +1,53 @@
+﻿@using FMFT.Extensions.Blazor.Bases.Dialogs
+@using FMFT.Web.Client.Views.Shared.Components.Dialogs.Shows
+@using FMFT.Web.Client.Views.Shared.Components.Forms.Shows
+
+<LoadingView @ref="LoadingView">
+    <div class="card">
+
+        <div class="card-header d-flex align-items-center">
+            <div>
+                Rodzaje biletów
+            </div>
+            <div class="ms-auto">
+                <button class="btn btn-sm btn-primary" @onclick="HandleOpenAddDialogAsync">
+                    Dodaj
+                </button>
+            </div>
+        </div>
+
+        <table class="table table-bordered mb-0">
+            <thead class="table-dark">
+                <tr>
+                    <th class="w-auto">Nazwa</th>
+                    <th class="w-auto">Cena</th>
+                    <th class="text-center" style="white-space: nowrap;width: 1%;">
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
+                    </th>
+                </tr>
+            </thead>
+            <Condition Evaluation="ShowProducts.Any()">
+                <Match>
+                    <tbody>
+                        <Iterations Context="showProduct" Items="ShowProducts.OrderBy(x => x.Id)">
+                            <tr class="@GetRowClass(showProduct)">
+                                <td class="w-auto align-middle">@showProduct.Name</td>
+                                <td class="w-auto align-middle">@showProduct.Price.ToString("N2") PLN</td>
+                                <td style="white-space: nowrap;width: 1%;">
+                                    <button class="btn btn-sm btn-outline-success" @onclick="() => HandleOpenEditDialogAsync(showProduct)">
+                                        Edytuj
+                                    </button>
+                                </td>
+                            </tr>
+                        </Iterations>            
+                    </tbody>
+                </Match>
+            </Condition>
+            
+        </table>
+    </div>
+    
+    <AddShowProductDialog @ref="AddShowProductDialog" Show="Show" OnShowProductAdded="HandleShowProductAddedAsync" />
+    <EditShowProductDialog @ref="EditShowProductDialog" OnShowProductUpdated="HandleShowProductUpdatedAsync" OnShowProductDeleted="HandleShowProductDeletedAsync" />
+
+</LoadingView>

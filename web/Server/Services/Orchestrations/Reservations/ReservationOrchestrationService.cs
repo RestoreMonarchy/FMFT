@@ -3,6 +3,7 @@ using FMFT.Web.Server.Brokers.Loggings;
 using FMFT.Web.Server.Brokers.QRCodes;
 using FMFT.Web.Server.Models.Emails;
 using FMFT.Web.Server.Models.Emails.Params;
+using FMFT.Web.Server.Models.Orders;
 using FMFT.Web.Server.Models.QRCodes;
 using FMFT.Web.Server.Models.QRCodes.Params;
 using FMFT.Web.Server.Models.Reservations;
@@ -75,7 +76,6 @@ namespace FMFT.Web.Server.Services.Orchestrations.Reservations
                 SeatIds  = @params.SeatIds
             };
 
-
             return await CreateReservationAsync(@params2);
         }
 
@@ -93,7 +93,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.Reservations
             return reservation;
         }
 
-        private async ValueTask SendReservationSummaryEmailAsync(string emailAddress, Reservation reservation)
+        public async ValueTask SendReservationSummaryEmailAsync(string emailAddress, Reservation reservation)
         {
             ReservationSummaryEmailParams @params = MapReservationToReservationSummaryEmailParams(reservation);
             foreach (ReservationSeat reservationSeat in reservation.Seats)
@@ -110,19 +110,8 @@ namespace FMFT.Web.Server.Services.Orchestrations.Reservations
             await emailService.EnqueueSendReservationSummaryAsync(emailAddress, @params);
         }
 
-        // TODO: To be remade anyways
-        public async ValueTask<Reservation> UpdateReservationStatusAsync(UpdateReservationStatusRequest request)
+        public async ValueTask<Reservation> UpdateReservationStatusAsync(UpdateReservationStatusParams @params)
         {
-            //await accountService.AuthorizeAccountByRoleAsync(UserRole.Admin);
-
-            UpdateReservationStatusParams @params = new()
-            {
-                ReservationId = request.ReservationId,
-                ReservationStatus = request.Status,
-                UpdateStatusDate = DateTimeOffset.Now,
-                //AdminUserId = account.UserId
-            };
-
             return await reservationService.UpdateReservationStatusAsync(@params);
         }
 
@@ -142,7 +131,12 @@ namespace FMFT.Web.Server.Services.Orchestrations.Reservations
 
             return reservations;
         }
+        public async ValueTask<IEnumerable<Reservation>> RetrieveReservationsByOrderIdAsync(int orderId)
+        {
+            IEnumerable<Reservation> reservations = await reservationService.RetrieveReservationsByOrderIdAsync(orderId);
 
+            return reservations;
+        }
         public async ValueTask<IEnumerable<Reservation>> RetrieveReservationsByShowIdAsync(int showId)
         {
             IEnumerable<Reservation> reservations = await reservationService.RetrieveReservationsByShowIdAsync(showId);

@@ -1,4 +1,7 @@
 ﻿using FMFT.Emails.Server.Extensions;
+using FMFT.Extensions.Payments;
+using FMFT.Extensions.Payments.Extensions;
+using FMFT.Extensions.Payments.Models.Options;
 using FMFT.Features.Tickets.Extensions;
 using FMFT.Web.Server.Brokers.Authentications;
 using FMFT.Web.Server.Brokers.Converts;
@@ -7,6 +10,7 @@ using FMFT.Web.Server.Brokers.Encryptions;
 using FMFT.Web.Server.Brokers.Facebooks;
 using FMFT.Web.Server.Brokers.Googles;
 using FMFT.Web.Server.Brokers.Loggings;
+using FMFT.Web.Server.Brokers.Payments;
 using FMFT.Web.Server.Brokers.QRCodes;
 using FMFT.Web.Server.Brokers.Storages;
 using FMFT.Web.Server.Brokers.Urls;
@@ -15,6 +19,7 @@ using FMFT.Web.Server.Models.Options;
 using FMFT.Web.Server.Models.Options.Authentications;
 using FMFT.Web.Server.Models.Options.Emails;
 using FMFT.Web.Server.Services.Coordinations.Medias;
+using FMFT.Web.Server.Services.Coordinations.Orders;
 using FMFT.Web.Server.Services.Coordinations.Reservations;
 using FMFT.Web.Server.Services.Coordinations.ShowGalleries;
 using FMFT.Web.Server.Services.Coordinations.Shows;
@@ -24,14 +29,19 @@ using FMFT.Web.Server.Services.Foundations.Emails;
 using FMFT.Web.Server.Services.Foundations.Facebooks;
 using FMFT.Web.Server.Services.Foundations.Googles;
 using FMFT.Web.Server.Services.Foundations.Medias;
+using FMFT.Web.Server.Services.Foundations.Orders;
+using FMFT.Web.Server.Services.Foundations.Payments;
 using FMFT.Web.Server.Services.Foundations.QRCodes;
 using FMFT.Web.Server.Services.Foundations.Reservations;
 using FMFT.Web.Server.Services.Foundations.ResetPasswordRequests;
 using FMFT.Web.Server.Services.Foundations.Seats;
 using FMFT.Web.Server.Services.Foundations.ShowGalleries;
+using FMFT.Web.Server.Services.Foundations.ShowProducts;
 using FMFT.Web.Server.Services.Foundations.Shows;
 using FMFT.Web.Server.Services.Foundations.Users;
 using FMFT.Web.Server.Services.Orchestrations.Medias;
+using FMFT.Web.Server.Services.Orchestrations.Orders;
+using FMFT.Web.Server.Services.Orchestrations.Payments;
 using FMFT.Web.Server.Services.Orchestrations.Reservations;
 using FMFT.Web.Server.Services.Orchestrations.ResetPasswordRequests;
 using FMFT.Web.Server.Services.Orchestrations.ShowGalleries;
@@ -55,6 +65,35 @@ namespace FMFT.Web.Server.Extensions
                 x.UseSqlServerStorage(configuration.GetConnectionString("Default"));
             });
             services.AddHangfireServer();
+
+            ServicesOptions servicesConfig = configuration.GetSection(ServicesOptions.SectionKey).Get<ServicesOptions>();
+
+            PaymentProvidersBuilder paymentProvidersBuilder = services.AddPaymentProviders(options =>
+            {
+                options.ReturnUrl = servicesConfig.GetClientUrl("/account/orders/{orderId}");
+                options.NotifyUrl = servicesConfig.GetAPIUrl("/api/payment/notifications/{paymentProvider}");
+                options.MockPaymentUrl = servicesConfig.GetClientUrl("/mock/payment/{sessionId}");
+            });
+
+            if (configuration.GetSection("Payments:Mock").GetValue<bool>("IsEnabled"))
+            {
+                paymentProvidersBuilder.AddMock();
+            }
+
+            if (configuration.GetSection("Payments:Przelewy24").GetValue<bool>("IsEnabled"))
+            {
+                paymentProvidersBuilder.AddPrzelewy24(options => 
+                {
+                    IConfigurationSection section = configuration.GetSection("Payments:Przelewy24");
+
+                    options.UserName = section.GetValue<int>("Username");
+                    options.UserSecret = section.GetValue<string>("UserSecret");
+                    options.CRC = section.GetValue<string>("CRC");
+                    options.MerchantId = section.GetValue<int>("MerchantId");
+                    options.PosId = section.GetValue<int>("PosId");
+                    options.UseSandbox = section.GetValue<bool>("UseSandbox");
+                });
+            }
 
             return services;
         }
@@ -85,9 +124,11 @@ namespace FMFT.Web.Server.Extensions
             services.AddScoped<IConvertBroker, ConvertBroker>();
             services.AddScoped<IQRCodeBroker, QRCodeBroker>();
             services.AddScoped<IGoogleBroker, GoogleBroker>();
+            services.AddScoped<IPaymentBroker, PaymentBroker>();
 
             return services;
         }
+
 
         public static IServiceCollection AddFoundations(this IServiceCollection services)
         {
@@ -104,6 +145,9 @@ namespace FMFT.Web.Server.Extensions
             services.AddTransient<IShowGalleryService, ShowGalleryService>();
             services.AddTransient<IQRCodeService, QRCodeService>();
             services.AddTransient<IGoogleService, GoogleService>();
+            services.AddTransient<IShowProductService, ShowProductService>();
+            services.AddTransient<IOrderService, OrderService>();
+            services.AddTransient<IPaymentService, PaymentService>();
 
             return services;
         }
@@ -116,6 +160,8 @@ namespace FMFT.Web.Server.Extensions
             services.AddTransient<IResetPasswordRequestOrchestrationService, ResetPasswordRequestOrchestrationService>();
             services.AddTransient<IMediaOrchestrationService, MediaOrchestrationService>();
             services.AddTransient<IShowGalleryOrchestrationService, ShowGalleryOrchestrationService>();
+            services.AddTransient<IOrderOrchestrationService, OrderOrchestrationService>();
+            services.AddTransient<IPaymentOrchestrationService, PaymentOrchestrationService>();
 
             return services;
         }
@@ -126,6 +172,7 @@ namespace FMFT.Web.Server.Extensions
             services.AddTransient<IMediaCoordinationService, MediaCoordinationService>();
             services.AddTransient<IShowGalleryCoordinationService, ShowGalleryCoordinationService>();
             services.AddTransient<IShowCoordinationService, ShowCoordinationService>();
+            services.AddTransient<IOrderCoordinationService, OrderCoordinationService>();
 
             return services;
         }

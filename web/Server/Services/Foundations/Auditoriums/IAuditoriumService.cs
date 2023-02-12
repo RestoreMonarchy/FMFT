@@ -6,5 +6,6 @@ namespace FMFT.Web.Server.Services.Foundations.Auditoriums
     {
         ValueTask<IEnumerable<Auditorium>> RetrieveAllAuditoriumsAsync();
         ValueTask<Auditorium> RetrieveAuditoriumByIdAsync(int auditoriumId);
+        ValueTask<Auditorium> RetrieveAuditoriumByShowIdAsync(int showId);
     }
 }

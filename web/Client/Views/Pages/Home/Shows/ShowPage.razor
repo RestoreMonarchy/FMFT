@@ -16,7 +16,7 @@
     </Breadcrumb>
 
     <LoadingView @ref="LoadingView">
-        <Condition Evaluation="ShowResponse.IsSuccessful && AuditoriumResponse.IsSuccessful && ShowGalleryResponse.IsSuccessful">
+        <Condition Evaluation="ShowResponse.IsSuccessful && AuditoriumResponse.IsSuccessful && ShowGalleryResponse.IsSuccessful && ShowProductsResponse.IsSuccessful">
             <Match>
 
                 <div class="row">
@@ -44,12 +44,20 @@
                                         <i class="fa-solid fa-person me-1"></i>
                                         <span class="fw-bold">@Show.ReservedSeats.Count / @Auditorium.Seats.Count</span>
                                     </li>
+                                    <Condition Evaluation="CheapestShowProduct != null">
+                                        <Match>
+                                            <li>
+                                                <i class="fa-solid fa-coins me-1"></i>
+                                                <span class="fw-bold">od @CheapestShowProduct.Price.ToString("N2") zł</span>
+                                            </li>
+                                        </Match>
+                                    </Condition>
                                 </ul>
                             </div>
                             <div class="list-group list-group-flush">
-                                <a class="list-group-item list-group-item-action list-group-item-primary" href="/shows/@ShowId/reserve">
+                                <a class="list-group-item list-group-item-action list-group-item-success" href="/shows/@ShowId/order">
                                     <i class="fa-solid fa-ticket me-1"></i>
-                                    Zarezerwuj miejsce
+                                    Kup bilety
                                 </a>
                             </div>
                         </div>
@@ -92,9 +100,9 @@
                                 </p>
                             </div>
                             <div class="list-group list-group-flush">
-                                <a class="list-group-item list-group-item-action list-group-item-primary" href="/shows/@ShowId/reserve">
+                                <a class="list-group-item list-group-item-action list-group-item-success" href="/shows/@ShowId/order">
                                     <i class="fa-solid fa-ticket me-1"></i>
-                                    Zarezerwuj miejsce
+                                    Kup bilety
                                 </a>
                             </div>
                         </div>

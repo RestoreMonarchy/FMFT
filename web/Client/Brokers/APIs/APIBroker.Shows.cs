@@ -1,4 +1,6 @@
 ﻿using FMFT.Web.Client.Models.API;
+using FMFT.Web.Client.Models.API.ShowProducts;
+using FMFT.Web.Client.Models.API.ShowProducts.Requests;
 using FMFT.Web.Client.Models.API.Shows;
 using FMFT.Web.Client.Models.API.Shows.Requests;
 
@@ -45,6 +47,34 @@ namespace FMFT.Web.Client.Brokers.APIs
         public async ValueTask<APIResponse> DeleteShowGalleryByIdAsync(int showGalleryId)
         {
             string url = $"{ShowsRelativeUrl}/gallery/{showGalleryId}/delete";
+
+            return await DeleteAsync(url);
+        }
+
+        public async ValueTask<APIResponse<List<ShowProduct>>> GetShowProductsByShowIdAsync(int showId)
+        {
+            string url = $"{ShowsRelativeUrl}/{showId}/products";
+
+            return await GetAsync<List<ShowProduct>>(url);
+        }
+
+        public async ValueTask<APIResponse<ShowProduct>> AddShowProductAsync(AddShowProductRequest request)
+        {
+            string url = $"{ShowsRelativeUrl}/{request.ShowId}/products/add";
+
+            return await PostAsync<ShowProduct>(url, request);
+        }
+
+        public async ValueTask<APIResponse<ShowProduct>> ModifyShowProductAsync(ModifyShowProductRequest request)
+        {
+            string url = $"{ShowsRelativeUrl}/{request.ShowId}/products/modify";
+
+            return await PostAsync<ShowProduct>(url, request);
+        }
+
+        public async ValueTask<APIResponse> DeleteShowProductAsync(int showId, int showProductId)
+        {
+            string url = $"{ShowsRelativeUrl}/{showId}/products/{showProductId}/delete";
 
             return await DeleteAsync(url);
         }

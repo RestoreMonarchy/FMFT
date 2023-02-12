@@ -10,6 +10,7 @@ namespace FMFT.Web.Server.Brokers.Storages
     {
         ValueTask<IEnumerable<Reservation>> SelectAllReservationsAsync();
         ValueTask<IEnumerable<Reservation>> SelectReservationsByUserIdAsync(int userId);
+        ValueTask<IEnumerable<Reservation>> SelectReservationsByOrderIdAsync(int orderId);
         ValueTask<IEnumerable<Reservation>> SelectReservationsByShowIdAsync(int showId);
         ValueTask<IEnumerable<Reservation>> SelectReservationsByUserAndShowIdAsync(int userId, int showId);
         ValueTask<Reservation> SelectReservationByIdAsync(string reservationId);

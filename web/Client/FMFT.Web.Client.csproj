@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Views\Pages\Home\Shows\Orders\yzjaqcv1.cwm~" />
+  </ItemGroup>
+
+  <ItemGroup>
     <_ContentIncludedByDefault Remove="wwwroot\appsettings.json" />
   </ItemGroup>
 

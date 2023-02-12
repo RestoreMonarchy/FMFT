@@ -1,0 +1,21 @@
+﻿@inherits NavigationBase
+
+<CascadingValue Value="this">
+    @ChildContent
+</CascadingValue>
+
+<div class="row g-1 g-lg-3 mb-2">
+    <Iterations Items="Items" Context="item">
+        <div class="col-lg">
+            <div class="p-2 text-center bg-light border border-1 rounded @GetClasses(item)" @onclick="() => HandleClickAsync(item)">
+                @item.Title
+            </div>
+        </div>
+    </Iterations>
+</div>
+
+<Condition Evaluation="ActiveNavigationItem is not null">
+    <Match>
+        @ActiveNavigationItem.ChildContent
+    </Match>
+</Condition>
