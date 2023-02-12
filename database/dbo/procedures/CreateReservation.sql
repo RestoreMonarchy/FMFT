@@ -19,6 +19,7 @@ BEGIN
 	DECLARE @seatsTable TABLE(SeatId INT NOT NULL PRIMARY KEY);
 	DECLARE @setsCount INT;
 	DECLARE @validatedSetsCount INT;
+	DECLARE @status TINYINT = CASE WHEN @OrderId IS NULL THEN 1 ELSE 0 END;
 
 	INSERT INTO @seatsTable (SeatId) 
 	SELECT [Value] 
@@ -69,8 +70,8 @@ BEGIN
 		IF @isExternalTransaction = 0
 			BEGIN TRAN;
 
-		INSERT INTO dbo.Reservations (Id, ShowId, UserId, OrderId)
-		VALUES (@reservationId, @ShowId, @UserId, @OrderId);
+		INSERT INTO dbo.Reservations (Id, ShowId, UserId, OrderId, [Status])
+		VALUES (@reservationId, @ShowId, @UserId, @OrderId, @status);
 
 		INSERT INTO dbo.ReservationSeats (ReservationId, SeatId)
 		SELECT @reservationId, SeatId FROM @seatsTable;
