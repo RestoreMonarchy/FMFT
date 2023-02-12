@@ -1,67 +1,76 @@
 ﻿<div class="list-group">
-    <label class="list-group-item d-flex align-items-center" style="cursor: pointer;">
-        <div>
-            <input class="form-check-input me-2"
-                   type="radio"
-                   @onchange="() => ChangePaymentMethod(PaymentMethod.Mock)"
-                   checked="@Checked(PaymentMethod.Mock)">
-        </div>
-        <div>
-            <span style="font-weight: 600;">Mock</span>
-        </div>
-        <div class="ms-auto d-inline-flex align-items-center">
-            <span style="height: 25px;" class="position-relative d-inline-flex align-items-center justify-content-center">
-                <img class="h-100 w-auto position-relative" src="/img/brandings/payments/mock.svg">
-            </span>
-        </div>
-    </label>
-    <label class="list-group-item d-flex align-items-center" style="cursor: pointer;">
-        <div>
-            <input class="form-check-input me-2" 
-                type="radio" 
-                @onchange="() => ChangePaymentMethod(PaymentMethod.Blik)" 
-                checked="@Checked(PaymentMethod.Blik)">
-        </div>
-        <div>
-            <span style="font-weight: 600;">Blik</span>
-        </div>
-        <div class="ms-auto d-inline-flex align-items-center">
-            <span style="height: 25px;" class="position-relative d-inline-flex align-items-center justify-content-center">
-                <img class="h-100 w-auto position-relative" src="/img/brandings/payments/blik.svg">
-            </span>
-        </div>
-    </label>
-    <label class="list-group-item d-flex align-items-center" style="cursor: pointer;">
-        <div>
-            <input class="form-check-input me-2"
-                   type="radio"
-                   @onchange="() => ChangePaymentMethod(PaymentMethod.CreditDebitCard)"
-                   checked="@Checked(PaymentMethod.CreditDebitCard)">
-        </div>
-        <div>
-            <span style="font-weight: 600;">Karta płatnicza</span>
-        </div>
-        <div class="ms-auto d-inline-flex align-items-center">
-            <span style="height: 25px;" class="position-relative d-inline-flex align-items-center justify-content-center">
-                <img class="w-auto position-relative me-2" style="max-height: 20px;" src="/img/brandings/payments/visa.svg">
-                <img class="h-100 w-auto position-relative" src="/img/brandings/payments/mastercard.svg">
-            </span>
-        </div>
-    </label>
-    <label class="list-group-item d-flex align-items-center" style="cursor: pointer;">
-        <div>
-            <input class="form-check-input me-2"
-                   type="radio"
-                   @onchange="() => ChangePaymentMethod(PaymentMethod.Przelewy24)"
-                   checked="@Checked(PaymentMethod.Przelewy24)">
-        </div>
-        <div>
-            <span style="font-weight: 600;">Przelewy24</span>
-        </div>
-        <div class="ms-auto d-inline-flex align-items-center">
-            <span style="height: 25px;" class="position-relative d-inline-flex align-items-center justify-content-center">
-                <img class="h-100 w-auto position-relative" src="/img/brandings/payments/p24.svg">
-            </span>
-        </div>
-    </label>
+    <Condition Evaluation="IsPaymentProviderEnabled(PaymentProvider.Mock)">
+        <Match>
+            <label class="list-group-item d-flex align-items-center" style="cursor: pointer;">
+                <div>
+                    <input class="form-check-input me-2"
+                           type="radio"
+                           @onchange="() => ChangePaymentMethod(PaymentMethod.Mock)"
+                           checked="@Checked(PaymentMethod.Mock)">
+                </div>
+                <div>
+                    <span style="font-weight: 600;">Mock</span>
+                </div>
+                <div class="ms-auto d-inline-flex align-items-center">
+                    <span style="height: 25px;" class="position-relative d-inline-flex align-items-center justify-content-center">
+                        <img class="h-100 w-auto position-relative" src="/img/brandings/payments/mock.svg">
+                    </span>
+                </div>
+            </label>
+        </Match>
+    </Condition>
+
+    <Condition Evaluation="IsPaymentProviderEnabled(PaymentProvider.Przelewy24)">
+        <Match>
+            <label class="list-group-item d-flex align-items-center" style="cursor: pointer;">
+                <div>
+                    <input class="form-check-input me-2"
+                           type="radio"
+                           @onchange="() => ChangePaymentMethod(PaymentMethod.Blik)"
+                           checked="@Checked(PaymentMethod.Blik)">
+                </div>
+                <div>
+                    <span style="font-weight: 600;">Blik</span>
+                </div>
+                <div class="ms-auto d-inline-flex align-items-center">
+                    <span style="height: 25px;" class="position-relative d-inline-flex align-items-center justify-content-center">
+                        <img class="h-100 w-auto position-relative" src="/img/brandings/payments/blik.svg">
+                    </span>
+                </div>
+            </label>
+            <label class="list-group-item d-flex align-items-center" style="cursor: pointer;">
+                <div>
+                    <input class="form-check-input me-2"
+                           type="radio"
+                           @onchange="() => ChangePaymentMethod(PaymentMethod.CreditDebitCard)"
+                           checked="@Checked(PaymentMethod.CreditDebitCard)">
+                </div>
+                <div>
+                    <span style="font-weight: 600;">Karta płatnicza</span>
+                </div>
+                <div class="ms-auto d-inline-flex align-items-center">
+                    <span style="height: 25px;" class="position-relative d-inline-flex align-items-center justify-content-center">
+                        <img class="w-auto position-relative me-2" style="max-height: 20px;" src="/img/brandings/payments/visa.svg">
+                        <img class="h-100 w-auto position-relative" src="/img/brandings/payments/mastercard.svg">
+                    </span>
+                </div>
+            </label>
+            <label class="list-group-item d-flex align-items-center" style="cursor: pointer;">
+                <div>
+                    <input class="form-check-input me-2"
+                           type="radio"
+                           @onchange="() => ChangePaymentMethod(PaymentMethod.Przelewy24)"
+                           checked="@Checked(PaymentMethod.Przelewy24)">
+                </div>
+                <div>
+                    <span style="font-weight: 600;">Przelewy24</span>
+                </div>
+                <div class="ms-auto d-inline-flex align-items-center">
+                    <span style="height: 25px;" class="position-relative d-inline-flex align-items-center justify-content-center">
+                        <img class="h-100 w-auto position-relative" src="/img/brandings/payments/p24.svg">
+                    </span>
+                </div>
+            </label>
+        </Match>
+    </Condition>
 </div>

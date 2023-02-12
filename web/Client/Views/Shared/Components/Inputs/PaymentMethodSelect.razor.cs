@@ -22,5 +22,12 @@ namespace FMFT.Web.Client.Views.Shared.Components.Inputs
         }
 
         private bool Checked(PaymentMethod paymentMethod) => PaymentMethod == paymentMethod;
+
+        public bool IsPaymentProviderEnabled(PaymentProvider paymentProvider)
+        {
+            string[] paymentProviders = Configuration.GetSection("PaymentProviders").Get<string[]>();
+
+            return paymentProviders.Contains(paymentProvider.ToString());
+        }
     }
 }
