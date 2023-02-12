@@ -1,5 +1,6 @@
 ﻿using FMFT.Web.Client.Brokers.Storages;
 using FMFT.Web.Client.Models.Services.Orders;
+using FMFT.Web.Shared.Enums;
 
 namespace FMFT.Web.Client.Services.Pages
 {
@@ -22,7 +23,8 @@ namespace FMFT.Web.Client.Services.Pages
                 {
                     ShowId = showId,
                     Items = new(),
-                    SeatIds = new()
+                    SeatIds = new(),
+                    PaymentMethod = PaymentMethod.Blik
                 };
             }
 

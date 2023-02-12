@@ -100,7 +100,7 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
             return totalPrice;
         }
 
-        private async Task HandleQuantityChangeAsync(ShowProduct showProduct, ChangeEventArgs args)
+        private Task HandleQuantityChangeAsync(ShowProduct showProduct, ChangeEventArgs args)
         {
             int.TryParse(args.Value.ToString(), out int quantity);
 
@@ -109,10 +109,10 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
                 int removedElements = OrderStateData.Items.RemoveAll(x => x.ShowProductId == showProduct.Id);
                 if (removedElements > 0)
                 {
-                    await UpdateOrderStateDataAsync();
+                    InvokeAsync(() => UpdateOrderStateDataAsync());
                 }
 
-                return;                
+                return Task.CompletedTask;                
             }
 
             OrderItemStateData orderItem = OrderStateData.Items.FirstOrDefault(x => x.ShowProductId == showProduct.Id);
@@ -128,7 +128,9 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
             }
 
             orderItem.Quantity = quantity;
-            await UpdateOrderStateDataAsync();
+            InvokeAsync(() => UpdateOrderStateDataAsync());
+
+            return Task.CompletedTask;
         }
 
         private async Task UpdateOrderStateDataAsync()
