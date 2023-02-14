@@ -8,6 +8,8 @@ namespace FMFT.Web.Server.Brokers.Storages
     {
         ValueTask<Show> SelectShowByIdAsync(int showId);
         ValueTask<IEnumerable<Show>> SelectAllShowsAsync();
+        ValueTask<IEnumerable<Show>> SelectPublicShowsAsync();
+        ValueTask<Show> SelectPublicShowByIdAsync(int showId);
         ValueTask<StoredProcedureResult<Show>> ExecuteAddShowAsync(AddShowParams @params);
         ValueTask<StoredProcedureResult<Show>> ExecuteUpdateShowAsync(UpdateShowParams @params);
     }

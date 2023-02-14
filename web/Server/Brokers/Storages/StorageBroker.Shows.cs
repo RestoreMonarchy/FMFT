@@ -18,6 +18,28 @@ namespace FMFT.Web.Server.Brokers.Storages
             return await QueryShowAsync(@params);
         }
 
+        public async ValueTask<Show> SelectPublicShowByIdAsync(int showId)
+        {
+            GetShowParams @params = new()
+            {
+                ShowId = showId,
+                Disabled = false
+            };
+
+            return await QueryShowAsync(@params);
+        }
+
+        public async ValueTask<IEnumerable<Show>> SelectPublicShowsAsync()
+        {
+            GetShowParams @params = new()
+            {
+                Disabled = false,
+                Expired = false
+            };
+
+            return await QueryShowsAsync(@params);
+        }
+
         public async ValueTask<IEnumerable<Show>> SelectAllShowsAsync()
         {
             GetShowParams @params = new();

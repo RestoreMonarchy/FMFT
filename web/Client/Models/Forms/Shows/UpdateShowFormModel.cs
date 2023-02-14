@@ -22,5 +22,12 @@ namespace FMFT.Web.Client.Models.Forms.Shows
         [Required(ErrorMessage = "Musisz wybrać audytorium")]
         public int? AudotiriumId { get; set; }
         public Guid? ThumbnailMediaId { get; set; }
+
+        [Required(ErrorMessage = "To pole jest wymagane")]
+        public DateOnly SellStartDateTime { get; set; }
+        [Required(ErrorMessage = "To pole jest wymagane")]
+        public TimeOnly SellStartTime { get; set; }
+
+        public bool IsEnabled { get; set; }
     }
 }

@@ -20,6 +20,16 @@ namespace FMFT.Web.Client.Brokers.APIs
             return await GetAsync<List<Show>>(ShowsRelativeUrl);
         }
 
+        public async ValueTask<APIResponse<Show>> GetPublicShowByIdAsync(int showId)
+        {
+            return await GetAsync<Show>($"{ShowsRelativeUrl}/{showId}/public");
+        }
+
+        public async ValueTask<APIResponse<List<Show>>> GetPublicShowsAsync()
+        {
+            return await GetAsync<List<Show>>($"{ShowsRelativeUrl}/public");
+        }
+
         public async ValueTask<APIResponse<Show>> AddShowAsync(AddShowRequest request)
         {
             return await PostAsync<Show>(ShowsRelativeUrl, request);

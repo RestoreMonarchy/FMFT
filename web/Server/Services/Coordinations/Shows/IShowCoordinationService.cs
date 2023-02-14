@@ -13,6 +13,8 @@ namespace FMFT.Web.Server.Services.Coordinations.Shows
         ValueTask<ShowProduct> ModifyShowProductAsync(UpdateShowProductParams @params);
         ValueTask RemoveShowProductByIdAndShowIdAsync(int showProductId, int showId);
         ValueTask<IEnumerable<Show>> RetrieveAllShowsAsync();
+        ValueTask<Show> RetrievePublicShowByIdAsync(int showId);
+        ValueTask<IEnumerable<Show>> RetrievePublicShowsAsync();
         ValueTask<Show> RetrieveShowByIdAsync(int showId);
         ValueTask<IEnumerable<ShowProduct>> RetrieveShowProductsByShowIdAsync(int showId);
     }

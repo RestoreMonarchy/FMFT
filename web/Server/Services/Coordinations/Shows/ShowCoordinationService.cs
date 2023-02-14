@@ -6,6 +6,8 @@ using FMFT.Web.Server.Services.Foundations.ShowProducts;
 using FMFT.Web.Server.Services.Orchestrations.Shows;
 using FMFT.Web.Server.Services.Orchestrations.UserAccounts;
 using FMFT.Web.Shared.Enums;
+using Hangfire.Storage;
+using FMFT.Web.Server.Models.UserAccounts;
 
 namespace FMFT.Web.Server.Services.Coordinations.Shows
 {
@@ -36,11 +38,25 @@ namespace FMFT.Web.Server.Services.Coordinations.Shows
 
         public async ValueTask<Show> RetrieveShowByIdAsync(int showId)
         {
+            await userAccountService.AuthorizeUserAccountByRoleAsync(UserRole.Admin);
+
             return await showService.RetrieveShowByIdAsync(showId);
         }
 
+        public async ValueTask<Show> RetrievePublicShowByIdAsync(int showId)
+        {
+            return await showService.RetrievePublicShowByIdAsync(showId);
+        }
+
+        public async ValueTask<IEnumerable<Show>> RetrievePublicShowsAsync()
+        {
+            return await showService.RetrievePublicShowsAsync();
+        }
+        
         public async ValueTask<IEnumerable<Show>> RetrieveAllShowsAsync()
         {
+            await userAccountService.AuthorizeUserAccountByRoleAsync(UserRole.Admin);
+
             return await showService.RetrieveAllShowsAsync();
         }
 

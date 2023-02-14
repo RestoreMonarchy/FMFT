@@ -2,10 +2,12 @@
 	@Id INT,
 	@Name NVARCHAR(255),
 	@Description NVARCHAR(4000),
-	@StartDateTime DATETIME2,
-	@EndDateTime DATETIME2,
+	@StartDateTime DATETIME2(0),
+	@EndDateTime DATETIME2(0),
 	@AuditoriumId INT,
-	@ThumbnailMediaId UNIQUEIDENTIFIER
+	@ThumbnailMediaId UNIQUEIDENTIFIER,
+	@SellStartDateTime DATETIME2(0),
+	@IsEnabled BIT
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -26,10 +28,23 @@ BEGIN
 			[Name] = @Name, 
 			[Description] = @Description, 
 			StartDateTime = @StartDateTime, 
-			EndDateTime = @EndDateTime, 
+			EndDateTime = @EndDateTime,
 			AuditoriumId = @AuditoriumId,
-			ThumbnailMediaId = @ThumbnailMediaId
-		WHERE Id = @Id;
+			ThumbnailMediaId = @ThumbnailMediaId,
+			SellStartDateTime = @SellStartDateTime,
+			IsEnabled = @IsEnabled,
+			UpdateDate = SYSDATETIME()
+		WHERE Id = @Id
+		AND ([Name] <> @Name
+		OR ISNULL([Description], '') <> ISNULL(@Description, '')
+		OR StartDateTime <> @StartDateTime
+		OR EndDateTime <> @EndDateTime
+		OR AuditoriumId <> @AuditoriumId
+		OR (ThumbnailMediaId <> @ThumbnailMediaId 
+			OR ThumbnailMediaId IS NULL AND @ThumbnailMediaId IS NOT NULL
+			OR ThumbnailMediaId IS NOT NULL AND @ThumbnailMediaId IS NULL)
+		OR SellStartDateTime <> @SellStartDateTime
+		OR IsEnabled <> @IsEnabled);
 	END;
 
 	EXEC dbo.GetShows @ShowId = @Id;

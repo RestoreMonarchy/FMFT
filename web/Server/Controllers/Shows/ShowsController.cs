@@ -34,7 +34,27 @@ namespace FMFT.Web.Server.Controllers.Shows
         [HttpGet]
         public async ValueTask<IActionResult> GetShows()
         {
-            IEnumerable<Show> shows = await showCoordinationService.RetrieveAllShowsAsync();
+            try
+            {
+                IEnumerable<Show> shows = await showCoordinationService.RetrieveAllShowsAsync();
+
+                return Ok(shows);
+            }
+            catch (NotAuthorizedAccountException exception)
+            {
+                return Forbidden(exception);
+            }
+            catch (NotAuthenticatedAccountException exception)
+            {
+                return Unauthorized(exception);
+            }
+
+        }
+
+        [HttpGet("public")]
+        public async ValueTask<IActionResult> GetPublicShows()
+        {
+            IEnumerable<Show> shows = await showCoordinationService.RetrievePublicShowsAsync();
 
             return Ok(shows);
         }
@@ -52,7 +72,39 @@ namespace FMFT.Web.Server.Controllers.Shows
             {
                 return NotFound(exception);
             }
+            catch (NotAuthorizedAccountException exception)
+            {
+                return Forbidden(exception);
+            }
+            catch (NotAuthenticatedAccountException exception)
+            {
+                return Unauthorized(exception);
+            }
         }
+
+        [HttpGet("{showId}/public")]
+        public async ValueTask<IActionResult> GetPublicShow(int showId)
+        {
+            try
+            {
+                Show show = await showCoordinationService.RetrievePublicShowByIdAsync(showId);
+
+                return Ok(show);
+            }
+            catch (NotFoundShowException exception)
+            {
+                return NotFound(exception);
+            }
+            catch (NotAuthorizedAccountException exception)
+            {
+                return Forbidden(exception);
+            }
+            catch (NotAuthenticatedAccountException exception)
+            {
+                return Unauthorized(exception);
+            }
+        }
+
 
         [HttpPost]
         public async ValueTask<IActionResult> PostShow([FromBody] AddShowParams @params)

@@ -10,6 +10,8 @@ namespace FMFT.Web.Client.Brokers.APIs
     {
         ValueTask<APIResponse<Show>> GetShowByIdAsync(int showId);
         ValueTask<APIResponse<List<Show>>> GetAllShowsAsync();
+        ValueTask<APIResponse<Show>> GetPublicShowByIdAsync(int showId);
+        ValueTask<APIResponse<List<Show>>> GetPublicShowsAsync();
         ValueTask<APIResponse<Show>> AddShowAsync(AddShowRequest request);
         ValueTask<APIResponse<Show>> UpdateShowAsync(UpdateShowRequest request);
 

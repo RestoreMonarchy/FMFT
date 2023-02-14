@@ -14,7 +14,7 @@ namespace FMFT.Web.Client.Views.Pages.Home
 
         protected override async Task OnInitializedAsync()
         {
-            ShowsResponse = await APIBroker.GetAllShowsAsync();
+            ShowsResponse = await APIBroker.GetPublicShowsAsync();
             ShowsLoadingView.StopLoading();
         }
     }

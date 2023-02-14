@@ -36,6 +36,16 @@ namespace FMFT.Web.Server.Services.Orchestrations.Shows
             return await showService.RetrieveShowByIdAsync(showId);
         }
 
+        public async ValueTask<Show> RetrievePublicShowByIdAsync(int showId)
+        {
+            return await showService.RetrievePublicShowByIdAsync(showId);
+        }
+
+        public async ValueTask<IEnumerable<Show>> RetrievePublicShowsAsync()
+        {
+            return await showService.RetrievePublicShowsAsync();
+        }
+
         public async ValueTask<IEnumerable<Show>> RetrieveAllShowsAsync()
         {
             return await showService.RetrieveAllShowsAsync();

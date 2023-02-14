@@ -1,5 +1,6 @@
 ﻿@page "/shows/{ShowId:int}"
 @using FMFT.Extensions.Blazor.Bases.Carousels
+@using FMFT.Extensions.Blazor.Bases.Conditions
 @using FMFT.Extensions.Blazor.Bases.MarkdownEditors;
 
 <MainLayoutBody>
@@ -113,7 +114,16 @@
                 
             </Match>
             <NotMatch>
-                <ErrorResponseAlert />
+                <Switch Expression="ErrorCode">
+                    <SwitchCase Value="@("ERR014")">
+                        <InfoAlert>
+                            Wydarzenie nie istnieje
+                        </InfoAlert>
+                    </SwitchCase>
+                    <DefaultSwitchCase>
+                        <ErrorResponseAlert />
+                    </DefaultSwitchCase>
+                </Switch>           
             </NotMatch>
         </Condition>
     </LoadingView>

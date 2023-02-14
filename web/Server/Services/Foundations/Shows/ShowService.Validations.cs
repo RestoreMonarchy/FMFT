@@ -25,6 +25,10 @@ namespace FMFT.Web.Server.Services.Foundations.Shows
             {
                 validationException.UpsertDataList("EndDateTime", "EndDateTime must not be later than one year in the future");
             }
+            if (validationBroker.IsDateTimeInOneYearRangeInvalid(@params.SellStartDateTime))
+            {
+                validationException.UpsertDataList("EndDateTime", "SellStartDateTime must not be later than one year in the future");
+            }
             if (validationBroker.IsDateTimeRangeInvalid(@params.StartDateTime, @params.EndDateTime))
             {
                 validationException.UpsertDataList("StartDateTime", "StartDateTime must be earlier than EndDateTime");

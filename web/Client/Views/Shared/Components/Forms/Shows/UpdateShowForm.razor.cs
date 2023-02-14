@@ -52,7 +52,10 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Shows
                 StartTime = TimeOnly.FromDateTime(Show.StartDateTime.LocalDateTime),
                 DurationMinutes = (int)duration.TotalMinutes,
                 AudotiriumId = Show.AuditoriumId,
-                ThumbnailMediaId = Show.ThumbnailMediaId
+                ThumbnailMediaId = Show.ThumbnailMediaId,
+                SellStartDateTime = DateOnly.FromDateTime(Show.SellStartDateTime.LocalDateTime),
+                SellStartTime = TimeOnly.FromDateTime(Show.SellStartDateTime.LocalDateTime),
+                IsEnabled = Show.IsEnabled
             };
         }
 
@@ -63,6 +66,7 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Shows
 
             DateTime startDateTime = Model.StartDate.ToDateTime(Model.StartTime);
             DateTime endDateTime = startDateTime.AddMinutes(Model.DurationMinutes);
+            DateTime sellStartDateTime = Model.SellStartDateTime.ToDateTime(Model.SellStartTime);
 
             UpdateShowRequest request = new()
             {
@@ -72,7 +76,9 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Shows
                 StartDateTime = new DateTimeOffset(startDateTime),
                 EndDateTime = new DateTimeOffset(endDateTime),
                 AuditoriumId = Model.AudotiriumId.Value,
-                ThumbnailMediaId = Model.ThumbnailMediaId
+                ThumbnailMediaId = Model.ThumbnailMediaId,
+                SellStartDateTime = new DateTimeOffset(sellStartDateTime),
+                IsEnabled = Model.IsEnabled                
             };
 
             Response = await APIBroker.UpdateShowAsync(request);
