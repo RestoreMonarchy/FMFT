@@ -9,6 +9,16 @@ namespace FMFT.Web.Client.Helpers
             return orderId.ToString().PadLeft(6, '0');
         }
 
+        public static string Email(string emailAddress)
+        {
+            if (emailAddress.Length > 25)
+            {
+                return emailAddress.Substring(0, 22) + "...";
+            }
+
+            return emailAddress;
+        }
+
         public static string TranslatePaymentMethod(PaymentMethod paymentMethod)
         {
             switch (paymentMethod)
