@@ -40,6 +40,11 @@ namespace FMFT.Web.Client.Brokers.APIs
             return await PutAsync<Show>(ShowsRelativeUrl, request);
         }
 
+        public async ValueTask<APIResponse<Show>> UpdateShowSellingDetailsAsync(UpdateShowSellingDetailsRequest request)
+        {
+            return await PutAsync<Show>($"{ShowsRelativeUrl}/{request.ShowId}/sellingdetails", request);
+        }
+
         public async ValueTask<APIResponse> AddShowGalleryAsync(AddShowGalleryRequest request)
         {
             string url = $"{ShowsRelativeUrl}/{request.ShowId}/gallery/add";

@@ -162,5 +162,33 @@ namespace FMFT.Web.Server.Controllers.Shows
                 return Unauthorized(exception);
             }
         }
+
+        [HttpPut("{showId}/sellingdetails")]
+        public async ValueTask<IActionResult> UpdateShowSellingDetails(int showId, [FromBody] UpdateShowSellingDetailsParams @params)
+        {
+            try
+            {
+                @params.ShowId = showId;
+                Show show = await showCoordinationService.ModifyShowSellingDetailsAsync(@params);
+
+                return Ok(show);
+            }
+            catch (NotFoundShowException exception)
+            {
+                return NotFound(exception);
+            }
+            catch (UpdateShowSellingDetailsValidationException exception)
+            {
+                return BadRequest(exception);
+            }
+            catch (NotAuthorizedAccountException exception)
+            {
+                return Forbidden(exception);
+            }
+            catch (NotAuthenticatedAccountException exception)
+            {
+                return Unauthorized(exception);
+            }
+        }
     }
 }

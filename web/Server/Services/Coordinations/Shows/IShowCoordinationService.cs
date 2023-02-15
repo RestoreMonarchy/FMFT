@@ -11,6 +11,7 @@ namespace FMFT.Web.Server.Services.Coordinations.Shows
         ValueTask<ShowProduct> AddShowProductAsync(AddShowProductParams @params);
         ValueTask<Show> ModifyShowAsync(UpdateShowParams @params);
         ValueTask<ShowProduct> ModifyShowProductAsync(UpdateShowProductParams @params);
+        ValueTask<Show> ModifyShowSellingDetailsAsync(UpdateShowSellingDetailsParams @params);
         ValueTask RemoveShowProductByIdAndShowIdAsync(int showProductId, int showId);
         ValueTask<IEnumerable<Show>> RetrieveAllShowsAsync();
         ValueTask<Show> RetrievePublicShowByIdAsync(int showId);

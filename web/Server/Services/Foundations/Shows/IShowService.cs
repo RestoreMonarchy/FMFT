@@ -7,6 +7,7 @@ namespace FMFT.Web.Server.Services.Foundations.Shows
     {
         ValueTask<Show> AddShowAsync(AddShowParams @params);
         ValueTask<Show> ModifyShowAsync(UpdateShowParams @params);
+        ValueTask<Show> ModifyShowSellingDetailsAsync(UpdateShowSellingDetailsParams @params);
         ValueTask<IEnumerable<Show>> RetrieveAllShowsAsync();
         ValueTask<Show> RetrievePublicShowByIdAsync(int showId);
         ValueTask<IEnumerable<Show>> RetrievePublicShowsAsync();

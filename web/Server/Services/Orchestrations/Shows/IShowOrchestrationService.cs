@@ -17,5 +17,6 @@ namespace FMFT.Web.Server.Services.Orchestrations.Shows
         ValueTask RemoveShowProductByIdAndShowIdAsync(int showProductId, int showId);
         ValueTask<IEnumerable<Show>> RetrievePublicShowsAsync();
         ValueTask<Show> RetrievePublicShowByIdAsync(int showId);
+        ValueTask<Show> ModifyShowSellingDetailsAsync(UpdateShowSellingDetailsParams @params);
     }
 }

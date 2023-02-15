@@ -6,7 +6,6 @@
 	@EndDateTime DATETIME2(0),
 	@AuditoriumId INT,
 	@ThumbnailMediaId UNIQUEIDENTIFIER,
-	@SellStartDateTime DATETIME2(0),
 	@IsEnabled BIT
 AS
 BEGIN
@@ -31,7 +30,6 @@ BEGIN
 			EndDateTime = @EndDateTime,
 			AuditoriumId = @AuditoriumId,
 			ThumbnailMediaId = @ThumbnailMediaId,
-			SellStartDateTime = @SellStartDateTime,
 			IsEnabled = @IsEnabled,
 			UpdateDate = SYSDATETIME()
 		WHERE Id = @Id
@@ -43,7 +41,6 @@ BEGIN
 		OR (ThumbnailMediaId <> @ThumbnailMediaId 
 			OR ThumbnailMediaId IS NULL AND @ThumbnailMediaId IS NOT NULL
 			OR ThumbnailMediaId IS NOT NULL AND @ThumbnailMediaId IS NULL)
-		OR SellStartDateTime <> @SellStartDateTime
 		OR IsEnabled <> @IsEnabled);
 	END;
 

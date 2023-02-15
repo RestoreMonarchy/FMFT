@@ -2,6 +2,7 @@
 using FMFT.Web.Server.Models.ShowProducts;
 using FMFT.Web.Server.Models.ShowProducts.Params;
 using FMFT.Web.Server.Models.Shows;
+using FMFT.Web.Server.Models.Shows.Exceptions;
 using FMFT.Web.Server.Models.Shows.Params;
 using FMFT.Web.Server.Services.Foundations.ShowProducts;
 using FMFT.Web.Server.Services.Foundations.Shows;
@@ -29,6 +30,11 @@ namespace FMFT.Web.Server.Services.Orchestrations.Shows
         public async ValueTask<Show> ModifyShowAsync(UpdateShowParams @params)
         {
             return await showService.ModifyShowAsync(@params);
+        }
+
+        public async ValueTask<Show> ModifyShowSellingDetailsAsync(UpdateShowSellingDetailsParams @params)
+        {
+            return await showService.ModifyShowSellingDetailsAsync(@params);
         }
 
         public async ValueTask<Show> RetrieveShowByIdAsync(int showId)

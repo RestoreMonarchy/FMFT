@@ -9,7 +9,6 @@
         public DateTimeOffset EndDateTime { get; set; }
         public int AuditoriumId { get; set; }
         public Guid? ThumbnailMediaId { get; set; }
-        public DateTimeOffset SellStartDateTime { get; set; }
         public bool IsEnabled { get; set; }
     }
 }

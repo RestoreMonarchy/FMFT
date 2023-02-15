@@ -14,6 +14,7 @@ namespace FMFT.Web.Client.Brokers.APIs
         ValueTask<APIResponse<List<Show>>> GetPublicShowsAsync();
         ValueTask<APIResponse<Show>> AddShowAsync(AddShowRequest request);
         ValueTask<APIResponse<Show>> UpdateShowAsync(UpdateShowRequest request);
+        ValueTask<APIResponse<Show>> UpdateShowSellingDetailsAsync(UpdateShowSellingDetailsRequest request);
 
         ValueTask<APIResponse> AddShowGalleryAsync(AddShowGalleryRequest request);
         ValueTask<APIResponse<List<ShowGallery>>> GetShowGalleryByShowIdAsync(int showId);

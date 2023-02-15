@@ -11,6 +11,8 @@ namespace FMFT.Web.Client.Views.Pages.Admin.Shows.Subpages
     {
         [Parameter]
         public Show Show { get; set; }
+        [Parameter]
+        public EventCallback<Show> ShowChanged { get; set; }
 
         public LoadingView LoadingView { get; set; }
         public AddShowProductDialog AddShowProductDialog { get; set; }
@@ -25,6 +27,12 @@ namespace FMFT.Web.Client.Views.Pages.Admin.Shows.Subpages
             ShowProductsResponse = await APIBroker.GetShowProductsByShowIdAsync(Show.Id);
 
             LoadingView.StopLoading();
+        }
+
+        private async Task HandleShowChangedAsync(Show show)
+        {
+            Show = show;
+            await ShowChanged.InvokeAsync(show);
         }
 
         private async Task HandleOpenAddDialogAsync()

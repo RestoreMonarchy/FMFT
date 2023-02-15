@@ -89,5 +89,19 @@ namespace FMFT.Web.Server.Services.Foundations.Shows
 
             return result.Result;
         }
+
+        public async ValueTask<Show> ModifyShowSellingDetailsAsync(UpdateShowSellingDetailsParams @params)
+        {
+            ValidateUpdateShowSellingDetailsParams(@params);
+
+            StoredProcedureResult<Show> result = await storageBroker.ExecuteUpdateShowSellingDetailsAsync(@params);
+
+            if (result.ReturnValue == 1)
+            {
+                throw new NotFoundShowException();
+            }
+
+            return result.Result;
+        }
     }
 }

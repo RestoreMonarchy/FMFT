@@ -5,6 +5,13 @@ namespace FMFT.Web.Server.Services.Foundations.Shows
 {
     public partial class ShowService
     {
+        private void ValidateUpdateShowSellingDetailsParams(UpdateShowSellingDetailsParams @params)
+        {
+            UpdateShowSellingDetailsValidationException validationException = new();
+
+            validationException.ThrowIfContainsErrors();
+        }
+
         private void ValidateUpdateShowParams(UpdateShowParams @params)
         {
             UpdateShowValidationException validationException = new();
@@ -24,10 +31,6 @@ namespace FMFT.Web.Server.Services.Foundations.Shows
             if (validationBroker.IsDateTimeInOneYearRangeInvalid(@params.EndDateTime))
             {
                 validationException.UpsertDataList("EndDateTime", "EndDateTime must not be later than one year in the future");
-            }
-            if (validationBroker.IsDateTimeInOneYearRangeInvalid(@params.SellStartDateTime))
-            {
-                validationException.UpsertDataList("EndDateTime", "SellStartDateTime must not be later than one year in the future");
             }
             if (validationBroker.IsDateTimeRangeInvalid(@params.StartDateTime, @params.EndDateTime))
             {
