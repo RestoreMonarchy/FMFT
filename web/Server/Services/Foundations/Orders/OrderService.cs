@@ -146,6 +146,21 @@ namespace FMFT.Web.Server.Services.Foundations.Orders
                 throw new OrderAmountMismatchException();
             }
 
+            if (result.ReturnValue == 106)
+            {
+                throw new FromThePastShowOrderException();
+            }
+
+            if (result.ReturnValue == 110)
+            {
+                throw new ShowDisabledOrderException();
+            }
+
+            if (result.ReturnValue == 111)
+            {
+
+            }
+
             return result.Result;
         }
 
