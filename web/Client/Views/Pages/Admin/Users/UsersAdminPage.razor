@@ -26,6 +26,25 @@
                             </div>
                             <div class="ms-auto mb-2">
                                 <div class="input-group">
+                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                        <i class="fa-solid fa-wrench"></i>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <Virtualize Items="Enum.GetValues<UserRole>()" Context="role">
+                                            <li>
+                                                <div class="dropdown-item">
+                                                    <input type="checkbox"
+                                                           id="@RoleFilterId(role)"
+                                                           class="form-check-input"
+                                                           checked="@RoleFilters[role]"
+                                                           onchange="@((ChangeEventArgs a) => ChangeRoleFilter(role, a))" />
+                                                    <label class="form-check-label" for="@RoleFilterId(role)">
+                                                        @role
+                                                    </label>
+                                                </div>
+                                            </li>
+                                        </Virtualize>
+                                    </ul>
                                     <span class="input-group-text">
                                         <i class="fa-solid fa-magnifying-glass"></i>
                                     </span>
