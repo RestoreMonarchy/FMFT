@@ -55,12 +55,38 @@
                                     </Condition>
                                 </ul>
                             </div>
+
                             <div class="list-group list-group-flush">
-                                <a class="list-group-item list-group-item-action list-group-item-success" href="/shows/@ShowId/order">
-                                    <i class="fa-solid fa-ticket me-1"></i>
-                                    Kup bilety
-                                </a>
+                                <Condition Evaluation="Show.IsPast()">
+                                    <NotMatch>
+                                        <Condition Evaluation="Show.IsSellDisabled()">
+                                            <Match>
+                                                <div class="list-group-item list-group-item-secondary small">
+                                                    Sprzedaż rozpocznie się
+                                                    <span class="fw-bold">@Show.SellStartDateTime.LocalDateTime.ToShortDateString() @Show.SellStartDateTime.LocalDateTime.ToShortTimeString()</span>
+                                                </div>
+                                                <div class="list-group-item list-group-item-action list-group-item-success disabled">
+                                                    <i class="fa-solid fa-ticket me-1"></i>
+                                                    Kup bilety
+                                                </div>
+                                            </Match>
+                                            <NotMatch>
+                                                <a class="list-group-item list-group-item-action list-group-item-success" href="/shows/@ShowId/order">
+                                                    <i class="fa-solid fa-ticket me-1"></i>
+                                                    Kup bilety
+                                                </a>
+                                            </NotMatch>
+                                        </Condition>
+                                        
+                                    </NotMatch>
+                                    <Match>
+                                        <div class="list-group-item list-group-item-info">
+                                            To wydarzenie już się odbyło
+                                        </div>
+                                    </Match>
+                                </Condition>
                             </div>
+                                                     
                         </div>
                     </div>
 
@@ -100,12 +126,26 @@
                                     @Description
                                 </p>
                             </div>
-                            <div class="list-group list-group-flush">
-                                <a class="list-group-item list-group-item-action list-group-item-success" href="/shows/@ShowId/order">
-                                    <i class="fa-solid fa-ticket me-1"></i>
-                                    Kup bilety
-                                </a>
-                            </div>
+                            <Condition Evaluation="Show.IsPast()">
+                                <NotMatch>                                    
+                                    <div class="list-group list-group-flush">
+                                        <Condition Evaluation="Show.IsSellDisabled()">
+                                            <Match>
+                                                <div class="list-group-item list-group-item-action list-group-item-success disabled">
+                                                    <i class="fa-solid fa-ticket me-1"></i>
+                                                    Kup bilety
+                                                </div>
+                                            </Match>
+                                            <NotMatch>
+                                                <a class="list-group-item list-group-item-action list-group-item-success" href="/shows/@ShowId/order">
+                                                    <i class="fa-solid fa-ticket me-1"></i>
+                                                    Kup bilety
+                                                </a>
+                                            </NotMatch>
+                                        </Condition>
+                                    </div>
+                                </NotMatch>
+                            </Condition>                            
                         </div>
                     </div>
                 </div>

@@ -18,7 +18,8 @@ namespace FMFT.Web.Client.Models.API.Shows
         public List<ShowReservedSeat> ReservedSeats { get; set; }
 
 
-        public bool IsPast() => StartDateTime.UtcDateTime < DateTime.UtcNow;
+        public bool IsPast() => EndDateTime.UtcDateTime < DateTime.UtcNow;
+        public bool IsSellDisabled() => SellStartDateTime.UtcDateTime > DateTime.UtcNow;
         public TimeSpan Duration() => EndDateTime - StartDateTime;
     }
 }

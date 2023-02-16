@@ -3,6 +3,6 @@
     public class UpdateShowSellingDetailsParams
     {
         public int ShowId { get; set; }
-        public DateTimeOffset SellStartDateTime { get; set; }
+        public DateTime SellStartDateTime { get; set; }
     }
 }

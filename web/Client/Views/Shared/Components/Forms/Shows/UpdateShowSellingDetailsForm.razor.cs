@@ -16,7 +16,6 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Shows
         [Parameter]
         public EventCallback<Show> ShowChanged { get; set; }
 
-
         public AlertGroupBase AlertGroup { get; set; }
         public AlertBase SuccessAlert { get; set; }
         public AlertBase ErrorAlert { get; set; }
@@ -48,7 +47,7 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Shows
             UpdateShowSellingDetailsRequest request = new()
             {
                 ShowId = Show.Id,
-                SellStartDateTime = new DateTimeOffset(sellStartDateTime)
+                SellStartDateTime = sellStartDateTime
             };
 
             Response = await APIBroker.UpdateShowSellingDetailsAsync(request);

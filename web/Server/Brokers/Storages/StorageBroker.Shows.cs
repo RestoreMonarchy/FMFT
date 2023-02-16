@@ -34,7 +34,7 @@ namespace FMFT.Web.Server.Brokers.Storages
             GetShowParams @params = new()
             {
                 Disabled = false,
-                Expired = false
+                Expired = true
             };
 
             return await QueryShowsAsync(@params);

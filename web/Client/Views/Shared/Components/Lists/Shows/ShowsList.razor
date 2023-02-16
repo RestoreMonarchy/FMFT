@@ -1,28 +1,77 @@
-﻿<div class="row">
-    <Iterations Items="Shows.Where(x => x.StartDateTime > DateTime.Now.AddHours(1)).OrderBy(x => x.StartDateTime)">
-        <div class="col-md-6 g-md-2 col-lg-4">
-            <div class="card mb-3">
-                <a class="text-decoration-none" href="/shows/@context.Id">
-                    <div class="show-thumbnail" style="@GetShowThumbnailStyle(context)">
+﻿
+<div class="mb-3">
+    <div class="row">
+        <Iterations Items="FutureShows.OrderBy(x => x.StartDateTime)">
+            <div class="col-md-6 g-md-2 col-lg-4">
+                <div class="card mb-3">
+                    <a class="text-decoration-none" href="/shows/@context.Id">
+                        <div class="show-thumbnail" style="@GetShowThumbnailStyle(context)">
+                        </div>
+                    </a>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            @context.Name <br />
+                            <small class="text-muted">
+                                @context.StartDateTime.LocalDateTime.ToString("f")
+                            </small>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="/shows/@context.Id" class="btn btn-sm btn-secondary">
+                                <i class="fa-solid fa-info me-1"></i> Szczegóły
+                            </a>
+                            <Condition Evaluation="@context.IsSellDisabled()">
+                                <Match>
+                                    <span title="Sprzedaż rozpocznie się @context.SellStartDateTime.LocalDateTime.ToShortDateString() @context.SellStartDateTime.LocalDateTime.ToShortTimeString()">
+                                        <div class="btn btn-sm btn-success disabled">
+                                            <i class="fa-solid fa-ticket me-1"></i> Kup bilety
+                                        </div>
+                                    </span>                                    
+                                </Match>
+                                <NotMatch>
+                                    <a href="/shows/@context.Id/order" class="btn btn-sm btn-success">
+                                        <i class="fa-solid fa-ticket me-1"></i> Kup bilety
+                                    </a>
+                                </NotMatch>
+                            </Condition>                            
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </Iterations>
+    </div>
+</div>
+
+<Condition Evaluation="PastShows.Any()">
+    <Match>
+        <div class="mb-3">
+            <div class="fs-5 mb-2">
+                Historia
+            </div>
+            <div class="row">
+                <Iterations Items="PastShows.OrderByDescending(x => x.EndDateTime)">
+                    <div class="col-md-6 g-md-2 col-lg-4">
+                        <div class="card mb-3">
+                            <a class="text-decoration-none" href="/shows/@context.Id">
+                                <div class="show-thumbnail" style="@GetShowThumbnailStyle(context)">
+                                </div>
+                            </a>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    @context.Name <br />
+                                    <small class="text-muted">
+                                        @context.StartDateTime.LocalDateTime.ToString("f")
+                                    </small>
+                                </li>
+                                <li class="list-group-item">
+                                    <a href="/shows/@context.Id" class="btn btn-sm btn-secondary">
+                                        <i class="fa-solid fa-info me-1"></i> Szczegóły
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
-                </a>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
-                        @context.Name <br />
-                        <small class="text-muted">
-                            @context.StartDateTime.LocalDateTime.ToString("f")
-                        </small>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="/shows/@context.Id" class="btn btn-sm btn-secondary">
-                            <i class="fa-solid fa-info me-1"></i> Szczegóły
-                        </a>
-                        <a href="/shows/@context.Id/order" class="btn btn-sm btn-success">
-                            <i class="fa-solid fa-ticket me-1"></i> Kup bilety
-                        </a>
-                    </li>
-                </ul>
+                </Iterations>
             </div>
         </div>
-    </Iterations>
-</div>
+    </Match>
+</Condition>

@@ -8,6 +8,9 @@ namespace FMFT.Web.Client.Views.Shared.Components.Lists.Shows
         [Parameter]
         public List<Show> Shows { get; set; }
 
+        public IEnumerable<Show> FutureShows => Shows.Where(x => !x.IsPast());
+        public IEnumerable<Show> PastShows => Shows.Where(x => x.IsPast());
+
         private string GetShowThumbnailStyle(Show show)
         {
             if (!show.ThumbnailMediaId.HasValue)

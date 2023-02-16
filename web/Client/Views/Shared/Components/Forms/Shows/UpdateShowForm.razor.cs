@@ -69,8 +69,8 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Shows
                 Id = Show.Id,
                 Name = Model.Name,
                 Description = Model.Description,
-                StartDateTime = new DateTimeOffset(startDateTime),
-                EndDateTime = new DateTimeOffset(endDateTime),
+                StartDateTime = startDateTime,
+                EndDateTime = endDateTime,
                 AuditoriumId = Model.AudotiriumId.Value,
                 ThumbnailMediaId = Model.ThumbnailMediaId          
             };
