@@ -29,7 +29,7 @@
                                     <span class="input-group-text">
                                         <i class="fa-solid fa-magnifying-glass"></i>
                                     </span>
-                                    <input class="form-control" type="text" @bind="searchString" placeholder="Szukaj po email" @bind:event="oninput" />
+                                    <input class="form-control" type="text" @bind="searchString" placeholder="Szukaj po email, imię lub nazwisko" @bind:event="oninput" />
                                 </div>                                
                             </div>
                         </div>
@@ -41,6 +41,12 @@
                                     </th>
                                     <th scope="col">
                                         Email
+                                    </th>
+                                    <th scope="col" class="d-none d-md-table-cell">
+                                        Imię i nazwisko
+                                    </th>
+                                    <th scope="col" class="d-none d-lg-table-cell">
+                                        Typ użytkownika
                                     </th>
                                     <th scope="col" class="d-none d-sm-table-cell">
                                         Data rejestracji
@@ -55,11 +61,23 @@
                                         </th>
                                         <td>
                                             <a href="/admin/users/@user.Id" class="text-decoration-none">
-                                                @user.Email
-                                            </a>
+                                                @FormatHelper.Email(user.Email)
+                                                <Condition Evaluation="user.Role == UserRole.Admin">
+                                                    <Match>
+                                                        <i class="fa-regular fa-star small"></i>
+                                                    </Match>
+                                                </Condition>
+                                            </a>                                            
+                                        </td>
+                                        <td class="d-none d-md-table-cell">
+                                            @FormatHelper.FullName(user.FirstName, user.LastName)
+                                        </td>
+                                        <td class="d-none d-lg-table-cell">
+                                            @user.Role
                                         </td>
                                         <td class="d-none d-sm-table-cell">
                                             @user.CreateDate.LocalDateTime.ToShortDateString()
+                                            @user.CreateDate.LocalDateTime.ToShortTimeString()
                                         </td>
                                     </tr>
                                 </Iterations>

@@ -13,7 +13,11 @@ namespace FMFT.Web.Client.Views.Pages.Admin.Users
 
         public List<User> Users => UsersResponse.Object;
 
-        private IEnumerable<User> SearchUsers => Users.Where(x => string.IsNullOrEmpty(searchString) || x.Email.Contains(searchString, StringComparison.OrdinalIgnoreCase));
+        private IEnumerable<User> SearchUsers => Users.Where(x => string.IsNullOrEmpty(searchString) 
+            || x.Email.Contains(searchString, StringComparison.OrdinalIgnoreCase)
+            || (x.FirstName != null && x.FirstName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            || (x.LastName != null && x.LastName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            || x.FullName().Contains(searchString, StringComparison.OrdinalIgnoreCase));
 
         private string searchString = string.Empty;
 
