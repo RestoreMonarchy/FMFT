@@ -102,6 +102,7 @@
     <Build Include="dbo\procedures\UpdateOrderPaymentToken.sql" />
     <Build Include="dbo\procedures\UpdateOrderStatus.sql" />
     <Build Include="dbo\procedures\UpdateShowSellingDetails.sql" />
+    <Build Include="dbo\procedures\UpdateShowStatus.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FMFT.Database.publish.xml" />

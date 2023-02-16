@@ -40,7 +40,10 @@
                                 <GalleryShowAdminSubpage Show="Show" />
                             </NavigationItem>
                             <NavigationItem Key="tickets" Title="Bilety">
-                                <ProductsShowAdminSubpage Show="Show" />
+                                <ProductsShowAdminSubpage @bind-Show="Show" />
+                            </NavigationItem>
+                            <NavigationItem Key="manage" Title="Zarządzaj">
+                                <ManageShowAdminSubpage @bind-Show="Show" />
                             </NavigationItem>
                         </Navigation>                        
                                     

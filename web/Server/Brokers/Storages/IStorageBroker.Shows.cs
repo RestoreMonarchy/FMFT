@@ -13,5 +13,6 @@ namespace FMFT.Web.Server.Brokers.Storages
         ValueTask<StoredProcedureResult<Show>> ExecuteAddShowAsync(AddShowParams @params);
         ValueTask<StoredProcedureResult<Show>> ExecuteUpdateShowAsync(UpdateShowParams @params);
         ValueTask<StoredProcedureResult<Show>> ExecuteUpdateShowSellingDetailsAsync(UpdateShowSellingDetailsParams @params);
+        ValueTask<StoredProcedureResult<Show>> ExecuteUpdateShowStatusAsync(UpdateShowStatusParams @params);
     }
 }

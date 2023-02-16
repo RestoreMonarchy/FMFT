@@ -5,8 +5,7 @@
 	@StartDateTime DATETIME2(0),
 	@EndDateTime DATETIME2(0),
 	@AuditoriumId INT,
-	@ThumbnailMediaId UNIQUEIDENTIFIER,
-	@IsEnabled BIT
+	@ThumbnailMediaId UNIQUEIDENTIFIER
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -30,7 +29,6 @@ BEGIN
 			EndDateTime = @EndDateTime,
 			AuditoriumId = @AuditoriumId,
 			ThumbnailMediaId = @ThumbnailMediaId,
-			IsEnabled = @IsEnabled,
 			UpdateDate = SYSDATETIME()
 		WHERE Id = @Id
 		AND ([Name] <> @Name
@@ -41,7 +39,7 @@ BEGIN
 		OR (ThumbnailMediaId <> @ThumbnailMediaId 
 			OR ThumbnailMediaId IS NULL AND @ThumbnailMediaId IS NOT NULL
 			OR ThumbnailMediaId IS NOT NULL AND @ThumbnailMediaId IS NULL)
-		OR IsEnabled <> @IsEnabled);
+		);
 	END;
 
 	EXEC dbo.GetShows @ShowId = @Id;

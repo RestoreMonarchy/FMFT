@@ -12,6 +12,13 @@ namespace FMFT.Web.Server.Services.Foundations.Shows
             validationException.ThrowIfContainsErrors();
         }
 
+        private void ValidateUpdateShowStatusParams(UpdateShowStatusParams @params)
+        {
+            UpdateShowStatusValidationException validationException = new();
+
+            validationException.ThrowIfContainsErrors();
+        }
+
         private void ValidateUpdateShowParams(UpdateShowParams @params)
         {
             UpdateShowValidationException validationException = new();

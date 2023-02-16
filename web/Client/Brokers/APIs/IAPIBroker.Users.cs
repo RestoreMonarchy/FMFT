@@ -1,6 +1,8 @@
 ﻿using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.ShowProducts;
 using FMFT.Web.Client.Models.API.ShowProducts.Requests;
+using FMFT.Web.Client.Models.API.Shows;
+using FMFT.Web.Client.Models.API.Shows.Requests;
 using FMFT.Web.Client.Models.API.Users;
 using FMFT.Web.Client.Models.API.Users.Requests;
 

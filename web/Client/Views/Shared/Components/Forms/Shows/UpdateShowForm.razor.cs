@@ -52,8 +52,7 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Shows
                 StartTime = TimeOnly.FromDateTime(Show.StartDateTime.LocalDateTime),
                 DurationMinutes = (int)duration.TotalMinutes,
                 AudotiriumId = Show.AuditoriumId,
-                ThumbnailMediaId = Show.ThumbnailMediaId,
-                IsEnabled = Show.IsEnabled
+                ThumbnailMediaId = Show.ThumbnailMediaId
             };
         }
 
@@ -73,8 +72,7 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Shows
                 StartDateTime = new DateTimeOffset(startDateTime),
                 EndDateTime = new DateTimeOffset(endDateTime),
                 AuditoriumId = Model.AudotiriumId.Value,
-                ThumbnailMediaId = Model.ThumbnailMediaId,
-                IsEnabled = Model.IsEnabled                
+                ThumbnailMediaId = Model.ThumbnailMediaId          
             };
 
             Response = await APIBroker.UpdateShowAsync(request);

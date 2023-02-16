@@ -22,7 +22,5 @@ namespace FMFT.Web.Client.Models.Forms.Shows
         [Required(ErrorMessage = "Musisz wybrać audytorium")]
         public int? AudotiriumId { get; set; }
         public Guid? ThumbnailMediaId { get; set; }
-
-        public bool IsEnabled { get; set; }
     }
 }

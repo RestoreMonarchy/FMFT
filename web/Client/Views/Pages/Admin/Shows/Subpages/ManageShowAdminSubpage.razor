@@ -1,0 +1,44 @@
+﻿
+<AlertGroupBase @ref="AlertGroup">
+    <AlertBase @ref="SuccessAlert" Class="alert-success">
+        Pomyślnie zaktualizowano status wydarzenia!
+    </AlertBase>
+    <AlertBase @ref="ErrorAlert" Class="alert-danger">
+        Wystąpił błąd! Spróbuj ponownie później
+    </AlertBase>
+</AlertGroupBase>
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card mb-3">
+            <Condition Evaluation="Show.IsEnabled">
+                <Match>
+                    <div class="card-header">
+                        Dezaktywuj wydarzenie
+                    </div>
+                    <div class="card-body small">
+                        Jeżeli dezaktywujesz to wydarzenie, nie będzie się ono wyświetlało na liście wydarzeń i użytkownicy nie będą mogli tworzyć zamówień.
+                    </div>
+                    <div class="card-footer">
+                        <ButtonBase @ref="UpdateStatusButton" Class="btn btn-danger" OnClick="() => UpdateStatusAsync(false)">
+                            Dezaktywuj wydarzenie
+                        </ButtonBase>
+                    </div>
+                </Match>
+                <NotMatch>
+                    <div class="card-header">
+                        Aktwyuj wydarzenie
+                    </div>
+                    <div class="card-body small">
+                        Po aktywacji wydarzenie będzie wyświetlało na liście wydarzeń i użytkownicy będą mogli składać zamówienia.
+                    </div>
+                    <div class="card-footer">
+                        <ButtonBase @ref="UpdateStatusButton" Class="btn btn-success" OnClick="() => UpdateStatusAsync(true)">
+                            Aktywuj wydarzenie
+                        </ButtonBase>
+                    </div>
+                </NotMatch>
+            </Condition>
+        </div>
+    </div>
+</div>

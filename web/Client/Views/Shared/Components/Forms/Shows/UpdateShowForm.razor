@@ -67,22 +67,6 @@
             </div>
         </div>
 
-        <div class="mb-3">
-            <div class="form-check form-switch">
-                <InputCheckbox class="form-check-input" id="enableSwitch" @bind-Value="Model.IsEnabled" />
-                <label class="form-check-label" for="enableSwitch">
-                    <Condition Evaluation="@Model.IsEnabled">
-                        <Match>
-                            Aktywne
-                        </Match>
-                        <NotMatch>
-                            Nie aktywne
-                        </NotMatch>
-                    </Condition>
-                </label>
-            </div>
-        </div>
-
         <AlertGroupBase @ref="AlertGroup">
             <AlertBase @ref="AuditoriumNotFoundAlert" Class="alert-danger mt-3">
                 Wybrane audytorium nie istnieje
