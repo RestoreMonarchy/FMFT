@@ -9,6 +9,54 @@ namespace FMFT.Web.Client.Helpers
             return orderId.ToString().PadLeft(6, '0');
         }
 
+        public static string FirstName(string firstName)
+        {
+            if (string.IsNullOrEmpty(firstName))
+            {
+                return "???";
+            }
+
+            if (firstName.Length > 12)
+            {
+                firstName = firstName.Substring(0, 9) + "...";
+            }
+
+            return firstName;
+        }
+
+        public static string LastName(string lastName)
+        {
+            if (string.IsNullOrEmpty(lastName))
+            {
+                return "???";
+            }
+
+            if (lastName.Length > 12)
+            {
+                lastName = lastName.Substring(0, 9) + "...";
+            }
+
+            return lastName;
+        }
+        
+        public static string FullName(string firstName, string lastName)
+        {
+            firstName = FirstName(firstName);
+            lastName = LastName(lastName);
+
+            return firstName + " " + lastName;
+        }
+
+        public static string Email(string emailAddress)
+        {
+            if (emailAddress.Length > 25)
+            {
+                return emailAddress.Substring(0, 22) + "...";
+            }
+
+            return emailAddress;
+        }
+
         public static string TranslatePaymentMethod(PaymentMethod paymentMethod)
         {
             switch (paymentMethod)

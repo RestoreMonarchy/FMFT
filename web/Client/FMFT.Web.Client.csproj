@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <None Remove="Views\Pages\Home\Shows\Orders\yzjaqcv1.cwm~" />
+    <None Remove="Views\Shared\Components\Forms\Shows\ajqubaqk.kx5~" />
   </ItemGroup>
 
   <ItemGroup>

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace FMFT.Web.Client.Views.Pages.Admin.Shows.Subpages
 {
-    public partial class EditShowAdminSubpage
+    public partial class SettingsShowAdminSubpage
     {
         [Parameter]
         public Show Show { get; set; }

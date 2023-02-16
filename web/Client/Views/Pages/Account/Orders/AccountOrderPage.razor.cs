@@ -30,6 +30,8 @@ namespace FMFT.Web.Client.Views.Pages.Account.Orders
             { OrderStatus.PaymentWaiting, "Dokończ dokonywanie płatności na stronie operatora przed upływem czasu" }
         };
 
+        private IEnumerable<Reservation> ValidOrderReservations => OrderReservations.Where(x => x.Status is ReservationStatus.Ok or ReservationStatus.Canceled);
+
         protected override async Task OnParametersSetAsync()
         {
             if (!UserAccountState.IsAuthenticated)

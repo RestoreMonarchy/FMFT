@@ -98,6 +98,7 @@ BEGIN
 	JOIN dbo.ShowProducts p ON p.Id = o.ShowProductId
 	JOIN dbo.Shows s ON s.Id = p.ShowId;
 
+
 	IF EXISTS (SELECT * FROM @OrderItems WHERE ShowId IS NULL)
 	BEGIN 
 		PRINT 'Invalid value of ShowProductId';
@@ -108,6 +109,18 @@ BEGIN
 	BEGIN
 		PRINT 'Order amount must be greater than 0';
 		SET @ret = 104;
+	END;
+
+	IF EXISTS (SELECT * FROM @OrderItems oi JOIN dbo.Shows s ON s.Id = oi.ShowId WHERE s.IsEnabled = 0)
+	BEGIN
+		PRINT 'One or more shows are disabled';
+		SET @ret = 110;
+	END;
+
+	IF EXISTS (SELECT * FROM @OrderItems oi JOIN dbo.Shows s ON s.Id = oi.ShowId WHERE s.SellStartDateTime > SYSDATETIME())
+	BEGIN
+		PRINT 'One or more shows have not started selling';
+		SET @ret = 111;
 	END;
 
 	SELECT @sumOrderItemsAmount = SUM(Quantity * Price)	FROM @OrderItems;
@@ -128,7 +141,7 @@ BEGIN
 	IF @completedShowId IS NOT NULL
 	BEGIN
 		PRINT FORMATMESSAGE('Show Id %d is from the past', @completedShowId);
-		SET @ret = 105;
+		SET @ret = 106;
 	END;
 
 	IF @ret = 0

@@ -2,6 +2,7 @@
 using FMFT.Web.Server.Models.ShowProducts;
 using FMFT.Web.Server.Models.ShowProducts.Params;
 using FMFT.Web.Server.Models.Shows;
+using FMFT.Web.Server.Models.Shows.Exceptions;
 using FMFT.Web.Server.Models.Shows.Params;
 using FMFT.Web.Server.Services.Foundations.ShowProducts;
 using FMFT.Web.Server.Services.Foundations.Shows;
@@ -31,9 +32,34 @@ namespace FMFT.Web.Server.Services.Orchestrations.Shows
             return await showService.ModifyShowAsync(@params);
         }
 
+        public async ValueTask<Show> ModifyShowSellingDetailsAsync(UpdateShowSellingDetailsParams @params)
+        {
+            return await showService.ModifyShowSellingDetailsAsync(@params);
+        }
+
+        public async ValueTask<Show> ModifyShowStatusAsync(UpdateShowStatusParams @params)
+        {
+            return await showService.ModifyShowStatusAsync(@params);
+        }
+
+        public async ValueTask<Show> ModifyShowTimeAsync(UpdateShowTimeParams @params)
+        {
+            return await showService.ModifyShowTimeAsync(@params);
+        }
+
         public async ValueTask<Show> RetrieveShowByIdAsync(int showId)
         {
             return await showService.RetrieveShowByIdAsync(showId);
+        }
+
+        public async ValueTask<Show> RetrievePublicShowByIdAsync(int showId)
+        {
+            return await showService.RetrievePublicShowByIdAsync(showId);
+        }
+
+        public async ValueTask<IEnumerable<Show>> RetrievePublicShowsAsync()
+        {
+            return await showService.RetrievePublicShowsAsync();
         }
 
         public async ValueTask<IEnumerable<Show>> RetrieveAllShowsAsync()

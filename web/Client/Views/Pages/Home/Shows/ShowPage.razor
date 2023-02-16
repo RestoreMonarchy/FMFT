@@ -1,5 +1,6 @@
 ﻿@page "/shows/{ShowId:int}"
 @using FMFT.Extensions.Blazor.Bases.Carousels
+@using FMFT.Extensions.Blazor.Bases.Conditions
 @using FMFT.Extensions.Blazor.Bases.MarkdownEditors;
 
 <MainLayoutBody>
@@ -18,6 +19,15 @@
     <LoadingView @ref="LoadingView">
         <Condition Evaluation="ShowResponse.IsSuccessful && AuditoriumResponse.IsSuccessful && ShowGalleryResponse.IsSuccessful && ShowProductsResponse.IsSuccessful">
             <Match>
+
+                <Condition Evaluation="Show.IsEnabled">
+                    <NotMatch>
+                        <div class="alert alert-info">
+                            Wydarzenie jest nie aktywne
+                            <a href="/admin/shows/@ShowId" class="float-end">Edytuj</a>
+                        </div>
+                    </NotMatch>
+                </Condition>
 
                 <div class="row">
 
@@ -54,12 +64,48 @@
                                     </Condition>
                                 </ul>
                             </div>
+
                             <div class="list-group list-group-flush">
-                                <a class="list-group-item list-group-item-action list-group-item-success" href="/shows/@ShowId/order">
-                                    <i class="fa-solid fa-ticket me-1"></i>
-                                    Kup bilety
-                                </a>
+                                <Condition Evaluation="Show.IsPast()">
+                                    <NotMatch>
+                                        <Condition Evaluation="ShowProducts.Any()">
+                                            <Match>
+                                                <Condition Evaluation="Show.IsSellDisabled()">
+                                                    <Match>
+                                                        <div class="list-group-item list-group-item-secondary small">
+                                                            Sprzedaż rozpocznie się
+                                                            <span class="fw-bold">@Show.SellStartDateTime.LocalDateTime.ToShortDateString() @Show.SellStartDateTime.LocalDateTime.ToShortTimeString()</span>
+                                                        </div>
+                                                        <div class="list-group-item list-group-item-action list-group-item-success disabled">
+                                                            <i class="fa-solid fa-ticket me-1"></i>
+                                                            Kup bilety
+                                                        </div>
+                                                    </Match>
+                                                    <NotMatch>
+                                                        <a class="list-group-item list-group-item-action list-group-item-success" href="/shows/@ShowId/order">
+                                                            <i class="fa-solid fa-ticket me-1"></i>
+                                                            Kup bilety
+                                                        </a>
+                                                    </NotMatch>
+                                                </Condition>
+                                            </Match>
+                                            <NotMatch>
+                                                <div class="list-group-item list-group-item-secondary small">
+                                                    To wydarzenie nie posiada żadnych biletów
+                                                </div>
+                                            </NotMatch>
+                                        </Condition>
+                                        
+                                        
+                                    </NotMatch>
+                                    <Match>
+                                        <div class="list-group-item list-group-item-info">
+                                            To wydarzenie już się odbyło
+                                        </div>
+                                    </Match>
+                                </Condition>
                             </div>
+                                                     
                         </div>
                     </div>
 
@@ -99,12 +145,26 @@
                                     @Description
                                 </p>
                             </div>
-                            <div class="list-group list-group-flush">
-                                <a class="list-group-item list-group-item-action list-group-item-success" href="/shows/@ShowId/order">
-                                    <i class="fa-solid fa-ticket me-1"></i>
-                                    Kup bilety
-                                </a>
-                            </div>
+                            <Condition Evaluation="Show.IsPast() || !ShowProducts.Any()">
+                                <NotMatch>                                    
+                                    <div class="list-group list-group-flush">
+                                        <Condition Evaluation="Show.IsSellDisabled()">
+                                            <Match>
+                                                <div class="list-group-item list-group-item-action list-group-item-success disabled">
+                                                    <i class="fa-solid fa-ticket me-1"></i>
+                                                    Kup bilety
+                                                </div>
+                                            </Match>
+                                            <NotMatch>
+                                                <a class="list-group-item list-group-item-action list-group-item-success" href="/shows/@ShowId/order">
+                                                    <i class="fa-solid fa-ticket me-1"></i>
+                                                    Kup bilety
+                                                </a>
+                                            </NotMatch>
+                                        </Condition>
+                                    </div>
+                                </NotMatch>
+                            </Condition>                            
                         </div>
                     </div>
                 </div>
@@ -113,7 +173,16 @@
                 
             </Match>
             <NotMatch>
-                <ErrorResponseAlert />
+                <Switch Expression="ErrorCode">
+                    <SwitchCase Value="@("ERR014")">
+                        <InfoAlert>
+                            Wydarzenie nie istnieje
+                        </InfoAlert>
+                    </SwitchCase>
+                    <DefaultSwitchCase>
+                        <ErrorResponseAlert />
+                    </DefaultSwitchCase>
+                </Switch>           
             </NotMatch>
         </Condition>
     </LoadingView>

@@ -48,9 +48,6 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Shows
             {
                 Name = Show.Name,
                 Description = Show.Description,
-                StartDate = DateOnly.FromDateTime(Show.StartDateTime.LocalDateTime),
-                StartTime = TimeOnly.FromDateTime(Show.StartDateTime.LocalDateTime),
-                DurationMinutes = (int)duration.TotalMinutes,
                 AudotiriumId = Show.AuditoriumId,
                 ThumbnailMediaId = Show.ThumbnailMediaId
             };
@@ -61,18 +58,13 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Shows
             AlertGroup.HideAll();
             SubmitButton.StartSpinning();
 
-            DateTime startDateTime = Model.StartDate.ToDateTime(Model.StartTime);
-            DateTime endDateTime = startDateTime.AddMinutes(Model.DurationMinutes);
-
             UpdateShowRequest request = new()
             {
                 Id = Show.Id,
                 Name = Model.Name,
                 Description = Model.Description,
-                StartDateTime = new DateTimeOffset(startDateTime),
-                EndDateTime = new DateTimeOffset(endDateTime),
                 AuditoriumId = Model.AudotiriumId.Value,
-                ThumbnailMediaId = Model.ThumbnailMediaId
+                ThumbnailMediaId = Model.ThumbnailMediaId          
             };
 
             Response = await APIBroker.UpdateShowAsync(request);

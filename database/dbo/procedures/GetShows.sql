@@ -1,5 +1,7 @@
 ﻿CREATE PROCEDURE dbo.GetShows
-	@ShowId INT = NULL
+	@ShowId INT = NULL,
+	@Expired BIT = 1,
+	@Disabled BIT = 1
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -12,14 +14,18 @@ BEGIN
 		FROM dbo.Shows s 
 		LEFT JOIN dbo.Reservations r ON r.ShowId = s.Id AND r.IsValid = 1
 		LEFT JOIN dbo.ReservationSeats rs ON rs.ReservationId  = r.Id
-		WHERE s.Id = @ShowId;
+		WHERE s.Id = @ShowId
+		AND (@Expired = 1 OR s.EndDateTime > SYSDATETIME())
+		AND (@Disabled = 1 OR s.IsEnabled = 1);
 	END
 	ELSE
 	BEGIN
 		SELECT s.*, rs.SeatId 
 		FROM dbo.Shows s 
 		LEFT JOIN dbo.Reservations r ON r.ShowId = s.Id AND r.IsValid = 1
-		LEFT JOIN dbo.ReservationSeats rs ON rs.ReservationId  = r.Id;
+		LEFT JOIN dbo.ReservationSeats rs ON rs.ReservationId  = r.Id
+		WHERE (@Expired = 1 OR s.EndDateTime > SYSDATETIME())
+		AND (@Disabled = 1 OR s.IsEnabled = 1);
 	END;
 
 	RETURN 0;

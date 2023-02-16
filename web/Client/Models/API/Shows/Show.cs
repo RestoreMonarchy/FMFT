@@ -11,11 +11,15 @@ namespace FMFT.Web.Client.Models.API.Shows
         public DateTimeOffset EndDateTime { get; set; }
         public int AuditoriumId { get; set; }
         public Guid? ThumbnailMediaId { get; set; }
+        public DateTimeOffset SellStartDateTime { get; set; }
+        public bool IsEnabled { get; set; }
+        public DateTimeOffset UpdateDate { get; set; }
         public DateTimeOffset CreateDate { get; set; }
         public List<ShowReservedSeat> ReservedSeats { get; set; }
 
 
-        public bool IsPast() => StartDateTime.UtcDateTime < DateTime.UtcNow;
+        public bool IsPast() => EndDateTime.UtcDateTime < DateTime.UtcNow;
+        public bool IsSellDisabled() => SellStartDateTime.UtcDateTime > DateTime.UtcNow;
         public TimeSpan Duration() => EndDateTime - StartDateTime;
     }
 }

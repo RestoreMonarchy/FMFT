@@ -20,6 +20,16 @@ namespace FMFT.Web.Client.Brokers.APIs
             return await GetAsync<List<Show>>(ShowsRelativeUrl);
         }
 
+        public async ValueTask<APIResponse<Show>> GetPublicShowByIdAsync(int showId)
+        {
+            return await GetAsync<Show>($"{ShowsRelativeUrl}/{showId}/public");
+        }
+
+        public async ValueTask<APIResponse<List<Show>>> GetPublicShowsAsync()
+        {
+            return await GetAsync<List<Show>>($"{ShowsRelativeUrl}/public");
+        }
+
         public async ValueTask<APIResponse<Show>> AddShowAsync(AddShowRequest request)
         {
             return await PostAsync<Show>(ShowsRelativeUrl, request);
@@ -28,6 +38,21 @@ namespace FMFT.Web.Client.Brokers.APIs
         public async ValueTask<APIResponse<Show>> UpdateShowAsync(UpdateShowRequest request)
         {
             return await PutAsync<Show>(ShowsRelativeUrl, request);
+        }
+
+        public async ValueTask<APIResponse<Show>> UpdateShowSellingDetailsAsync(UpdateShowSellingDetailsRequest request)
+        {
+            return await PutAsync<Show>($"{ShowsRelativeUrl}/{request.ShowId}/sellingdetails", request);
+        }
+
+        public async ValueTask<APIResponse<Show>> UpdateShowStatusAsync(UpdateShowStatusRequest request)
+        {
+            return await PutAsync<Show>($"{ShowsRelativeUrl}/{request.ShowId}/status", request);
+        }
+
+        public async ValueTask<APIResponse<Show>> UpdateShowTimeAsync(UpdateShowTimeRequest request)
+        {
+            return await PutAsync<Show>($"{ShowsRelativeUrl}/{request.ShowId}/time", request);
         }
 
         public async ValueTask<APIResponse> AddShowGalleryAsync(AddShowGalleryRequest request)

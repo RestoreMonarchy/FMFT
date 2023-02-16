@@ -1,0 +1,34 @@
+﻿
+<EditForm Model="Model" OnValidSubmit="SubmitAsync">
+    <div class="mb-3">
+        <span class="form-label">Data rozpoczęcia sprzedaży</span>
+        <input type="date" class="form-control" @bind="Model.SellStartDate" max="@calendarEndDate" />
+        <div class="text-danger">
+            <ValidationMessage For="@(() => Model.SellStartDate)" />
+        </div>
+    </div>
+    <div class="mb-3">
+        <span class="form-label">Godzina rozpoczęcia sprzedaży</span>
+        <input type="time" class="form-control" @bind="Model.SellStartTime" />
+        <div class="text-danger">
+            <ValidationMessage For="@(() => Model.SellStartTime)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <SubmitButtonBase @ref="SubmitButton" Class="btn btn-sm btn-primary">
+            <i class="fa-regular fa-floppy-disk me-1"></i>
+            Zapisz
+        </SubmitButtonBase>
+    </div>
+    
+</EditForm>
+
+<AlertGroupBase @ref="AlertGroup">
+    <AlertBase @ref="SuccessAlert" Class="alert-success"> 
+        Pomyślnie zapisano zmiany!
+    </AlertBase>
+    <AlertBase @ref="ErrorAlert" Class="alert-danger">
+        Wystąpił błąd! Spróbuj ponownie później
+    </AlertBase>
+</AlertGroupBase>

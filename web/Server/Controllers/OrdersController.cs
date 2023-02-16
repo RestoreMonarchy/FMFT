@@ -213,6 +213,18 @@ namespace FMFT.Web.Server.Controllers
             {
                 return BadRequest(exception);
             }
+            catch (FromThePastShowOrderException exception)
+            {
+                return BadRequest(exception);
+            }
+            catch (ShowDisabledOrderException exception)
+            {
+                return BadRequest(exception);
+            }
+            catch (ShowSellNotStartedOrderException exception)
+            {
+                return BadRequest(exception);
+            }
         }
     }
 }

@@ -2,8 +2,6 @@
 	@Id INT,
 	@Name NVARCHAR(255),
 	@Description NVARCHAR(4000),
-	@StartDateTime DATETIME2,
-	@EndDateTime DATETIME2,
 	@AuditoriumId INT,
 	@ThumbnailMediaId UNIQUEIDENTIFIER
 AS
@@ -24,12 +22,18 @@ BEGIN
 		UPDATE dbo.Shows 
 		SET 
 			[Name] = @Name, 
-			[Description] = @Description, 
-			StartDateTime = @StartDateTime, 
-			EndDateTime = @EndDateTime, 
+			[Description] = @Description,
 			AuditoriumId = @AuditoriumId,
-			ThumbnailMediaId = @ThumbnailMediaId
-		WHERE Id = @Id;
+			ThumbnailMediaId = @ThumbnailMediaId,
+			UpdateDate = SYSDATETIME()
+		WHERE Id = @Id
+		AND ([Name] <> @Name
+		OR ISNULL([Description], '') <> ISNULL(@Description, '')
+		OR AuditoriumId <> @AuditoriumId
+		OR (ThumbnailMediaId <> @ThumbnailMediaId 
+			OR ThumbnailMediaId IS NULL AND @ThumbnailMediaId IS NOT NULL
+			OR ThumbnailMediaId IS NOT NULL AND @ThumbnailMediaId IS NULL)
+		);
 	END;
 
 	EXEC dbo.GetShows @ShowId = @Id;

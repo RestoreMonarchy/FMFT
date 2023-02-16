@@ -18,6 +18,28 @@ namespace FMFT.Web.Server.Brokers.Storages
             return await QueryShowAsync(@params);
         }
 
+        public async ValueTask<Show> SelectPublicShowByIdAsync(int showId)
+        {
+            GetShowParams @params = new()
+            {
+                ShowId = showId,
+                Disabled = false
+            };
+
+            return await QueryShowAsync(@params);
+        }
+
+        public async ValueTask<IEnumerable<Show>> SelectPublicShowsAsync()
+        {
+            GetShowParams @params = new()
+            {
+                Disabled = false,
+                Expired = true
+            };
+
+            return await QueryShowsAsync(@params);
+        }
+
         public async ValueTask<IEnumerable<Show>> SelectAllShowsAsync()
         {
             GetShowParams @params = new();
@@ -117,6 +139,27 @@ namespace FMFT.Web.Server.Brokers.Storages
         public async ValueTask<StoredProcedureResult<Show>> ExecuteUpdateShowAsync(UpdateShowParams @params)
         {
             const string sql = "dbo.UpdateShow";
+
+            return await QueryShowStoredProcedureAsync(sql, @params);
+        }
+
+        public async ValueTask<StoredProcedureResult<Show>> ExecuteUpdateShowSellingDetailsAsync(UpdateShowSellingDetailsParams @params)
+        {
+            const string sql = "dbo.UpdateShowSellingDetails";
+
+            return await QueryShowStoredProcedureAsync(sql, @params);
+        }
+
+        public async ValueTask<StoredProcedureResult<Show>> ExecuteUpdateShowStatusAsync(UpdateShowStatusParams @params)
+        {
+            const string sql = "dbo.UpdateShowStatus";
+
+            return await QueryShowStoredProcedureAsync(sql, @params);
+        }
+
+        public async ValueTask<StoredProcedureResult<Show>> ExecuteUpdateShowTimeAsync(UpdateShowTimeParams @params)
+        {
+            const string sql = "dbo.UpdateShowTime";
 
             return await QueryShowStoredProcedureAsync(sql, @params);
         }

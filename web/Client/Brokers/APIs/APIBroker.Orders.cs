@@ -18,6 +18,11 @@ namespace FMFT.Web.Client.Brokers.APIs
             return await GetAsync<Order>($"{OrdersRelativeUrl}/{orderId}");
         }
 
+        public async ValueTask<APIResponse<List<Order>>> GetAllOrdersAsync()
+        {
+            return await GetAsync<List<Order>>(OrdersRelativeUrl);
+        }
+
         public async ValueTask<APIResponse<Order>> GetOrderBySessionIdAsync(Guid sessionId)
         {
             return await GetAsync<Order>($"{OrdersRelativeUrl}/session/{sessionId}");

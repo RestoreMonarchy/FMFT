@@ -62,6 +62,12 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
 
             TotalPrice = GetTotalPrice();
 
+            if (Show.IsPast() || Show.IsSellDisabled())
+            {
+                NavigationBroker.NavigateTo($"/shows/{ShowId}");
+                return;
+            }
+
             LoadingView.StopLoading();
         }
 

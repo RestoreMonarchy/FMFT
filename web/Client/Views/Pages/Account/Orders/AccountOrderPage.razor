@@ -69,6 +69,12 @@
                                                 @Order.CreateDate.LocalDateTime.ToShortTimeString()
                                             </span>
                                         </div>
+                                        <Iterations Items="ValidOrderReservations" Context="reservation">
+                                            <a class="list-group-item list-group-item-action list-group-item-info" href="/account/reservations/@reservation.Id">
+                                                <i class="fa-solid fa-arrow-right-long me-1"></i>
+                                                Przejdź do rezerwacji
+                                            </a>
+                                        </Iterations>
                                     </div>
                                 </div>
 

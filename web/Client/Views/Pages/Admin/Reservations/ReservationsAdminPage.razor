@@ -71,7 +71,7 @@
                                     <th scope="col">
                                         Wydarzenie
                                     </th>
-                                    <th scope="col" class="d-none d-sm-table-cell">
+                                    <th scope="col" class="d-none d-md-table-cell">
                                         Status
                                     </th>
                                     <th scope="col" class="d-none d-lg-table-cell">
@@ -110,7 +110,7 @@
                                         <td>
                                             @reservation.Show.Name
                                         </td>
-                                        <td class="d-none d-sm-table-cell">
+                                        <td class="d-none d-md-table-cell">
                                             @FormatHelper.TranslateReservationStatus(reservation.Status)
                                         </td>
                                         <td class="d-none d-lg-table-cell">
@@ -118,6 +118,7 @@
                                         </td>
                                         <td class="d-none d-sm-table-cell">
                                             @reservation.CreateDate.LocalDateTime.ToShortDateString()
+                                            @reservation.CreateDate.LocalDateTime.ToShortTimeString()
                                         </td>
                                     </tr>
                                 </Iterations>

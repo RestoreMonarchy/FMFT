@@ -11,14 +11,6 @@ namespace FMFT.Web.Client.Models.Forms.Shows
         [StringLength(4000, ErrorMessage = "Opis nie może mieć więcej niż 4000 znaków")]
         public string Description { get; set; }
 
-        [Required(ErrorMessage = "To pole jest wymagane")]
-        public DateOnly StartDate { get; set; }
-        [Required(ErrorMessage = "To pole jest wymagane")]
-        public TimeOnly StartTime { get; set; }
-
-        [Required(ErrorMessage = "To pole jest wymagane")]
-        public int DurationMinutes { get; set; }
-
         [Required(ErrorMessage = "Musisz wybrać audytorium")]
         public int? AudotiriumId { get; set; }
         public Guid? ThumbnailMediaId { get; set; }

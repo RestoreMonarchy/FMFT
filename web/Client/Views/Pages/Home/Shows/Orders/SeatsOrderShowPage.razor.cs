@@ -62,6 +62,12 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
 
             await Task.WhenAll(getDataTasks);
 
+            if (Show.IsPast() || Show.IsSellDisabled())
+            {
+                NavigationBroker.NavigateTo($"/shows/{ShowId}");
+                return;
+            }
+
             OriginalSelectedSeats = await GetSelectedSeatsAsync();
 
             LoadingView.StopLoading();

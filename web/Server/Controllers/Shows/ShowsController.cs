@@ -34,7 +34,27 @@ namespace FMFT.Web.Server.Controllers.Shows
         [HttpGet]
         public async ValueTask<IActionResult> GetShows()
         {
-            IEnumerable<Show> shows = await showCoordinationService.RetrieveAllShowsAsync();
+            try
+            {
+                IEnumerable<Show> shows = await showCoordinationService.RetrieveAllShowsAsync();
+
+                return Ok(shows);
+            }
+            catch (NotAuthorizedAccountException exception)
+            {
+                return Forbidden(exception);
+            }
+            catch (NotAuthenticatedAccountException exception)
+            {
+                return Unauthorized(exception);
+            }
+
+        }
+
+        [HttpGet("public")]
+        public async ValueTask<IActionResult> GetPublicShows()
+        {
+            IEnumerable<Show> shows = await showCoordinationService.RetrievePublicShowsAsync();
 
             return Ok(shows);
         }
@@ -51,6 +71,37 @@ namespace FMFT.Web.Server.Controllers.Shows
             catch (NotFoundShowException exception)
             {
                 return NotFound(exception);
+            }
+            catch (NotAuthorizedAccountException exception)
+            {
+                return Forbidden(exception);
+            }
+            catch (NotAuthenticatedAccountException exception)
+            {
+                return Unauthorized(exception);
+            }
+        }
+
+        [HttpGet("{showId}/public")]
+        public async ValueTask<IActionResult> GetPublicShow(int showId)
+        {
+            try
+            {
+                Show show = await showCoordinationService.RetrievePublicShowByIdAsync(showId);
+
+                return Ok(show);
+            }
+            catch (NotFoundShowException exception)
+            {
+                return NotFound(exception);
+            }
+            catch (NotAuthorizedAccountException exception)
+            {
+                return Forbidden(exception);
+            }
+            catch (NotAuthenticatedAccountException exception)
+            {
+                return Unauthorized(exception);
             }
         }
 
@@ -98,6 +149,90 @@ namespace FMFT.Web.Server.Controllers.Shows
                 return NotFound(exception);
             }
             catch (UpdateShowValidationException exception)
+            {
+                return BadRequest(exception);
+            }
+            catch (NotAuthorizedAccountException exception)
+            {
+                return Forbidden(exception);
+            }
+            catch (NotAuthenticatedAccountException exception)
+            {
+                return Unauthorized(exception);
+            }
+        }
+
+        [HttpPut("{showId}/sellingdetails")]
+        public async ValueTask<IActionResult> UpdateShowSellingDetails(int showId, [FromBody] UpdateShowSellingDetailsParams @params)
+        {
+            try
+            {
+                @params.ShowId = showId;
+                Show show = await showCoordinationService.ModifyShowSellingDetailsAsync(@params);
+
+                return Ok(show);
+            }
+            catch (NotFoundShowException exception)
+            {
+                return NotFound(exception);
+            }
+            catch (UpdateShowSellingDetailsValidationException exception)
+            {
+                return BadRequest(exception);
+            }
+            catch (NotAuthorizedAccountException exception)
+            {
+                return Forbidden(exception);
+            }
+            catch (NotAuthenticatedAccountException exception)
+            {
+                return Unauthorized(exception);
+            }
+        }
+        
+        [HttpPut("{showId}/status")]
+        public async ValueTask<IActionResult> UpdateShowStatus(int showId, [FromBody] UpdateShowStatusParams @params)
+        {
+            try
+            {
+                @params.ShowId = showId;
+                Show show = await showCoordinationService.ModifyShowStatusAsync(@params);
+
+                return Ok(show);
+            }
+            catch (NotFoundShowException exception)
+            {
+                return NotFound(exception);
+            }
+            catch (UpdateShowStatusValidationException exception)
+            {
+                return BadRequest(exception);
+            }
+            catch (NotAuthorizedAccountException exception)
+            {
+                return Forbidden(exception);
+            }
+            catch (NotAuthenticatedAccountException exception)
+            {
+                return Unauthorized(exception);
+            }
+        }
+
+        [HttpPut("{showId}/time")]
+        public async ValueTask<IActionResult> UpdateShowTime(int showId, [FromBody] UpdateShowTimeParams @params)
+        {
+            try
+            {
+                @params.ShowId = showId;
+                Show show = await showCoordinationService.ModifyShowTimeAsync(@params);
+
+                return Ok(show);
+            }
+            catch (NotFoundShowException exception)
+            {
+                return NotFound(exception);
+            }
+            catch (UpdateShowTimeValidationException exception)
             {
                 return BadRequest(exception);
             }

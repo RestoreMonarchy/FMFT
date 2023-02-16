@@ -3,6 +3,7 @@ using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Auditoriums;
 using FMFT.Web.Client.Models.API.Shows;
 using FMFT.Web.Shared.Enums;
+using Markdig.Extensions.Tables;
 
 namespace FMFT.Web.Client.Views.Pages.Admin.Shows
 {
@@ -41,12 +42,13 @@ namespace FMFT.Web.Client.Views.Pages.Admin.Shows
 
         private string GetRowClass(Show show)
         {
-            if (show.EndDateTime < DateTime.Now)
+            if (show.IsEnabled)
             {
-                return "text-muted";
+                return "table-success";
+            } else
+            {
+                return "table-warning";
             }
-
-            return string.Empty;
         }
 
         private string GetLinkClass(Show show)

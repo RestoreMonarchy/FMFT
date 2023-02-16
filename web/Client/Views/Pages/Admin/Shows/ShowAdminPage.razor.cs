@@ -24,7 +24,6 @@ namespace FMFT.Web.Client.Views.Pages.Admin.Shows
             }
         }
 
-
         public string ShowName => ShowResponse?.Object?.Name ?? ShowId.ToString();
 
         public LoadingView LoadingView { get; set; }        
@@ -53,9 +52,11 @@ namespace FMFT.Web.Client.Views.Pages.Admin.Shows
             LoadingView.StopLoading();
         }
 
-        private async Task HandleNavigateAsync(NavigationItem item)
+        private Task HandleNavigateAsync(NavigationItem item)
         {
             NavigationBroker.NavigateTo($"/admin/shows/{ShowId}/{item.Key}");
+
+            return Task.CompletedTask;
         }
     }
 }

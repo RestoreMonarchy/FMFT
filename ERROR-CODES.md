@@ -55,3 +55,9 @@ ERR047 | Payment provider is not supported
 ERR048 | Payment method is not supported
 ERR049 | Error when trying to register payment at payment provided
 ERR050 | The payment provider notification could not be verified
+ERR051 | One or more shows are from the past
+ERR052 | One or more shows are disabled
+ERR053 | One or more shows have not started selling
+ERR054 | Update Show Selling Details validation problem
+ERR055 | Update Show Status validation problem
+ERR056 | Update Show Time validation problem
