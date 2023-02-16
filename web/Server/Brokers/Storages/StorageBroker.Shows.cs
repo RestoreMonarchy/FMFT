@@ -156,5 +156,12 @@ namespace FMFT.Web.Server.Brokers.Storages
 
             return await QueryShowStoredProcedureAsync(sql, @params);
         }
+
+        public async ValueTask<StoredProcedureResult<Show>> ExecuteUpdateShowTimeAsync(UpdateShowTimeParams @params)
+        {
+            const string sql = "dbo.UpdateShowTime";
+
+            return await QueryShowStoredProcedureAsync(sql, @params);
+        }
     }
 }

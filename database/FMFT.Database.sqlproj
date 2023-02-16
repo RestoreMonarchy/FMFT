@@ -103,6 +103,7 @@
     <Build Include="dbo\procedures\UpdateOrderStatus.sql" />
     <Build Include="dbo\procedures\UpdateShowSellingDetails.sql" />
     <Build Include="dbo\procedures\UpdateShowStatus.sql" />
+    <Build Include="dbo\procedures\UpdateShowTime.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FMFT.Database.publish.xml" />

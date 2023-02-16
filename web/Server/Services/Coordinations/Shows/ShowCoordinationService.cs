@@ -50,6 +50,13 @@ namespace FMFT.Web.Server.Services.Coordinations.Shows
             return await showService.ModifyShowStatusAsync(@params);
         }
 
+        public async ValueTask<Show> ModifyShowTimeAsync(UpdateShowTimeParams @params)
+        {
+            await userAccountService.AuthorizeUserAccountByRoleAsync(UserRole.Admin);
+
+            return await showService.ModifyShowTimeAsync(@params);
+        }
+
         public async ValueTask<Show> RetrieveShowByIdAsync(int showId)
         {
             await userAccountService.AuthorizeUserAccountByRoleAsync(UserRole.Admin);

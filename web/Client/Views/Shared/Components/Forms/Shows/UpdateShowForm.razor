@@ -37,36 +37,6 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md mb-3">
-                <span class="form-label">Data rozpoczęcia</span>
-                <input type="date" class="form-control" @bind="Model.StartDate" min="@calendarStartDate" max="@calendarEndDate" />
-                <div class="text-danger">
-                    <ValidationMessage For="@(() => Model.StartDate)" />
-                </div>
-            </div>
-            <div class="col-md mb-3">
-                <span class="form-label">Godzina rozpoczęcia</span>
-                <input type="time" class="form-control" @bind="Model.StartTime" />
-                <div class="text-danger">
-                    <ValidationMessage For="@(() => Model.StartTime)" />
-                </div>
-            </div>
-        </div>
-
-        <div class="mb-3">
-            <span class="form-label">Czas trwania</span>
-            <input type="range" class="form-range" @bind="Model.DurationMinutes" @bind:event="oninput" min="5" max="300" step="5" />
-            <div class="input-group" style="max-width: 300px;">
-                <input type="number" @bind="Model.DurationMinutes" @bind:event="oninput" class="form-control" placeholder="Username" />
-                <span class="input-group-text">minut</span>
-            </div>
-
-            <div class="text-danger">
-                <ValidationMessage For="@(() => Model.DurationMinutes)" />
-            </div>
-        </div>
-
         <AlertGroupBase @ref="AlertGroup">
             <AlertBase @ref="AuditoriumNotFoundAlert" Class="alert-danger mt-3">
                 Wybrane audytorium nie istnieje

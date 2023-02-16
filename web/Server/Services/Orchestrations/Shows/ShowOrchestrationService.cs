@@ -42,6 +42,11 @@ namespace FMFT.Web.Server.Services.Orchestrations.Shows
             return await showService.ModifyShowStatusAsync(@params);
         }
 
+        public async ValueTask<Show> ModifyShowTimeAsync(UpdateShowTimeParams @params)
+        {
+            return await showService.ModifyShowTimeAsync(@params);
+        }
+
         public async ValueTask<Show> RetrieveShowByIdAsync(int showId)
         {
             return await showService.RetrieveShowByIdAsync(showId);

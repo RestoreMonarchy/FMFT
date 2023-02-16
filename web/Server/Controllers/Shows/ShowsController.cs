@@ -105,7 +105,6 @@ namespace FMFT.Web.Server.Controllers.Shows
             }
         }
 
-
         [HttpPost]
         public async ValueTask<IActionResult> PostShow([FromBody] AddShowParams @params)
         {
@@ -206,6 +205,34 @@ namespace FMFT.Web.Server.Controllers.Shows
                 return NotFound(exception);
             }
             catch (UpdateShowStatusValidationException exception)
+            {
+                return BadRequest(exception);
+            }
+            catch (NotAuthorizedAccountException exception)
+            {
+                return Forbidden(exception);
+            }
+            catch (NotAuthenticatedAccountException exception)
+            {
+                return Unauthorized(exception);
+            }
+        }
+
+        [HttpPut("{showId}/time")]
+        public async ValueTask<IActionResult> UpdateShowTime(int showId, [FromBody] UpdateShowTimeParams @params)
+        {
+            try
+            {
+                @params.ShowId = showId;
+                Show show = await showCoordinationService.ModifyShowTimeAsync(@params);
+
+                return Ok(show);
+            }
+            catch (NotFoundShowException exception)
+            {
+                return NotFound(exception);
+            }
+            catch (UpdateShowTimeValidationException exception)
             {
                 return BadRequest(exception);
             }
