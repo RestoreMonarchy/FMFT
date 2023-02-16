@@ -19,7 +19,7 @@
             Wydarzenia
         </BreadcrumbItem>
         <BreadcrumbItem Active="true">
-            @ShowName
+            #@ShowId
         </BreadcrumbItem>
     </Breadcrumb>
 
@@ -29,12 +29,28 @@
                 <Condition Evaluation="ShowResponse.IsSuccessful && AuditoriumsResponse.IsSuccessful">
                     <Match>
 
+                        <div class="mb-3">
+                            <div>
+                                <span class="fw-bold">@Show.Name</span>
+                                <span class="small text-muted">
+                                    <Condition Evaluation="Show.IsEnabled">
+                                        <Match>
+                                            (aktywne)
+                                        </Match>
+                                        <NotMatch>
+                                            (nieaktywne)
+                                        </NotMatch>
+                                    </Condition>
+                                </span>
+                            </div>
+                        </div>
+
                         <Navigation ActiveKey="@ActiveKey" OnNavigate="HandleNavigateAsync">
                             <NavigationItem Key="info" Title="Informacja">
                                 <DetailsShowAdminSubpage Show="Show" Auditoriums="Auditoriums" />
                             </NavigationItem>
-                            <NavigationItem Key="edit" Title="Edycja">
-                                <EditShowAdminSubpage @bind-Show="Show" Auditoriums="Auditoriums" />
+                            <NavigationItem Key="settings" Title="Ustawienia">
+                                <SettingsShowAdminSubpage @bind-Show="Show" Auditoriums="Auditoriums" />
                             </NavigationItem>
                             <NavigationItem Key="gallery" Title="Galeria">
                                 <GalleryShowAdminSubpage Show="Show" />

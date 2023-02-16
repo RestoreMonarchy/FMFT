@@ -8,14 +8,6 @@
             <div class="list-group-flush">
                 <div class="list-group-item">
                     <span class="fw-bold">
-                        Nazwa:
-                    </span>
-                    <span>
-                        @Show.Name
-                    </span>
-                </div>
-                <div class="list-group-item">
-                    <span class="fw-bold">
                         Audytorium:
                     </span>
                     <span>
@@ -35,7 +27,7 @@
                         Data rozpoczęcia:
                     </span>
                     <span>
-                        @Show.StartDateTime.LocalDateTime.ToLongDateString()
+                        @Show.StartDateTime.LocalDateTime.ToShortDateString()
                     </span>
                 </div>
                 <div class="list-group-item">
@@ -52,9 +44,14 @@
                         Czas trwania:
                     </span>
                     <span>
-                        @Show.Duration().ToString("hh\\:mm")
+                        @Show.Duration().TotalMinutes minut
                     </span>
                 </div>
+
+                <a class="list-group-item list-group-item-action list-group-item-info" href="/shows/@Show.Id">
+                    <i class="fa-solid fa-arrow-right-long me-1"></i>
+                    Przejdź do wydarzenia
+                </a>
             </div>
         </div>
     </div>

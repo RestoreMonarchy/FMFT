@@ -5,6 +5,7 @@ using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Auditoriums;
 using FMFT.Web.Client.Models.API.ShowProducts;
 using FMFT.Web.Client.Models.API.Shows;
+using FMFT.Web.Shared.Enums;
 using Microsoft.AspNetCore.Components;
 
 namespace FMFT.Web.Client.Views.Pages.Home.Shows
@@ -56,8 +57,15 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
 
         private async Task GetShowResponseAsync()
         {
-            ShowResponse = await APIBroker.GetPublicShowByIdAsync(ShowId);
+            if (UserAccountState.IsInRole(UserRole.Admin))
+            {
+                ShowResponse = await APIBroker.GetShowByIdAsync(ShowId);
+            } else
+            {
+                ShowResponse = await APIBroker.GetPublicShowByIdAsync(ShowId);
+            }
         }
+
         private async Task GetAuditoriumResponseAsync()
         {
             AuditoriumResponse = await APIBroker.GetAuditoriumByShowIdAsync(ShowId);

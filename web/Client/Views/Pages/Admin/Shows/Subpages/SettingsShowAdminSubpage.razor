@@ -4,7 +4,7 @@
     <div class="col-lg-8">
         <div class="card mb-3">
             <div class="card-header">
-                Główne ustawienia
+                Ustawienia główne
             </div>
             <UpdateShowForm Show="Show" ShowChanged="HandleShowChangedAsync" Audutoriums="Auditoriums" />
         </div>
@@ -15,6 +15,9 @@
                 Czas rozpoczęcia
             </div>
             <div class="card-body">
+                <div class="small alert alert-info">
+                    Zmiana daty i godziny rozpoczęcia wydarzenia sprawi, że bilety klientów któzi pobrali, wydrukowali lub dostali bilety mailem będą pokazywały nie aktualny czas lub date wydarzenia.
+                </div>
                 <UpdateShowTimeForm Show="Show" ShowChanged="HandleShowChangedAsync" />
             </div>
         </div>
