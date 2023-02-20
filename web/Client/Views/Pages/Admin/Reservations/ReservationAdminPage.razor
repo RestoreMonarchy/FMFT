@@ -1,6 +1,7 @@
 ﻿@page "/admin/reservations/{ReservationId}"
 @using FMFT.Extensions.Blazor.Bases.Conditions
 @using FMFT.Extensions.Blazor.Bases.Dialogs
+@using FMFT.Web.Client.Views.Shared.Components.Buttons
 @using FMFT.Web.Client.Views.Shared.Components.Cards.Users
 
 <MainLayoutBody>
@@ -107,8 +108,13 @@
                                     </div>
                                     <div class="list-group list-group-flush">
                                         <Iterations Items="Reservation.Seats.OrderBy(x => x.Seat.Row).ThenBy(x => x.Seat.Number)" Context="seat">
-                                            <div class="list-group-item d-flex align-items-center justify-content-between">
-                                                Rząd @seat.Seat.Row Numer @seat.Seat.Number
+                                            <div class="list-group-item d-flex align-items-center">
+                                                <div>
+                                                    Rząd @seat.Seat.Row Numer @seat.Seat.Number
+                                                </div>
+                                                <div class="ms-auto">
+                                                    <DownloadTicketButton Reservation="Reservation" ReservationSeat="seat" IsSmall="true" />
+                                                </div>
                                             </div>
                                         </Iterations>
                                     </div>

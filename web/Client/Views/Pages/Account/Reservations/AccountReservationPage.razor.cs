@@ -81,25 +81,5 @@ namespace FMFT.Web.Client.Views.Pages.Account.Reservations
              
             await CancelModalDialog.HideAsync();
         }
-
-        public ButtonBase DownloadTicketButton { get; set; }
-        private async Task HandleDownloadTicketAsync()
-        {
-            int reservationSeatId = SelectedReservationSeat.Id;
-
-            DownloadTicketButton.StartSpinning();
-
-            APIResponse<QRCodeImage> response = await APIBroker.GetReservationSeatTicketAsync(Reservation.Id, reservationSeatId);
-
-            if (response.IsSuccessful)
-            {
-                QRCodeImage qrCodeImage = response.Object;
-                string fileName = $"{ReservationId}-{Reservation.Show.Name}-{reservationSeatId}.jpg";
-
-                await JSRuntimeBroker.DownloadFromByteArrayAsync(qrCodeImage.Data, fileName, qrCodeImage.ContentType);
-            }
-
-            DownloadTicketButton.StopSpinning();
-        }
     }
 }
