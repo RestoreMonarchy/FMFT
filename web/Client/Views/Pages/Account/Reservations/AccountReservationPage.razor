@@ -1,5 +1,6 @@
 ﻿@page "/account/reservations/{ReservationId}"
 @using FMFT.Extensions.Blazor.Bases.Dialogs
+@using FMFT.Web.Client.Views.Shared.Components.Buttons
 @using FMFT.Web.Client.Views.Shared.Components.QRCodes
 
 <MainLayoutBody>
@@ -30,7 +31,7 @@
                                         Informacje o rezerwacji
                                     </div>
                                     <div class="list-group list-group-flush">
-                                        <Condition Evaluation="Reservation.IsCanceled">
+                                        <Condition Evaluation="Reservation.IsNotValid">
                                             <Match>
                                                 <div class="list-group-item list-group-item-warning">
                                                     Ta rezerwacja została anulowana
@@ -92,7 +93,7 @@
                                             <div class="list-group-item d-flex align-items-center justify-content-between">
                                                 Rząd @seat.Seat.Row Numer @seat.Seat.Number
                                                 <div>
-                                                    <button class="btn btn-outline-info btn-sm" @onclick="() => HandleSeatQRCodeDialogAsync(seat)" disabled="@Reservation.IsCanceled">
+                                                    <button class="btn btn-outline-info btn-sm" @onclick="() => HandleSeatQRCodeDialogAsync(seat)" disabled="@Reservation.IsNotValid">
                                                         <i class="fa-solid fa-qrcode"></i>
                                                         QRCode
                                                     </button>
@@ -109,7 +110,7 @@
                                     </div>
                                     <div class="list-group list-group-flush">
                                         <button class="list-group-item list-group-item-action list-group-item-info" href="javascript:void(0)"
-                                                @onclick="HandleQRCodeDialogAsync" disabled="@Reservation.IsCanceled">
+                                                @onclick="HandleQRCodeDialogAsync" disabled="@Reservation.IsNotValid">
                                             <i class="fa-solid fa-qrcode me-1"></i>
                                             Pokaż QRCode
                                         </button>
@@ -185,12 +186,13 @@
                                 </LoadingView>
 
                             </Body>
-                            <Footer>
-                                <ButtonBase @ref="DownloadTicketButton" Class="btn btn-outline-success me-auto" OnClick="HandleDownloadTicketAsync">
-                                    <i class="fa-solid fa-download"></i>
-                                    Pobierz bilet
-                                </ButtonBase>
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <Footer>                                
+                                <Condition Evaluation="SelectedReservationSeat != null">
+                                    <Match>
+                                        <DownloadTicketButton Reservation="Reservation" ReservationSeat="SelectedReservationSeat" IsSmall="false" />
+                                    </Match>
+                                </Condition>
+                                <button type="button" class="btn btn-secondary ms-auto" data-bs-dismiss="modal">
                                     Zamknij
                                 </button>
                             </Footer>

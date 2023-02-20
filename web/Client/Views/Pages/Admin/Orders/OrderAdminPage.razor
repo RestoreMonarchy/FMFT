@@ -1,4 +1,7 @@
 ﻿@page "/admin/orders/{OrderId:int}"
+@using FMFT.Extensions.Blazor.Bases.Conditions
+@using FMFT.Web.Client.Views.Shared.Components.Cards.Orders
+@using FMFT.Web.Client.Views.Shared.Components.Cards.Users
 
 <MainLayoutBody>
     <Breadcrumb>
@@ -16,5 +19,100 @@
         </BreadcrumbItem>
     </Breadcrumb>
 
-    todo
+    <CustomAuthorizeView Role="UserRole.Admin">
+
+        <Authorized>
+            <LoadingView @ref="LoadingView">
+                <Condition Evaluation="OrderResponse.IsSuccessful && OrderReservationsResponse.IsSuccessful">
+                    <Match>
+
+                        <Switch Expression="@(Order.Status)">
+                            <SwitchCase Value="@(OrderStatus.PaymentWaiting)">
+                                <div class="alert alert-info small">
+                                    Zamówienie oczekuje na płatność użytkownika
+                                </div>
+                            </SwitchCase>
+                            <SwitchCase Value="@(OrderStatus.Expired)">
+                                <div class="alert alert-warning small">
+                                    Zamówienie nie zostało opłacone przez użutkownika
+                                </div>
+                            </SwitchCase>
+                            <SwitchCase Value="@(OrderStatus.PaymentReceived)">
+                                <div class="alert alert-primary small">
+                                    Zamówienie zostało opłacone przez użytkownika ale nie zostało jeszcze przetworzone
+                                </div>
+                            </SwitchCase>
+                            <SwitchCase Value="@(OrderStatus.Completed)">
+                                <div class="alert alert-success small">
+                                    Zamówienie zostało zakończone pomyślnie
+                                </div>
+                            </SwitchCase>
+                        </Switch>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="card mb-3">
+                                    <div class="card-header">
+                                        Informacja o zamówieniu
+                                    </div>
+                                    <div class="list-group list-group-flush">
+                                        <div class="list-group-item">
+                                            <span class="fw-bold">ID:</span>
+                                            @FormatHelper.OrderId(Order.Id)
+                                        </div>
+                                        <div class="list-group-item">
+                                            <span class="fw-bold">Metoda płatności:</span>
+                                            @FormatHelper.TranslatePaymentMethod(Order.PaymentMethod)
+                                        </div>
+                                        <div class="list-group-item">
+                                            <span class="fw-bold">Serwis płatności:</span>
+                                            @Order.PaymentProvider
+                                        </div>
+                                        <div class="list-group-item">
+                                            <span class="fw-bold">Status:</span>
+                                            @FormatHelper.TranslateOrderStatus(Order.Status)
+                                        </div>
+                                        <Condition Evaluation="Order.Status == OrderStatus.Expired">
+                                            <Match>
+                                                <div class="list-group-item">
+                                                    <span class="fw-bold">Data wygaśnięcia:</span>
+                                                    @Order.ExpireDate.LocalDateTime.ToShortDateString()
+                                                    @Order.ExpireDate.LocalDateTime.ToShortTimeString()
+                                                </div>
+                                            </Match>
+                                        </Condition>
+                                        <div class="list-group-item">
+                                            <span class="fw-bold">Data złożenia:</span>
+                                            @Order.CreateDate.LocalDateTime.ToShortDateString()
+                                            @Order.CreateDate.LocalDateTime.ToShortTimeString()
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <OrderItemsCard Order="Order" />
+                            </div>
+
+                            <div class="col-lg-6">
+                                <UserInfoAdminCard UserInfo="Order.User" />
+
+                                <OrderReservationsCard OrderReservations="OrderReservations" />
+                            </div>
+                        </div>
+
+
+
+                    </Match>
+                    <NotMatch>
+                        <ErrorResponseAlert />
+                    </NotMatch>
+                </Condition>
+            </LoadingView>
+        </Authorized>
+
+        <NotAuthorized>
+            <NotAuthorizedAlert />
+        </NotAuthorized>
+
+    </CustomAuthorizeView>
+
 </MainLayoutBody>

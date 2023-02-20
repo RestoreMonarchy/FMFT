@@ -18,7 +18,7 @@ namespace FMFT.Web.Client.Models.API.Reservations
         public List<ReservationSeat> Seats { get; set; }
 
         [JsonIgnore]
-        public bool IsCanceled => Status == ReservationStatus.Canceled;
+        public bool IsNotValid => Status != ReservationStatus.Ok;
         public string Email() => User != null ? User.Email : Details?.Email ?? null;
     }
 }

@@ -113,7 +113,7 @@ namespace FMFT.Web.Client.Views.Pages.Admin.Users
 
         private string GetReservationClass(Reservation reservation)
         {
-            if (reservation.IsCanceled)
+            if (reservation.IsNotValid)
             {
                 return "text-muted";
             } else

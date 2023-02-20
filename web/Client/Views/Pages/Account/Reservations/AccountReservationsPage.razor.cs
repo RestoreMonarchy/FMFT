@@ -31,7 +31,7 @@ namespace FMFT.Web.Client.Views.Pages.Account.Reservations
         {
             List<string> classes = new();
 
-            if (reservation.IsCanceled)
+            if (reservation.IsNotValid)
             {
                 classes.Add("list-group-item-light");
             }

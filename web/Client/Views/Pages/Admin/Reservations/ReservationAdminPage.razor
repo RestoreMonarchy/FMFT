@@ -1,5 +1,8 @@
 ﻿@page "/admin/reservations/{ReservationId}"
+@using FMFT.Extensions.Blazor.Bases.Conditions
 @using FMFT.Extensions.Blazor.Bases.Dialogs
+@using FMFT.Web.Client.Views.Shared.Components.Buttons
+@using FMFT.Web.Client.Views.Shared.Components.Cards.Users
 
 <MainLayoutBody>
     <Breadcrumb>
@@ -25,6 +28,29 @@
                 <Condition Evaluation="ReservationResponse.IsSuccessful">
                     <Match>
 
+                        <Switch Expression="@(Reservation.Status)">
+                            <SwitchCase Value="@(ReservationStatus.Pending)">
+                                <div class="alert alert-info small">
+                                    Rezerwacje oczekuje na potwierdzenie
+                                </div>
+                            </SwitchCase>
+                            <SwitchCase Value="@(ReservationStatus.Expired)">
+                                <div class="alert alert-warning small">
+                                    Rezerwacja nie została opłacona i nie jest już ważna
+                                </div>
+                            </SwitchCase>
+                            <SwitchCase Value="@(ReservationStatus.Canceled)">
+                                <div class="alert alert-warning small">
+                                    Rezerwacja została anulowana
+                                </div>
+                            </SwitchCase>
+                            <SwitchCase Value="@(ReservationStatus.Ok)">
+                                <div class="alert alert-success small">
+                                    Rezerwacja jest ważna
+                                </div>
+                            </SwitchCase>
+                        </Switch>
+
                         <div class="row">
 
                             <div class="col-md-6 mb-3">
@@ -33,13 +59,6 @@
                                         Informacje o rezerwacji
                                     </div>
                                     <div class="list-group list-group-flush">
-                                        <Condition Evaluation="Reservation.IsCanceled">
-                                            <Match>
-                                                <div class="list-group-item list-group-item-warning">
-                                                    Ta rezerwacja została anulowana
-                                                </div>
-                                            </Match>
-                                        </Condition>
                                         <div class="list-group-item">
                                             <span class="fw-bold">
                                                 ID:
@@ -54,6 +73,14 @@
                                             </span>
                                             <span>
                                                 @Reservation.Show.Name
+                                            </span>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <span class="fw-bold">
+                                                Status:
+                                            </span>
+                                            <span>
+                                                @FormatHelper.TranslateReservationStatus(Reservation.Status)
                                             </span>
                                         </div>
                                         <div class="list-group-item">
@@ -81,8 +108,13 @@
                                     </div>
                                     <div class="list-group list-group-flush">
                                         <Iterations Items="Reservation.Seats.OrderBy(x => x.Seat.Row).ThenBy(x => x.Seat.Number)" Context="seat">
-                                            <div class="list-group-item d-flex align-items-center justify-content-between">
-                                                Rząd @seat.Seat.Row Numer @seat.Seat.Number
+                                            <div class="list-group-item d-flex align-items-center">
+                                                <div>
+                                                    Rząd @seat.Seat.Row Numer @seat.Seat.Number
+                                                </div>
+                                                <div class="ms-auto">
+                                                    <DownloadTicketButton Reservation="Reservation" ReservationSeat="seat" IsSmall="true" />
+                                                </div>
                                             </div>
                                         </Iterations>
                                     </div>
@@ -97,7 +129,7 @@
                                     </div>
                                     <div class="list-group list-group-flush">
                                         <button class="list-group-item list-group-item-action list-group-item-warning" href="javascript:void(0)"
-                                                @onclick="HandleCancelDialogAsync" disabled="@Reservation.IsCanceled">
+                                                @onclick="HandleCancelDialogAsync" disabled="@Reservation.IsNotValid">
                                             <i class="fa-solid fa-xmark me-1"></i>
                                             Anuluj rezerwację
                                         </button>
@@ -106,41 +138,7 @@
 
                                 <Condition Evaluation="Reservation.User != null">
                                     <Match>
-                                        <div class="card mb-3">
-                                            <div class="card-header">
-                                                Użytkownik
-                                            </div>
-                                            <div class="list-group list-group-flush">
-                                                <div class="list-group-item">
-                                                    <span class="fw-bold">
-                                                        Imię:
-                                                    </span>
-                                                    <span>
-                                                        @Reservation.User.FirstName
-                                                    </span>
-                                                </div>
-                                                <div class="list-group-item">
-                                                    <span class="fw-bold">
-                                                        Nazwisko:
-                                                    </span>
-                                                    <span>
-                                                        @Reservation.User.LastName
-                                                    </span>
-                                                </div>
-                                                <div class="list-group-item">
-                                                    <span class="fw-bold">
-                                                        Email:
-                                                    </span>
-                                                    <span>
-                                                        @Reservation.User.Email
-                                                    </span>
-                                                </div>
-                                                <a class="list-group-item list-group-item-action" href="/admin/users/@Reservation.User.Id">
-                                                    <i class="fa-solid fa-arrow-right-long me-1"></i>
-                                                    Przejdź do użytkownika
-                                                </a>
-                                            </div>
-                                        </div>
+                                        <UserInfoAdminCard UserInfo="Reservation.User" />
                                     </Match>
                                 </Condition>
                                 <Condition Evaluation="Reservation.Details != null">

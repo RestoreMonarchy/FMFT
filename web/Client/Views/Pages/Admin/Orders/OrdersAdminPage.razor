@@ -65,6 +65,9 @@
                                     <th scope="col" class="d-none d-lg-table-cell">
                                         Status
                                     </th>
+                                    <th scope="col" class="d-none d-lg-table-cell">
+                                        Metoda płatności
+                                    </th>
                                     <th scope="col">
                                         Wartość
                                     </th>
@@ -81,16 +84,17 @@
                                     <tr class="@GetClass(order)">
                                         <th>
                                             <a href="/admin/orders/@order.Id" class="text-decoration-none">
-                                                @order.Id
+                                                @FormatHelper.OrderId(order.Id)
                                             </a>
                                         </th>
                                         <td class="d-none d-md-table-cell">
-                                            <a href="/admin/users/@order.User.Id" class="text-decoration-none">
-                                                @FormatHelper.Email(order.User.Email)
-                                            </a>
+                                            @FormatHelper.Email(order.User.Email)
                                         </td>
                                         <td class="d-none d-lg-table-cell">
                                             @FormatHelper.TranslateOrderStatus(order.Status)
+                                        </td>
+                                        <td class="d-none d-lg-table-cell">
+                                            @FormatHelper.TranslatePaymentMethod(order.PaymentMethod)
                                         </td>
                                         <td>
                                             @order.Amount.ToString("N2") @order.Currency
