@@ -1,0 +1,35 @@
+﻿<div class="card mb-3">
+    <div class="card-header">
+        Użytkownik
+    </div>
+    <div class="list-group list-group-flush">
+        <div class="list-group-item">
+            <span class="fw-bold">
+                Imię:
+            </span>
+            <span>
+                @UserInfo.FirstName
+            </span>
+        </div>
+        <div class="list-group-item">
+            <span class="fw-bold">
+                Nazwisko:
+            </span>
+            <span>
+                @UserInfo.LastName
+            </span>
+        </div>
+        <div class="list-group-item">
+            <span class="fw-bold">
+                Email:
+            </span>
+            <span>
+                @UserInfo.Email
+            </span>
+        </div>
+        <a class="list-group-item list-group-item-action list-group-item-info" href="/admin/users/@UserInfo.Id">
+            <i class="fa-solid fa-arrow-right-long me-1"></i>
+            Przejdź do użytkownika
+        </a>
+    </div>
+</div>

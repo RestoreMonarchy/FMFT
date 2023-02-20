@@ -1,0 +1,17 @@
+﻿<div class="card mb-3">
+    <div class="card-header">
+        Rezerwacje zamówienia
+    </div>
+    <div class="list-group list-group-flush">
+        <Iterations Items="OrderReservations" Context="reservation">
+            <a href="/admin/reservations/@reservation.Id" class="list-group-item list-group-item-action d-flex align-items-center">
+                <div class="fw-bold">
+                    @reservation.Id
+                </div>
+                <div class="ms-auto ps-3 text-end">
+                    @reservation.Show.Name
+                </div>
+            </a>
+        </Iterations>
+    </div>
+</div>
