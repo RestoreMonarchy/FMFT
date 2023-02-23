@@ -13,10 +13,28 @@ namespace FMFT.Web.Client.Views.Pages.Account.Authentications
         [Inject]
         public IExternalLoginBroker ExternalLoginBroker { get; set; }
 
+        private bool IsFacebookDisabled = false;
+        private bool IsGoogleDisabled = false;
+
         protected override async Task OnInitializedAsync()
         {
-            await ExternalLoginBroker.InitializeFacebookAsync();
-            await ExternalLoginBroker.InitializeGoogleAsync();
+            try
+            {
+                await ExternalLoginBroker.InitializeFacebookAsync();
+            } catch (Exception e)
+            {
+                LoggingBroker.LogError(e, "Failed to initialize facebook script");
+                IsFacebookDisabled = true;
+            }
+            
+            try
+            {
+                await ExternalLoginBroker.InitializeGoogleAsync();
+            } catch (Exception e)
+            {
+                LoggingBroker.LogError(e, "Failed to initialize google script");
+                IsGoogleDisabled = true;
+            }            
         }
 
         private async Task HandleSuccessfullLoginAsync(AccountToken accountToken)
