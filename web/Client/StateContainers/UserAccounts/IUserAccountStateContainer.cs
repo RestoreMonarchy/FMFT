@@ -7,6 +7,7 @@ namespace FMFT.Web.Client.StateContainers.UserAccounts
     {
         UserAccount UserAccount { get; set; }
         bool IsAuthenticated { get; }
+        bool IsEmailConfirmed { get; }
 
         event Action OnChange;
 

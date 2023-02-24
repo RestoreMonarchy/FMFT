@@ -4,7 +4,7 @@
 
 <MainLayoutBody>
 
-    <CustomAuthorizeView>
+    <CustomAuthorizeView MustConfirmEmail="true">
         <Authorized>
             <Stepper>
                 <StepperItem Text="Bilety" Url="@GetUrl("products")" />
@@ -99,6 +99,9 @@
         <NotAuthorized>
             <NotAuthorizedAlert />
         </NotAuthorized>
+        <NotConfirmedEmail>
+            <UnconfirmedEmailAlert />
+        </NotConfirmedEmail>
     </CustomAuthorizeView>
 
 </MainLayoutBody>

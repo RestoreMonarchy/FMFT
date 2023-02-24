@@ -5,6 +5,7 @@ using FMFT.Web.Client.Models.API.Seats;
 using FMFT.Web.Client.Models.API.Shows;
 using FMFT.Web.Client.Models.Services.Orders;
 using FMFT.Web.Client.Services.Pages;
+using FMFT.Web.Shared.Enums;
 using Microsoft.AspNetCore.Components;
 
 namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
@@ -46,8 +47,8 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
         }    
 
         protected override async Task OnInitializedAsync()
-        {
-            if (!UserAccountState.IsAuthenticated)
+        { 
+            if (!UserAccountState.IsAuthenticated || !UserAccountState.IsEmailConfirmed)
             {
                 return;
             }
@@ -62,20 +63,30 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
 
             await Task.WhenAll(getDataTasks);
 
-            if (Show.IsPast() || Show.IsSellDisabled())
+            if (ShowResponse.IsSuccessful && AuditoriumResponse.IsSuccessful)
             {
-                NavigationBroker.NavigateTo($"/shows/{ShowId}");
-                return;
-            }
+                if (Show.IsPast() || Show.IsSellDisabled())
+                {
+                    NavigationBroker.NavigateTo($"/shows/{ShowId}");
+                    return;
+                }
 
-            OriginalSelectedSeats = await GetSelectedSeatsAsync();
+                OriginalSelectedSeats = await GetSelectedSeatsAsync();
+            }
 
             LoadingView.StopLoading();
         }
 
         private async Task GetShowResponseAsync()
         {
-            ShowResponse = await APIBroker.GetShowByIdAsync(ShowId);
+            if (UserAccountState.IsInRole(UserRole.Admin))
+            {
+                ShowResponse = await APIBroker.GetShowByIdAsync(ShowId);
+            }
+            else
+            {
+                ShowResponse = await APIBroker.GetPublicShowByIdAsync(ShowId);
+            }
         }
 
         private async Task GetAuditoriumResponseAsync()

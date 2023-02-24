@@ -1,6 +1,13 @@
 ﻿<Condition Evaluation="IsAuthorized()">
     <Match>
-        @Authorized(UserAccountState.UserAccount)
+        <Condition Evaluation="IsConfirmedEmail()">
+            <Match>
+                @Authorized(UserAccountState.UserAccount)
+            </Match>
+            <NotMatch>
+                @NotConfirmedEmail(UserAccountState.UserAccount)
+            </NotMatch>
+        </Condition>        
     </Match>
     <NotMatch>
         @NotAuthorized

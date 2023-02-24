@@ -1,6 +1,7 @@
 ﻿using FMFT.Web.Client.Models.API.Accounts;
 using FMFT.Web.Shared.Enums;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.RenderTree;
 
 namespace FMFT.Web.Client.Views.Shared.Components.Authorizations
 {
@@ -11,9 +12,13 @@ namespace FMFT.Web.Client.Views.Shared.Components.Authorizations
         [Parameter]
         public RenderFragment NotAuthorized { get; set; }
         [Parameter]
+        public RenderFragment<UserAccount> NotConfirmedEmail { get; set; }
+        [Parameter]
         public IEnumerable<UserRole> Roles { get; set; }
         [Parameter]
         public UserRole? Role { get; set; }
+        [Parameter]
+        public bool MustConfirmEmail { get; set; }
 
         protected override void OnInitialized()
         {
@@ -34,6 +39,16 @@ namespace FMFT.Web.Client.Views.Shared.Components.Authorizations
 
                 return roles;
             }
+        }
+
+        public bool IsConfirmedEmail()
+        {
+            if (MustConfirmEmail && !UserAccountState.IsEmailConfirmed)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         public bool IsAuthorized()

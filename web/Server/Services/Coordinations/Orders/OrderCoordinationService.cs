@@ -12,6 +12,8 @@ using FMFT.Web.Server.Services.Orchestrations.Payments;
 using FMFT.Web.Server.Services.Orchestrations.Reservations;
 using FMFT.Web.Server.Services.Orchestrations.UserAccounts;
 using FMFT.Web.Shared.Enums;
+using RESTFulSense.Exceptions;
+using System.Data;
 
 namespace FMFT.Web.Server.Services.Coordinations.Orders
 {
@@ -73,6 +75,15 @@ namespace FMFT.Web.Server.Services.Coordinations.Orders
             await userAccountService.AuthorizeUserAccountByUserIdOrRolesAsync(order.UserId(), UserRole.Admin);
 
             return order;
+        }
+
+        public async ValueTask<IEnumerable<Reservation>> RetrieveReservationsByOrderIdAsync(int orderId)
+        {
+            Order order = await RetrieveOrderByIdAsync(orderId);
+            int userId = order.UserId();
+            await userAccountService.AuthorizeUserAccountByUserIdOrRolesAsync(userId, UserRole.Admin);
+
+            return await reservationService.RetrieveReservationsByOrderIdAsync(orderId);
         }
 
         public async ValueTask<Order> CreateOrderAsync(CreateOrderParams @params)

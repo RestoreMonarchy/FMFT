@@ -8,5 +8,6 @@
         void LogWarning(string message);
         void LogError(Exception exception);
         void LogCritical(Exception exception);
+        void LogError(Exception exception, string message);
     }
 }

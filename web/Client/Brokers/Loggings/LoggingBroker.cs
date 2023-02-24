@@ -22,6 +22,9 @@
         public void LogError(Exception exception) =>
             this.logger.LogError(exception, exception.Message);
 
+        public void LogError(Exception exception, string message) =>
+            this.logger.LogError(exception, message);
+
         public void LogCritical(Exception exception) =>
             this.logger.LogCritical(exception, exception.Message);
     }
