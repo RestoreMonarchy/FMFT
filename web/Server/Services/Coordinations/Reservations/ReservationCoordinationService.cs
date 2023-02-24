@@ -1,4 +1,5 @@
-﻿using FMFT.Web.Server.Models.QRCodes;
+﻿using FMFT.Web.Server.Models.Orders;
+using FMFT.Web.Server.Models.QRCodes;
 using FMFT.Web.Server.Models.QRCodes.Params;
 using FMFT.Web.Server.Models.Reservations;
 using FMFT.Web.Server.Models.Reservations.Exceptions;
@@ -88,18 +89,6 @@ namespace FMFT.Web.Server.Services.Coordinations.Reservations
             return await reservationService.RetrieveReservationsByUserIdAsync(userId);
         }
 
-        public async ValueTask<IEnumerable<Reservation>> RetrieveReservationsByOrderIdAsync(int orderId)
-        {
-            IEnumerable<Reservation> orderReservations = await reservationService.RetrieveReservationsByOrderIdAsync(orderId);
-
-            if (orderReservations.Any())
-            {
-                int orderUserId = orderReservations.First().UserId();
-                await userAccountService.AuthorizeUserAccountByUserIdOrRolesAsync(orderId, UserRole.Admin);  
-            }
-
-            return orderReservations;
-        }
         public async ValueTask<Reservation> CancelUserReservationAsync(string reservationId)
         {
             Reservation reservation = await reservationService.RetrieveReservationByIdAsync(reservationId);

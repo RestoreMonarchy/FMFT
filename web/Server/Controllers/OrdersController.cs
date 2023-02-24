@@ -119,7 +119,7 @@ namespace FMFT.Web.Server.Controllers
         {
             try
             {
-                IEnumerable<Reservation> reservations = await reservationService.RetrieveReservationsByOrderIdAsync(orderId);
+                IEnumerable<Reservation> reservations = await orderService.RetrieveReservationsByOrderIdAsync(orderId);
 
                 return Ok(reservations);
             }

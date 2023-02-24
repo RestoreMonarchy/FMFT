@@ -60,12 +60,15 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
 
             await Task.WhenAll(getDataTasks);
 
-            TotalPrice = GetTotalPrice();
-
-            if (Show.IsPast() || Show.IsSellDisabled())
+            if (ShowResponse.IsSuccessful && ShowProductsResponse.IsSuccessful)
             {
-                NavigationBroker.NavigateTo($"/shows/{ShowId}");
-                return;
+                TotalPrice = GetTotalPrice();
+
+                if (Show.IsPast() || Show.IsSellDisabled())
+                {
+                    NavigationBroker.NavigateTo($"/shows/{ShowId}");
+                    return;
+                }
             }
 
             LoadingView.StopLoading();
@@ -73,7 +76,14 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
 
         private async Task GetShowResponseAsync()
         {
-            ShowResponse = await APIBroker.GetShowByIdAsync(ShowId);
+            if (UserAccountState.IsInRole(UserRole.Admin))
+            {
+                ShowResponse = await APIBroker.GetShowByIdAsync(ShowId);
+            }
+            else
+            {
+                ShowResponse = await APIBroker.GetPublicShowByIdAsync(ShowId);
+            }
         }
 
         private async Task GetShowProductsResponseAsync()

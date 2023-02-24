@@ -1,6 +1,7 @@
 ﻿using FMFT.Web.Server.Models.Orders;
 using FMFT.Web.Server.Models.Orders.Params;
 using FMFT.Web.Server.Models.Payments;
+using FMFT.Web.Server.Models.Reservations;
 using FMFT.Web.Shared.Enums;
 
 namespace FMFT.Web.Server.Services.Coordinations.Orders
@@ -15,5 +16,6 @@ namespace FMFT.Web.Server.Services.Coordinations.Orders
         ValueTask<Order> RetrieveOrderBySessionIdAsync(Guid sessionId);
         ValueTask<IEnumerable<Order>> RetrieveOrdersByUserIdAsync(int userId);
         ValueTask<IEnumerable<Order>> RetrieveOrdersForCurrentUserAsync();
+        ValueTask<IEnumerable<Reservation>> RetrieveReservationsByOrderIdAsync(int orderId);
     }
 }
