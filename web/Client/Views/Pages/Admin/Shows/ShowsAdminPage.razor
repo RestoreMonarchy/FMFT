@@ -15,7 +15,7 @@
         </BreadcrumbItem>
     </Breadcrumb>
 
-    <CustomAuthorizeView>
+    <CustomAuthorizeView Role="UserRole.Admin">
         <Authorized>
             <LoadingView @ref="LoadingView">
                 <Condition Evaluation="ShowsResponse.IsSuccessful && AuditoriumsResponse.IsSuccessful">

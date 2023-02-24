@@ -26,6 +26,7 @@ namespace FMFT.Web.Client.StateContainers.UserAccounts
         }
 
         public bool IsAuthenticated => userAccount != null;
+        public bool IsEmailConfirmed => userAccount?.IsEmailConfirmed ?? false;
 
         public bool IsInRole(UserRole userRole)
         {

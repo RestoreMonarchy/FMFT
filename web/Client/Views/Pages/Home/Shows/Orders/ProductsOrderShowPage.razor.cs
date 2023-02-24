@@ -45,7 +45,7 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
 
         protected override async Task OnInitializedAsync()
         {
-            if (!UserAccountState.IsAuthenticated)
+            if (!UserAccountState.IsAuthenticated || !UserAccountState.IsEmailConfirmed)
             {
                 return;
             }
