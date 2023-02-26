@@ -44,8 +44,8 @@
         </div>
 
         <LoadingView @ref="SeatSelectorLoadingView">
-            <div class="mb-2">
-                <AuditoriumSeatPanzoom @ref="AuditoriumSeatPanzoom" ReservedSeats="Show.ReservedSeats" Auditorium="Auditorium" @bind-SelectedSeats="Model.Seats" MaxAmount="10" />
+            <div class="mb-3">
+                <AuditoriumSeatPanzoom @ref="AuditoriumSeatPanzoom" ReservedSeats="Show.ReservedSeats" Auditorium="Auditorium" @bind-SelectedSeats="Model.Seats" MaxAmount="50" />
                 <div class="text-danger">
                     <ValidationMessage For="@(() => Model.Seats)" />
                 </div>                

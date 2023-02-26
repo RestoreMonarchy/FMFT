@@ -32,11 +32,21 @@
     padding: 6px 10px;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
     color: black;
     background-color: white;
     border: none;
     font-size: 18px;
     font-weight: 900;
+    border: 1px solid black;
+}
+
+.panzoom-info {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    z-index: 1;
+    padding: 6px 10px;
+    font-size: 18px;
+    background-color: white;
     border: 1px solid black;
 }

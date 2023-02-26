@@ -12,6 +12,10 @@
         <button class="panzoom-button" type="button" @onclick="HandleResetAsync">
             <i class="fa-solid fa-rotate-left"></i>
         </button>
+        
+    </div>
+    <div class="panzoom-info">
+        @SelectedSeats.Count/@MaxAmount
     </div>
 
     <Panzoom @ref="Panzoom" WheelMode="WheelMode.Custom" OnWheel="HandleOnWheelAsync" PanzoomOptions="PanzoomOptions">
