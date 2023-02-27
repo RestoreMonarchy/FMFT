@@ -13,7 +13,7 @@
             </Stepper>
 
             <LoadingView @ref="LoadingView">
-                <Condition Evaluation="ShowResponse.IsSuccessful && ShowProductsResponse.IsSuccessful">
+                <Condition Evaluation="ShowResponse.IsSuccessful && ShowProductsResponse.IsSuccessful && AuditoriumResponse.IsSuccessful">
                     <Match>
                         <div class="row">
                             <div class="col-lg-8">
@@ -29,6 +29,27 @@
                                     </div>
                                     <div class="dropdown-divider"></div>
                                     <PaymentMethodSelect PaymentMethod="OrderStateData.PaymentMethod" PaymentMethodChanged="HandlePaymentMethodChangedAsync" />
+                                </div>
+                                <div class="mb-3">
+                                    <div class="fs-5 mb-2">
+                                        Wybrane miejsca
+                                    </div>
+                                    <div class="dropdown-divider"></div>
+                                    <ul>
+                                        <Iterations Items="Seats.GroupBy(x => x.Row).OrderBy(x => x.Key)" Context="group">
+                                            <li>
+                                                <Condition Evaluation="group.Count() > 1">
+                                                    <Match>
+                                                        Rząd @group.Key Miejsca @string.Join(", ", group.Select(x => x.Number))
+                                                    </Match>
+                                                    <NotMatch>
+                                                        Rząd @group.Key Miejsce @string.Join(", ", group.Select(x => x.Number))
+                                                    </NotMatch>
+                                                </Condition>
+                                                
+                                            </li>
+                                        </Iterations>
+                                    </ul>
                                 </div>
                                 <div class="mb-3">
                                     <div class="fs-5 mb-2">

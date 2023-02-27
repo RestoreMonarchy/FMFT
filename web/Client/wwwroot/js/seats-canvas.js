@@ -18,17 +18,23 @@
     const maxWidthPixels = marginX * maxColumns;
     const maxHeightPixels = marginY * seatsMap.length;
 
-    canvas.height = maxHeightPixels;
+    const stageWidth = options.stageWidth;
+    const stageHeight = options.stageHeight;
+    const stageOffset = options.stageOffset;
+
+    canvas.height = maxHeightPixels + stageOffset;
     canvas.width = maxWidthPixels;
+
+    DrawStage(options, stageHeight, stageWidth);
 
     const rows = seatsMap.length;
 
     for (let i = 0; i < rows; i++) {
         const columns = seatsMap[i];
 
-        for (let j = 0; j < columns; j++) {
+        const row = i + 1;
 
-            const row = i + 1;
+        for (let j = 0; j < columns; j++) {            
             const column = j + 1;
 
             DrawSeat(options, row, column, defaultColor);
@@ -36,9 +42,8 @@
     }
 
     function HandleClick(e) {
-
         const rect = canvas.getBoundingClientRect();
-        const zoom = maxHeightPixels / rect.height;
+        const zoom = canvas.height / rect.height;
 
         const x = (e.clientX - rect.left) * zoom;
         const y = (e.clientY - rect.top) * zoom;
@@ -56,7 +61,50 @@
     canvas.addEventListener("click", HandleClick);
 }
 
-function DrawSeat(options, row, column, color) {
+function DrawStage(options, height, width) {
+    const canvasId = options.canvasId;
+    const font = options.stageFont;
+    const color = options.stageColor;
+
+    const canvas = document.getElementById(canvasId);
+    const ctx = canvas.getContext("2d");
+
+    const x = canvas.width / 2 - width / 2;
+    const y = 0;
+
+    ctx.beginPath();
+    ctx.fillStyle = color;
+    ctx.rect(x, y, width, height);
+    ctx.fill();
+
+    const posX = x + width / 2;
+    const posY = y + height / 2;
+
+    ctx.fillStyle = "white";
+    ctx.font = font;
+    ctx.textBaseline = "middle";
+    ctx.textAlign = "center";
+    ctx.fillText("Scena", posX, posY);
+}
+
+//function DrawRow(options, row) {
+//    const rowIndex = row - 1;
+
+//    const canvasId = options.canvasId;
+//    const font = options.font;
+
+//    const canvas = document.getElementById(canvasId);
+//    const ctx = canvas.getContext("2d");
+
+//    ctx.fillStyle = "white";
+//    ctx.font = font;
+//    ctx.textBaseline = "middle";
+//    ctx.textAlign = "center";
+//    ctx.fillText(row, 0, 0);
+//}
+
+function DrawSeat(options, row, column, color) { 
+    const stageOffset = options.stageOffset;
 
     const rowIndex = row - 1;
     const columnIndex = column - 1;
@@ -74,7 +122,7 @@ function DrawSeat(options, row, column, color) {
     const offset = CalculateRowOffset(options, row);
 
     const columnX = offset + columnIndex * marginX;
-    const columnY = rowIndex * marginY;
+    const columnY = rowIndex * marginY + stageOffset;
     const posX = columnX + sizeX / 2;
     const posY = columnY + sizeY / 2;
     
@@ -113,8 +161,9 @@ function FindSeatByCoordinates(options, x, y) {
     const marginY = options.marginY;
     const sizeX = options.sizeX;
     const sizeY = options.sizeY;
+    const stageOffset = options.stageOffset;
 
-    const rowExact = y / marginY;
+    const rowExact = (y - stageOffset) / marginY;
     const rowIndex = Math.floor(rowExact);
 
     //console.log("row exact: ", rowExact, " row floor: ", rowIndex);
