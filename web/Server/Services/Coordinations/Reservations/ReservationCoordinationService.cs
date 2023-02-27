@@ -107,7 +107,7 @@ namespace FMFT.Web.Server.Services.Coordinations.Reservations
 
         public async ValueTask<ValidateReservationSecretCodeResult> ValidateReservationSecretCodeAsync(Guid secretCode)
         {
-            await userAccountService.AuthorizeUserAccountByRoleAsync(UserRole.Admin);
+            await userAccountService.AuthorizeUserAccountByRoleAsync(UserRole.Admin, UserRole.Staff);
 
             ValidateReservationSecretCodeResult result = await reservationService.ValidateReservationSecretCodeAsync(secretCode);
 

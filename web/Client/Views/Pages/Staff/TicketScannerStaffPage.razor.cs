@@ -6,12 +6,10 @@ using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Reservations;
 using FMFT.Web.Client.Models.API.Reservations.Requests;
 using FMFT.Web.Client.Models.API.Reservations.Responses;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 
-namespace FMFT.Web.Client.Views.Pages.Admin.Reservations
+namespace FMFT.Web.Client.Views.Pages.Staff
 {
-    public partial class ReservationValidationAdminPage
+    public partial class TicketScannerStaffPage
     {
         public string SecretCode { get; set; }
 

@@ -1,4 +1,4 @@
-﻿@page "/admin/reservations/validation"
+﻿@page "/staff/ticket-scanner"
 @using FMFT.Extensions.Blazor.Bases.Conditions
 
 <MainLayoutBody>
@@ -7,18 +7,15 @@
             Home
         </BreadcrumbItem>
         <BreadcrumbItem>
-            Admin
-        </BreadcrumbItem>
-        <BreadcrumbItem Link="/admin/reservations">
-            Rezerwacje
+            Obsługa
         </BreadcrumbItem>
         <BreadcrumbItem Active="true">
-            Sprawdź
+            Skaner biletów
         </BreadcrumbItem>
     </Breadcrumb>
 
     <div>
-        <CustomAuthorizeView Role="UserRole.Admin">
+        <CustomAuthorizeView Roles="new UserRole[] { UserRole.Admin, UserRole.Staff }">
             <Authorized>
                 <div class="text-center mb-3">
                     <h4 class="fs-5">Sprawdź rezerwację</h4>
