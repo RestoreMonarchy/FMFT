@@ -11,7 +11,6 @@ namespace FMFT.Features.Tickets.Services
 {
     public class TicketGenerator
     {
-        public static readonly TimeZoneInfo TimeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
         public static readonly CultureInfo Culture = CultureInfo.GetCultureInfo("pl-PL");
 
         public Bitmap GenerateReservationTicket(ReservationTicketModel model)
@@ -70,12 +69,18 @@ namespace FMFT.Features.Tickets.Services
 
             positionY += (int)showNameSize.Height;
 
-            DateTime dateTime = TimeZoneInfo.ConvertTime(model.ShowDate, TimeZone).DateTime;
-            string date = dateTime.ToString("U", Culture);
-            date = date.Substring(0, date.Length - 3);
+
+            CultureInfo prevCulture = CultureInfo.CurrentCulture;
+            CultureInfo.CurrentCulture = Culture;
+
+            DateTime dateTime = model.ShowDate;
+            string date = dateTime.ToLongDateString() + " " + dateTime.ToShortTimeString();
+            //date = date.Substring(0, date.Length - 3);
+
+            CultureInfo.CurrentCulture = prevCulture;
+
             SizeF dateSize = graphics.MeasureString(date, smallFont);
             int dateX = (ticket.Width - (int)dateSize.Width) / 2;
-
             positionY += 30;
 
             graphics.DrawString(date, smallFont, Brushes.Black, dateX, positionY);
