@@ -1,6 +1,7 @@
 ﻿@page "/admin/reservations/{ReservationId}"
 @using FMFT.Extensions.Blazor.Bases.Conditions
 @using FMFT.Extensions.Blazor.Bases.Dialogs
+@using FMFT.Web.Client.Views.Shared.Components.Alerts.Reservations
 @using FMFT.Web.Client.Views.Shared.Components.Buttons
 @using FMFT.Web.Client.Views.Shared.Components.Cards.Users
 
@@ -28,28 +29,7 @@
                 <Condition Evaluation="ReservationResponse.IsSuccessful">
                     <Match>
 
-                        <Switch Expression="@(Reservation.Status)">
-                            <SwitchCase Value="@(ReservationStatus.Pending)">
-                                <div class="alert alert-info small">
-                                    Rezerwacje oczekuje na potwierdzenie
-                                </div>
-                            </SwitchCase>
-                            <SwitchCase Value="@(ReservationStatus.Expired)">
-                                <div class="alert alert-warning small">
-                                    Rezerwacja nie została opłacona i nie jest już ważna
-                                </div>
-                            </SwitchCase>
-                            <SwitchCase Value="@(ReservationStatus.Canceled)">
-                                <div class="alert alert-warning small">
-                                    Rezerwacja została anulowana
-                                </div>
-                            </SwitchCase>
-                            <SwitchCase Value="@(ReservationStatus.Ok)">
-                                <div class="alert alert-success small">
-                                    Rezerwacja jest ważna
-                                </div>
-                            </SwitchCase>
-                        </Switch>
+                        <ReservationStatusAlert ReservationStatus="Reservation.Status" />
 
                         <div class="row">
 

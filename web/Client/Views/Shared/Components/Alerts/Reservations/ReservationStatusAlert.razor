@@ -1,0 +1,29 @@
+﻿@using FMFT.Extensions.Blazor.Bases.Conditions
+
+<Switch Expression="@(ReservationStatus)">
+    <SwitchCase Value="@(ReservationStatus.Pending)">
+        <div class="alert alert-info border small">
+            Rezerwacje oczekuje na potwierdzenie
+        </div>
+    </SwitchCase>
+    <SwitchCase Value="@(ReservationStatus.Expired)">
+        <div class="alert alert-warning border small">
+            Rezerwacja nie została opłacona i nie jest już ważna
+        </div>
+    </SwitchCase>
+    <SwitchCase Value="@(ReservationStatus.Canceled)">
+        <div class="alert alert-warning border small">
+            Rezerwacja została anulowana
+        </div>
+    </SwitchCase>
+    <SwitchCase Value="@(ReservationStatus.Ok)">
+        <div class="alert alert-success border small">
+            Rezerwacja jest ważna
+        </div>
+    </SwitchCase>
+</Switch>
+
+@code {
+    [Parameter]
+    public ReservationStatus ReservationStatus { get; set; }
+}

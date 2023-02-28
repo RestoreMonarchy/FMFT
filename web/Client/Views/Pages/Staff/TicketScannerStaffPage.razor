@@ -1,5 +1,7 @@
 ﻿@page "/staff/ticket-scanner"
 @using FMFT.Extensions.Blazor.Bases.Conditions
+@using FMFT.Extensions.Blazor.Bases.Timers
+@using FMFT.Web.Client.Views.Shared.Components.Alerts.Reservations
 
 <MainLayoutBody>
     <Breadcrumb>
@@ -17,132 +19,127 @@
     <div>
         <CustomAuthorizeView Roles="new UserRole[] { UserRole.Admin, UserRole.Staff }">
             <Authorized>
-                <div class="text-center mb-3">
-                    <h4 class="fs-5">Sprawdź rezerwację</h4>
-                    <p class="text-muted">
-                        Użyj skanera aby zeskanować bilet
-                    </p>
-                </div>
-                <div>
-                    <AlertGroupBase @ref="AlertGroup">
-                        <AlertBase @ref="InvalidInputAlert" Class="alert-danger">
-                            Podany kod biletu jest nieprawdiłowy
-                        </AlertBase>
-                    </AlertGroupBase>
+                <Condition Evaluation="ValidateReservationResponse == null">
+                    <Match>
+                        <div class="text-center mb-3">
+                            <h4 class="fs-5">Sprawdź rezerwację</h4>
+                            <p class="text-muted">
+                                Użyj skanera aby zeskanować bilet
+                            </p>
+                        </div>
+                    </Match>
+                </Condition>
+                
+                <AlertGroupBase @ref="AlertGroup">
+                    <AlertBase @ref="InvalidInputAlert" Class="alert-danger">
+                        Podany kod biletu jest nieprawdiłowy
+                    </AlertBase>
+                </AlertGroupBase>
 
-                    <Condition Evaluation="isLoading">
-                        <NotMatch>
-                            <Condition Evaluation="ValidateReservationResponse != null">
-                                <Match>
-                                    <Condition Evaluation="ValidateReservationResponse.IsSuccessful">
-                                        <Match>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="card">
-                                                        <div class="card-header">
-                                                            Informacje o rezerwacji
-                                                        </div>
-                                                        <div class="list-group list-group-flush">
-                                                            <Condition Evaluation="Reservation.IsNotValid">
-                                                                <Match>
-                                                                    <div class="list-group-item list-group-item-warning">
-                                                                        Ta rezerwacja została anulowana
-                                                                    </div>
-                                                                </Match>
-                                                            </Condition>
-                                                            <div class="list-group-item">
-                                                                <span class="fw-bold">
-                                                                    ID:
-                                                                </span>
-                                                                <span>
-                                                                    @Reservation.Id
-                                                                </span>
-                                                            </div>
-                                                            <div class="list-group-item">
-                                                                <span class="fw-bold">
-                                                                    Wydarzenie:
-                                                                </span>
-                                                                <span>
-                                                                    @Reservation.Show.Name
-                                                                </span>
-                                                            </div>
-                                                            <div class="list-group-item">
-                                                                <span class="fw-bold">
-                                                                    Data:
-                                                                </span>
-                                                                <span>
-                                                                    @Reservation.Show.StartDateTime.LocalDateTime.ToLongDateString()
-                                                                </span>
-                                                            </div>
-                                                            <div class="list-group-item">
-                                                                <span class="fw-bold">
-                                                                    Godzina:
-                                                                </span>
-                                                                <span>
-                                                                    @Reservation.Show.StartDateTime.LocalDateTime.ToString("t")
-                                                                </span>
-                                                            </div>
-                                                            <div class="list-group-item">
-                                                                <span class="fw-bold">
-                                                                    Imię i nazwisko:
-                                                                </span>
-                                                                <span>
-                                                                    @Reservation.User.FirstName @Reservation.User.LastName
-                                                                </span>
-                                                            </div>
-                                                            <div class="list-group-item">
-                                                                <span class="fw-bold">
-                                                                    Email:
-                                                                </span>
-                                                                <span>
-                                                                    @Reservation.User.Email
-                                                                </span>
-                                                            </div>
-                                                            <a class="list-group-item list-group-item-action" href="/admin/reservations/@Reservation.Id">
-                                                                <i class="fa-solid fa-arrow-right-long me-1"></i>
-                                                                Przejdź do rezerwacji
-                                                            </a>
+                <Condition Evaluation="isLoading">
+                    <NotMatch>
+                        <Condition Evaluation="ValidateReservationResponse != null">
+                            <Match>
+                                <Condition Evaluation="ValidateReservationResponse.IsSuccessful">
+                                    <Match>
+
+                                        <div class="mb-3">
+                                            <Condition Evaluation="Reservation.Status == ReservationStatus.Ok">
+                                                <Match>
+                                                    <div class="p-2 rounded-top bg-success text-white">
+                                                        <div class="fs-4 text-uppercase text-center fw-bold">
+                                                            ok
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="card">
-                                                        <div class="card-header">
-                                                            Miejsca (@Reservation.Seats.Count)
-                                                        </div>
-                                                        <div class="list-group list-group-flush">
-                                                            <Iterations Items="Reservation.Seats.OrderBy(x => x.Seat.Row).ThenBy(x => x.Seat.Number)" Context="seat">
-                                                                <div class="list-group-item d-flex align-items-center justify-content-between">
-                                                                    Rząd @seat.Seat.Row Numer @seat.Seat.Number
-                                                                </div>
-                                                            </Iterations>
+                                                </Match>
+                                                <NotMatch>
+                                                    <div class="p-2 rounded-top bg-danger text-white">
+                                                        <div class="fs-4 text-uppercase text-center fw-bold">
+                                                            nieważny
                                                         </div>
                                                     </div>
+                                                </NotMatch>
+                                            </Condition>
+
+                                            <div class="list-group list-group-flush border border-top-0 border-2 @GetInfoClass() rounded-bottom">
+                                                <div class="list-group-item fw-bold">
+                                                    @Reservation.Id
                                                 </div>
+                                                <div class="list-group-item">
+                                                    @Reservation.Show.Name
+                                                </div>
+                                                <Condition Evaluation="Reservation.Show.StartDateTime.UtcDateTime.Date > DateTime.UtcNow.Date">
+                                                    <Match>
+                                                        <div class="list-group-item text-muted fst-italic">
+                                                            Zaplanowane na @Reservation.Show.StartDateTime.DateTime.ToShortDateString()
+                                                        </div>
+                                                    </Match>
+                                                </Condition>
+                                                <Condition Evaluation="Reservation.Show.StartDateTime.UtcDateTime.Date < DateTime.UtcNow.Date">
+                                                    <Match>
+                                                        <div class="list-group-item text-muted fst-italic">
+                                                            Odbyło się @Reservation.Show.StartDateTime.DateTime.ToShortDateString()
+                                                        </div>
+                                                    </Match>
+                                                </Condition>
                                             </div>
-                                            
-                                        </Match>
-                                        <NotMatch>
-                                            <Switch Expression="ValidateReservationResponse.Error.Code">
-                                                <SwitchCase Value="@("ERR017")">
-                                                    <InfoAlert>
-                                                        Podany kod biletu nie istnieje w systemie
-                                                    </InfoAlert>
-                                                </SwitchCase>
-                                                <DefaultSwitchCase>
-                                                    <ErrorResponseAlert />
-                                                </DefaultSwitchCase>
-                                            </Switch>
-                                        </NotMatch>
-                                    </Condition>
-                                </Match>
-                            </Condition>
-                        </NotMatch>
-                        <Match>
-                            <ProgressBar />
-                        </Match>
-                    </Condition>
-                </div>
+                                        </div>
+                                        
+                                        <Condition Evaluation="Reservation.Status == ReservationStatus.Ok">
+                                            <Match>
+                                                <div class="card mb-3">
+                                                    <div class="card-header">
+                                                        Miejsca (@Reservation.Seats.Count)
+                                                    </div>
+                                                    <div class="list-group list-group-flush">
+                                                        <Iterations Items="Reservation.Seats.OrderBy(x => x.Seat.Row).ThenBy(x => x.Seat.Number)" Context="seat">
+                                                            <div class="list-group-item @GetSeatClass(seat)">
+                                                                Rząd @seat.Seat.Row Numer @seat.Seat.Number
+                                                            </div>
+                                                        </Iterations>
+                                                    </div>
+                                                </div>
+                                            </Match>
+                                            <NotMatch>
+                                                <ReservationStatusAlert ReservationStatus="Reservation.Status" />
+                                            </NotMatch>
+                                        </Condition>
+                                        
+
+                                        <div class="d-flex align-items-center small">
+                                            <div>
+                                                <a class="text-decoration-none" href="javascript:void(0)">
+                                                    Więcej informacji
+                                                </a>
+                                            </div>
+                                            <div class="ms-auto">
+                                                Czas od zeskanowania:
+                                            </div>
+                                            <div class="ms-1">
+                                                <Timer />
+                                            </div>
+                                        </div>
+                                    </Match>
+                                    <NotMatch>
+                                        <Switch Expression="ValidateReservationResponse.Error.Code">
+                                            <SwitchCase Value="@("ERR017")">
+                                                <InfoAlert>
+                                                    Podany kod biletu nie istnieje w systemie
+                                                </InfoAlert>
+                                            </SwitchCase>
+                                            <DefaultSwitchCase>
+                                                <ErrorResponseAlert />
+                                            </DefaultSwitchCase>
+                                        </Switch>
+                                    </NotMatch>
+                                </Condition>
+                            </Match>
+                        </Condition>
+                    </NotMatch>
+                    <Match>
+                        <ProgressBar />
+                    </Match>
+                </Condition>
             </Authorized>
             <NotAuthorized>
                 <NotAuthorizedAlert />

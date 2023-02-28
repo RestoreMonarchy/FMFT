@@ -6,6 +6,8 @@ using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Reservations;
 using FMFT.Web.Client.Models.API.Reservations.Requests;
 using FMFT.Web.Client.Models.API.Reservations.Responses;
+using FMFT.Web.Client.Models.API.Seats;
+using FMFT.Web.Shared.Enums;
 
 namespace FMFT.Web.Client.Views.Pages.Staff
 {
@@ -19,6 +21,8 @@ namespace FMFT.Web.Client.Views.Pages.Staff
 
         public APIResponse<ValidateReservationResponse> ValidateReservationResponse { get; set; }
 
+        public int? TicketReservationSeatId => ValidateReservationResponse.Object.ReservationSeatId;
+        public ReservationSeat TicketReservationSeat => Reservation.Seats.FirstOrDefault(x => x.Id == TicketReservationSeatId);
         public Reservation Reservation => ValidateReservationResponse.Object.Reservation;
 
         protected override void OnInitialized()
@@ -77,6 +81,26 @@ namespace FMFT.Web.Client.Views.Pages.Staff
 
             isLoading = false;
             StateHasChanged();
+        }
+
+        private string GetSeatClass(ReservationSeat seat)
+        {
+            if (TicketReservationSeatId.HasValue && TicketReservationSeatId.Value == seat.Id)
+            {
+                return "fw-bold";
+            }
+
+            return string.Empty;
+        }
+
+        private string GetInfoClass()
+        {
+            if (Reservation.Status == ReservationStatus.Ok)
+            {
+                return "border-success";
+            }
+
+            return "border-danger";
         }
     }
 }
