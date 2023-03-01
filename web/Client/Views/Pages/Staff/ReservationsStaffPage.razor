@@ -1,0 +1,29 @@
+﻿@page "/staff/reservations"
+
+<MainLayoutBody>
+    <Breadcrumb>
+        <BreadcrumbItem Link="/">
+            Home
+        </BreadcrumbItem>
+        <BreadcrumbItem>
+            Obsługa
+        </BreadcrumbItem>
+        <BreadcrumbItem Active="true">
+            Rezerwacje
+        </BreadcrumbItem>
+    </Breadcrumb>
+
+    <CustomAuthorizeView Roles="new UserRole[] { UserRole.Admin, UserRole.Staff }">
+        <Authorized>
+
+            <LoadingView IsLoading="false">
+
+            </LoadingView>
+
+        </Authorized>
+        <NotAuthorized>
+            <NotAuthorizedAlert />
+        </NotAuthorized>
+    </CustomAuthorizeView>
+
+</MainLayoutBody>
