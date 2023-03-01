@@ -22,7 +22,10 @@
                 <CustomAuthorizeView Roles="new UserRole[] { UserRole.Staff, UserRole.Admin }">
                     <Authorized>
                         <NavbarDropdown Value="Obsługa">
-                            <NavbarDropdownItem Location="/staff/ticket-scanner">
+                            <NavbarDropdownItem Location="/staff/shows">
+                                Wydarzenia
+                            </NavbarDropdownItem>
+                            <NavbarDropdownItem Location="/staff/ticket-scanner" StartsWith="true">
                                 Skaner biletów
                             </NavbarDropdownItem>
                             <NavbarDropdownItem Location="/staff/reservation-search">

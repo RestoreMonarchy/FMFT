@@ -1,0 +1,24 @@
+﻿@using FMFT.Web.Client.Models.API.Shows;
+
+<div class="w-100 p-2 bg-dark text-white border rounded mb-2">
+    <div class="fw-bold mb-1">
+        @Show.Name
+    </div>
+    <div class="mb-1">
+        @Show.StartDateTime.LocalDateTime.ToShortDateString() @Show.StartDateTime.LocalDateTime.ToShortTimeString()
+        <Condition Evaluation="HideMoreInfo">
+            <NotMatch>
+                <a href="/shows/@Show.Id" class="text-white ms-1">
+                    Więcej informacji
+                </a>
+            </NotMatch>
+        </Condition>        
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public Show Show { get; set; }
+    [Parameter]
+    public bool HideMoreInfo { get; set; }
+}
