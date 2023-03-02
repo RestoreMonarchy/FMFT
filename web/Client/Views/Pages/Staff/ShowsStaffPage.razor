@@ -1,0 +1,58 @@
+﻿@page "/staff/shows"
+
+<MainLayoutBody>
+    <Breadcrumb>
+        <BreadcrumbItem Link="/">
+            Home
+        </BreadcrumbItem>
+        <BreadcrumbItem>
+            Obsługa
+        </BreadcrumbItem>
+        <BreadcrumbItem Active="true">
+            Wydarzenia
+        </BreadcrumbItem>
+    </Breadcrumb>
+
+    <CustomAuthorizeView Roles="new UserRole[] { UserRole.Admin, UserRole.Staff }">
+        <Authorized>
+
+            <LoadingView @ref="LoadingView">
+                <Condition Evaluation="ShowsResponse.IsSuccessful">
+                    <Match>
+
+                        <div class="list-group">
+                            <Iterations Items="Shows.OrderBy(x => x.StartDateTime)" Context="show">
+
+                                <div class="list-group-item d-flex align-items-center">
+                                    <div class="small">
+                                        <div>
+                                            @show.Name
+                                        </div>
+                                        <div>
+                                            @show.StartDateTime.DateTime.ToShortDateString()
+                                            @show.StartDateTime.DateTime.ToShortTimeString()
+                                        </div>
+                                    </div>
+                                    <div class="ms-auto text-nowrap">
+                                        <a class="btn btn-outline-primary" href="/staff/ticket-scanner/@show.Id">
+                                            <i class="fa-solid fa-qrcode"></i>
+                                        </a>                                     
+                                    </div>
+                                </div>
+                            </Iterations>
+                        </div>
+
+                    </Match>
+                    <NotMatch>
+                        <ErrorResponseAlert />
+                    </NotMatch>
+                </Condition>
+            </LoadingView>
+
+        </Authorized>
+        <NotAuthorized>
+            <NotAuthorizedAlert />
+        </NotAuthorized>
+    </CustomAuthorizeView>
+
+</MainLayoutBody>

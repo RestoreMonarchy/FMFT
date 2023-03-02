@@ -216,9 +216,23 @@
                                    </AlertBase>
                                </AlertGroupBase>
 
-                               <div>
-                                   <label class="form-label">Typ użytkownika</label>
+                               <div class="mb-3">
+                                    <label class="form-label">Typ użytkownika</label>
                                     <SelectEnumBase @ref="ChangeRoleSelect" TEnum="UserRole" @bind-Value="changeRole" />
+                               </div>
+
+                               <div class="p-2 small bg-light border rounded">
+                                    <Switch Expression="@changeRole">
+                                        <SwitchCase Value="@(UserRole.Admin)">
+                                            Posiada dostęp do wszystkich stron i opcji zarządzania systemem.
+                                        </SwitchCase>
+                                        <SwitchCase Value="@(UserRole.Staff)">
+                                            Typ użytkownika przeznaczony dla osób zajmujących się sprawdzaniem biletów.
+                                        </SwitchCase>
+                                        <SwitchCase Value="@(UserRole.Guest)">
+                                            Domyślny typ użytkownika po zarejestrowaniu się na stronie.
+                                        </SwitchCase>
+                                    </Switch>
                                </div>
                            </Body>
                            <Footer>

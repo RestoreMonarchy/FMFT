@@ -53,7 +53,12 @@ namespace FMFT.Web.Client.Views.Shared.Components.Panzooms
             sizeX = 25,
             sizeY = 25,
             defaultColor = "#009578",
-            font = "bold 12px Arial"
+            font = "bold 12px Arial",
+            stageWidth = 400,
+            stageHeight = 40,
+            stageOffset = 50,
+            stageFont = "bold 14px Arial",
+            stageColor = "#D51360"
         };
 
         public async Task ReloadAsync()

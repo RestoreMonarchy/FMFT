@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FMFT.Web.Shared.Enums
+﻿namespace FMFT.Web.Shared.Enums
 {
     public enum UserRole
     {
-        Guest,
-        Admin
+        Guest = 0,
+        Admin = 1,
+        Staff = 2
     }
 }

@@ -15,6 +15,9 @@ namespace FMFT.Extensions.Blazor.Bases.Inputs
         public string Placeholder { get; set; }
 
         [Parameter]
+        public int? MaxLength { get; set; }
+
+        [Parameter]
         public EventCallback<string> ValueChanged { get; set; }
 
         [Parameter]

@@ -1,5 +1,6 @@
 ﻿@page "/shows/{ShowId:int}/order/seats"
 @using FMFT.Extensions.Blazor.Bases.Steppers
+@using FMFT.Web.Client.Views.Shared.Components.Headers
 @using FMFT.Web.Client.Views.Shared.Components.Panzooms
 
 <MainLayoutBody>
@@ -16,17 +17,7 @@
 
                 <Condition Evaluation="ShowResponse.IsSuccessful && AuditoriumResponse.IsSuccessful">
                     <Match>
-                        <div class="w-100 p-2 bg-dark text-white border rounded mb-2">
-                            <div class="fw-bold mb-1">
-                                @Show.Name
-                            </div>
-                            <div class="mb-1">
-                                @Show.StartDateTime.LocalDateTime.ToShortDateString() @Show.StartDateTime.LocalDateTime.ToShortTimeString()
-                                <a href="/shows/@ShowId" class="text-white ms-1">
-                                    Więcej informacji
-                                </a>
-                            </div>
-                        </div>
+                        <ShowHeader Show="Show" />
 
                         <div class="mb-3">
                             <div class="d-md-flex d-block align-items-center">
@@ -97,7 +88,7 @@
             </LoadingView>
         </Authorized>
         <NotAuthorized>
-            <NotAuthorizedAlert />
+            <NotAuthenticatedAlert />
         </NotAuthorized>
         <NotConfirmedEmail>
             <UnconfirmedEmailAlert />

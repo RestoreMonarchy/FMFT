@@ -19,6 +19,21 @@
                 <NavbarItem Location="/shows" StartsWith="true">
                     Wydarzenia
                 </NavbarItem>
+                <CustomAuthorizeView Roles="new UserRole[] { UserRole.Staff, UserRole.Admin }">
+                    <Authorized>
+                        <NavbarDropdown Value="Obsługa">
+                            <NavbarDropdownItem Location="/staff/shows">
+                                Wydarzenia
+                            </NavbarDropdownItem>
+                            <NavbarDropdownItem Location="/staff/reservations">
+                                Rezerwacje
+                            </NavbarDropdownItem>
+                            <NavbarDropdownItem Location="/staff/ticket-scanner" StartsWith="true">
+                                Skaner biletów
+                            </NavbarDropdownItem>                            
+                        </NavbarDropdown>
+                    </Authorized>
+                </CustomAuthorizeView>
                 <CustomAuthorizeView Role="UserRole.Admin">
                     <Authorized>
                         <NavbarDropdown Value="Admin">
@@ -33,9 +48,6 @@
                             </NavbarDropdownItem>
                             <NavbarDropdownItem Location="/admin/orders">
                                 Zamówienia
-                            </NavbarDropdownItem>
-                            <NavbarDropdownItem Location="/admin/reservations/validation">
-                                Sprawdź rezerwację
                             </NavbarDropdownItem>
                         </NavbarDropdown>
                     </Authorized>

@@ -2,8 +2,10 @@
 using FMFT.Extensions.Blazor.Bases.Buttons;
 using FMFT.Extensions.Blazor.Bases.Loadings;
 using FMFT.Web.Client.Models.API;
+using FMFT.Web.Client.Models.API.Auditoriums;
 using FMFT.Web.Client.Models.API.Orders;
 using FMFT.Web.Client.Models.API.Orders.Requests;
+using FMFT.Web.Client.Models.API.Seats;
 using FMFT.Web.Client.Models.API.ShowProducts;
 using FMFT.Web.Client.Models.API.Shows;
 using FMFT.Web.Client.Models.Services.Orders;
@@ -36,12 +38,16 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
         public OrderStateData OrderStateData { get; set; }
         public APIResponse<Show> ShowResponse { get; set; }
         public APIResponse<List<ShowProduct>> ShowProductsResponse { get; set; }
+        public APIResponse<Auditorium> AuditoriumResponse { get; set; }
 
         public Show Show => ShowResponse.Object;
         public List<ShowProduct> ShowProducts => ShowProductsResponse.Object;
+        public Auditorium Auditorium => AuditoriumResponse.Object;
 
         public decimal TotalPrice { get; private set; }
         public bool PayDisabled => !OrderStateData.IsAgreeTerms;
+
+        public IEnumerable<Seat> Seats => Auditorium.Seats.Where(x => OrderStateData.SeatIds.Contains(x.Id));
 
         protected override async Task OnInitializedAsync()
         {
@@ -55,7 +61,8 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
             Task[] getDataTasks = new Task[]
             {
                 GetShowResponseAsync(),
-                GetShowProductsResponseAsync()
+                GetShowProductsResponseAsync(),
+                GetAudituriumResponseAsync()
             };
 
             await Task.WhenAll(getDataTasks);
@@ -89,6 +96,11 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
         private async Task GetShowProductsResponseAsync()
         {
             ShowProductsResponse = await APIBroker.GetShowProductsByShowIdAsync(ShowId);
+        }
+
+        private async Task GetAudituriumResponseAsync()
+        {
+            AuditoriumResponse = await APIBroker.GetAuditoriumByShowIdAsync(ShowId);
         }
 
         private ShowProduct GetShowProduct(int showProductId)

@@ -1,4 +1,5 @@
 ﻿@page "/admin/users"
+@using FMFT.Extensions.Blazor.Bases.Conditions
 
 <MainLayoutBody>
 
@@ -81,11 +82,14 @@
                                         <td>
                                             <a href="/admin/users/@user.Id" class="text-decoration-none">
                                                 @FormatHelper.Email(user.Email)
-                                                <Condition Evaluation="user.Role == UserRole.Admin">
-                                                    <Match>
+                                                <Switch Expression="user.Role">
+                                                    <SwitchCase Value="@(UserRole.Admin)">
                                                         <i class="fa-regular fa-star small"></i>
-                                                    </Match>
-                                                </Condition>
+                                                    </SwitchCase>
+                                                    <SwitchCase Value="@(UserRole.Staff)">
+                                                        <i class="fa-solid fa-wrench small"></i>
+                                                    </SwitchCase>
+                                                </Switch>
                                             </a>                                            
                                         </td>
                                         <td class="d-none d-md-table-cell">

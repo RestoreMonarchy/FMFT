@@ -1,6 +1,7 @@
 ﻿@page "/shows/{ShowId:int}/order"
 @page "/shows/{ShowId:int}/order/products"
 @using FMFT.Extensions.Blazor.Bases.Steppers
+@using FMFT.Web.Client.Views.Shared.Components.Headers
 
 <MainLayoutBody>
 
@@ -16,17 +17,7 @@
             <LoadingView @ref="LoadingView">
                 <Condition Evaluation="ShowResponse.IsSuccessful && ShowProductsResponse.IsSuccessful && UserReservationsResponse.IsSuccessful">
                     <Match>
-                        <div class="w-100 p-2 bg-dark text-white border rounded mb-2">
-                            <div class="fw-bold mb-1">
-                                @Show.Name
-                            </div>
-                            <div class="mb-1">
-                                @Show.StartDateTime.LocalDateTime.ToShortDateString() @Show.StartDateTime.LocalDateTime.ToShortTimeString()
-                                <a href="/shows/@ShowId" class="text-white ms-1">
-                                    Więcej informacji
-                                </a>
-                            </div>
-                        </div>
+                        <ShowHeader Show="Show" />
 
                         <div class="fs-4 mb-2">
                             Wybierz bilety
@@ -103,7 +94,7 @@
 
         </Authorized>
         <NotAuthorized>
-            <NotAuthorizedAlert />
+            <NotAuthenticatedAlert />
         </NotAuthorized>
         <NotConfirmedEmail>
             <UnconfirmedEmailAlert />
