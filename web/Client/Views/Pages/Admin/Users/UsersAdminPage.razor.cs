@@ -27,7 +27,8 @@ namespace FMFT.Web.Client.Views.Pages.Admin.Users
         private Dictionary<UserRole, bool> RoleFilters = new()
         {
             { UserRole.Guest, true },
-            { UserRole.Admin, true }
+            { UserRole.Admin, true },
+            { UserRole.Staff, true }
         };
 
         private string searchString = string.Empty;
