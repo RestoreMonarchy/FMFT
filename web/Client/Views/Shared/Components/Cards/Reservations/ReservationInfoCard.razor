@@ -1,0 +1,54 @@
+﻿@using FMFT.Web.Client.Models.API.Reservations;
+<div class="card mb-3">
+    <div class="card-header">
+        Informacje o rezerwacji
+    </div>
+    <div class="list-group list-group-flush">
+        <div class="list-group-item">
+            <span class="fw-bold">
+                ID:
+            </span>
+            <span>
+                @Reservation.Id
+            </span>
+        </div>
+        <div class="list-group-item">
+            <span class="fw-bold">
+                Wydarzenie:
+            </span>
+            <span>
+                @Reservation.Show.Name
+            </span>
+        </div>
+        <div class="list-group-item">
+            <span class="fw-bold">
+                Status:
+            </span>
+            <span>
+                @FormatHelper.TranslateReservationStatus(Reservation.Status)
+            </span>
+        </div>
+        <div class="list-group-item">
+            <span class="fw-bold">
+                Data:
+            </span>
+            <span>
+                @Reservation.Show.StartDateTime.LocalDateTime.ToLongDateString()
+            </span>
+        </div>
+        <div class="list-group-item">
+            <span class="fw-bold">
+                Godzina:
+            </span>
+            <span>
+                @Reservation.Show.StartDateTime.LocalDateTime.ToString("t")
+            </span>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    [Parameter]
+    public Reservation Reservation { get; set; }
+}

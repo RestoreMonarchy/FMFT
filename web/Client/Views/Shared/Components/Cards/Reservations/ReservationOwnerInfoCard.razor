@@ -1,0 +1,77 @@
+﻿@using FMFT.Web.Client.Models.API.Reservations;
+
+<Condition Evaluation="Reservation.User != null">
+    <Match>
+        <div class="card mb-3">
+            <div class="card-header">
+                Użytkownik
+            </div>
+            <div class="list-group list-group-flush">
+                <div class="list-group-item">
+                    <span class="fw-bold">
+                        Imię:
+                    </span>
+                    <span>
+                        @Reservation.User.FirstName
+                    </span>
+                </div>
+                <div class="list-group-item">
+                    <span class="fw-bold">
+                        Nazwisko:
+                    </span>
+                    <span>
+                        @Reservation.User.LastName
+                    </span>
+                </div>
+                <div class="list-group-item">
+                    <span class="fw-bold">
+                        Email:
+                    </span>
+                    <span>
+                        @Reservation.User.Email
+                    </span>
+                </div>
+            </div>
+        </div>
+    </Match>
+    <NotMatch>
+        <div class="card mb-3">
+            <div class="card-header">
+                Osoba
+            </div>
+            <div class="list-group list-group-flush">
+                <div class="list-group-item">
+                    <span class="fw-bold">
+                        Imię:
+                    </span>
+                    <span>
+                        @Reservation.Details.FirstName
+                    </span>
+                </div>
+                <div class="list-group-item">
+                    <span class="fw-bold">
+                        Nazwisko:
+                    </span>
+                    <span>
+                        @Reservation.Details.LastName
+                    </span>
+                </div>
+                <div class="list-group-item">
+                    <span class="fw-bold">
+                        Email:
+                    </span>
+                    <span>
+                        @Reservation.Details.Email
+                    </span>
+                </div>
+            </div>
+        </div>
+    </NotMatch>
+</Condition>
+
+
+
+@code {
+    [Parameter]
+    public Reservation Reservation { get; set; }
+}

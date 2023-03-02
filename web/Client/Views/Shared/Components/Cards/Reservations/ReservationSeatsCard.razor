@@ -1,0 +1,18 @@
+﻿@using FMFT.Web.Client.Models.API.Reservations;
+<div class="card mb-3">
+    <div class="card-header">
+        Miejsca (@Reservation.Seats.Count)
+    </div>
+    <div class="list-group list-group-flush">
+        <Iterations Items="Reservation.Seats.OrderBy(x => x.Seat.Row).ThenBy(x => x.Seat.Number)" Context="seat">
+            <div class="list-group-item">
+                Rząd @seat.Seat.Row Numer @seat.Seat.Number
+            </div>
+        </Iterations>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public Reservation Reservation { get; set; }
+}

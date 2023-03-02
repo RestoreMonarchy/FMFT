@@ -33,7 +33,6 @@ namespace FMFT.Web.Client.Views.Pages.Staff
 
         protected override async Task OnParametersSetAsync()
         {
-            LoadingView?.StartLoading();
             ShowResponse = null;
             ValidateReservationResponse = null;
 
@@ -41,8 +40,6 @@ namespace FMFT.Web.Client.Views.Pages.Staff
             {
                 ShowResponse = await APIBroker.GetPublicShowByIdAsync(ShowId.Value);
             }
-
-            LoadingView?.StopLoading();
         }
 
         protected override void OnInitialized()

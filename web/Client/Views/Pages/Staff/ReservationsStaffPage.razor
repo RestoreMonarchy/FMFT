@@ -1,4 +1,7 @@
-﻿@page "/staff/reservations"
+﻿@page "/staff/reservations/{ReservationId?}"
+@using FMFT.Extensions.Blazor.Bases.Conditions
+@using FMFT.Web.Client.Views.Shared.Components.Alerts.Reservations
+@using FMFT.Web.Client.Views.Shared.Components.Cards.Reservations
 
 <MainLayoutBody>
     <Breadcrumb>
@@ -16,9 +19,67 @@
     <CustomAuthorizeView Roles="new UserRole[] { UserRole.Admin, UserRole.Staff }">
         <Authorized>
 
-            <LoadingView IsLoading="false">
+            <div class="mb-3">
+                <div class="fs-5 text-center mb-2">
+                    Wyszukaj rezerwację
+                </div>
+                <FormBase @ref="Form" OnSubmit="HandleSubmitAsync">
+                    <div class="input-group mx-auto" style="max-width: 600px;">
+                        <span class="input-group-text">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </span>
+                        <TextInputBase Class="form-control" Placeholder="Szukaj po ID" @bind-Value="SearchString" IsDisabled="isLoading" />
+                        <SubmitButtonBase Class="btn btn-outline-dark" IsDisabled="isLoading">
+                            Szukaj
+                        </SubmitButtonBase>
+                    </div>
+                </FormBase>
+            </div>
 
-            </LoadingView>
+            <Condition Evaluation="isLoading">
+                <NotMatch>
+                    <Condition Evaluation="ReservationResponse == null">
+                        <NotMatch>
+                            <Condition Evaluation="ReservationResponse.IsSuccessful">
+                                <Match>
+                                    <div class="fs-4 fw-bold">
+                                        @Reservation.Id
+                                    </div>
+                                    <div class="dropdown-divider"></div>
+
+                                    <ReservationStatusAlert ReservationStatus="Reservation.Status" />
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <ReservationInfoCard Reservation="Reservation" />
+
+                                            <ReservationSeatsCard Reservation="Reservation" />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <ReservationOwnerInfoCard Reservation="Reservation" />
+                                        </div>
+                                    </div>
+                                </Match>
+                                <NotMatch>
+                                    <Switch Expression="@(ReservationResponse.Error.Code)">
+                                        <SwitchCase Value="@("ERR017")">
+                                            <div class="alert alert-warning">
+                                                Rezerwacja o podanym ID nie została znaleziona
+                                            </div>
+                                        </SwitchCase>
+                                        <DefaultSwitchCase>
+                                            <ErrorResponseAlert />
+                                        </DefaultSwitchCase>
+                                    </Switch>
+                                </NotMatch>
+                            </Condition>
+                        </NotMatch>
+                    </Condition>
+                </NotMatch>
+                <Match>
+                    <ProgressBar />
+                </Match>
+            </Condition>
 
         </Authorized>
         <NotAuthorized>
