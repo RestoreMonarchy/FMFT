@@ -3,7 +3,7 @@
 
 @implements IDisposable
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top @Class" style="min-height: 56px;">
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top @Class" style="min-height: 56px;">
     <div class="container">
         <a class="navbar-brand p-0" href="/">
             <img src="/img/navbar_brand.svg" alt="FMFT" height="36">
@@ -11,14 +11,20 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse me-lg-0" id="navbarToggler" style="margin-right: 5em;" @ref="NavbarContent">
-            <ul class="navbar-nav me-md-auto mb-2 mb-lg-0">
+        <div class="collapse navbar-collapse me-md-0" id="navbarToggler" style="margin-right: 5em;" @ref="NavbarContent">
+            <ul class="navbar-nav me-md-auto mb-2 mb-md-0">
                 <NavbarItem Location="/">
                     Home
                 </NavbarItem>
                 <NavbarItem Location="/shows" StartsWith="true">
                     Wydarzenia
                 </NavbarItem>
+                <li>
+                    <a class="nav-link" href="https://fmft.art.pl" target="_blank">
+                        fmft.art.pl
+                        <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 10px;"></i>
+                    </a>
+                </li>
                 <CustomAuthorizeView Roles="new UserRole[] { UserRole.Staff, UserRole.Admin }">
                     <Authorized>
                         <NavbarDropdown Value="Obsługa">
