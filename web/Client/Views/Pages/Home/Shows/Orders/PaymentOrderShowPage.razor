@@ -21,6 +21,12 @@
                                     <AlertBase @ref="ErrorAlert" Class="alert-danger">
                                         Wystąpił błąd. Spróbuj ponownie później
                                     </AlertBase>
+                                    <AlertBase @ref="SeatErrorAlert" Class="alert-danger">
+                                        Miejsce które wybrałeś jest już zajęte. 
+                                        <a href="/shows/@ShowId/order/seats" class="text-decoration-none">
+                                            Zmień miejsca
+                                        </a>
+                                    </AlertBase>
                                 </AlertGroupBase>
 
                                 <div class="mb-3">
@@ -45,10 +51,14 @@
                                                     <NotMatch>
                                                         Rząd @group.Key Miejsce @string.Join(", ", group.Select(x => x.Number))
                                                     </NotMatch>
-                                                </Condition>
-                                                
+                                                </Condition>                                                
                                             </li>
                                         </Iterations>
+                                        <li>
+                                            <a href="/shows/@ShowId/order/seats" class="text-decoration-none">
+                                                Zmień miejsca
+                                            </a>
+                                        </li>
                                     </ul>
                                 </div>
                                 <div class="mb-3">

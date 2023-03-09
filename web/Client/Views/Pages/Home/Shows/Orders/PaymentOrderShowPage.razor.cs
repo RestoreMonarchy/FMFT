@@ -33,6 +33,7 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
         public LoadingView LoadingView { get; set; }
         public AlertGroupBase AlertGroup { get; set; }
         public AlertBase ErrorAlert { get; set; }
+        public AlertBase SeatErrorAlert { get; set; }
         public ButtonBase PayButton { get; set; }
 
         public OrderStateData OrderStateData { get; set; }
@@ -180,7 +181,16 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
             }
             else
             {
-                ErrorAlert.Show();
+                if (response.Error.Code == "ERR018")
+                {
+                    SeatErrorAlert.Show();
+                } else
+                {
+                    ErrorAlert.Show();
+                }
+
+                await AlertGroup.FocusAsync();
+                
                 PayButton.StopSpinning();
             }
         }
