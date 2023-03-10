@@ -61,3 +61,4 @@ ERR053 | One or more shows have not started selling
 ERR054 | Update Show Selling Details validation problem
 ERR055 | Update Show Status validation problem
 ERR056 | Update Show Time validation problem
+ERR057 | Failed to register payment at payment provider

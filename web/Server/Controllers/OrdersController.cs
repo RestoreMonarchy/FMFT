@@ -173,6 +173,10 @@ namespace FMFT.Web.Server.Controllers
             {
                 return ServiceUnavailable(exception);
             }
+            catch (RegisterPaymentProviderException exception)
+            {
+                return ServiceUnavailable(exception);
+            }
             catch (CreateUserOrderReservationValidationException exception)
             {
                 return BadRequest(exception);
