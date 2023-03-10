@@ -7,6 +7,8 @@ namespace FMFT.Extensions.Blazor.Bases.Alerts
         [Parameter]
         public RenderFragment ChildContent { get; set; }
 
+        public ElementReference ElementReference { get; set; }
+
         public List<AlertBase> Alerts { get; set; } = new List<AlertBase>();
         public void AddAlert(AlertBase alertBase)
         {
@@ -27,6 +29,11 @@ namespace FMFT.Extensions.Blazor.Bases.Alerts
             {
                 alert.Hide();
             }
+        }
+
+        public async Task FocusAsync()
+        {
+            await ElementReference.FocusAsync(false);
         }
     }
 }

@@ -14,5 +14,7 @@ namespace FMFT.Web.Client.Models.Services.Orders
 
         [JsonIgnore]
         public bool IsAgreeTerms { get; set; }
+        [JsonIgnore]
+        public bool IsAgreePrzelewy24 { get; set; }
     }
 }

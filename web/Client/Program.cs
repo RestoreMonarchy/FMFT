@@ -16,9 +16,12 @@ builder.AddStateContainers();
 builder.AddBrokers();
 builder.AddServices();
 
-CultureInfo.CurrentCulture = new CultureInfo("pl-PL");
-
 Console.WriteLine($"Application environment: {builder.HostEnvironment.Environment}");
+
+if (builder.HostEnvironment.IsDevelopment()) 
+{
+    CultureInfo.CurrentCulture = new CultureInfo("pl-PL");
+}
 
 WebAssemblyHost host = builder.Build();
 

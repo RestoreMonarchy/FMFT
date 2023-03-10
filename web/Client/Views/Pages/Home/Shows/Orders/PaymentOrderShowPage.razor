@@ -21,6 +21,12 @@
                                     <AlertBase @ref="ErrorAlert" Class="alert-danger">
                                         Wystąpił błąd. Spróbuj ponownie później
                                     </AlertBase>
+                                    <AlertBase @ref="SeatErrorAlert" Class="alert-danger">
+                                        Miejsce które wybrałeś jest już zajęte. 
+                                        <a href="/shows/@ShowId/order/seats" class="text-decoration-none">
+                                            Zmień miejsca
+                                        </a>
+                                    </AlertBase>
                                 </AlertGroupBase>
 
                                 <div class="mb-3">
@@ -45,10 +51,14 @@
                                                     <NotMatch>
                                                         Rząd @group.Key Miejsce @string.Join(", ", group.Select(x => x.Number))
                                                     </NotMatch>
-                                                </Condition>
-                                                
+                                                </Condition>                                                
                                             </li>
                                         </Iterations>
+                                        <li>
+                                            <a href="/shows/@ShowId/order/seats" class="text-decoration-none">
+                                                Zmień miejsca
+                                            </a>
+                                        </li>
                                     </ul>
                                 </div>
                                 <div class="mb-3">
@@ -103,17 +113,28 @@
                                     </div>
                                     <div class="dropdown-divider"></div>
                                     <div>
-                                        @*<ul>
+                                        <ul>
                                             <li>
-                                                <a href="javascript:void(0)" class="text-decoration-none">
-                                                    Regulamin Sklepu Internetowego
+                                                <a href="/documents/terms-and-conditions.pdf" target="_blank" class="text-decoration-none">
+                                                    Regulamin sprzedaży
                                                 </a>
                                             </li>
-                                        </ul>*@
+                                        </ul>
+                                        <div class="form-check ms-2">
+                                            <input class="form-check-input" type="checkbox" id="Przelewy24TermsCheckbox" style="cursor: pointer;" @bind="OrderStateData.IsAgreePrzelewy24">
+                                            <label class="form-check-label small" for="Przelewy24TermsCheckbox" style="cursor: pointer;">
+                                                Oświadczam, że został-em/-am poinformowan-y/-a, że administratorem danych osobowych w zakresie realizacji płatności jest PayPro z siedzibą w Poznaniu.
+                                                <Condition Evaluation="OrderStateData.IsAgreePrzelewy24">
+                                                    <NotMatch>
+                                                        <span class="text-danger fw-bold"> *</span>
+                                                    </NotMatch>
+                                                </Condition>
+                                            </label>
+                                        </div>
                                         <div class="form-check ms-2">
                                             <input class="form-check-input" type="checkbox" id="TermsAndConditionsCheckbox" style="cursor: pointer;" @bind="OrderStateData.IsAgreeTerms">
                                             <label class="form-check-label small" for="TermsAndConditionsCheckbox" style="cursor: pointer;">
-                                                Oświadczam, że został-em/-am poinformowan-y/-a, że administratorem danych osobowych w zakresie realizacji płatności jest PayPro z siedzibą w Poznaniu.
+                                                Zgadzam się z warunkami i regulaminem sprzedaży
                                                 <Condition Evaluation="OrderStateData.IsAgreeTerms">
                                                     <NotMatch>
                                                         <span class="text-danger fw-bold"> *</span>
@@ -163,7 +184,7 @@
                                         </ButtonBase>
                                     </div>
                                     <div class="text-small">
-                                        <Condition Evaluation="OrderStateData.IsAgreeTerms">
+                                        <Condition Evaluation="OrderStateData.IsAgreeTerms && OrderStateData.IsAgreePrzelewy24">
                                             <NotMatch>
                                                 <div class="text-danger">
                                                     <i class="fa-solid fa-exclamation me-1"></i>
