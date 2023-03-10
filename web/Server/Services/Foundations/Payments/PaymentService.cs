@@ -83,7 +83,10 @@ namespace FMFT.Web.Server.Services.Foundations.Payments
             } catch (PaymentProviderNotSupportedException)
             {
                 throw new NotSupportedPaymentProviderException();
-            }            
+            } catch (PaymentProviderException)
+            {
+                throw new RegisterPaymentProviderException();
+            }
         }
 
         public async ValueTask<PaymentUrl> GetPaymentUrlAsync(GetPaymentUrlParams @params)

@@ -4,13 +4,9 @@ using FMFT.Extensions.Payments.Models.Enums;
 using FMFT.Extensions.Payments.Models.Exceptions;
 using FMFT.Extensions.Payments.Models.Options;
 using FMFT.Extensions.Payments.Models.Results;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using P24;
-using System.Text;
 
 namespace FMFT.Extensions.Payments.Services.Providers
 {
@@ -151,13 +147,13 @@ namespace FMFT.Extensions.Payments.Services.Providers
 
             return result;
         }
+
         private string GetBaseP24Url(bool useSandbox)
         {
             if (useSandbox)
                 return sandboxUrl;
 
             return productionUrl;
-
         }
     }
 }
