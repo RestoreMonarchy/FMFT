@@ -46,7 +46,7 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
         public Auditorium Auditorium => AuditoriumResponse.Object;
 
         public decimal TotalPrice { get; private set; }
-        public bool PayDisabled => !OrderStateData.IsAgreeTerms;
+        public bool PayDisabled => !OrderStateData.IsAgreeTerms || !OrderStateData.IsAgreePrzelewy24;
 
         public IEnumerable<Seat> Seats => Auditorium.Seats.Where(x => OrderStateData.SeatIds.Contains(x.Id));
 
