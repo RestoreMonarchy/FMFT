@@ -104,7 +104,7 @@ namespace FMFT.Extensions.Payments.Services.Providers
             int p24Method = paymentMethodId switch
             {
                 PaymentMethodId.Przelewy24 => 0,
-                PaymentMethodId.Blik => 153,
+                PaymentMethodId.Blik => 154,
                 PaymentMethodId.CreditDebitCard => 0,
                 _ => 0,
             };
@@ -116,16 +116,28 @@ namespace FMFT.Extensions.Payments.Services.Providers
                 SessionId = arguments.SessionId.ToString(),
                 Amount = (int)(arguments.Amount * 100),
                 Currency = arguments.Currency,
-                Description = $"Order #{arguments.OrderId} - {arguments.CustomerFirstName} {arguments.CustomerLastName}",
+                Description = $"Zamówienie #{arguments.OrderId} - {arguments.CustomerFirstName} {arguments.CustomerLastName}",
                 Email = arguments.CustomerEmailAddress,
                 Country = "PL",
                 Language = "pl",
                 UrlReturn = generalOptions.GetReturnUrl(arguments.OrderId),
                 UrlStatus = generalOptions.GetNotifyUrl("przelewy24"),
                 Method = p24Method,
-                Channel = 65 // 1 - karty + ApplePay + GooglePay, 64 – tylko metody pay-by-link
+                Channel = 16
             };
 
+            /*
+            1 - karty + ApplePay + GooglePay, 
+            2 - przelew, 
+            4 - tradycyjny przelew, 
+            8 - N / A, 
+            16 - wszystkie 24 / 7 – udostępnia wszystkie metody płatności, 
+            32 - uzyj przedpłaty, 
+            64 – tylko metody pay - by - link, 
+            128 – formy ratalne, 
+            256 – wallety, 
+            4096 - karty
+            */ 
             string requestJson = JsonConvert.SerializeObject(request);
             Console.WriteLine("[Przelewy24] [Order #{0}] Transaction request: \n{1}", arguments.OrderId, requestJson);
 
