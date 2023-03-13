@@ -19,12 +19,9 @@
                 <NavbarItem Location="/shows" StartsWith="true">
                     Wydarzenia
                 </NavbarItem>
-                <li>
-                    <a class="nav-link" href="https://fmft.art.pl" target="_blank">
-                        fmft.art.pl
-                        <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 10px;"></i>
-                    </a>
-                </li>
+                <NavbarItem Location="/contact">
+                    Kontakt
+                </NavbarItem>
                 <CustomAuthorizeView Roles="new UserRole[] { UserRole.Staff, UserRole.Admin }">
                     <Authorized>
                         <NavbarDropdown Value="Obsługa">
