@@ -5,7 +5,7 @@
         <BreadcrumbItem Link="/">
             Home
         </BreadcrumbItem>
-        <BreadcrumbItem>
+        <BreadcrumbItem Link="/staff">
             Obsługa
         </BreadcrumbItem>
         <BreadcrumbItem Active="true">
@@ -24,7 +24,7 @@
                             <Iterations Items="Shows.OrderBy(x => x.StartDateTime)" Context="show">
 
                                 <div class="list-group-item d-flex align-items-center">
-                                    <div class="small">
+                                    <div class="me-2 small">
                                         <div>
                                             @show.Name
                                         </div>
@@ -34,7 +34,7 @@
                                         </div>
                                     </div>
                                     <div class="ms-auto text-nowrap">
-                                        <a class="btn btn-outline-primary" href="/staff/ticket-scanner/@show.Id">
+                                        <a class="btn btn-lg btn-outline-dark" href="/staff/ticket-scanner/@show.Id">
                                             <i class="fa-solid fa-qrcode"></i>
                                         </a>                                     
                                     </div>

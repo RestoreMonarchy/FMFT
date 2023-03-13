@@ -3,7 +3,7 @@ services:
   mssql-server:
     restart: always
     user: root
-    image: "mcr.microsoft.com/mssql/server:2019-latest"
+    image: "mcr.microsoft.com/mssql/server:2019-CU18-ubuntu-20.04"
     environment:
       ACCEPT_EULA: "Y"
       SA_PASSWORD: "Password!123"
