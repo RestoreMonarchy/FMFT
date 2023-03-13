@@ -116,7 +116,7 @@ namespace FMFT.Extensions.Payments.Services.Providers
                 SessionId = arguments.SessionId.ToString(),
                 Amount = (int)(arguments.Amount * 100),
                 Currency = arguments.Currency,
-                Description = $"Zamówienie #{arguments.OrderId} - {arguments.CustomerFirstName} {arguments.CustomerLastName}",
+                Description = $"Zamowienie #{arguments.OrderId} - {arguments.CustomerFirstName} {arguments.CustomerLastName}",
                 Email = arguments.CustomerEmailAddress,
                 Country = "PL",
                 Language = "pl",
