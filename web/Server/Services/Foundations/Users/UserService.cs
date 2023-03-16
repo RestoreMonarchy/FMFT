@@ -95,9 +95,9 @@ namespace FMFT.Web.Server.Services.Foundations.Users
 
             RegisterUserWithPasswordParams @params = new()
             {
-                Email = request.Email,
-                FirstName = request.FirstName,
-                LastName = request.LastName,
+                Email = request.Email.Trim(),
+                FirstName = request.FirstName?.Trim() ?? null,
+                LastName = request.LastName?.Trim() ?? null,
                 Role = UserRole.Guest,
                 PasswordHash = encryptionBroker.HashPassword(request.PasswordText)
             };
