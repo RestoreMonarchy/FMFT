@@ -63,7 +63,6 @@
         const seat = FindSeatByCoordinates(options, x, y);
 
         if (seat == null) {
-            console.log('Not clicked on any seat');
             return;
         }
 
@@ -295,7 +294,6 @@ function FindSectorByCoordinates(options, x, y) {
 }
 
 function FindSeatByCoordinates(options, x, y) {
-    console.log(options);
     const seatsMap = options.seatsMap;
     const marginX = options.marginX;
     const marginY = options.marginY;
@@ -305,7 +303,6 @@ function FindSeatByCoordinates(options, x, y) {
 
     const sector = FindSectorByCoordinates(options, x, y);
     if (sector == null) {
-        console.log('sector not found');
         return;
     }
 
@@ -317,17 +314,9 @@ function FindSeatByCoordinates(options, x, y) {
     const row = rowIndex + 1;
     const columns = sectorMap[rowIndex];
 
-    console.log('sector', sector);
-    console.log('sector map: ',  sectorMap);
-    console.log('x: ', x, ' y: ', y);
-
     for (let i = 0; i < columns; i++) {
         const column = i + 1;
-        const pos = GetPosition(options, row, column, sector);
-
-        
-        console.log(pos);
-        
+        const pos = GetPosition(options, row, column, sector);        
 
         const endX = pos.columnX + sizeX;
         const endY = pos.columnY + sizeY;
