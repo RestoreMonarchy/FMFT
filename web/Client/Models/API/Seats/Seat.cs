@@ -5,5 +5,6 @@
         public int Id { get; set; }
         public short Row { get; set; }
         public short Number { get; set; }
+        public char Sector { get; set; }
     }
 }

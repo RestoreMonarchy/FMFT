@@ -17,9 +17,9 @@ namespace FMFT.Web.Client.Brokers.JSRuntimes
             return await jsRuntime.InvokeAsync<object>("InitializeSeatsCanvas", options, objectReference);
         }
 
-        public async ValueTask DrawSeatAsync(object options, int row, int column, string color)
+        public async ValueTask DrawSeatAsync(object options, int row, int column, int sector, string color)
         {
-            await jsRuntime.InvokeVoidAsync("DrawSeat", options, row, column, color);
+            await jsRuntime.InvokeVoidAsync("DrawSeat", options, row, column, sector, color);
         }
 
         public async ValueTask ClearModalBackdropAsync()
