@@ -8,10 +8,8 @@
     const canvas = document.getElementById(canvasId);
 
     const ctx = canvas.getContext("2d");
-
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    let maxColumns = GetMaxColumns(seatsMap);
     let totalRows = 0;
 
     for (let i = 0; i < seatsMap.length; i++) {
@@ -101,8 +99,7 @@ function DrawSeat(options, row, column, sector, color) {
     
     const sizeX = options.sizeX;
     const sizeY = options.sizeY;
-    const font = options.font;
-    
+    const font = options.font;    
 
     const canvas = document.getElementById(canvasId);
     const ctx = canvas.getContext("2d");
@@ -125,6 +122,7 @@ function GetPosition(options, row, column, sector) {
     const rowIndex = row - 1;
     const columnIndex = column - 1;
     const sectorIndex = sector - 1;
+    const canvasWidth = GetMaxWidth(options);
 
     const stageOffset = options.stageOffset;
     const sectorOffset = GetSectorOffsetY(options, sector);
@@ -141,12 +139,12 @@ function GetPosition(options, row, column, sector) {
 
     let offset = CalculateRowOffset(options, row, sector);
 
-    let columnX = offset + columnIndex * marginX;
+    let columnX = canvasWidth - (offset + columnIndex * marginX);
     if (breakpoint != undefined) {
         if (breakpoint < column) {
-            columnX += breakpointSpace;
+            columnX -= breakpointSpace;
         } else {
-            columnX -= offset;
+            columnX += offset;
         }
     }
 
