@@ -2,7 +2,6 @@
 
     const canvasId = options.canvasId;
     const seatsMap = options.seatsMap;
-    const marginX = options.marginX;
     const marginY = options.marginY;
     const defaultColor = options.defaultColor;
 
@@ -11,8 +10,6 @@
     const ctx = canvas.getContext("2d");
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    //await new Promise(r => setTimeout(r, 1000));
 
     let maxColumns = GetMaxColumns(seatsMap);
     let totalRows = 0;
@@ -99,27 +96,7 @@ function DrawStage(options, height, width) {
     ctx.fillText("Scena", posX, posY);
 }
 
-//function DrawRow(options, row) {
-//    const rowIndex = row - 1;
-
-//    const canvasId = options.canvasId;
-//    const font = options.font;
-
-//    const canvas = document.getElementById(canvasId);
-//    const ctx = canvas.getContext("2d");
-
-//    ctx.fillStyle = "white";
-//    ctx.font = font;
-//    ctx.textBaseline = "middle";
-//    ctx.textAlign = "center";
-//    ctx.fillText(row, 0, 0);
-//}
-
 function DrawSeat(options, row, column, sector, color) { 
-    
-
-    
-
     const canvasId = options.canvasId;
     
     const sizeX = options.sizeX;
@@ -331,44 +308,4 @@ function FindSeatByCoordinates(options, x, y) {
     }
 
     return null;
-
-    ////console.log("row exact: ", rowExact, " row floor: ", rowIndex);
-
-    //const marginYSize = marginY - sizeY;
-    //const bottomMargin = marginYSize / marginY;
-    //const rowBottomMargin = rowExact - rowIndex;
-
-    //if (rowBottomMargin >= 1 - bottomMargin) {
-    //    //console.log("clicked row margin");
-    //    return null;
-    //}
-
-    //const columns = seatsMap[rowIndex];
-
-    //const row = rowIndex + 1;
-    //const rowOffset = CalculateRowOffset(options, row, sector);
-
-    //let columnIndex = -1;
-
-    //for (let k = 0; k < columns; k++) {
-
-    //    const columnX = rowOffset + k * marginX;
-
-    //    //console.log("columnX: ", columnX, "rowOffset: ", rowOffset, " x: ", x, " columnX ", columnX, " sizeX: ", sizeX);
-
-    //    if (columnX <= x && x < columnX + sizeX) {
-    //        columnIndex = k;
-    //        break;
-    //    }
-    //}
-
-    //if (columnIndex == -1) {
-    //    //console.log("clicked column margin");
-    //    return null;
-    //}
-
-    //return {
-    //    row: row,
-    //    column: columnIndex + 1
-    //};
 }
