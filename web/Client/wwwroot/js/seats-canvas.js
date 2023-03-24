@@ -139,7 +139,7 @@ function GetPosition(options, row, column, sector) {
 
     let offset = CalculateRowOffset(options, row, sector);
 
-    let columnX = canvasWidth - (offset + columnIndex * marginX);
+    let columnX = canvasWidth - (offset + column * marginX);
     if (breakpoint != undefined) {
         if (breakpoint < column) {
             columnX -= breakpointSpace;
