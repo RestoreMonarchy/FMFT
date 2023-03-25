@@ -1,4 +1,4 @@
-﻿DECLARE @auditoriumId INT = (SELECT Id FROM dbo.Auditoriums WHERE [Name] = 'Sala Teatralna');
+﻿DECLARE @auditoriumId INT = (SELECT Id FROM dbo.Auditoriums WHERE [Name] = 'Teatr Groteska');
 
 IF @auditoriumId IS NOT NULL AND (SELECT COUNT(*) FROM dbo.Seats WHERE AuditoriumId = @auditoriumId) = 0
 BEGIN
