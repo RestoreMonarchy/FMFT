@@ -28,7 +28,8 @@ namespace FMFT.Web.Server.Services.Foundations.QRCodes
                 ShowDate = @params.Date.DateTime,
                 ReservationId = @params.ReservationId,
                 SeatNumber = @params.Number,
-                SeatRow = @params.Row
+                SeatRow = @params.Row,
+                SeatSector = @params.Sector
             };
 
             return await qrCodeBroker.GenerateReservationTicketAsync(model);

@@ -8,5 +8,6 @@
         public string ReservationId { get; set; }
         public int SeatRow { get; set; }
         public int SeatNumber { get; set; }
+        public char SeatSector { get; set; }
     }
 }
