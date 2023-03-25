@@ -17,9 +17,9 @@
 <p>
     Szczegóły rezerwacji
     <ul>
-        @foreach (ReservationSummaryEmailModel.ReservationSeat seat in Model.ReservationSeats.OrderBy(x => x.Row).ThenBy(x => x.Number))
+        @foreach (ReservationSummaryEmailModel.ReservationSeat seat in Model.ReservationSeats.OrderBy(x => x.Sector).ThenBy(x => x.Row).ThenBy(x => x.Number))
         {
-            <li>Rząd @seat.Row Miejsce @seat.Number</li>
+            <li>@seat.SectorString Rząd @seat.Row Miejsce @seat.Number</li>
         }
     </ul>
 </p>

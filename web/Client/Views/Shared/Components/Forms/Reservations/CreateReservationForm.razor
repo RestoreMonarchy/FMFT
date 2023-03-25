@@ -124,9 +124,9 @@
                         Miejsca (@Model.Seats.Count):
                     </div>
                     <ul>
-                        <Iterations Items="Model.Seats.OrderBy(x => x.Row).ThenBy(x => x.Number)" Context="seat">
+                        <Iterations Items="Model.Seats.OrderBy(x => x.Sector).ThenBy(x => x.Row).ThenBy(x => x.Number)" Context="seat">
                             <li>
-                                Rząd: @seat.Row Miejsce: @seat.Number
+                                @seat.SectorString Rząd: @seat.Row Miejsce: @seat.Number
                             </li>
                         </Iterations>
                     </ul>

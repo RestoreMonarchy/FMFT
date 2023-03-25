@@ -50,7 +50,8 @@ namespace FMFT.Web.Server.Services.Orchestrations.Reservations
                 Date = reservation.Show.StartDateTime,
                 ReservationId = reservation.Id,
                 Number = reservationSeat.Seat.Number,
-                Row = reservationSeat.Seat.Row
+                Row = reservationSeat.Seat.Row,
+                Sector = reservationSeat.Seat.Sector
             };
 
             return await qrCodeService.GenerateReservationTicketAsync(@params);

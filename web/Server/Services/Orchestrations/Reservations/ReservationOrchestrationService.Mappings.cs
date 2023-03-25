@@ -21,7 +21,8 @@ namespace FMFT.Web.Server.Services.Orchestrations.Reservations
                 @params.ReservationSeats.Add(new()
                 {
                     Row = reservationSeat.Seat.Row,
-                    Number = reservationSeat.Seat.Number
+                    Number = reservationSeat.Seat.Number,
+                    Sector = reservationSeat.Seat.Sector
                 });
             }
 

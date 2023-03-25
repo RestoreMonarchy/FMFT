@@ -33,9 +33,6 @@ namespace FMFT.Web.Client.Views.Shared.Components.Panzooms
             await SelectedSeatsChanged.InvokeAsync(SelectedSeats);
         }
 
-        public IEnumerable<IGrouping<short, Seat>> RowSeats 
-            => Auditorium.Seats.GroupBy(x => x.Row);
-
         public Panzoom Panzoom { get; set; }
         public PanzoomOptions PanzoomOptions { get; set; } = new()
         {
@@ -44,10 +41,39 @@ namespace FMFT.Web.Client.Views.Shared.Components.Panzooms
             MaxScale = 2
         };
 
+        private int[][] GetSeatsMap()
+        {
+            IEnumerable<IGrouping<char, Seat>> sectorGroups = Auditorium.Seats
+                .GroupBy(x => x.Sector)
+                .OrderBy(x => x.Key);
+
+            List<int[]> seatmap = new(); 
+            foreach (IGrouping<char, Seat> sectorGroup in sectorGroups)
+            {
+                IEnumerable<IGrouping<short, Seat>> rowGroups = sectorGroup.GroupBy(x => x.Row);
+                seatmap.Add(rowGroups.Select(x => x.Count()).ToArray());
+            }
+
+            return seatmap.ToArray();
+        }
+
+        private int[][] GetBreakpoints()
+        {
+            return new int[][]
+            {
+                Array.Empty<int>(),
+                new int[]
+                {
+                    17,
+                    16
+                }
+            };
+        }
+
         public object SeatsCanvasOptions => new
         {
             canvasId = "myCanvas",
-            seatsMap = RowSeats.Select(x => x.Count()).ToArray(),
+            seatsMap = GetSeatsMap(),
             marginX = 30,
             marginY = 30,
             sizeX = 25,
@@ -58,7 +84,10 @@ namespace FMFT.Web.Client.Views.Shared.Components.Panzooms
             stageHeight = 40,
             stageOffset = 50,
             stageFont = "bold 14px Arial",
-            stageColor = "#D51360"
+            stageColor = "#D51360",
+            sectorSpace = 15,
+            breakpointSpace = 70,
+            breakpoints = GetBreakpoints()
         };
 
         public async Task ReloadAsync()
@@ -78,11 +107,11 @@ namespace FMFT.Web.Client.Views.Shared.Components.Panzooms
 
                     if (reservedSeat.IsVip)
                     {
-                        await DrawSeatAsync(seat.Row, seat.Number, "#9966cc");
+                        await DrawSeatAsync(seat.Row, seat.Number, seat.Sector, "#9966cc");
                     }
                     else
                     {
-                        await DrawSeatAsync(seat.Row, seat.Number, "dimgray");
+                        await DrawSeatAsync(seat.Row, seat.Number, seat.Sector, "dimgray");
                     }
                 }
             }
@@ -95,7 +124,7 @@ namespace FMFT.Web.Client.Views.Shared.Components.Panzooms
                     break;
                 }
 
-                await DrawSeatAsync(seat.Row, seat.Number, "orange");
+                await DrawSeatAsync(seat.Row, seat.Number, seat.Sector, "orange");
             }
         }
 
@@ -113,11 +142,13 @@ namespace FMFT.Web.Client.Views.Shared.Components.Panzooms
         }
 
         [JSInvokable]
-        public async Task HandleSeatClickAsync(int row, int column)
+        public async Task HandleSeatClickAsync(int row, int column, int sector)
         {
             LoggingBroker.LogDebug($"HandleSeatClickAsync for row {row} and column {column}");
 
-            Seat seat = Auditorium.Seats.FirstOrDefault(x => x.Row == row && x.Number == column);
+            char sectorChar = sector == 1 ? 'A' : 'B';
+
+            Seat seat = Auditorium.Seats.FirstOrDefault(x => x.Row == row && x.Number == column && x.Sector == sectorChar);
 
             if (seat == null)
             {
@@ -136,7 +167,7 @@ namespace FMFT.Web.Client.Views.Shared.Components.Panzooms
             {
                 LoggingBroker.LogDebug($"Unchecking the seat id {seat.Id} at row {row} and column {column}");
 
-                await DrawSeatAsync(seat.Row, seat.Number, "#009578");
+                await DrawSeatAsync(seat.Row, seat.Number, seat.Sector, "#009578");
 
                 await RemoveSeatAsync(seat);
                 return;
@@ -149,12 +180,14 @@ namespace FMFT.Web.Client.Views.Shared.Components.Panzooms
             }
 
             await AddSeatAsync(seat);
-            await DrawSeatAsync(row, column, "orange");
+            await DrawSeatAsync(row, column, sectorChar, "orange");
         }
 
-        private async ValueTask DrawSeatAsync(int row, int column, string color)
+        private async ValueTask DrawSeatAsync(int row, int column, char sector, string color)
         {
-            await JSRuntimeBroker.DrawSeatAsync(SeatsCanvasOptions, row, column, color);
+            int sectorNum = sector == 'A' ? 1 : 2;
+
+            await JSRuntimeBroker.DrawSeatAsync(SeatsCanvasOptions, row, column, sectorNum, color);
         }
 
         private async Task HandleZoomInAsync()

@@ -120,7 +120,8 @@ namespace FMFT.Web.Server.Services.Foundations.Emails
                 model.ReservationSeats.Add(new ReservationSummaryEmailModel.ReservationSeat()
                 {
                     Row = seat.Row,
-                    Number = seat.Number
+                    Number = seat.Number,
+                    Sector = seat.Sector
                 });
             }
 

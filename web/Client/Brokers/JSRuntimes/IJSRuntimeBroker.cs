@@ -7,7 +7,7 @@ namespace FMFT.Web.Client.Brokers.JSRuntimes
     {
         ValueTask ClearModalBackdropAsync();
         ValueTask DownloadFromByteArrayAsync(byte[] byteArray, string fileName, string contentType);
-        ValueTask DrawSeatAsync(object options, int row, int column, string color);
+        ValueTask DrawSeatAsync(object options, int row, int column, int sector, string color);
         ValueTask HideNavbarCollapseAsync(ElementReference navbarContent);
         ValueTask InitializeFacebookAsync();
         ValueTask<object> InitializeSeatsCanvasAsync<T>(object options, DotNetObjectReference<T> objectReference) where T : class;
