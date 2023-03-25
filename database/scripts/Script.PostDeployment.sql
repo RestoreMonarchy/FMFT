@@ -18,7 +18,7 @@ BEGIN
 	) T([Row],Number);
 END;
 
-IF NOT EXISTS(SELECT * FROM dbo.Seats WHERE AuditoriumId = @auditoriumId AND Sector = 'B')
+IF @auditoriumId IS NOT NULL AND NOT EXISTS(SELECT * FROM dbo.Seats WHERE AuditoriumId = @auditoriumId AND Sector = 'B')
 BEGIN
 	INSERT INTO dbo.Seats ([Row], Number, Sector, AuditoriumId)
 	SELECT *, 'B', @auditoriumId FROM (VALUES 
