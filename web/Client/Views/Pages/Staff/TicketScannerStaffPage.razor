@@ -124,9 +124,9 @@
                                                             Miejsca (@Reservation.Seats.Count)
                                                         </div>
                                                         <div class="list-group list-group-flush">
-                                                            <Iterations Items="Reservation.Seats.OrderBy(x => x.Seat.Row).ThenBy(x => x.Seat.Number)" Context="seat">
+                                                            <Iterations Items="Reservation.Seats.OrderBy(x => x.Seat.Sector).ThenBy(x => x.Seat.Row).ThenBy(x => x.Seat.Number)" Context="seat">
                                                                 <div class="list-group-item @GetSeatClass(seat)">
-                                                                    Rząd @seat.Seat.Row Numer @seat.Seat.Number
+                                                                    @seat.Seat.SectorString Rząd @seat.Seat.Row Numer @seat.Seat.Number
                                                                 </div>
                                                             </Iterations>
                                                         </div>
