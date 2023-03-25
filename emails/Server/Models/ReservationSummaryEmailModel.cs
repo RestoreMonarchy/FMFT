@@ -11,6 +11,9 @@
         {
             public int Row { get; set; }
             public int Number { get; set; }
+            public char Sector { get; set; }
+
+            public string SectorString => Sector == 'A' ? "Parter" : "Balkon";
         }
     }
 }
