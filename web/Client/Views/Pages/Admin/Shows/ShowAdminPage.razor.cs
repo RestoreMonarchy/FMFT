@@ -34,6 +34,8 @@ namespace FMFT.Web.Client.Views.Pages.Admin.Shows
         public Show Show { get; set; }
         public List<Auditorium> Auditoriums => AuditoriumsResponse.Object;
 
+        public Auditorium Auditorium => Auditoriums.FirstOrDefault(x => x.Id == Show.AuditoriumId);
+
         protected override async Task OnInitializedAsync()
         {
             if (!UserAccountState.IsInRole(UserRole.Admin))

@@ -61,7 +61,13 @@
         </div>
     </div>
     
-    <AddShowProductDialog @ref="AddShowProductDialog" Show="Show" OnShowProductAdded="HandleShowProductAddedAsync" />
-    <EditShowProductDialog @ref="EditShowProductDialog" OnShowProductUpdated="HandleShowProductUpdatedAsync" OnShowProductDeleted="HandleShowProductDeletedAsync" />
+    <AddShowProductDialog @ref="AddShowProductDialog" 
+        Show="Show" 
+        Auditorium="Auditorium" 
+        OnShowProductAdded="HandleShowProductAddedAsync" />
+    <EditShowProductDialog @ref="EditShowProductDialog" 
+        Auditorium="Auditorium" 
+        OnShowProductUpdated="HandleShowProductUpdatedAsync" 
+        OnShowProductDeleted="HandleShowProductDeletedAsync" />
 
 </LoadingView>

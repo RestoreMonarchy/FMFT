@@ -9,24 +9,68 @@
         <EditForm Model="Model" OnValidSubmit="SubmitAsync" id="addshowproduct-form">
             <DataAnnotationsValidator />
 
-            <div class="mb-2">
-                <span class="form-label">Nazwa</span>
-                <InputText class="form-control" @bind-Value="Model.Name" />
-                <div class="text-danger">
-                    <ValidationMessage For="@(() => Model.Name)" />
+            <div class="mb-4">
+                <div class="mb-1">
+                    <span class="form-label">Nazwa</span>
+                    <input type="text" class="form-control" @bind="Model.Name" />
+                    <div class="text-danger">
+                        <ValidationMessage For="@(() => Model.Name)" />
+                    </div>
+                </div>
+                <div>
+                    <span class="form-label">Cena</span>
+                    <div class="input-group">
+                        <input type="number" class="form-control" @bind="Model.Price" onclick="this.select()" />
+                        <span class="input-group-text">PLN</span>
+                    </div>
+                    <div class="text-danger">
+                        <ValidationMessage For="@(() => Model.Price)" />
+                    </div>
                 </div>
             </div>
-            <div class="mb-2">
-                <span class="form-label">Cena</span>
-                <div class="input-group">
-                    <InputNumber class="form-control" @bind-Value="Model.Price" />
-                    <span class="input-group-text">PLN</span>
+
+            <div class="mb-4">
+                <div class="mb-1">
+                    <div class="form-check form-switch">
+                        <InputCheckbox id="addshowproduct-isbulk" class="form-check-input" @bind-Value="Model.IsBulk" />
+                        <label class="form-check-label" for="addshowproduct-isbulk">
+                            Miejsca nie wyznaczone                            
+                        </label>
+                    </div>
                 </div>
-                <div class="text-danger">
-                    <ValidationMessage For="@(() => Model.Price)" />
-                </div>
-            </div>
-            <div class="mb-2">
+
+                <Condition Evaluation="Model.IsBulk">
+                    <Match>
+                        <div>
+                            <span class="form-label">Ilość</span>
+                            <div class="input-group">
+                                <input type="number" class="form-control" @bind="Model.Quantity" disabled="@(!Model.IsBulk)" onclick="this.select()" />
+                            </div>
+                            <Condition Evaluation="Model.IsBulk">
+                                <NotMatch>
+                                    <div class="form-text">
+                                        Ilość miejsc siedzących jest uzależniona od liczby siedzeń w audytorium
+                                    </div>
+                                </NotMatch>
+                            </Condition>
+                            <div class="text-danger">
+                                <ValidationMessage For="@(() => Model.Quantity)" />
+                            </div>
+                        </div>
+                    </Match>
+                    <NotMatch>
+                        <div>
+                            <span class="form-label">Ilość</span>
+                            <div class="input-group">
+                                <input class="form-control bg-light" value="@Auditorium.Seats.Count" readonly />
+                                <span class="input-group-text">@Auditorium.Name</span>
+                            </div>
+                        </div>
+                    </NotMatch>
+                </Condition>                
+            </div>           
+
+            <div>
                 <div class="form-check form-switch">
                     <InputCheckbox id="addshowproduct-isenabled" class="form-check-input" @bind-Value="Model.IsEnabled" />
                     <label class="form-check-label" for="addshowproduct-isenabled">

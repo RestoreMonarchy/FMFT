@@ -2,6 +2,7 @@
 using FMFT.Extensions.Blazor.Bases.Buttons;
 using FMFT.Extensions.Blazor.Bases.Dialogs;
 using FMFT.Web.Client.Models.API;
+using FMFT.Web.Client.Models.API.Auditoriums;
 using FMFT.Web.Client.Models.API.ShowProducts;
 using FMFT.Web.Client.Models.API.ShowProducts.Requests;
 using FMFT.Web.Client.Models.API.Shows;
@@ -14,6 +15,8 @@ namespace FMFT.Web.Client.Views.Shared.Components.Dialogs.Shows
     {
         [Parameter]
         public Show Show { get; set; }
+        [Parameter]
+        public Auditorium Auditorium { get; set; }
 
         [Parameter]
         public EventCallback<ShowProduct> OnShowProductAdded { get; set; }
@@ -62,6 +65,8 @@ namespace FMFT.Web.Client.Views.Shared.Components.Dialogs.Shows
                 ShowId = Show.Id,
                 Name = Model.Name,
                 Price = Model.Price.Value,
+                IsBulk = Model.IsBulk,
+                Quantity = Model.Quantity,
                 IsEnabled = Model.IsEnabled
             };
 

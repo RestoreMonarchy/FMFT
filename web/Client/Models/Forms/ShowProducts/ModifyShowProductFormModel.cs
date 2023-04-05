@@ -12,5 +12,7 @@ namespace FMFT.Web.Client.Models.Forms.ShowProducts
         public decimal? Price { get; set; }
 
         public bool IsEnabled { get; set; }
+        public bool IsBulk { get; set; }
+        public short Quantity { get; set; }
     }
 }
