@@ -71,21 +71,14 @@
                                         <Condition Evaluation="BulkItemsCount == 1">
                                             <Match>
                                                 <li>
-                                                    Jeden bilet bez miejsca
+                                                    Nie dotyczy jednego biletu bez miejsca
                                                 </li>
                                             </Match>
                                         </Condition>
-                                        <Condition Evaluation="BulkItemsCount > 1 && BulkItemsCount < 5">
+                                        <Condition Evaluation="BulkItemsCount > 1">
                                             <Match>
                                                 <li>
-                                                    @BulkItemsCount bilety bez miejsca
-                                                </li>
-                                            </Match>
-                                        </Condition>
-                                        <Condition Evaluation="BulkItemsCount > 4">
-                                            <Match>
-                                                <li>
-                                                    @BulkItemsCount biletów bez miejsca
+                                                    Nie dotyczy @BulkItemsCount biletów bez miejsca
                                                 </li>
                                             </Match>
                                         </Condition>
