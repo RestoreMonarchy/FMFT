@@ -50,6 +50,9 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
 
         public IEnumerable<Seat> Seats => Auditorium.Seats.Where(x => OrderStateData.SeatIds.Contains(x.Id));
 
+        public IEnumerable<OrderItemStateData> BulkItems => OrderStateData.Items.Where(x => GetShowProduct(x.ShowProductId).IsBulk);
+        public int BulkItemsCount => BulkItems.Sum(x => x.Quantity);
+
         protected override async Task OnInitializedAsync()
         {
             if (!UserAccountState.IsAuthenticated || !UserAccountState.IsEmailConfirmed)

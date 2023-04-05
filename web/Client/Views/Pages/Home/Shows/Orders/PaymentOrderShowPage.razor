@@ -68,11 +68,36 @@
                                                 </Condition>                                                
                                             </li>
                                         </Iterations>
-                                        <li>
-                                            <a href="/shows/@ShowId/order/seats" class="text-decoration-none">
-                                                Zmień miejsca
-                                            </a>
-                                        </li>
+                                        <Condition Evaluation="BulkItemsCount == 1">
+                                            <Match>
+                                                <li>
+                                                    Jeden bilet bez miejsca
+                                                </li>
+                                            </Match>
+                                        </Condition>
+                                        <Condition Evaluation="BulkItemsCount > 1 && BulkItemsCount < 5">
+                                            <Match>
+                                                <li>
+                                                    @BulkItemsCount bilety bez miejsca
+                                                </li>
+                                            </Match>
+                                        </Condition>
+                                        <Condition Evaluation="BulkItemsCount > 4">
+                                            <Match>
+                                                <li>
+                                                    @BulkItemsCount biletów bez miejsca
+                                                </li>
+                                            </Match>
+                                        </Condition>
+                                        <Condition Evaluation="OrderStateData.SeatIds.Any()">
+                                            <Match>
+                                                <li>
+                                                    <a href="/shows/@ShowId/order/seats" class="text-decoration-none">
+                                                        Zmień miejsca
+                                                    </a>
+                                                </li>
+                                            </Match>
+                                        </Condition>                                        
                                     </ul>
                                 </div>
                                 <div class="mb-3">

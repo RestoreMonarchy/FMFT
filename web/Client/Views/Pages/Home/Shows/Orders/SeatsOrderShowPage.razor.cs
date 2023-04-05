@@ -2,11 +2,13 @@
 using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Auditoriums;
 using FMFT.Web.Client.Models.API.Seats;
+using FMFT.Web.Client.Models.API.ShowProducts;
 using FMFT.Web.Client.Models.API.Shows;
 using FMFT.Web.Client.Models.Services.Orders;
 using FMFT.Web.Client.Services.Pages;
 using FMFT.Web.Shared.Enums;
 using Microsoft.AspNetCore.Components;
+using System.Runtime.CompilerServices;
 
 namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
 {
@@ -33,13 +35,23 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
         public OrderStateData OrderStateData { get; set; }
         public APIResponse<Show> ShowResponse { get; set; }
         public APIResponse<Auditorium> AuditoriumResponse { get; set; }
+        public APIResponse<List<ShowProduct>> ShowProductsResponse { get; set; }
 
         public Show Show => ShowResponse.Object;
         public Auditorium Auditorium => AuditoriumResponse.Object;
+        public List<ShowProduct> ShowProducts => ShowProductsResponse.Object;
 
         public List<Seat> OriginalSelectedSeats { get; set; }
-        private int MaxSeatsAmount => OrderStateData.Items.Sum(x => x.Quantity);
+        private int MaxSeatsAmount => OrderStateData.Items.Except(BulkItems).Sum(x => x.Quantity);
         private bool HasSelectedSeats => MaxSeatsAmount == OrderStateData.SeatIds.Count;
+
+        private IEnumerable<OrderItemStateData> BulkItems => 
+            OrderStateData.Items.Where(x => GetShowProduct(x.ShowProductId)?.IsBulk ?? true);
+
+        private ShowProduct GetShowProduct(int showProductId)
+        {
+            return ShowProducts.FirstOrDefault(x => x.Id == showProductId);
+        }
 
         private string NextDisabled()
         {
@@ -58,7 +70,8 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
             Task[] getDataTasks = new Task[]
             {
                 GetShowResponseAsync(),
-                GetAuditoriumResponseAsync()
+                GetAuditoriumResponseAsync(),
+                GetShowProductsResponseAsync()
             };
 
             await Task.WhenAll(getDataTasks);
@@ -92,6 +105,11 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
         private async Task GetAuditoriumResponseAsync()
         {
             AuditoriumResponse = await APIBroker.GetAuditoriumByShowIdAsync(ShowId);
+        }
+
+        private async Task GetShowProductsResponseAsync()
+        {
+            ShowProductsResponse = await APIBroker.GetShowProductsByShowIdAsync(ShowId);
         }
 
         private async Task<List<Seat>> GetSelectedSeatsAsync()
