@@ -41,7 +41,7 @@
                                         Audytorium
                                     </th>
                                     <th class="d-none d-lg-table-cell">
-                                        Zajęte miejsca
+                                        Miejsca siedzące
                                     </th>
                                     <th scope="col" class="d-none d-sm-table-cell">
                                         Data
@@ -63,7 +63,7 @@
                                             @GetAuditoriumName(show)
                                         </td>
                                         <td class="d-none d-lg-table-cell">
-                                            @show.ReservedSeats.Count / @GetAuditoriumSeats(show)
+                                            @show.ReservedSeats.Count() / @GetAuditoriumSeats(show)
                                         </td>
                                         <td class="d-none d-sm-table-cell">
                                             @show.StartDateTime.LocalDateTime.ToShortDateString()

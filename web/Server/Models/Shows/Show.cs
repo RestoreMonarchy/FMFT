@@ -16,6 +16,6 @@ namespace FMFT.Web.Server.Models.Shows
         public DateTimeOffset UpdateDate { get; set; }
         public DateTimeOffset CreateDate { get; set; }
 
-        public List<ShowReservedSeat> ReservedSeats { get; set; }
+        public List<ShowReservedItem> ReservedItems { get; set; }
     }
 }

@@ -73,5 +73,10 @@ namespace FMFT.Web.Client.Views.Pages.Admin.Shows.Subpages
         {
             return showProduct.IsEnabled ? "" : "text-muted";
         }
+
+        private int GetShowProductReservedCount(ShowProduct showProduct)
+        {
+            return Show.ReservedBulkItems.Where(x => x.ShowProductId == showProduct.Id).Count();
+        }
     }
 }

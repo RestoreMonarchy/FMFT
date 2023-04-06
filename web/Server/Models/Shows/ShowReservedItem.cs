@@ -1,7 +1,8 @@
 ﻿namespace FMFT.Web.Server.Models.Shows
 {
-    public class ShowReservedSeat
+    public class ShowReservedItem
     {
         public int SeatId { get; set; }
+        public int ShowProductId { get; set; }
     }
 }

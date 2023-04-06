@@ -53,21 +53,21 @@ namespace FMFT.Web.Server.Brokers.Storages
 
             Show show = null;
 
-            await connection.QueryAsync<Show, ShowReservedSeat, Show>(sql, (s, rs) =>
+            await connection.QueryAsync<Show, ShowReservedItem, Show>(sql, (s, rs) =>
             {
                 if (show == null)
                 {
                     show = s;
-                    show.ReservedSeats = new();
+                    show.ReservedItems = new();
                 }
 
                 if (rs != null)
                 {
-                    show.ReservedSeats.Add(rs);
+                    show.ReservedItems.Add(rs);
                 }
 
                 return null;
-            }, @params, commandType: CommandType.StoredProcedure, splitOn: "SeatId");
+            }, @params, commandType: CommandType.StoredProcedure);
 
             return show;
         }
@@ -78,24 +78,24 @@ namespace FMFT.Web.Server.Brokers.Storages
 
             List<Show> shows = new();
 
-            await connection.QueryAsync<Show, ShowReservedSeat, Show>(sql, (s, rs) =>
+            await connection.QueryAsync<Show, ShowReservedItem, Show>(sql, (s, ri) =>
             {
                 Show show = shows.FirstOrDefault(x => x.Id == s.Id);
 
                 if (show == null)
                 {
                     show = s;
-                    show.ReservedSeats = new();
+                    show.ReservedItems = new();
                     shows.Add(show);
                 }
 
-                if (rs != null)
+                if (ri != null)
                 {
-                    show.ReservedSeats.Add(rs);
+                    show.ReservedItems.Add(ri);
                 }
 
                 return null;
-            }, @params, commandType: CommandType.StoredProcedure, splitOn: "SeatId");
+            }, @params, commandType: CommandType.StoredProcedure);
 
             return shows;
         }
@@ -106,21 +106,21 @@ namespace FMFT.Web.Server.Brokers.Storages
 
             DynamicParameters p = StoredProcedureParameters(parameters);
 
-            await connection.QueryAsync<Show, ShowReservedSeat, Show>(procedureName, (s, rs) =>
+            await connection.QueryAsync<Show, ShowReservedItem, Show>(procedureName, (s, ri) =>
             {
                 if (show == null)
                 {
                     show = s;
-                    show.ReservedSeats = new();
+                    show.ReservedItems = new();
                 }
 
-                if (rs != null)
+                if (ri != null)
                 {
-                    show.ReservedSeats.Add(rs);
+                    show.ReservedItems.Add(ri);
                 }
 
                 return null;
-            }, p, commandType: CommandType.StoredProcedure, splitOn: "SeatId");
+            }, p, commandType: CommandType.StoredProcedure);
 
             StoredProcedureResult<Show> result = new();
             result.Result = show;

@@ -63,10 +63,10 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
             int quantity;
             if (showProduct.IsBulk)
             {
-                quantity = showProduct.Quantity;
+                quantity = showProduct.Quantity - Show.ReservedBulkItems.Count();
             } else
             {
-                quantity = Auditorium.Seats.Count - Show.ReservedSeats.Count;
+                quantity = Auditorium.Seats.Count - Show.ReservedSeats.Count();
             }
 
             return Math.Min(quantity, MaxQuantity);

@@ -33,6 +33,9 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
         public MarkupString Description => new(MarkdownEditorHelper.ParseToHtml(Show.Description));
 
         public ShowProduct CheapestShowProduct => ShowProducts.Where(x => x.IsEnabled).OrderBy(x => x.Price).FirstOrDefault();
+        public int ShowProductsQuantity => ShowProducts.Where(x => x.IsBulk && x.IsEnabled).Sum(x => x.Quantity);
+        public int MaxShowCapacity => Auditorium.Seats.Count + ShowProductsQuantity;
+
 
         protected override async Task OnParametersSetAsync()
         {

@@ -161,7 +161,7 @@ namespace FMFT.Web.Server.Brokers.Storages
                 typeof(ReservationItem),
                 typeof(ShowProduct),
                 typeof(Seat)
-            };        
+            };
 
             await connection.QueryAsync<Reservation>(sql, types, objects => 
             {
@@ -196,7 +196,7 @@ namespace FMFT.Web.Server.Brokers.Storages
                 }                
 
                 return null;
-            }, param, commandType: commandType, splitOn: "Id,Id,Id,ReservationId,Id,Id");
+            }, param, commandType: commandType, splitOn: "Id,Id,Id,ReservationId,Id,Id,Id");
 
             return reservation;
         }

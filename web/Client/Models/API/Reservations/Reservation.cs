@@ -1,7 +1,6 @@
 ﻿using FMFT.Web.Client.Models.API.Shows;
 using FMFT.Web.Client.Models.API.Users;
 using FMFT.Web.Shared.Enums;
-using System.Security.Cryptography.X509Certificates;
 using System.Text.Json.Serialization;
 
 namespace FMFT.Web.Client.Models.API.Reservations

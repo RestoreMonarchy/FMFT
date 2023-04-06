@@ -23,10 +23,11 @@
                         <tr>
                             <th class="w-auto">Nazwa</th>
                             <th class="w-auto">Cena</th>
+                            <th class="w-auto">Ilość</th>
                             <th class="text-center" style="white-space: nowrap;width: 1%;">
                                 <i class="fa-solid fa-screwdriver-wrench"></i>
                             </th>
-                        </tr>
+                        </tr>   
                     </thead>
                     <Condition Evaluation="ShowProducts.Any()">
                         <Match>
@@ -35,6 +36,16 @@
                                     <tr class="@GetRowClass(showProduct)">
                                         <td class="w-auto align-middle">@showProduct.Name</td>
                                         <td class="w-auto align-middle">@showProduct.Price.ToString("N2") PLN</td>
+                                        <td class="w-auto align-middle">
+                                            <Condition Evaluation="showProduct.IsBulk">
+                                                <Match>
+                                                    @GetShowProductReservedCount(showProduct)/@showProduct.Quantity
+                                                </Match>
+                                                <NotMatch>
+                                                    <span>-</span>
+                                                </NotMatch>
+                                            </Condition>
+                                        </td>
                                         <td style="white-space: nowrap;width: 1%;">
                                             <button class="btn btn-sm btn-outline-success" @onclick="() => HandleOpenEditDialogAsync(showProduct)">
                                                 Edytuj

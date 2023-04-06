@@ -16,10 +16,18 @@
                 </div>
                 <div class="list-group-item">
                     <span class="fw-bold">
-                        Zajęte/wolne miejsca:
+                        Miejsca siedzące:
                     </span>
                     <span>
-                        @Show.ReservedSeats.Count/@Auditorium.Seats.Count
+                        @Show.ReservedSeats.Count()/@Auditorium.Seats.Count
+                    </span>
+                </div>
+                <div class="list-group-item">
+                    <span class="fw-bold">
+                        Pozostałe miejsca:
+                    </span>
+                    <span>
+                        @Show.ReservedBulkItems.Count()
                     </span>
                 </div>
                 <div class="list-group-item">

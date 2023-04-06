@@ -10,7 +10,7 @@ BEGIN
 
 	IF @ShowId IS NOT NULL
 	BEGIN
-		SELECT s.*, ri.SeatId 
+		SELECT s.*, ri.Id, ri.SeatId, ri.ShowProductId
 		FROM dbo.Shows s 
 		LEFT JOIN dbo.Reservations r ON r.ShowId = s.Id AND r.IsValid = 1
 		LEFT JOIN dbo.ReservationItems ri ON ri.ReservationId = r.Id
@@ -20,7 +20,7 @@ BEGIN
 	END
 	ELSE
 	BEGIN
-		SELECT s.*, ri.SeatId 
+		SELECT s.*, ri.Id, ri.SeatId, ri.ShowProductId
 		FROM dbo.Shows s 
 		LEFT JOIN dbo.Reservations r ON r.ShowId = s.Id AND r.IsValid = 1
 		LEFT JOIN dbo.ReservationItems ri ON ri.ReservationId = r.Id

@@ -1,8 +1,8 @@
 ﻿namespace FMFT.Web.Client.Models.API.Shows
 {
-    public class ShowReservedSeat
+    public class ShowReservedItem
     {
         public int SeatId { get; set; }
-        public bool IsVip { get; set; }
+        public int ShowProductId { get; set; }
     }
 }

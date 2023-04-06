@@ -13,7 +13,7 @@ namespace FMFT.Web.Client.Views.Shared.Components.Panzooms
         [Parameter]
         public Auditorium Auditorium { get; set; }
         [Parameter]
-        public List<ShowReservedSeat> ReservedSeats { get; set; }
+        public IEnumerable<ShowReservedItem> ReservedSeats { get; set; }
         [Parameter]
         public List<Seat> SelectedSeats { get; set; } = new();
         [Parameter]
@@ -97,7 +97,7 @@ namespace FMFT.Web.Client.Views.Shared.Components.Panzooms
 
             if (ReservedSeats != null)
             {
-                foreach (ShowReservedSeat reservedSeat in ReservedSeats)
+                foreach (ShowReservedItem reservedSeat in ReservedSeats)
                 {
                     Seat seat = Auditorium.Seats.FirstOrDefault(x => x.Id == reservedSeat.SeatId);
                     if (seat == null)
@@ -105,14 +105,7 @@ namespace FMFT.Web.Client.Views.Shared.Components.Panzooms
                         continue;
                     }
 
-                    if (reservedSeat.IsVip)
-                    {
-                        await DrawSeatAsync(seat.Row, seat.Number, seat.Sector, "#9966cc");
-                    }
-                    else
-                    {
-                        await DrawSeatAsync(seat.Row, seat.Number, seat.Sector, "dimgray");
-                    }
+                    await DrawSeatAsync(seat.Row, seat.Number, seat.Sector, "dimgray");
                 }
             }
 
@@ -156,7 +149,7 @@ namespace FMFT.Web.Client.Views.Shared.Components.Panzooms
                 return;
             }
 
-            if (ReservedSeats.Exists(x => x.SeatId == seat.Id))
+            if (ReservedSeats.Any(x => x.SeatId == seat.Id))
             {
                 LoggingBroker.LogDebug($"The selected seat id {seat.Id} is already reserved");
                 return;
