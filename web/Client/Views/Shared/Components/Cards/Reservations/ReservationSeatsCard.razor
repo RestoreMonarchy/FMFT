@@ -1,7 +1,7 @@
 ﻿@using FMFT.Web.Client.Models.API.Reservations;
 <div class="card mb-3">
     <div class="card-header">
-        Miejsca (@Reservation.Seats.Count)
+        Miejsca (@Reservation.Seats.Count())
     </div>
     <div class="list-group list-group-flush">
         <Iterations Items="Reservation.Seats.OrderBy(x => x.Seat.Sector).ThenBy(x => x.Seat.Row).ThenBy(x => x.Seat.Number)" Context="seat">
@@ -9,6 +9,12 @@
                 @seat.Seat.SectorString Rząd @seat.Seat.Row Numer @seat.Seat.Number
             </div>
         </Iterations>
+        @for (int i = 0; i < Reservation.BulkItems.Count(); i++)
+        {
+            <div class="list-group-item">
+                Bez miejscówki #@(i + 1)
+            </div>
+        }
     </div>
 </div>
 

@@ -11,7 +11,7 @@ BEGIN
 	SELECT 
 		@ReservationSeatId = Id,
 		@reservationId = ReservationId
-	FROM dbo.ReservationSeats
+	FROM dbo.ReservationItems
 	WHERE SecretCode = @SecretCode;
 
 	IF @reservationId IS NULL

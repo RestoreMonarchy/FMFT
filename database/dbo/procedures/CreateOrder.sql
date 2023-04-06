@@ -30,6 +30,7 @@ BEGIN
 	DECLARE @retCreateReservation INT;
 
 	DECLARE @sumOrderQuantity INT;
+	DECLARE @sumOrderNotBulkQuantity INT;
 	DECLARE @reservedSeatsCount INT;
 	DECLARE @sumOrderItemsAmount DECIMAL(9,2);
 	DECLARE @completedShowId INT;
@@ -76,14 +77,19 @@ BEGIN
 	
 	SET @reservedSeatsCount = @@ROWCOUNT;
 
-	SELECT @sumOrderQuantity = SUM(Quantity)
-	FROM @OrderItems;
+	SELECT @sumOrderNotBulkQuantity = SUM(oi.Quantity)
+	FROM @OrderItems oi
+	JOIN dbo.ShowProducts sp ON sp.Id = oi.ShowProductId
+	WHERE sp.IsBulk = 0;
 
-	IF @sumOrderQuantity <> @reservedSeatsCount
+	IF @sumOrderNotBulkQuantity <> @reservedSeatsCount
 	BEGIN 
-		PRINT FORMATMESSAGE('Sum of order quantity %d does not match reserved sets count %d', @sumOrderQuantity, @reservedSeatsCount);
+		PRINT FORMATMESSAGE('Sum of not bulk order items quantity %d does not match reserved sets count %d', @sumOrderNotBulkQuantity, @reservedSeatsCount);
 		SET @ret = 101;
 	END; 
+
+	SELECT @sumOrderQuantity = SUM(Quantity)
+	FROM @OrderItems;
 
 	IF @sumOrderQuantity > 100
 	BEGIN 

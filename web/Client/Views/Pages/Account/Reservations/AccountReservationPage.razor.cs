@@ -34,10 +34,10 @@ namespace FMFT.Web.Client.Views.Pages.Account.Reservations
             LoadingView.StopLoading();
         }
 
-        public ReservationSeat SelectedReservationSeat { get; set; }
+        public ReservationItem SelectedReservationSeat { get; set; }
         public APIResponse<QRCodeImage> SelectedReservationSeatQRCodeResponse { get; set; }
         public LoadingView SelectedReservationSeatQRCodeLoadingView { get; set; }
-        private async Task HandleSeatQRCodeDialogAsync(ReservationSeat reservationSeat)
+        private async Task HandleSeatQRCodeDialogAsync(ReservationItem reservationSeat)
         {
             SelectedReservationSeat = reservationSeat;
 

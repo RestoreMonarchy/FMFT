@@ -10,20 +10,20 @@ BEGIN
 
 	IF @ShowId IS NOT NULL
 	BEGIN
-		SELECT s.*, rs.SeatId 
+		SELECT s.*, ri.SeatId 
 		FROM dbo.Shows s 
 		LEFT JOIN dbo.Reservations r ON r.ShowId = s.Id AND r.IsValid = 1
-		LEFT JOIN dbo.ReservationSeats rs ON rs.ReservationId  = r.Id
+		LEFT JOIN dbo.ReservationItems ri ON ri.ReservationId = r.Id
 		WHERE s.Id = @ShowId
 		AND (@Expired = 1 OR s.EndDateTime > SYSDATETIME())
 		AND (@Disabled = 1 OR s.IsEnabled = 1);
 	END
 	ELSE
 	BEGIN
-		SELECT s.*, rs.SeatId 
+		SELECT s.*, ri.SeatId 
 		FROM dbo.Shows s 
 		LEFT JOIN dbo.Reservations r ON r.ShowId = s.Id AND r.IsValid = 1
-		LEFT JOIN dbo.ReservationSeats rs ON rs.ReservationId  = r.Id
+		LEFT JOIN dbo.ReservationItems ri ON ri.ReservationId = r.Id
 		WHERE (@Expired = 1 OR s.EndDateTime > SYSDATETIME())
 		AND (@Disabled = 1 OR s.IsEnabled = 1);
 	END;

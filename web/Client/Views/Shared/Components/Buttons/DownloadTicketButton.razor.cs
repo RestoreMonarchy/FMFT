@@ -11,7 +11,7 @@ namespace FMFT.Web.Client.Views.Shared.Components.Buttons
         [Parameter]
         public Reservation Reservation { get; set; }
         [Parameter]
-        public ReservationSeat ReservationSeat { get; set; }
+        public ReservationItem ReservationSeat { get; set; }
         [Parameter]
         public bool IsSmall { get; set; }
 

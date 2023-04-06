@@ -16,13 +16,13 @@ namespace FMFT.Web.Server.Services.Orchestrations.Reservations
                 Attachments = new()
             };
 
-            foreach (ReservationSeat reservationSeat in reservation.Seats)
+            foreach (ReservationItem item in reservation.Items)
             {
                 @params.ReservationSeats.Add(new()
                 {
-                    Row = reservationSeat.Seat.Row,
-                    Number = reservationSeat.Seat.Number,
-                    Sector = reservationSeat.Seat.Sector
+                    Row = item.Seat.Row,
+                    Number = item.Seat.Number,
+                    Sector = item.Seat.Sector
                 });
             }
 

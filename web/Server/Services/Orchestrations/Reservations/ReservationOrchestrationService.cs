@@ -41,7 +41,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.Reservations
             return await qrCodeService.GenerateGuidQRCodeImageAsync(guid);
         }
 
-        public async ValueTask<QRCodeImage> GenerateReservationTicketAsync(ReservationSeat reservationSeat, Reservation reservation)
+        public async ValueTask<QRCodeImage> GenerateReservationTicketAsync(ReservationItem reservationSeat, Reservation reservation)
         {
             GenerateReservationTicketParams @params = new()
             {
@@ -97,7 +97,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.Reservations
         public async ValueTask SendReservationSummaryEmailAsync(string emailAddress, Reservation reservation)
         {
             ReservationSummaryEmailParams @params = MapReservationToReservationSummaryEmailParams(reservation);
-            foreach (ReservationSeat reservationSeat in reservation.Seats)
+            foreach (ReservationItem reservationSeat in reservation.Items)
             {
                 QRCodeImage qrCodeImage = await GenerateReservationTicketAsync(reservationSeat, reservation);
                 @params.Attachments.Add(new EmailAttachment()

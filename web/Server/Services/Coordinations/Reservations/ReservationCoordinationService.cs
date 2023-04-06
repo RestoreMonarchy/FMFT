@@ -41,7 +41,7 @@ namespace FMFT.Web.Server.Services.Coordinations.Reservations
 
             await userAccountService.AuthorizeUserAccountByUserIdOrRolesAsync(reservation.UserId(), UserRole.Admin);
 
-            ReservationSeat reservationSeat = reservation.Seats.FirstOrDefault(x => x.Id == reservationSeatId);
+            ReservationItem reservationSeat = reservation.Items.FirstOrDefault(x => x.Id == reservationSeatId);
 
             if (reservationSeat == null)
             {
@@ -57,7 +57,7 @@ namespace FMFT.Web.Server.Services.Coordinations.Reservations
 
             await userAccountService.AuthorizeUserAccountByUserIdOrRolesAsync(reservation.UserId(), UserRole.Admin);
 
-            ReservationSeat reservationSeat = reservation.Seats.FirstOrDefault(x => x.Id == reservationSeatId);
+            ReservationItem reservationSeat = reservation.Items.FirstOrDefault(x => x.Id == reservationSeatId);
 
             if (reservationSeat == null)
             {

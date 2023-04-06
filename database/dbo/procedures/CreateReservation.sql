@@ -44,8 +44,8 @@ BEGIN
 		AND EXISTS(
 			SELECT * 
 			FROM dbo.Reservations r 
-			JOIN dbo.ReservationSeats rs ON rs.ReservationId = r.Id 
-			JOIN @seatsTable st ON st.SeatId = rs.SeatId
+			JOIN dbo.ReservationItems ri ON ri.ReservationId = r.Id 
+			JOIN @seatsTable st ON st.SeatId = ri.SeatId
 			WHERE r.ShowId = @ShowId
 			AND r.IsValid = 1
 		)
@@ -73,7 +73,7 @@ BEGIN
 		INSERT INTO dbo.Reservations (Id, ShowId, UserId, OrderId, [Status])
 		VALUES (@reservationId, @ShowId, @UserId, @OrderId, @status);
 
-		INSERT INTO dbo.ReservationSeats (ReservationId, SeatId)
+		INSERT INTO dbo.ReservationItems (ReservationId, SeatId)
 		SELECT @reservationId, SeatId FROM @seatsTable;
 
 		IF @UserId IS NULL
