@@ -1,11 +1,20 @@
 ﻿@using FMFT.Web.Client.Models.API.ShowProducts;
 
 <div class="input-group mb-2">
-    <span class="input-group-text">
+    <span class="input-group-text" style="min-width: 150px;">
         @ShowProduct.Name
     </span>
-    <input type="number" class="form-control" placeholder="Ilość" @bind="Quantity" min="1" max="100" />
-    <button class="btn btn-secondary" type="button">Dodaj</button>
+    <select @bind="Quantity" class="form-select">
+        @for (int i = 1; i <= 10; i++)
+        {
+            <option value="@i">
+                @i
+            </option>
+        }
+    </select>
+    <button class="btn btn-secondary" type="button" @onclick="HandleAddAsync">
+        Dodaj
+    </button>
 </div>
 
 @code {
@@ -20,6 +29,8 @@
     private async Task HandleAddAsync()
     {
         Tuple<ShowProduct, int> tuple = new(ShowProduct, Quantity);
-        await ShowProductAdded.InvokeAsync(tuple);    
+        await ShowProductAdded.InvokeAsync(tuple);
+
+        Quantity = 1;
     }
 }

@@ -12,7 +12,7 @@ namespace FMFT.Web.Client.Models.Forms.Reservations
         public int? UserId { get; set; }
 
         [MinLength(1, ErrorMessage = "Musi być dodane co najmniej jedno miejsce")]
-        public List<Seat> Items { get; set; }
+        public List<Item> Items { get; set; }
 
         public class Item
         {

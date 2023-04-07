@@ -35,7 +35,7 @@
                 <div class="card-body">
                     <div>
                         <span class="form-label">Wydarzenie</span>
-                        <select @onchange="HandleShowIdChangeAsync" class="form-select mt-2">
+                        <select @onchange="HandleShowIdChangeAsync" class="form-select mt-2" disabled="@Model.Items.Any()">
                             <option selected>Wybierz wydarzenie</option>
                             <Iterations Items="Shows.OrderBy(x => x.IsPast()).ThenBy(x => x.StartDateTime)" Context="show">
                                 <option value="@show.Id" disabled="@show.IsPast()">
@@ -47,25 +47,6 @@
                             <ValidationMessage For="@(() => Model.ShowId)" />
                         </div>
                     </div>
-                    @*<div class="mb-3">
-                        <span class="form-label">Produkt</span>
-                        <select @onchange="HandleShowProductIdChangeAsync" class="form-select mt-2" disabled="@(ShowProductsResponse == null)">
-                            <option selected>Wybierz produkt</option>
-                            <Condition Evaluation="ShowProductsResponse != null && ShowProductsResponse.IsSuccessful">
-                                <Match>
-                                    <Iterations Items="ShowProducts" Context="showProduct">
-                                        <option value="@showProduct.Id" disabled="@(!showProduct.IsEnabled)">
-                                            @showProduct.Name (@showProduct.IsBulk)
-                                        </option>
-                                    </Iterations>
-                                </Match>
-                            </Condition>
-                            
-                        </select>
-                        <div class="text-danger">
-                            <ValidationMessage For="@(() => Model.ShowId)" />
-                        </div>
-                    </div>*@
                 </div>
             </div>
             <div class="card mb-3">
@@ -82,14 +63,7 @@
                         <Condition Evaluation="ShowProductsResponse.IsSuccessful">
                             <Match>
                                 <Iterations Items="ShowProducts" Context="showProduct">
-
-                                    <div class="input-group mb-2">
-                                        <span class="input-group-text">
-                                            @showProduct.Name
-                                        </span>
-                                        <input type="number" class="form-control" placeholder="Ilość" value="1" min="1" max="100">
-                                        <button class="btn btn-secondary" type="button">Dodaj</button>
-                                    </div>
+                                    <AddReservationItemForm ShowProduct="showProduct" ShowProductAdded="HandleShowProductAddedAsync" />
                                 </Iterations>
                             </Match>
                             <NotMatch>
@@ -105,21 +79,55 @@
                 <div class="card-header">
                     Miejsca (@Model.Items.Count)
                 </div>
-                <div class="list-group list-group-flush">
+                <ul class="list-group list-group-flush">
                     <Iterations Items="Model.Items" Context="item">
-                        <div class="list-group-item">
-                            @item.Id
-                        </div>
+                        <li class="list-group-item d-flex align-items-center">
+                            <div>
+                                <Condition Evaluation="item.Seat != null">
+                                    <Match>
+                                        @item.Seat.SectorString Rząd: @item.Seat.Row Miejsce: @item.Seat.Number
+                                    </Match>
+                                    <NotMatch>
+                                        @item.ShowProduct.Name
+                                    </NotMatch>
+                                </Condition>
+                            </div>
+                            <div class="ms-auto">
+                                <button class="btn btn-sm btn-outline-danger" type="button" @onclick="() => HandleRemoveModelItem(item)">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </li>
                     </Iterations>
-                </div>
+                </ul>
             </div>
             <div class="card">
                 <div class="card-header">
                     Utwórz rezerwację
                 </div>
                 <div class="card-body">
-                    <div>
+                    <div class="mb-2">
                         <ValidationSummary />
+                    </div>
+
+                    <div class="mb-2">
+                        <AlertGroupBase @ref="AlertGroup">
+                            <AlertBase @ref="SeatAlertReservedAlert" Class="alert-danger">
+                                Jedno lub kilka z wybranych miejsc jest już zajęta
+                            </AlertBase>
+                            <AlertBase @ref="SeatsNotProvidedAlert" Class="alert-danger">
+                                Nie wybrano żadnego miejsca dla tej rezerwacji
+                            </AlertBase>
+                            <AlertBase @ref="UserAlreadyReservedAlert" Class="alert-danger">
+                                Ten użytkownik posiada już rezerwację na to wydarzenie
+                            </AlertBase>
+                            <AlertBase @ref="ValidationErrorAlert" Class="alert-danger">
+                                Problem z walidacją
+                            </AlertBase>
+                            <AlertBase @ref="SuccessAlert" Class="alert-success">
+                                Dodawanie rejestracji przebiegło pomyślnie!
+                            </AlertBase>
+                        </AlertGroupBase>
                     </div>
 
                     <SubmitButtonBase @ref="SubmitButton" Class="btn btn btn-primary w-100">
@@ -130,27 +138,10 @@
             </div>
         </div>
     </div>
-    
-
-    
-
-    <div class="card-body">       
-
-        <div class="mb-3">
-            <p class="fs-5">
-                2. Wybór miejsca
-            </p>
-            
-        </div>
-
-        
-
-    </div>
-    
 
 </EditForm>
 
-<ModalDialog @ref="SelectSeatsModalDialog">
+@*<ModalDialog @ref="SelectSeatsModalDialog">
     <Title>
         Wybierz miejsca
     </Title>
@@ -168,9 +159,9 @@
         <button class="btn btn-primary">
         </button>
     </Footer>
-</ModalDialog>
+</ModalDialog>*@
 
-<ModalDialog @ref="SubmitModalDialog" AlignCenter="true">
+@*<ModalDialog @ref="SubmitModalDialog" AlignCenter="true">
     <Title>
         Utwórz rezerwację
     </Title>
@@ -228,9 +219,16 @@
                         Miejsca (@Model.Items.Count):
                     </div>
                     <ul>
-                        <Iterations Items="Model.Items.OrderBy(x => x.Sector).ThenBy(x => x.Row).ThenBy(x => x.Number)" Context="seat">
+                        <Iterations Items="Model.Items" Context="item">
                             <li>
-                                @seat.SectorString Rząd: @seat.Row Miejsce: @seat.Number
+                                <Condition Evaluation="item.Seat != null">
+                                    <Match>
+                                        @item.Seat.SectorString Rząd: @item.Seat.Row Miejsce: @item.Seat.Number
+                                    </Match>
+                                    <NotMatch>
+                                        @item.ShowProduct.Name
+                                    </NotMatch>
+                                </Condition>                                
                             </li>
                         </Iterations>
                     </ul>
@@ -265,4 +263,4 @@
             Potwierdź
         </ButtonBase>
     </Footer>
-</ModalDialog>
+</ModalDialog>*@

@@ -52,7 +52,7 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Reservations
         {
             if (firstRender)
             {
-                SeatSelectorLoadingView.Hide();
+                //SeatSelectorLoadingView.Hide();
                 ProductsLoadingView.Hide();
             }
 
@@ -82,45 +82,40 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Reservations
                 ProductsLoadingView.StartLoading();
                 ShowProductsResponse = await APIBroker.GetShowProductsByShowIdAsync(value.Value);
                 ProductsLoadingView.StopLoading();
-            } else
+            }
+            else
             {
                 ProductsLoadingView.Hide();
-            }            
-
-
-            //if (value.HasValue)
-            //{
-            //    ShowProductsResponse = await APIBroker.GetShowProductsByShowIdAsync(value.Value);
-            //    SeatSelectorLoadingView.Show();                
-            //} else
-            //{
-            //    SeatSelectorLoadingView.Hide();
-            //}
-
-            //SeatSelectorLoadingView.StartLoading();
-
-            //semaphoreSlim = new SemaphoreSlim(0);
-            //await semaphoreSlim.WaitAsync();
-
-            //SeatSelectorLoadingView.StopLoading();      
+            }     
         }
 
-        private async Task HandleShowProductIdChangeAsync(ChangeEventArgs args)
+        private void HandleRemoveModelItem(CreateReservationFormModel.Item item)
         {
+            Model.Items.Remove(item);
+        }
 
+        private Task HandleShowProductAddedAsync(Tuple<ShowProduct, int> tuple)
+        {
+            if (tuple.Item1.IsBulk)
+            {
+                for (int i = 0; i < tuple.Item2; i++)
+                {
+                    CreateReservationFormModel.Item item = new()
+                    {
+                        ShowProduct = tuple.Item1,
+                        Seat = null
+                    };
+                    Model.Items.Add(item);
+                }
+            }
+
+            return Task.CompletedTask;
         }
 
         private async Task HandleSubmitAsync()
         {
-            StateHasChanged();
-            await SubmitModalDialog.ShowAsync();
             AlertGroup.HideAll();
-        }
-
-        private async Task HandleConfirmSubmitAsync()
-        {
-            AlertGroup.HideAll();
-            SubmitConfirmButton.StartSpinning();
+            SubmitButton.StartSpinning();
 
             CreateReservationRequest request = new()
             {
