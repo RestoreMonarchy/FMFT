@@ -5,66 +5,170 @@
 <EditForm Model="Model" OnValidSubmit="HandleSubmitAsync">
     <DataAnnotationsValidator />
     
-    <div class="card-body">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card mb-3">
+                <div class="card-header">
+                    Dane Osoby
+                </div>
+                <div class="card-body">
+                    <div class="mb-2">
+                        <label class="form-label">Adres email</label>
+                        <InputText @bind-Value="Model.Email" class="form-control" placeholder="Adres email" />
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-6">
+                            <label class="form-label">Imię</label>
+                            <InputText @bind-Value="Model.FirstName" class="form-control" placeholder="Imię" />
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label">Nazwisko</label>
+                            <InputText @bind-Value="Model.LastName" class="form-control" placeholder="Nazwisko" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-header">
+                    Wybór wydarzenia
+                </div>
+                <div class="card-body">
+                    <div>
+                        <span class="form-label">Wydarzenie</span>
+                        <select @onchange="HandleShowIdChangeAsync" class="form-select mt-2">
+                            <option selected>Wybierz wydarzenie</option>
+                            <Iterations Items="Shows.OrderBy(x => x.IsPast()).ThenBy(x => x.StartDateTime)" Context="show">
+                                <option value="@show.Id" disabled="@show.IsPast()">
+                                    @show.Name (@show.StartDateTime.LocalDateTime.ToShortDateString())
+                                </option>
+                            </Iterations>
+                        </select>
+                        <div class="text-danger">
+                            <ValidationMessage For="@(() => Model.ShowId)" />
+                        </div>
+                    </div>
+                    @*<div class="mb-3">
+                        <span class="form-label">Produkt</span>
+                        <select @onchange="HandleShowProductIdChangeAsync" class="form-select mt-2" disabled="@(ShowProductsResponse == null)">
+                            <option selected>Wybierz produkt</option>
+                            <Condition Evaluation="ShowProductsResponse != null && ShowProductsResponse.IsSuccessful">
+                                <Match>
+                                    <Iterations Items="ShowProducts" Context="showProduct">
+                                        <option value="@showProduct.Id" disabled="@(!showProduct.IsEnabled)">
+                                            @showProduct.Name (@showProduct.IsBulk)
+                                        </option>
+                                    </Iterations>
+                                </Match>
+                            </Condition>
+                            
+                        </select>
+                        <div class="text-danger">
+                            <ValidationMessage For="@(() => Model.ShowId)" />
+                        </div>
+                    </div>*@
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-header">
+                    Produkty
+                </div>
+                <div class="card-body">
+                    <Condition Evaluation="Model.ShowId.HasValue">
+                        <NotMatch>
+                            Wybierz wydarzenie aby wyświetlić produkty
+                        </NotMatch>
+                    </Condition>
+                    <LoadingView @ref="ProductsLoadingView">
+                        <Condition Evaluation="ShowProductsResponse.IsSuccessful">
+                            <Match>
+                                <Iterations Items="ShowProducts" Context="showProduct">
 
-        <div class="mb-3">
-            <p class="fs-5">
-                1. Dane osoby
-            </p>
-            <div class="mb-2">
-                <label class="form-label">Adres email</label>
-                <InputText @bind-Value="Model.Email" class="form-control" placeholder="Adres email" />
-            </div>
-            <div class="mb-2">
-                <label class="form-label">Imię</label>
-                <InputText @bind-Value="Model.FirstName" class="form-control" placeholder="Imię" />
-            </div>
-            <div class="mb-2">
-                <label class="form-label">Nazwisko</label>
-                <InputText @bind-Value="Model.LastName" class="form-control" placeholder="Nazwisko" />
+                                    <div class="input-group mb-2">
+                                        <span class="input-group-text">
+                                            @showProduct.Name
+                                        </span>
+                                        <input type="number" class="form-control" placeholder="Ilość" value="1" min="1" max="100">
+                                        <button class="btn btn-secondary" type="button">Dodaj</button>
+                                    </div>
+                                </Iterations>
+                            </Match>
+                            <NotMatch>
+                                <ErrorResponseAlert />
+                            </NotMatch>
+                        </Condition>
+                    </LoadingView>
+                </div>
             </div>
         </div>
+        <div class="col-lg-4">
+            <div class="card mb-3">
+                <div class="card-header">
+                    Miejsca (@Model.Items.Count)
+                </div>
+                <div class="list-group list-group-flush">
+                    <Iterations Items="Model.Items" Context="item">
+                        <div class="list-group-item">
+                            @item.Id
+                        </div>
+                    </Iterations>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    Utwórz rezerwację
+                </div>
+                <div class="card-body">
+                    <div>
+                        <ValidationSummary />
+                    </div>
+
+                    <SubmitButtonBase @ref="SubmitButton" Class="btn btn btn-primary w-100">
+                        <i class="fa-solid fa-plus me-1"></i>
+                        Dodaj rezerwację
+                    </SubmitButtonBase>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    
+
+    <div class="card-body">       
 
         <div class="mb-3">
             <p class="fs-5">
                 2. Wybór miejsca
             </p>
-            <span class="form-label">Wydarzenie</span>
-            <select @onchange="HandleShowIdChangeAsync" class="form-select mt-2">
-                <option selected>Wybierz wydarzenie</option>
-                <Iterations Items="Shows.OrderBy(x => x.IsPast()).ThenBy(x => x.StartDateTime)" Context="show">
-                    <option value="@show.Id" disabled="@show.IsPast()">
-                        @show.Name (@show.StartDateTime.LocalDateTime.ToShortDateString())
-                    </option>
-                </Iterations>
-            </select>
-            <div class="text-danger">
-                <ValidationMessage For="@(() => Model.ShowId)" />
-            </div>
+            
         </div>
 
-        <LoadingView @ref="SeatSelectorLoadingView">
-            <div class="mb-3">
-                <AuditoriumSeatPanzoom @ref="AuditoriumSeatPanzoom" ReservedSeats="Show.ReservedSeats" Auditorium="Auditorium" @bind-SelectedSeats="Model.Seats" MaxAmount="50" />
-                <div class="text-danger">
-                    <ValidationMessage For="@(() => Model.Seats)" />
-                </div>                
-            </div>
-        </LoadingView>
+        
 
     </div>
-    <div class="card-footer">
-        <div class="d-flex align-items-center">
-            <div>
-                <SubmitButtonBase @ref="SubmitButton" Class="btn btn-sm btn-primary">
-                    <i class="fa-solid fa-plus me-1"></i>
-                    Utwórz rezerwację
-                </SubmitButtonBase>
-            </div>
-        </div>
-    </div>
+    
 
 </EditForm>
+
+<ModalDialog @ref="SelectSeatsModalDialog">
+    <Title>
+        Wybierz miejsca
+    </Title>
+    <Body>
+        <LoadingView @ref="SeatSelectorLoadingView">
+            <div class="mb-3">
+                <AuditoriumSeatPanzoom @ref="AuditoriumSeatPanzoom" ReservedSeats="Show.ReservedSeats" Auditorium="Auditorium" @bind-SelectedSeats="Model.Items" MaxAmount="50" />
+                <div class="text-danger">
+                    <ValidationMessage For="@(() => Model.Items)" />
+                </div>
+            </div>
+        </LoadingView>
+    </Body>
+    <Footer>
+        <button class="btn btn-primary">
+        </button>
+    </Footer>
+</ModalDialog>
 
 <ModalDialog @ref="SubmitModalDialog" AlignCenter="true">
     <Title>
@@ -121,10 +225,10 @@
                 </div>
                 <div>
                     <div class="fw-bold">
-                        Miejsca (@Model.Seats.Count):
+                        Miejsca (@Model.Items.Count):
                     </div>
                     <ul>
-                        <Iterations Items="Model.Seats.OrderBy(x => x.Sector).ThenBy(x => x.Row).ThenBy(x => x.Number)" Context="seat">
+                        <Iterations Items="Model.Items.OrderBy(x => x.Sector).ThenBy(x => x.Row).ThenBy(x => x.Number)" Context="seat">
                             <li>
                                 @seat.SectorString Rząd: @seat.Row Miejsce: @seat.Number
                             </li>

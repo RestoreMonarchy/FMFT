@@ -63,7 +63,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.Reservations
 
             const int maximumSeats = 3;
 
-            if (@params.SeatIds.Count > maximumSeats)
+            if (@params.Items.Count > maximumSeats)
             {
                 validationException.UpsertDataList("SeatIds", $"The maximum amount of seats that can be in a reservation is {maximumSeats}");
             }
@@ -74,7 +74,11 @@ namespace FMFT.Web.Server.Services.Orchestrations.Reservations
             {
                 ShowId = @params.ShowId,
                 UserId = @params.UserId,
-                SeatIds  = @params.SeatIds
+                Items  = @params.Items.Select(x => new CreateReservationParams.ReservationItem() 
+                { 
+                    SeatId = x.SeatId,
+                    ShowProductId = x.ShowProductId
+                }).ToList()
             };
 
             return await CreateReservationAsync(@params2);
@@ -83,7 +87,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.Reservations
         public async ValueTask<Reservation> CreateReservationAsync(CreateReservationParams @params)
         {
             Reservation reservation = await reservationService.CreateReservationAsync(@params);
-                        
+
             string emailAddress = reservation.User?.Email ?? reservation.Details?.Email ?? null;
 
             if (!string.IsNullOrEmpty(emailAddress))

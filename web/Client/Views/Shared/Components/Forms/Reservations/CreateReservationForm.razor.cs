@@ -6,6 +6,7 @@ using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Auditoriums;
 using FMFT.Web.Client.Models.API.Reservations;
 using FMFT.Web.Client.Models.API.Reservations.Requests;
+using FMFT.Web.Client.Models.API.ShowProducts;
 using FMFT.Web.Client.Models.API.Shows;
 using FMFT.Web.Client.Models.Forms.Reservations;
 using FMFT.Web.Client.Views.Shared.Components.Panzooms;
@@ -22,7 +23,7 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Reservations
 
         public CreateReservationFormModel Model { get; set; } = new()
         {
-            Seats = new()
+            Items = new()
         };
 
         public SubmitButtonBase SubmitButton { get; set; }
@@ -30,6 +31,7 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Reservations
         public AuditoriumSeatPanzoom AuditoriumSeatPanzoom { get; set; }
         public ModalDialog SubmitModalDialog { get; set; }
         public ButtonBase SubmitConfirmButton { get; set; }
+        public LoadingView ProductsLoadingView { get; set; }
 
         public AlertGroupBase AlertGroup { get; set; }
         public AlertBase SeatAlertReservedAlert { get; set; }
@@ -41,11 +43,17 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Reservations
         public Show Show => Shows.First(x => x.Id == Model.ShowId);
         public Auditorium Auditorium => Auditoriums.First(x => x.Id == Show.AuditoriumId);
 
+        public APIResponse<List<ShowProduct>> ShowProductsResponse { get; set; }
+        public List<ShowProduct> ShowProducts => ShowProductsResponse.Object;
+
+
+
         protected override void OnAfterRender(bool firstRender)
         {
             if (firstRender)
             {
                 SeatSelectorLoadingView.Hide();
+                ProductsLoadingView.Hide();
             }
 
             if (semaphoreSlim != null)
@@ -66,22 +74,40 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Reservations
             }
 
             Model.ShowId = value;
-            Model.Seats = new();
+            Model.Items = new();
 
-            if (value == null)
+            if (value.HasValue)
             {
-                SeatSelectorLoadingView.Hide();
+                ProductsLoadingView.Show();
+                ProductsLoadingView.StartLoading();
+                ShowProductsResponse = await APIBroker.GetShowProductsByShowIdAsync(value.Value);
+                ProductsLoadingView.StopLoading();
             } else
             {
-                SeatSelectorLoadingView.Show();
-            }
+                ProductsLoadingView.Hide();
+            }            
 
-            SeatSelectorLoadingView.StartLoading();
 
-            semaphoreSlim = new SemaphoreSlim(0);
-            await semaphoreSlim.WaitAsync();
+            //if (value.HasValue)
+            //{
+            //    ShowProductsResponse = await APIBroker.GetShowProductsByShowIdAsync(value.Value);
+            //    SeatSelectorLoadingView.Show();                
+            //} else
+            //{
+            //    SeatSelectorLoadingView.Hide();
+            //}
 
-            SeatSelectorLoadingView.StopLoading();      
+            //SeatSelectorLoadingView.StartLoading();
+
+            //semaphoreSlim = new SemaphoreSlim(0);
+            //await semaphoreSlim.WaitAsync();
+
+            //SeatSelectorLoadingView.StopLoading();      
+        }
+
+        private async Task HandleShowProductIdChangeAsync(ChangeEventArgs args)
+        {
+
         }
 
         private async Task HandleSubmitAsync()
@@ -100,7 +126,6 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Reservations
             {
                 ShowId = Model.ShowId.Value,
                 UserId = Model.UserId,
-                SeatIds = Model.Seats.Select(x => x.Id).ToList(),
                 Email = Model.Email,
                 FirstName = Model.FirstName,
                 LastName = Model.LastName

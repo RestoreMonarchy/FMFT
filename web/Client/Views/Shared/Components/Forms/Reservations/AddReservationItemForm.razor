@@ -1,0 +1,25 @@
+﻿@using FMFT.Web.Client.Models.API.ShowProducts;
+
+<div class="input-group mb-2">
+    <span class="input-group-text">
+        @ShowProduct.Name
+    </span>
+    <input type="number" class="form-control" placeholder="Ilość" @bind="Quantity" min="1" max="100" />
+    <button class="btn btn-secondary" type="button">Dodaj</button>
+</div>
+
+@code {
+    [Parameter]
+    public ShowProduct ShowProduct { get; set; }
+
+    public int Quantity { get; set; } = 1;
+
+    [Parameter]
+    public EventCallback<Tuple<ShowProduct, int>> ShowProductAdded { get; set; }
+
+    private async Task HandleAddAsync()
+    {
+        Tuple<ShowProduct, int> tuple = new(ShowProduct, Quantity);
+        await ShowProductAdded.InvokeAsync(tuple);    
+    }
+}
