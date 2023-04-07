@@ -3,6 +3,6 @@
     public class ValidateReservationSecretCodeResult
     {
         public Reservation Reservation { get; set; }
-        public int? ReservationSeatId { get; set; }
+        public int? ReservationItemId { get; set; }
     }
 }

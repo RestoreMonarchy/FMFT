@@ -80,7 +80,6 @@ namespace FMFT.Web.Server.Services.Foundations.Orders
 
         public async ValueTask<Order> CreateOrderAsync(CreateOrderParams @params)
         {
-
             List<CreateOrderItemDTO> orderItems = new();
 
             @params.Items.ForEach (item => orderItems.Add(
@@ -88,7 +87,8 @@ namespace FMFT.Web.Server.Services.Foundations.Orders
                 {
                     ShowProductId = item.ShowProductId,
                     Price = item.Price,
-                    Quantity= item.Quantity
+                    Quantity= item.Quantity,
+                    SeatIds = item.SeatIds
                 })
             );
 
@@ -100,7 +100,6 @@ namespace FMFT.Web.Server.Services.Foundations.Orders
                 PaymentMethod = @params.PaymentMethod,
                 ExpireDate = DateTime.Now.AddMinutes(15),
                 Items = orderItems,
-                SeatIds = @params.SeatIds,
                 PaymentProvider = @params.PaymentProvider
             };
 

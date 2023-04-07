@@ -48,12 +48,13 @@ namespace FMFT.Web.Server.Services.Orchestrations.Orders
         public async ValueTask<Order> CreateOrderAsync(CreateOrderParams @params)
         {
             CreateUserOrderReservationValidationException validationException = new();
-            const int maximumSeats = 100;
-            const int minimumSeats = 1;
+            const int maximumItemsQuantity = 20;
+            const int minimumItemsQuantity = 1;
 
-            if (@params.SeatIds.Count > maximumSeats || @params.SeatIds.Count < minimumSeats)
+            int quantity = @params.Items.Sum(x => x.Quantity);
+            if (quantity > maximumItemsQuantity || quantity < minimumItemsQuantity)
             {
-                validationException.UpsertDataList("SeatIds", $"The amount of seats that can be reserved in one order must be in range between {minimumSeats} and {maximumSeats}");
+                validationException.UpsertDataList("Items", $"The amount of items that can be reserved in one order must be in range between {minimumItemsQuantity} and {maximumItemsQuantity}");
             }
 
             Order order = await orderService.CreateOrderAsync(@params);

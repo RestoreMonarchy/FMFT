@@ -11,7 +11,6 @@ namespace FMFT.Web.Server.Models.Orders.DTOs
 		public PaymentMethod PaymentMethod { get; set; }
 		public DateTime ExpireDate { get; set;}
 		public List<CreateOrderItemDTO> Items { get; set; }
-		public List<int> SeatIds { get; set; }
 	}
 }
 

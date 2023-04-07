@@ -1,6 +1,6 @@
 ﻿CREATE PROCEDURE dbo.GetReservationBySecretKey 
 	@SecretCode UNIQUEIDENTIFIER,
-	@ReservationSeatId INT OUTPUT
+	@ReservationItemId INT OUTPUT
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -9,10 +9,18 @@ BEGIN
 	DECLARE @reservationId CHAR(8);
 
 	SELECT 
-		@ReservationSeatId = Id,
+		@ReservationItemId = Id,
 		@reservationId = ReservationId
 	FROM dbo.ReservationItems
 	WHERE SecretCode = @SecretCode;
+
+	-- mark reservation item (ticket) as scanned
+	IF @ReservationItemId IS NOT NULL
+	BEGIN
+		UPDATE dbo.ReservationItems 
+		SET IsScanned = 1
+		WHERE Id = @ReservationItemId;
+	END
 
 	IF @reservationId IS NULL
 	BEGIN

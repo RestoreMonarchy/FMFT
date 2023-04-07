@@ -1,7 +1,7 @@
 ﻿CREATE PROCEDURE dbo.CreateReservation
 	@ShowId INT,
 	@UserId INT,
-	@Seats VARCHAR(8000),
+	@Items VARCHAR(8000),
 	@Email NVARCHAR(255) = NULL,
 	@FirstName NVARCHAR(255) = NULL,
 	@LastName NVARCHAR(255) = NULL,
@@ -16,27 +16,35 @@ BEGIN
 	DECLARE @isExternalTransaction BIT = @@TRANCOUNT;
 	DECLARE @ret INT = 0;
 	DECLARE @reservationId CHAR(8) = '--------';
-	DECLARE @seatsTable TABLE(SeatId INT NOT NULL PRIMARY KEY);
-	DECLARE @setsCount INT;
+	DECLARE @itemsCount INT; 
+	DECLARE @seatItemsCount INT;
 	DECLARE @validatedSetsCount INT;
 	DECLARE @status TINYINT = CASE WHEN @OrderId IS NULL THEN 1 ELSE 0 END;
 
-	INSERT INTO @seatsTable (SeatId) 
-	SELECT [Value] 
-	FROM STRING_SPLIT(@Seats, ',');
+	DECLARE @ItemsTable TABLE (ShowProductId INT NOT NULL, SeatId INT NULL);
 
-	SET @setsCount = @@ROWCOUNT;
+	INSERT INTO @ItemsTable (ShowProductId, SeatId) 
+	SELECT ShowProductId, SeatId
+	FROM OPENJSON ( @Items )  
+	WITH (   
+		ShowProductId INT '$.ShowProductId',
+		SeatId INT '$.SeatId'
+	);
+
+	SET @itemsCount = @@ROWCOUNT;
+
+	SELECT @seatItemsCount = COUNT(*) FROM @ItemsTable WHERE SeatId IS NOT NULL;
 
 	SELECT @validatedSetsCount = COUNT(*)
 	FROM dbo.Shows s
 	JOIN dbo.Auditoriums a ON a.Id = s.AuditoriumId
 	JOIN dbo.Seats t ON t.AuditoriumId = a.Id
-	JOIN @seatsTable t2 ON t2.SeatId = t.Id
+	JOIN @ItemsTable t2 ON t2.SeatId = t.Id
 	WHERE s.Id = @ShowId;
 
-	IF @setsCount = 0 OR @setsCount > @validatedSetsCount
+	IF @seatItemsCount > @validatedSetsCount
 	BEGIN
-		PRINT FORMATMESSAGE('Seats provided are invalid. @setsCount = %d, @validatedSetsCount = %d', @setsCount, @validatedSetsCount);
+		PRINT FORMATMESSAGE('Seats provided are invalid. @itemsCount = %d, @validatedSetsCount = %d', @itemsCount, @validatedSetsCount);
 		SET @ret = 3;
 	END;
 
@@ -45,7 +53,7 @@ BEGIN
 			SELECT * 
 			FROM dbo.Reservations r 
 			JOIN dbo.ReservationItems ri ON ri.ReservationId = r.Id 
-			JOIN @seatsTable st ON st.SeatId = ri.SeatId
+			JOIN @ItemsTable st ON st.SeatId = ri.SeatId
 			WHERE r.ShowId = @ShowId
 			AND r.IsValid = 1
 		)
@@ -74,7 +82,7 @@ BEGIN
 		VALUES (@reservationId, @ShowId, @UserId, @OrderId, @status);
 
 		INSERT INTO dbo.ReservationItems (ReservationId, SeatId)
-		SELECT @reservationId, SeatId FROM @seatsTable;
+		SELECT @reservationId, SeatId FROM @itemsTable;
 
 		IF @UserId IS NULL
 		BEGIN
