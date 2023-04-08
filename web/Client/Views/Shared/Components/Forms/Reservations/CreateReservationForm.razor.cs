@@ -1,6 +1,5 @@
 ﻿using FMFT.Extensions.Blazor.Bases.Alerts;
 using FMFT.Extensions.Blazor.Bases.Buttons;
-using FMFT.Extensions.Blazor.Bases.Dialogs;
 using FMFT.Extensions.Blazor.Bases.Loadings;
 using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Auditoriums;
@@ -10,7 +9,6 @@ using FMFT.Web.Client.Models.API.Seats;
 using FMFT.Web.Client.Models.API.ShowProducts;
 using FMFT.Web.Client.Models.API.Shows;
 using FMFT.Web.Client.Models.Forms.Reservations;
-using FMFT.Web.Client.Views.Shared.Components.Panzooms;
 using Microsoft.AspNetCore.Components;
 
 namespace FMFT.Web.Client.Views.Shared.Components.Forms.Reservations
@@ -45,6 +43,8 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Reservations
 
         public APIResponse<List<ShowProduct>> ShowProductsResponse { get; set; }
         public List<ShowProduct> ShowProducts => ShowProductsResponse.Object;
+
+        public decimal ItemsValue => Model.Items.Sum(x => x.ShowProduct.Price);
 
         protected override void OnAfterRender(bool firstRender)
         {
@@ -107,11 +107,11 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Reservations
 
         private ShowProduct selectedSeatsProduct;
 
-        private async Task HandleOnSeatsSelectedAsync(List<Seat> seats)
+        private Task HandleOnSeatsSelectedAsync(List<Seat> seats)
         {
             if (selectedSeatsProduct == null)
             {
-                return;
+                return Task.CompletedTask;
             }
 
             foreach (Seat seat in seats)
@@ -122,6 +122,8 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Reservations
                     Seat = seat
                 });
             }
+
+            return Task.CompletedTask;
         }
 
         private async Task HandleSubmitAsync()
