@@ -15,6 +15,8 @@ namespace FMFT.Extensions.Blazor.Bases.Dialogs
         public RenderFragment Body { get; set; }
         [Parameter]
         public RenderFragment Footer { get; set; }
+        [Parameter]
+        public ESize Size { get; set; }
 
         public ElementReference ModalElement { get; set; }
 
@@ -28,6 +30,19 @@ namespace FMFT.Extensions.Blazor.Bases.Dialogs
             if (AlignCenter)
             {
                 classes.Add("modal-dialog-centered");
+            }
+
+            switch (Size)
+            {
+                case ESize.Small:
+                    classes.Add("modal-sm");
+                    break;
+                case ESize.Large:
+                    classes.Add("modal-lg");
+                    break;
+                case ESize.ExtraLarge:
+                    classes.Add("modal-xl");
+                    break;
             }
 
             return string.Join(", ", classes);
@@ -46,6 +61,14 @@ namespace FMFT.Extensions.Blazor.Bases.Dialogs
         public async ValueTask HideAsync()
         {
             await JSRuntime.InvokeVoidAsync("HideModal", ModalElement);
+        }
+
+        public enum ESize
+        {
+            Default = 0,
+            Small = 1,
+            Large = 2,
+            ExtraLarge = 3
         }
     }
 }

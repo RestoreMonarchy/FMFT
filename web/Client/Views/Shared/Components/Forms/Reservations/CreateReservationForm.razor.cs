@@ -6,6 +6,7 @@ using FMFT.Web.Client.Models.API;
 using FMFT.Web.Client.Models.API.Auditoriums;
 using FMFT.Web.Client.Models.API.Reservations;
 using FMFT.Web.Client.Models.API.Reservations.Requests;
+using FMFT.Web.Client.Models.API.Seats;
 using FMFT.Web.Client.Models.API.ShowProducts;
 using FMFT.Web.Client.Models.API.Shows;
 using FMFT.Web.Client.Models.Forms.Reservations;
@@ -27,11 +28,9 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Reservations
         };
 
         public SubmitButtonBase SubmitButton { get; set; }
-        public LoadingView SeatSelectorLoadingView { get; set; }
-        public AuditoriumSeatPanzoom AuditoriumSeatPanzoom { get; set; }
-        public ModalDialog SubmitModalDialog { get; set; }
         public ButtonBase SubmitConfirmButton { get; set; }
         public LoadingView ProductsLoadingView { get; set; }
+        public SelectSeatsModalDialog SelectSeatsModalDialog { get; set; }
 
         public AlertGroupBase AlertGroup { get; set; }
         public AlertBase SeatAlertReservedAlert { get; set; }
@@ -46,24 +45,13 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Reservations
         public APIResponse<List<ShowProduct>> ShowProductsResponse { get; set; }
         public List<ShowProduct> ShowProducts => ShowProductsResponse.Object;
 
-
-
         protected override void OnAfterRender(bool firstRender)
         {
             if (firstRender)
             {
-                //SeatSelectorLoadingView.Hide();
                 ProductsLoadingView.Hide();
-            }
-
-            if (semaphoreSlim != null)
-            {
-                semaphoreSlim.Release();
-                semaphoreSlim = null;
-            }
+            }            
         }
-
-        private SemaphoreSlim semaphoreSlim = new(0);
 
         private async Task HandleShowIdChangeAsync(ChangeEventArgs args)
         {
@@ -78,6 +66,8 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Reservations
 
             if (value.HasValue)
             {
+                SelectSeatsModalDialog.SetAuditoriumAsync(Auditorium, Show.ReservedItems);
+
                 ProductsLoadingView.Show();
                 ProductsLoadingView.StartLoading();
                 ShowProductsResponse = await APIBroker.GetShowProductsByShowIdAsync(value.Value);
@@ -94,7 +84,7 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Reservations
             Model.Items.Remove(item);
         }
 
-        private Task HandleShowProductAddedAsync(Tuple<ShowProduct, int> tuple)
+        private async Task HandleShowProductAddedAsync(Tuple<ShowProduct, int> tuple)
         {
             if (tuple.Item1.IsBulk)
             {
@@ -107,9 +97,30 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Reservations
                     };
                     Model.Items.Add(item);
                 }
+            } else
+            {
+                selectedSeatsProduct = tuple.Item1;
+                await SelectSeatsModalDialog.OpenAsync(tuple.Item2);
+            }
+        }
+
+        private ShowProduct selectedSeatsProduct;
+
+        private async Task HandleOnSeatsSelectedAsync(List<Seat> seats)
+        {
+            if (selectedSeatsProduct == null)
+            {
+                return;
             }
 
-            return Task.CompletedTask;
+            foreach (Seat seat in seats)
+            {
+                Model.Items.Add(new() 
+                { 
+                    ShowProduct = selectedSeatsProduct,
+                    Seat = seat
+                });
+            }
         }
 
         private async Task HandleSubmitAsync()
