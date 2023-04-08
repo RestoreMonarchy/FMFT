@@ -1,6 +1,7 @@
 ﻿@page "/admin/reservations/{ReservationId}"
 @using FMFT.Extensions.Blazor.Bases.Conditions
 @using FMFT.Extensions.Blazor.Bases.Dialogs
+@using FMFT.Web.Client.Models.API.Reservations;
 @using FMFT.Web.Client.Views.Shared.Components.Alerts.Reservations
 @using FMFT.Web.Client.Views.Shared.Components.Buttons
 @using FMFT.Web.Client.Views.Shared.Components.Cards.Users
@@ -84,7 +85,7 @@
 
                                 <div class="card">
                                     <div class="card-header">
-                                        Miejsca (@Reservation.Seats.Count())
+                                        Miejsca (@Reservation.Items.Count())
                                     </div>
                                     <div class="list-group list-group-flush">
                                         <Iterations Items="Reservation.Seats.OrderBy(x => x.Seat.Sector).ThenBy(x => x.Seat.Row).ThenBy(x => x.Seat.Number)" Context="seat">
@@ -93,10 +94,27 @@
                                                     @seat.Seat.SectorString Rząd @seat.Seat.Row Numer @seat.Seat.Number
                                                 </div>
                                                 <div class="ms-auto">
-                                                    <DownloadTicketButton Reservation="Reservation" ReservationSeat="seat" IsSmall="true" />
+                                                    <DownloadTicketButton Reservation="Reservation" ReservationItem="seat" IsSmall="true" />
                                                 </div>
                                             </div>
                                         </Iterations>
+                                        @for (int i = 0; i < Reservation.BulkItems.Count(); i++)
+                                        {
+                                            ReservationItem item = Reservation.BulkItems.ElementAt(i);
+
+                                            <div class="list-group-item d-flex align-items-center">
+                                                <div>
+                                                    @item.ShowProduct.Name #@(i + 1)
+                                                </div>
+
+                                                <div class="ms-auto">
+                                                    <DownloadTicketButton 
+                                                        Reservation="Reservation"
+                                                        ReservationItem="item"
+                                                        IsSmall="true" />
+                                                </div>
+                                            </div>
+                                        }
                                     </div>
                                 </div>
                             </div>

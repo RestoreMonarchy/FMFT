@@ -123,7 +123,12 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Reservations
                 UserId = Model.UserId,
                 Email = Model.Email,
                 FirstName = Model.FirstName,
-                LastName = Model.LastName
+                LastName = Model.LastName,
+                Items = Model.Items.Select(x => new CreateReservationRequest.Item() 
+                { 
+                    SeatId = x.Seat?.Id ?? null,
+                    ShowProductId = x.ShowProduct.Id
+                }).ToList()
             };
 
             APIResponse<Reservation> response = await APIBroker.CreateReservationAsync(request);

@@ -81,8 +81,8 @@ BEGIN
 		INSERT INTO dbo.Reservations (Id, ShowId, UserId, OrderId, [Status])
 		VALUES (@reservationId, @ShowId, @UserId, @OrderId, @status);
 
-		INSERT INTO dbo.ReservationItems (ReservationId, SeatId)
-		SELECT @reservationId, SeatId FROM @itemsTable;
+		INSERT INTO dbo.ReservationItems (ReservationId, SeatId, ShowProductId)
+		SELECT @reservationId, SeatId, ShowProductId FROM @itemsTable;
 
 		IF @UserId IS NULL
 		BEGIN
