@@ -206,6 +206,10 @@ namespace FMFT.Web.Server.Controllers
             {
                 return BadRequest(exception);
             }
+            catch (DuplicateSeatsReservationException exception)
+            {
+                return BadRequest(exception);
+            }
             catch (NotAuthorizedAccountException exception)
             {
                 return Forbidden(exception);

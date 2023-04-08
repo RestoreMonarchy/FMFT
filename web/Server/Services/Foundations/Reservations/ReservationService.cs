@@ -86,6 +86,11 @@ namespace FMFT.Web.Server.Services.Foundations.Reservations
                 throw new SeatsNotProvidedReservationException();
             }
 
+            if (result.ReturnValue == 4)
+            {
+                throw new DuplicateSeatsReservationException();
+            }
+
             return result.Result;
         }
 

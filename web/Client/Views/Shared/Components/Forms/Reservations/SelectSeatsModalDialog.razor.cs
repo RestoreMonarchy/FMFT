@@ -26,20 +26,11 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Reservations
         public List<Seat> Seats { get; set; } = new();
         private bool IsConfirmDisabled => SeatsCount != Seats.Count;
 
-
-        private SemaphoreSlim semaphoreSlim = new(0);
-
         protected override void OnAfterRender(bool firstRender)
         {
             if (firstRender)
             {
                 LoadingView.Hide();
-            }
-
-            if (semaphoreSlim != null)
-            {
-                semaphoreSlim.Release();
-                semaphoreSlim = null;
             }
         }
 

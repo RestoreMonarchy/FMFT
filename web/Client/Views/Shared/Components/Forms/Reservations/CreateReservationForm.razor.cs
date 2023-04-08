@@ -28,7 +28,6 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Reservations
         };
 
         public SubmitButtonBase SubmitButton { get; set; }
-        public ButtonBase SubmitConfirmButton { get; set; }
         public LoadingView ProductsLoadingView { get; set; }
         public SelectSeatsModalDialog SelectSeatsModalDialog { get; set; }
 
@@ -37,6 +36,8 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Reservations
         public AlertBase UserAlreadyReservedAlert { get; set; }
         public AlertBase SeatsNotProvidedAlert { get; set; }
         public AlertBase ValidationErrorAlert { get; set; }
+        public AlertBase DuplicateSeatErrorAlert { get; set; }
+        public AlertBase ErrorAlert { get; set; }
         public AlertBase SuccessAlert { get; set; }
 
         public Show Show => Shows.First(x => x.Id == Model.ShowId);
@@ -165,10 +166,16 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Reservations
                     case "ERR019":
                         UserAlreadyReservedAlert.Show();
                         break;
+                    case "ERR058":
+                        DuplicateSeatErrorAlert.Show();
+                        break;
+                    default:
+                        ErrorAlert.Show();
+                        break;
                 }
             }
 
-            SubmitConfirmButton.StopSpinning();
+            SubmitButton.StopSpinning();
         }
     }
 }

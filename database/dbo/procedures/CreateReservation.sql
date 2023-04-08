@@ -69,6 +69,15 @@ BEGIN
 		PRINT 'There are already reservations for this show from this user';
 		SET @ret = 2;
 	END;
+
+	IF EXISTS(SELECT ShowProductId, SeatId
+			FROM @ItemsTable
+			WHERE SeatId IS NOT NULL 
+			GROUP BY ShowProductId, SeatId HAVING COUNT(*) > 1)
+	BEGIN
+		PRINT 'There are some duplicated seat for this reservation request';
+		SET @ret = 4;
+	END;
 	
 	IF @ret = 0
 	BEGIN		
