@@ -67,8 +67,6 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Reservations
 
             if (value.HasValue)
             {
-                SelectSeatsModalDialog.SetAuditoriumAsync(Auditorium, Show.ReservedItems);
-
                 ProductsLoadingView.Show();
                 ProductsLoadingView.StartLoading();
                 ShowProductsResponse = await APIBroker.GetShowProductsByShowIdAsync(value.Value);
@@ -100,6 +98,18 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Reservations
                 }
             } else
             {
+                List<int> reservedSeatIds = new();
+                reservedSeatIds.AddRange(Show.ReservedSeatIds);
+                foreach (CreateReservationFormModel.Item item in Model.Items)
+                {
+                    if (item.Seat != null)
+                    {
+                        reservedSeatIds.Add(item.Seat.Id);
+                    }
+                }
+
+                SelectSeatsModalDialog.SetAuditoriumAsync(Auditorium, reservedSeatIds);
+
                 selectedSeatsProduct = tuple.Item1;
                 await SelectSeatsModalDialog.OpenAsync(tuple.Item2);
             }

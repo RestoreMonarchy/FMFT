@@ -15,7 +15,7 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Reservations
         public EventCallback<List<Seat>> OnSeatsSelected { get; set; }
 
         public Auditorium Auditorium { get; set; }
-        public List<ShowReservedItem> ReservedItems { get; set; }        
+        public List<int> ReservedSeatIds { get; set; }        
 
         public ModalDialog ModalDialog { get; set; }
         public LoadingView LoadingView { get; set; }
@@ -34,10 +34,10 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Reservations
             }
         }
 
-        public void SetAuditoriumAsync(Auditorium auditorium, List<ShowReservedItem> reservedItems)
+        public void SetAuditoriumAsync(Auditorium auditorium, List<int> reservedSeatIds)
         {
             Auditorium = auditorium;
-            ReservedItems = reservedItems;
+            ReservedSeatIds = reservedSeatIds;
             Seats.Clear();
         }
 

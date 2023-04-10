@@ -18,6 +18,7 @@ namespace FMFT.Web.Client.Models.API.Shows
         public List<ShowReservedItem> ReservedItems { get; set; }
         public IEnumerable<ShowReservedItem> ReservedSeats => ReservedItems.Where(x => x.SeatId != 0);
         public IEnumerable<ShowReservedItem> ReservedBulkItems => ReservedItems.Where(x => x.SeatId == 0);
+        public IEnumerable<int> ReservedSeatIds => ReservedSeats.Select(x => x.SeatId);
 
         public bool IsPast() => EndDateTime.UtcDateTime < DateTime.UtcNow;
         public bool IsSellDisabled() => SellStartDateTime.UtcDateTime > DateTime.UtcNow;
