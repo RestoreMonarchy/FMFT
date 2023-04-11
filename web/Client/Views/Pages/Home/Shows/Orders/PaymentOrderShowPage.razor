@@ -70,9 +70,9 @@
                                         </Iterations>
                                         <Condition Evaluation="BulkItemsCount > 0">
                                             <Match>
-                                                <Iterations Items="BulkItems.GroupBy(x => x.ShowProductId)" Context="itemGroup">
+                                                <Iterations Items="BulkItems" Context="bulkItem">
                                                     <li>
-                                                        <span>x</span>@itemGroup.Count() @GetShowProduct(itemGroup.Key).Name
+                                                        <span>x</span>@bulkItem.Quantity @GetShowProduct(bulkItem.ShowProductId).Name
                                                     </li>
                                                 </Iterations>                                                
                                             </Match>
