@@ -5,6 +5,7 @@ using FMFT.Web.Server.Models.Orders;
 using FMFT.Web.Server.Models.Orders.DTOs;
 using FMFT.Web.Server.Models.Orders.Exceptions;
 using FMFT.Web.Server.Models.Orders.Params;
+using FMFT.Web.Server.Models.Reservations.Exceptions;
 
 namespace FMFT.Web.Server.Services.Foundations.Orders
 {
@@ -88,7 +89,7 @@ namespace FMFT.Web.Server.Services.Foundations.Orders
                     ShowProductId = item.ShowProductId,
                     Price = item.Price,
                     Quantity= item.Quantity,
-                    SeatIds = item.SeatIds
+                    SeatIds = item.SeatIds ?? new List<int>()
                 })
             );
 
@@ -120,6 +121,20 @@ namespace FMFT.Web.Server.Services.Foundations.Orders
                 throw new SeatsNotProvidedOrderReservationException();
             }
 
+            if (result.ReturnValue == 4)
+            {
+                throw new DuplicateSeatsReservationException();
+            }
+
+            if (result.ReturnValue == 5)
+            {
+                throw new SeatsNotProvidedOrderReservationException();
+            }
+
+            if (result.ReturnValue == 6)
+            {
+                throw new SeatsInvalidReservationException();
+            }
             if (result.ReturnValue == 101)
             {
                 throw new NotMatchOrderedItemsQtyWithSeatsOrderException();

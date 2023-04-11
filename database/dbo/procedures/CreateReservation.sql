@@ -78,7 +78,23 @@ BEGIN
 		PRINT 'There are some duplicated seat for this reservation request';
 		SET @ret = 4;
 	END;
+
+	IF EXISTS(SELECT * FROM @ItemsTable i JOIN dbo.ShowProducts s ON s.Id = i.ShowProductId WHERE s.IsBulk = 0 AND i.SeatId IS NULL)
+	BEGIN
+		PRINT 'There are some non-bulk show products with eampty SeatId';
+		SET @ret = 5;
+	END;
 	
+	IF EXISTS(SELECT * FROM @ItemsTable i 
+		LEFT JOIN dbo.Shows s ON s.Id = @ShowId
+		LEFT JOIN dbo.Seats t ON t.Id = i.SeatId AND t.AuditoriumId = s.AuditoriumId
+		WHERE i.SeatId IS NOT NULL
+		AND t.Id IS NULL)
+	BEGIN
+		PRINT 'One or more seatIds are for a different show than specified';
+		SET @ret = 6;
+	END;
+
 	IF @ret = 0
 	BEGIN		
 		

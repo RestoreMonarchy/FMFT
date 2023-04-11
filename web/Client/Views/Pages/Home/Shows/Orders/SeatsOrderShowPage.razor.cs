@@ -43,7 +43,7 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
 
         public List<Seat> OriginalSelectedSeats { get; set; }
         private int MaxSeatsAmount => OrderStateData.Items.Except(BulkItems).Sum(x => x.Quantity);
-        private bool HasSelectedSeats => MaxSeatsAmount == OrderStateData.SeatIds.Count;
+        private bool HasSelectedSeats => MaxSeatsAmount == OrderStateData.Items.Sum(x => x.SeatIds.Count);
 
         private IEnumerable<OrderItemStateData> BulkItems => 
             OrderStateData.Items.Where(x => GetShowProduct(x.ShowProductId)?.IsBulk ?? true);
@@ -67,6 +67,12 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
 
             OrderStateData = await OrderingPageService.RetrieveOrderStateDataAsync(ShowId);
 
+            if (!OrderStateData.IsValid())
+            {
+                NavigationBroker.NavigateTo(GetUrl("products"));
+                return;
+            }
+
             Task[] getDataTasks = new Task[]
             {
                 GetShowResponseAsync(),
@@ -76,7 +82,7 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
 
             await Task.WhenAll(getDataTasks);
 
-            if (ShowResponse.IsSuccessful && AuditoriumResponse.IsSuccessful)
+            if (ShowResponse.IsSuccessful && AuditoriumResponse.IsSuccessful && ShowProductsResponse.IsSuccessful)
             {
                 if (Show.IsPast() || Show.IsSellDisabled())
                 {
@@ -115,30 +121,35 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
         private async Task<List<Seat>> GetSelectedSeatsAsync()
         {
             List<Seat> seats = new();
-            List<int> originalSeatIds = OrderStateData.SeatIds.ToList();
+            bool removed = false;
 
-            foreach (int seatId in originalSeatIds)
+            foreach (OrderItemStateData orderItem in OrderStateData.Items)
             {
-                Seat seat = Auditorium.Seats.FirstOrDefault(x => x.Id == seatId);
-                
-                // remove seat ids that don't exist
-                if (seat == null)
+                foreach (int seatId in orderItem.SeatIds)
                 {
-                    OrderStateData.SeatIds.Remove(seatId);
-                    continue;
-                }
+                    Seat seat = Auditorium.Seats.FirstOrDefault(x => x.Id == seatId);
 
-                // remove seat ids that are already reserved
-                if (Show.ReservedSeats.Any(x => x.SeatId == seatId))
-                {
-                    OrderStateData.SeatIds.Remove(seatId);
-                    continue;
-                }
+                    // remove seat ids that don't exist
+                    if (seat == null)
+                    {
+                        orderItem.SeatIds.Remove(seatId);
+                        removed = true;
+                        continue;
+                    }
 
-                seats.Add(seat);
+                    // remove seat ids that are already reserved
+                    if (Show.ReservedSeats.Any(x => x.SeatId == seatId))
+                    {
+                        orderItem.SeatIds.Remove(seatId);
+                        removed = true;
+                        continue;
+                    }
+
+                    seats.Add(seat);
+                }
             }
 
-            if (originalSeatIds.Count != OrderStateData.SeatIds.Count)
+            if (removed)
             {
                 await UpdateOrderStateDataAsync();
             }
@@ -146,12 +157,32 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
             return seats;
         }
 
-        private Task HandleSelectedSeatsChangedAsync(List<Seat> seats)
+        private async Task HandleSelectedSeatsChangedAsync(List<Seat> seats)
         {
-            OrderStateData.SeatIds = seats.Select(x => x.Id).ToList();
-            InvokeAsync(() => UpdateOrderStateDataAsync());
-            
-            return Task.CompletedTask;
+            foreach (OrderItemStateData orderItem in OrderStateData.Items)
+            {
+                orderItem.SeatIds.Clear();
+            }
+
+            foreach (Seat seat in seats)
+            {
+                foreach (OrderItemStateData orderItem in OrderStateData.Items)
+                {
+                    ShowProduct showProduct = GetShowProduct(orderItem.ShowProductId);
+                    if (showProduct.IsBulk)
+                    {
+                        continue;
+                    }
+
+                    if (orderItem.Quantity > orderItem.SeatIds.Count)
+                    {
+                        orderItem.SeatIds.Add(seat.Id);
+                        break;
+                    }
+                }
+            }
+
+            await UpdateOrderStateDataAsync();
         }
 
         private string TicketsCountString()

@@ -86,6 +86,12 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
 
             OrderStateData = await OrderingPageService.RetrieveOrderStateDataAsync(ShowId);
 
+            if (!OrderStateData.IsValid())
+            {
+                OrderStateData = OrderingPageService.GetDefaultOrderStateData(ShowId);
+                await OrderingPageService.SaveOrderStateDataAsync(OrderStateData);
+            }
+
             Task[] getDataTasks = new Task[]
             {
                 GetShowResponseAsync(),
@@ -103,6 +109,23 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
                     NavigationBroker.NavigateTo($"/shows/{ShowId}");
                     return;
                 }
+
+                bool removed = false;
+                foreach (OrderItemStateData orderItem in OrderStateData.Items.ToList())
+                {
+                    ShowProduct showProduct = GetShowProduct(orderItem.ShowProductId);
+                    if (GetShowProductQuantity(showProduct) <= 0)
+                    {
+                        OrderStateData.Items.Remove(orderItem);
+                        removed = true;
+                    }
+                }
+
+                if (removed)
+                {
+                    await UpdateOrderStateDataAsync();
+                }
+
             }
             
             LoadingView.StopLoading();
@@ -178,7 +201,8 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
                 orderItem = new()
                 {
                     ShowId = showProduct.ShowId,
-                    ShowProductId = showProduct.Id
+                    ShowProductId = showProduct.Id,
+                    SeatIds = new()
                 };
                 OrderStateData.Items.Add(orderItem);
             }

@@ -13,19 +13,29 @@ namespace FMFT.Web.Client.Services.Pages
             this.storageBroker = storageBroker;
         }
 
+        public OrderStateData GetDefaultOrderStateData(int showId)
+        {
+            return new()
+            {
+                ShowId = showId,
+                Items = new(),
+                PaymentMethod = PaymentMethod.Blik,
+                Version = OrderStateData.CurrentVersion,
+                ExpireDate = DateTime.UtcNow.AddHours(2)
+            };
+        }
+
         public async ValueTask<OrderStateData> RetrieveOrderStateDataAsync(int showId)
         {
             OrderStateData orderStateData = await storageBroker.GetOrderStateDataAsync(showId);
 
             if (orderStateData == null)
             {
-                orderStateData = new()
-                {
-                    ShowId = showId,
-                    Items = new(),
-                    SeatIds = new(),
-                    PaymentMethod = PaymentMethod.Blik
-                };
+                orderStateData = GetDefaultOrderStateData(showId);
+            } else
+            {
+                orderStateData.ExpireDate = DateTime.UtcNow.AddHours(2);
+                await SaveOrderStateDataAsync(orderStateData);
             }
 
             return orderStateData;  

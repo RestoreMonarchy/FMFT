@@ -68,28 +68,30 @@
                                                 </Condition>                                                
                                             </li>
                                         </Iterations>
-                                        <Condition Evaluation="BulkItemsCount == 1">
+                                        <Condition Evaluation="BulkItemsCount > 0">
                                             <Match>
-                                                <li>
-                                                    Nie dotyczy jednego biletu bez miejsca
-                                                </li>
+                                                <Iterations Items="BulkItems.GroupBy(x => x.ShowProductId)" Context="itemGroup">
+                                                    <li>
+                                                        <span>x</span>@itemGroup.Count() @GetShowProduct(itemGroup.Key).Name
+                                                    </li>
+                                                </Iterations>                                                
                                             </Match>
                                         </Condition>
-                                        <Condition Evaluation="BulkItemsCount > 1">
+                                        <Condition Evaluation="BulkItemsCount > 0">
                                             <Match>
                                                 <li>
-                                                    Nie dotyczy @BulkItemsCount biletów bez miejsca
+                                                    <a href="/shows/@ShowId/order/products" class="text-decoration-none">
+                                                        Zmień miejsca
+                                                    </a>
                                                 </li>
                                             </Match>
-                                        </Condition>
-                                        <Condition Evaluation="OrderStateData.SeatIds.Any()">
-                                            <Match>
+                                            <NotMatch>
                                                 <li>
                                                     <a href="/shows/@ShowId/order/seats" class="text-decoration-none">
                                                         Zmień miejsca
                                                     </a>
                                                 </li>
-                                            </Match>
+                                            </NotMatch>
                                         </Condition>                                        
                                     </ul>
                                 </div>

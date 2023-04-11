@@ -196,8 +196,6 @@ BEGIN
 				FOR JSON PATH
 			);
 
-select @itemsJSON
-
 			EXEC @retCreateReservation = dbo.CreateReservation
 				@ShowId = @showId,
 				@UserId = @userId,

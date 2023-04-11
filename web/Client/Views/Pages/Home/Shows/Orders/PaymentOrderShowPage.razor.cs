@@ -48,7 +48,7 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
         public decimal TotalPrice { get; private set; }
         public bool PayDisabled => !OrderStateData.IsAgreeTerms || !OrderStateData.IsAgreePrzelewy24;
 
-        public IEnumerable<Seat> Seats => Auditorium.Seats.Where(x => OrderStateData.SeatIds.Contains(x.Id));
+        public IEnumerable<Seat> Seats => Auditorium.Seats.Where(x => OrderStateData.Items.Any(y => y.SeatIds.Contains(x.Id)));
 
         public IEnumerable<OrderItemStateData> BulkItems => OrderStateData.Items.Where(x => GetShowProduct(x.ShowProductId).IsBulk);
         public int BulkItemsCount => BulkItems.Sum(x => x.Quantity);
@@ -61,6 +61,12 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
             }
 
             OrderStateData = await OrderingPageService.RetrieveOrderStateDataAsync(ShowId);
+
+            if (!OrderStateData.IsValid())
+            {
+                NavigationBroker.NavigateTo(GetUrl("products"));
+                return;
+            }
 
             Task[] getDataTasks = new Task[]
             {
@@ -152,7 +158,6 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
                 UserId = UserAccountState.UserAccount.UserId,
                 Currency = "PLN",
                 PaymentMethod = OrderStateData.PaymentMethod,
-                SeatIds = OrderStateData.SeatIds,
                 Items = new()
             };
 
@@ -169,7 +174,8 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
                 {
                     ShowProductId = showProduct.Id,
                     Price = showProduct.Price,
-                    Quantity = orderItem.Quantity
+                    Quantity = orderItem.Quantity,
+                    SeatIds = orderItem.SeatIds
                 });
             }
 
