@@ -2,6 +2,7 @@
 @using FMFT.Extensions.Blazor.Bases.Conditions
 @using FMFT.Extensions.Blazor.Bases.Timers
 @using FMFT.Web.Client.Views.Shared.Components.Alerts.Reservations
+@using FMFT.Web.Client.Views.Shared.Components.Cards.Reservations
 @using FMFT.Web.Client.Views.Shared.Components.Headers
 
 <MainLayoutBody>
@@ -119,18 +120,7 @@
 
                                             <Condition Evaluation="Reservation.Status == ReservationStatus.Ok">
                                                 <Match>
-                                                    <div class="card mb-3">
-                                                        <div class="card-header">
-                                                            Miejsca (@Reservation.Seats.Count())
-                                                        </div>
-                                                        <div class="list-group list-group-flush">
-                                                            <Iterations Items="Reservation.Seats.OrderBy(x => x.Seat.Sector).ThenBy(x => x.Seat.Row).ThenBy(x => x.Seat.Number)" Context="seat">
-                                                                <div class="list-group-item @GetSeatClass(seat)">
-                                                                    @seat.Seat.SectorString Rząd @seat.Seat.Row Numer @seat.Seat.Number
-                                                                </div>
-                                                            </Iterations>
-                                                        </div>
-                                                    </div>
+                                                    <ReservationSeatsCard Reservation="Reservation" />
                                                 </Match>
                                                 <NotMatch>
                                                     <ReservationStatusAlert ReservationStatus="Reservation.Status" />

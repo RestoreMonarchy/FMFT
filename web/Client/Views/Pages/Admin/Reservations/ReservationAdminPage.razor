@@ -85,7 +85,7 @@
 
                                 <div class="card">
                                     <div class="card-header">
-                                        Miejsca (@Reservation.Items.Count())
+                                        Bilety (@Reservation.Items.Count())
                                     </div>
                                     <div class="list-group list-group-flush">
                                         <Iterations Items="Reservation.Seats.OrderBy(x => x.Seat.Sector).ThenBy(x => x.Seat.Row).ThenBy(x => x.Seat.Number)" Context="seat">
@@ -100,7 +100,7 @@
                                         </Iterations>
                                         @for (int i = 0; i < Reservation.BulkItems.Count(); i++)
                                         {
-                                            ReservationItem item = Reservation.BulkItems.ElementAt(i);
+                                            ReservationItem item = Reservation.BulkItems.OrderBy(x => x.Id).ElementAt(i);
 
                                             <div class="list-group-item d-flex align-items-center">
                                                 <div>

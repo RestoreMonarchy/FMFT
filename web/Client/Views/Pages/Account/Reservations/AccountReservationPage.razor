@@ -1,5 +1,6 @@
 ﻿@page "/account/reservations/{ReservationId}"
 @using FMFT.Extensions.Blazor.Bases.Dialogs
+@using FMFT.Web.Client.Models.API.Reservations;
 @using FMFT.Web.Client.Views.Shared.Components.Buttons
 @using FMFT.Web.Client.Views.Shared.Components.QRCodes
 
@@ -86,20 +87,37 @@
                                 </div>
                                 <div class="card mb-3">
                                     <div class="card-header">
-                                        Miejsca (@Reservation.Seats.Count())
+                                        Bilety (@Reservation.Items.Count())
                                     </div>
                                     <div class="list-group list-group-flush">
                                         <Iterations Items="Reservation.Seats.OrderBy(x => x.Seat.Sector).ThenBy(x => x.Seat.Row).ThenBy(x => x.Seat.Number)" Context="seat">
                                             <div class="list-group-item d-flex align-items-center justify-content-between">
                                                 @seat.Seat.SectorString Rząd @seat.Seat.Row Numer @seat.Seat.Number
                                                 <div>
-                                                    <button class="btn btn-outline-info btn-sm" @onclick="() => HandleSeatQRCodeDialogAsync(seat)" disabled="@Reservation.IsNotValid">
+                                                    <button class="btn btn-outline-info btn-sm" 
+                                                        @onclick="() => HandleSeatQRCodeDialogAsync(seat)" 
+                                                        disabled="@Reservation.IsNotValid">
                                                         <i class="fa-solid fa-qrcode"></i>
                                                         QRCode
                                                     </button>
                                                 </div>                                                
                                             </div>
                                         </Iterations>
+                                        @for (int i = 0; i < Reservation.BulkItems.Count(); i++)
+                                        {
+                                            ReservationItem reservationItem = Reservation.BulkItems.OrderBy(x => x.Id).ElementAt(i);
+                                            <div class="list-group-item d-flex align-items-center justify-content-between">
+                                                @reservationItem.ShowProduct.Name #@(i + 1)
+                                                <div>
+                                                    <button class="btn btn-outline-info btn-sm" 
+                                                        @onclick="() => HandleSeatQRCodeDialogAsync(reservationItem)" 
+                                                        disabled="@Reservation.IsNotValid">
+                                                        <i class="fa-solid fa-qrcode"></i>
+                                                        QRCode
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -186,10 +204,10 @@
                                 </LoadingView>
 
                             </Body>
-                            <Footer>                                
+                            <Footer>
                                 <Condition Evaluation="SelectedReservationSeat != null">
                                     <Match>
-                                        <DownloadTicketButton Reservation="Reservation" ReservationSeat="SelectedReservationSeat" IsSmall="false" />
+                                        <DownloadTicketButton Reservation="Reservation" ReservationItem="SelectedReservationSeat" IsSmall="false" />
                                     </Match>
                                 </Condition>
                                 <button type="button" class="btn btn-secondary ms-auto" data-bs-dismiss="modal">
