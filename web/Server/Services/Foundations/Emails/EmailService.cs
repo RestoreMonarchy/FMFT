@@ -112,16 +112,26 @@ namespace FMFT.Web.Server.Services.Foundations.Emails
                 FirstName = @params.FirstName,
                 ShowName = @params.ShowName,
                 ReservationId = @params.ReservationId,
-                ReservationSeats = new()
+                ReservationSeats = new(),
+                ReservationBulkItems = new()
             };
 
-            foreach (ReservationSummaryEmailParams.ReservationSeat seat in  @params.ReservationSeats)
+            foreach (ReservationSummaryEmailParams.ReservationSeat seat in @params.ReservationSeats)
             {
                 model.ReservationSeats.Add(new ReservationSummaryEmailModel.ReservationSeat()
                 {
                     Row = seat.Row,
                     Number = seat.Number,
                     Sector = seat.Sector
+                });
+            }
+
+            foreach (ReservationSummaryEmailParams.ReservationBulkItem bulkItem in @params.ReservationBulkItems)
+            {
+                model.ReservationBulkItems.Add(new ReservationSummaryEmailModel.ReservationBulkItem()
+                {
+                    Id = bulkItem.Id,
+                    ProductName = bulkItem.ProductName,
                 });
             }
 

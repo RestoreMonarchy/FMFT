@@ -87,9 +87,7 @@ namespace FMFT.Features.Tickets.Services
 
             positionY += smallFont.Height;
 
-            string sectorString = model.SeatSector == 'A' ? "Parter" : "Balkon";
-
-            string seat = $"{sectorString} Rząd: {model.SeatRow} Miejsce: {model.SeatNumber}";
+            string seat = model.SeatInformation;
             SizeF seatSize = graphics.MeasureString(seat, smallFont);
             int seatX = (int)(ticket.Width - seatSize.Width) / 2;
 

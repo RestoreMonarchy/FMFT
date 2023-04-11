@@ -21,6 +21,11 @@ namespace FMFT.Web.Server.Models.Reservations
         public List<ReservationItem> Items { get; set; }
 
         [JsonIgnore]
+        public IEnumerable<ReservationItem> SeatItems => Items.Where(x => x.Seat != null);
+        [JsonIgnore]
+        public IEnumerable<ReservationItem> BulkItems => Items.Where(x => x.Seat == null);
+
+        [JsonIgnore]
         public Guid SecretCode { get; set; }
 
         public int UserId() => User?.Id ?? 0;

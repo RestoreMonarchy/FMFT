@@ -196,7 +196,7 @@ namespace FMFT.Web.Server.Brokers.Storages
                 }                
 
                 return null;
-            }, param, commandType: commandType, splitOn: "Id,Id,Id,ReservationId,Id,Id,Id");
+            }, param, commandType: commandType);
 
             return reservation;
         }
@@ -253,7 +253,7 @@ namespace FMFT.Web.Server.Brokers.Storages
                 }
 
                 return null;
-            }, param, commandType: commandType, splitOn: "Id,Id,Id,ReservationId,Id,Id");
+            }, param, commandType: commandType);
 
             return reservations;
         }

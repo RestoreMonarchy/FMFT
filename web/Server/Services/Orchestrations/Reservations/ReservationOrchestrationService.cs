@@ -1,22 +1,17 @@
 ﻿using FluentAssertions;
-using FMFT.Web.Server.Brokers.Loggings;
-using FMFT.Web.Server.Brokers.QRCodes;
 using FMFT.Web.Server.Models.Emails;
 using FMFT.Web.Server.Models.Emails.Params;
-using FMFT.Web.Server.Models.Orders;
 using FMFT.Web.Server.Models.QRCodes;
 using FMFT.Web.Server.Models.QRCodes.Params;
 using FMFT.Web.Server.Models.Reservations;
 using FMFT.Web.Server.Models.Reservations.Exceptions;
 using FMFT.Web.Server.Models.Reservations.Params;
-using FMFT.Web.Server.Models.Reservations.Requests;
 using FMFT.Web.Server.Models.Reservations.Results;
-using FMFT.Web.Server.Services.Foundations.Accounts;
 using FMFT.Web.Server.Services.Foundations.Emails;
 using FMFT.Web.Server.Services.Foundations.QRCodes;
 using FMFT.Web.Server.Services.Foundations.Reservations;
 using MimeTypes;
-using System.Net.Mail;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace FMFT.Web.Server.Services.Orchestrations.Reservations
 {
@@ -41,18 +36,26 @@ namespace FMFT.Web.Server.Services.Orchestrations.Reservations
             return await qrCodeService.GenerateGuidQRCodeImageAsync(guid);
         }
 
-        public async ValueTask<QRCodeImage> GenerateReservationTicketAsync(ReservationItem reservationSeat, Reservation reservation)
+        public async ValueTask<QRCodeImage> GenerateReservationTicketAsync(ReservationItem reservationItem, Reservation reservation)
         {
             GenerateReservationTicketParams @params = new()
             {
-                SecretCode = reservationSeat.SecretCode,
+                SecretCode = reservationItem.SecretCode,
                 ShowName = reservation.Show.Name,
                 Date = reservation.Show.StartDateTime,
-                ReservationId = reservation.Id,
-                Number = reservationSeat.Seat.Number,
-                Row = reservationSeat.Seat.Row,
-                Sector = reservationSeat.Seat.Sector
+                ReservationId = reservation.Id
             };
+
+            if (reservationItem.Seat != null)
+            {
+                string sectorString = reservationItem.Seat.Sector == 'A' ? "Parter" : "Balkon";
+
+                @params.SeatInformation = $"{sectorString} Rząd: {reservationItem.Seat.Row} Miejsce: {reservationItem.Seat.Number}";
+            } else
+            {
+                int number = reservation.Items.Where(x => x.Seat == null).OrderBy(x => x.Id).TakeWhile(x => x != reservationItem).Count() + 1;
+                @params.SeatInformation = $"{reservationItem.ShowProduct.Name} #{number}";
+            }
 
             return await qrCodeService.GenerateReservationTicketAsync(@params);
         }
@@ -101,12 +104,27 @@ namespace FMFT.Web.Server.Services.Orchestrations.Reservations
         public async ValueTask SendReservationSummaryEmailAsync(string emailAddress, Reservation reservation)
         {
             ReservationSummaryEmailParams @params = MapReservationToReservationSummaryEmailParams(reservation);
-            foreach (ReservationItem reservationSeat in reservation.Items)
+
+            foreach (ReservationItem reservationItem in reservation.SeatItems)
             {
-                QRCodeImage qrCodeImage = await GenerateReservationTicketAsync(reservationSeat, reservation);
+                QRCodeImage qrCodeImage = await GenerateReservationTicketAsync(reservationItem, reservation);
                 @params.Attachments.Add(new EmailAttachment()
                 {
-                    Name = $"{reservation.Id}-r{reservationSeat.Seat.Row}-m{reservationSeat.Seat.Number}.{MimeTypeMap.GetExtension(qrCodeImage.ContentType)}",
+                    Name = $"{reservation.Id}-r{reservationItem.Seat.Row}-m{reservationItem.Seat.Number}.{MimeTypeMap.GetExtension(qrCodeImage.ContentType)}",
+                    ContentType = qrCodeImage.ContentType,
+                    Content = qrCodeImage.Data
+                });
+            }
+
+            for (int i = 0; i < reservation.BulkItems.Count(); i++)
+            {
+                ReservationItem item = reservation.BulkItems.ElementAt(i);
+                int num = i + 1;
+
+                QRCodeImage qrCodeImage = await GenerateReservationTicketAsync(item, reservation);
+                @params.Attachments.Add(new EmailAttachment()
+                {
+                    Name = $"{reservation.Id}-{item.ShowProduct.Name}-{num}.{MimeTypeMap.GetExtension(qrCodeImage.ContentType)}",
                     ContentType = qrCodeImage.ContentType,
                     Content = qrCodeImage.Data
                 });

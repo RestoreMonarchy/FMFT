@@ -19,7 +19,16 @@
     <ul>
         @foreach (ReservationSummaryEmailModel.ReservationSeat seat in Model.ReservationSeats.OrderBy(x => x.Sector).ThenBy(x => x.Row).ThenBy(x => x.Number))
         {
-            <li>@seat.SectorString Rząd @seat.Row Miejsce @seat.Number</li>
+            <li>
+                @seat.SectorString Rząd @seat.Row Miejsce @seat.Number
+            </li>
+        }
+        @for (int i = 0; i < Model.ReservationBulkItems.Count; i++)
+        {
+            ReservationSummaryEmailModel.ReservationBulkItem bulkItem = Model.ReservationBulkItems.OrderBy(x => x.Id).ElementAt(i);
+            <li>
+                @bulkItem.ProductName #@(i + 1)
+            </li>
         }
     </ul>
 </p>
