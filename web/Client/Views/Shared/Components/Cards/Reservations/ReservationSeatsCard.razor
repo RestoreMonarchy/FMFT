@@ -5,15 +5,39 @@
     </div>
     <div class="list-group list-group-flush">
         <Iterations Items="Reservation.Seats.OrderBy(x => x.Seat.Sector).ThenBy(x => x.Seat.Row).ThenBy(x => x.Seat.Number)" Context="seat">
-            <div class="list-group-item">
-                @seat.Seat.SectorString Rząd @seat.Seat.Row Numer @seat.Seat.Number
+            <div class="list-group-item d-flex align-items-center">
+                <div>
+                    @seat.Seat.SectorString Rząd @seat.Seat.Row Numer @seat.Seat.Number
+                </div>
+                <div class="ms-auto">
+                    <Condition Evaluation="seat.IsScanned">
+                        <Match>
+                            <i class="fa-solid fa-check"></i>
+                        </Match>
+                        <NotMatch>
+                            <i class="fa-solid fa-minus"></i>
+                        </NotMatch>
+                    </Condition>
+                </div>
             </div>
         </Iterations>
         @for (int i = 0; i < Reservation.BulkItems.Count(); i++)
         {
             ReservationItem reservationItem = Reservation.BulkItems.OrderBy(x => x.Id).ElementAt(i);
-            <div class="list-group-item">
-                @reservationItem.ShowProduct.Name #@(i + 1)
+            <div class="list-group-item d-flex align-items-center">
+                <div>
+                    @reservationItem.ShowProduct.Name #@(i + 1)
+                </div>
+                <div class="ms-auto">
+                    <Condition Evaluation="reservationItem.IsScanned">
+                        <Match>
+                            <i class="fa-solid fa-check"></i>
+                        </Match>
+                        <NotMatch>
+                            <i class="fa-solid fa-minus"></i>
+                        </NotMatch>
+                    </Condition>
+                </div>                
             </div>
         }
     </div>

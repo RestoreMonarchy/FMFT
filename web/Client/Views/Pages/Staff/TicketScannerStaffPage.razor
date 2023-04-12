@@ -36,6 +36,17 @@
                         </NotMatch>
                     </Condition>
 
+                    <Condition Evaluation="showInput">
+                        <Match>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" @bind="SecretCode" placeholder="Secret Code">
+                                <button class="btn btn-outline-secondary" type="button" @onclick="HandleSubmitAsync">
+                                    Scan
+                                </button>
+                            </div>
+                        </Match>
+                    </Condition>
+
                     <Condition Evaluation="ValidateReservationResponse == null">
                         <Match>
                             <div class="p-3 bg-light border rounded border-2 text-center mb-3">
@@ -62,6 +73,14 @@
                                 <Match>
                                     <Condition Evaluation="ValidateReservationResponse.IsSuccessful">
                                         <Match>
+
+                                            <Condition Evaluation="IsScanned">
+                                                <Match>
+                                                    <div class="alert alert-warning">
+                                                        Ten bilet został już zeskanowany @ScanDate.LocalDateTime.ToString()
+                                                    </div>
+                                                </Match>
+                                            </Condition>
 
                                             <div class="mb-3">
                                                 <Condition Evaluation="ShowId.HasValue && Reservation.Show.Id != ShowId.Value">

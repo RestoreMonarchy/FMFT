@@ -10,6 +10,7 @@ namespace FMFT.Web.Server.Models.Reservations
         public ShowProduct ShowProduct { get; set; }
         public Seat Seat { get; set; }
         public bool IsScanned { get; set; }
+        public DateTimeOffset? ScanDate { get; set; }
 
         [JsonIgnore]
         public Guid SecretCode { get; set; }

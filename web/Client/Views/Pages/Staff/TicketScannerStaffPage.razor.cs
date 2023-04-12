@@ -28,6 +28,8 @@ namespace FMFT.Web.Client.Views.Pages.Staff
 
         public Show Show => ShowResponse.Object;
         public int? TicketReservationSeatId => ValidateReservationResponse.Object.ReservationSeatId;
+        public DateTimeOffset ScanDate => ValidateReservationResponse.Object.ScanDate.Value;
+        public bool IsScanned => ValidateReservationResponse.Object.ScanDate.HasValue;
         public ReservationItem TicketReservationSeat => Reservation.Seats.FirstOrDefault(x => x.Id == TicketReservationSeatId);
         public Reservation Reservation => ValidateReservationResponse.Object.Reservation;
 
@@ -48,6 +50,7 @@ namespace FMFT.Web.Client.Views.Pages.Staff
         }
 
         private string text = string.Empty;
+        private bool showInput = false;
 
         private async Task HandleKeyPressAsync(KeyPressParams @params)
         {
@@ -64,6 +67,15 @@ namespace FMFT.Web.Client.Views.Pages.Staff
             // When the pressed key is "Enter"
             if (@params.KeyCode == 13)
             {
+                if (text == "test")
+                {
+                    showInput = true;
+                    text = string.Empty;
+                    StateHasChanged();                    
+                    return;
+                }
+                
+
                 SecretCode = text;
                 text = string.Empty;
                 await HandleSubmitAsync();

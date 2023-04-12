@@ -122,11 +122,15 @@ namespace FMFT.Web.Server.Brokers.Storages
                 SecretCode = secretCode
             });
             parameters.Add("ReservationItemId", dbType: DbType.Int32, direction: ParameterDirection.Output);
+            parameters.Add("ScanDate", dbType: DbType.DateTime, direction: ParameterDirection.Output);
 
             ValidateReservationSecretCodeResult result = new();
 
             result.Reservation = await QueryReservationAsync(sql, parameters, CommandType.StoredProcedure);
             result.ReservationItemId = parameters.Get<int?>("ReservationItemId");
+            DateTime? scanDate = parameters.Get<DateTime?>("ScanDate");
+            result.ScanDate = scanDate.HasValue ? scanDate.Value : null;
+
 
             spResult.Result = result;
             spResult.ReturnValue = GetReturnValue(parameters);
