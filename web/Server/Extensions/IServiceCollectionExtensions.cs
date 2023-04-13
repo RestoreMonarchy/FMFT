@@ -1,4 +1,5 @@
-﻿using FMFT.Emails.Server.Extensions;
+﻿using AspNetCoreRateLimit;
+using FMFT.Emails.Server.Extensions;
 using FMFT.Extensions.Payments;
 using FMFT.Extensions.Payments.Extensions;
 using FMFT.Extensions.Payments.Models.Options;
@@ -56,9 +57,16 @@ namespace FMFT.Web.Server.Extensions
         public static IServiceCollection AddDependencies(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddHttpContextAccessor();
+            services.AddMemoryCache();
+
             services.AddServerEmailGenerator();
 
             services.AddTicketsFeatures();
+
+            // Add IP rate limiting
+            services.Configure<ClientRateLimitOptions>(configuration.GetSection("ClientRateLimiting"));
+            services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+            services.AddInMemoryRateLimiting();
 
             services.AddHangfire(x => 
             {
