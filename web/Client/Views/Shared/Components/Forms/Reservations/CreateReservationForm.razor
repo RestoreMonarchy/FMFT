@@ -63,7 +63,10 @@
                         <Condition Evaluation="ShowProductsResponse.IsSuccessful">
                             <Match>
                                 <Iterations Items="ShowProducts" Context="showProduct">
-                                    <AddReservationItemForm ShowProduct="showProduct" ShowProductAdded="HandleShowProductAddedAsync" />
+                                    <AddReservationItemForm 
+                                        ShowProduct="showProduct" 
+                                        QuantityLeft="GetShowProductQuantityLeft(showProduct)" 
+                                        ShowProductAdded="HandleShowProductAddedAsync" />
                                 </Iterations>
                             </Match>
                             <NotMatch>

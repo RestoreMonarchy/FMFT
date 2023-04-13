@@ -45,6 +45,23 @@ namespace FMFT.Web.Client.Views.Shared.Components.Forms.Reservations
         public List<ShowProduct> ShowProducts => ShowProductsResponse.Object;
 
         public decimal ItemsValue => Model.Items.Sum(x => x.ShowProduct.Price);
+        public int GetShowProductQuantityLeft(ShowProduct showProduct)
+        {
+            if (showProduct.IsBulk)
+            {
+                int reservedCount = Show.ReservedBulkItems.Count(x => x.ShowProductId == showProduct.Id);
+                reservedCount += Model.Items.Count(x => x.ShowProduct.Id == showProduct.Id);
+
+                return showProduct.Quantity - reservedCount;
+            }
+            else
+            {
+                int reservedCount = Show.ReservedSeats.Count();
+                reservedCount += Model.Items.Count(x => x.Seat != null);
+
+                return Auditorium.Seats.Count() - reservedCount;
+            }
+        }
 
         protected override void OnAfterRender(bool firstRender)
         {
