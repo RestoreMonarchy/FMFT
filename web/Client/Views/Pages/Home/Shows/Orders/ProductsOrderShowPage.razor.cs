@@ -51,6 +51,8 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
         public List<Reservation> UserReservations => UserReservationsResponse.Object;
         public IEnumerable<Reservation> ActiveUserReservations => UserReservations.Where(x => x.Status == ReservationStatus.Ok);
 
+        public IEnumerable<ShowProduct> EnabledShowProducts => ShowProducts.Where(x => x.IsEnabled);
+
         private string NextDisabled()   
         {
             int quantity = OrderStateData.Items.Sum(x => x.Quantity);
@@ -114,7 +116,7 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
                 foreach (OrderItemStateData orderItem in OrderStateData.Items.ToList())
                 {
                     ShowProduct showProduct = GetShowProduct(orderItem.ShowProductId);
-                    if (GetShowProductQuantity(showProduct) <= 0)
+                    if (showProduct == null || GetShowProductQuantity(showProduct) <= 0 || !showProduct.IsEnabled)
                     {
                         OrderStateData.Items.Remove(orderItem);
                         removed = true;

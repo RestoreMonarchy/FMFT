@@ -131,7 +131,6 @@ namespace FMFT.Web.Server.Brokers.Storages
             DateTime? scanDate = parameters.Get<DateTime?>("ScanDate");
             result.ScanDate = scanDate.HasValue ? scanDate.Value : null;
 
-
             spResult.Result = result;
             spResult.ReturnValue = GetReturnValue(parameters);
 
