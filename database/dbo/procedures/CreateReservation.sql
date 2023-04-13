@@ -1,7 +1,7 @@
 ﻿CREATE PROCEDURE dbo.CreateReservation
 	@ShowId INT,
 	@UserId INT,
-	@Seats VARCHAR(8000),
+	@Items VARCHAR(8000),
 	@Email NVARCHAR(255) = NULL,
 	@FirstName NVARCHAR(255) = NULL,
 	@LastName NVARCHAR(255) = NULL,
@@ -16,27 +16,35 @@ BEGIN
 	DECLARE @isExternalTransaction BIT = @@TRANCOUNT;
 	DECLARE @ret INT = 0;
 	DECLARE @reservationId CHAR(8) = '--------';
-	DECLARE @seatsTable TABLE(SeatId INT NOT NULL PRIMARY KEY);
-	DECLARE @setsCount INT;
+	DECLARE @itemsCount INT; 
+	DECLARE @seatItemsCount INT;
 	DECLARE @validatedSetsCount INT;
 	DECLARE @status TINYINT = CASE WHEN @OrderId IS NULL THEN 1 ELSE 0 END;
 
-	INSERT INTO @seatsTable (SeatId) 
-	SELECT [Value] 
-	FROM STRING_SPLIT(@Seats, ',');
+	DECLARE @ItemsTable TABLE (ShowProductId INT NOT NULL, SeatId INT NULL);
 
-	SET @setsCount = @@ROWCOUNT;
+	INSERT INTO @ItemsTable (ShowProductId, SeatId) 
+	SELECT ShowProductId, SeatId
+	FROM OPENJSON ( @Items )  
+	WITH (   
+		ShowProductId INT '$.ShowProductId',
+		SeatId INT '$.SeatId'
+	);
+
+	SET @itemsCount = @@ROWCOUNT;
+
+	SELECT @seatItemsCount = COUNT(*) FROM @ItemsTable WHERE SeatId IS NOT NULL;
 
 	SELECT @validatedSetsCount = COUNT(*)
 	FROM dbo.Shows s
 	JOIN dbo.Auditoriums a ON a.Id = s.AuditoriumId
 	JOIN dbo.Seats t ON t.AuditoriumId = a.Id
-	JOIN @seatsTable t2 ON t2.SeatId = t.Id
+	JOIN @ItemsTable t2 ON t2.SeatId = t.Id
 	WHERE s.Id = @ShowId;
 
-	IF @setsCount = 0 OR @setsCount > @validatedSetsCount
+	IF @seatItemsCount > @validatedSetsCount
 	BEGIN
-		PRINT FORMATMESSAGE('Seats provided are invalid. @setsCount = %d, @validatedSetsCount = %d', @setsCount, @validatedSetsCount);
+		PRINT FORMATMESSAGE('Seats provided are invalid. @itemsCount = %d, @validatedSetsCount = %d', @itemsCount, @validatedSetsCount);
 		SET @ret = 3;
 	END;
 
@@ -44,8 +52,8 @@ BEGIN
 		AND EXISTS(
 			SELECT * 
 			FROM dbo.Reservations r 
-			JOIN dbo.ReservationSeats rs ON rs.ReservationId = r.Id 
-			JOIN @seatsTable st ON st.SeatId = rs.SeatId
+			JOIN dbo.ReservationItems ri ON ri.ReservationId = r.Id 
+			JOIN @ItemsTable st ON st.SeatId = ri.SeatId
 			WHERE r.ShowId = @ShowId
 			AND r.IsValid = 1
 		)
@@ -61,7 +69,32 @@ BEGIN
 		PRINT 'There are already reservations for this show from this user';
 		SET @ret = 2;
 	END;
+
+	IF EXISTS(SELECT ShowProductId, SeatId
+			FROM @ItemsTable
+			WHERE SeatId IS NOT NULL 
+			GROUP BY ShowProductId, SeatId HAVING COUNT(*) > 1)
+	BEGIN
+		PRINT 'There are some duplicated seat for this reservation request';
+		SET @ret = 4;
+	END;
+
+	IF EXISTS(SELECT * FROM @ItemsTable i JOIN dbo.ShowProducts s ON s.Id = i.ShowProductId WHERE s.IsBulk = 0 AND i.SeatId IS NULL)
+	BEGIN
+		PRINT 'There are some non-bulk show products with eampty SeatId';
+		SET @ret = 5;
+	END;
 	
+	IF EXISTS(SELECT * FROM @ItemsTable i 
+		LEFT JOIN dbo.Shows s ON s.Id = @ShowId
+		LEFT JOIN dbo.Seats t ON t.Id = i.SeatId AND t.AuditoriumId = s.AuditoriumId
+		WHERE i.SeatId IS NOT NULL
+		AND t.Id IS NULL)
+	BEGIN
+		PRINT 'One or more seatIds are for a different show than specified';
+		SET @ret = 6;
+	END;
+
 	IF @ret = 0
 	BEGIN		
 		
@@ -73,8 +106,8 @@ BEGIN
 		INSERT INTO dbo.Reservations (Id, ShowId, UserId, OrderId, [Status])
 		VALUES (@reservationId, @ShowId, @UserId, @OrderId, @status);
 
-		INSERT INTO dbo.ReservationSeats (ReservationId, SeatId)
-		SELECT @reservationId, SeatId FROM @seatsTable;
+		INSERT INTO dbo.ReservationItems (ReservationId, SeatId, ShowProductId)
+		SELECT @reservationId, SeatId, ShowProductId FROM @itemsTable;
 
 		IF @UserId IS NULL
 		BEGIN

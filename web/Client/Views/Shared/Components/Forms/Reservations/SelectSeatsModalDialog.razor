@@ -1,0 +1,24 @@
+﻿@using FMFT.Extensions.Blazor.Bases.Dialogs
+@using FMFT.Web.Client.Views.Shared.Components.Panzooms
+
+<ModalDialog @ref="ModalDialog" Size="ModalDialog.ESize.Large">
+    <Title>
+        Wybierz miejsca
+    </Title>
+    <Body>
+        <LoadingView @ref="LoadingView">
+            
+            <AuditoriumSeatPanzoom @ref="AuditoriumSeatPanzoom"
+                ReservedSeats="ReservedSeatIds"
+                Auditorium="Auditorium"
+                @bind-SelectedSeats="Seats"
+                MaxAmount="SeatsCount" />
+
+        </LoadingView>
+    </Body>
+    <Footer>
+        <ButtonBase @ref="ConfirmButton" IsDisabled="IsConfirmDisabled" Class="btn btn-primary" OnClick="HandleConfirmAsync">
+            Potwierdź
+        </ButtonBase>
+    </Footer>
+</ModalDialog>

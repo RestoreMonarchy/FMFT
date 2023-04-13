@@ -51,9 +51,18 @@
                                         <span class="fw-bold">@Auditorium.Name</span>
                                     </li>
                                     <li>
-                                        <i class="fa-solid fa-person me-1"></i>
-                                        <span class="fw-bold">@Show.ReservedSeats.Count / @Auditorium.Seats.Count</span>
+                                        <i class="fa-solid fa-chair"></i>
+                                        <span class="fw-bold">@Show.ReservedSeats.Count() / @Auditorium.Seats.Count</span>
                                     </li>
+                                    <Condition Evaluation="ShowProductsQuantity > 0">
+                                        <Match>
+                                            <li>
+                                                <i class="fa-solid fa-person me-1"></i>
+                                                <span class="fw-bold">@ValidBulkItemsCount / @ShowProductsQuantity</span>
+                                            </li>
+                                        </Match>
+                                    </Condition>
+                                    
                                     <Condition Evaluation="CheapestShowProduct != null">
                                         <Match>
                                             <li>

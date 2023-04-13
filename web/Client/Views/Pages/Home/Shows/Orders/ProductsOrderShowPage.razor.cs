@@ -1,5 +1,6 @@
 ﻿using FMFT.Extensions.Blazor.Bases.Loadings;
 using FMFT.Web.Client.Models.API;
+using FMFT.Web.Client.Models.API.Auditoriums;
 using FMFT.Web.Client.Models.API.Reservations;
 using FMFT.Web.Client.Models.API.ShowProducts;
 using FMFT.Web.Client.Models.API.Shows;
@@ -21,6 +22,18 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
         private string GetUrl(string subPage)
              => $"/shows/{ShowId}/order/{subPage}";
 
+        private void HandleNextButton()
+        {
+            if (OrderStateData.Items.Where(x => !GetShowProduct(x.ShowProductId)?.IsBulk ?? true).Sum(x => x.Quantity) > 0)
+            {
+                NavigationBroker.NavigateTo(GetUrl("seats"));
+            }
+            else
+            {
+                NavigationBroker.NavigateTo(GetUrl("payment"));
+            }
+        }
+
         [Inject]
         public OrderingPageService OrderingPageService { get; set; }
 
@@ -28,19 +41,42 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
 
         public OrderStateData OrderStateData { get; set; }
         public APIResponse<Show> ShowResponse { get; set; }
+        public APIResponse<Auditorium> AuditoriumResponse { get; set; }
         public APIResponse<List<ShowProduct>> ShowProductsResponse { get; set; }
         public APIResponse<List<Reservation>> UserReservationsResponse { get; set; }
 
         public Show Show => ShowResponse.Object;
+        public Auditorium Auditorium => AuditoriumResponse.Object;
         public List<ShowProduct> ShowProducts => ShowProductsResponse.Object;
         public List<Reservation> UserReservations => UserReservationsResponse.Object;
         public IEnumerable<Reservation> ActiveUserReservations => UserReservations.Where(x => x.Status == ReservationStatus.Ok);
+
+        public IEnumerable<ShowProduct> EnabledShowProducts => ShowProducts.Where(x => x.IsEnabled);
 
         private string NextDisabled()   
         {
             int quantity = OrderStateData.Items.Sum(x => x.Quantity);
 
             return quantity == 0 ? "disabled" : string.Empty;
+        }
+
+        private int GetShowProductQuantity(ShowProduct showProduct)
+        {
+            int quantity;
+            if (showProduct.IsBulk)
+            {
+                quantity = showProduct.Quantity - Show.ReservedBulkItems.Count();
+            } else
+            {
+                quantity = Auditorium.Seats.Count - Show.ReservedSeats.Count();
+            }
+
+            return Math.Min(quantity, MaxQuantity);
+        }
+
+        private ShowProduct GetShowProduct(int showProductId)
+        {
+            return ShowProducts.FirstOrDefault(x => x.Id == showProductId);
         }
 
         protected override async Task OnInitializedAsync()
@@ -52,9 +88,16 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
 
             OrderStateData = await OrderingPageService.RetrieveOrderStateDataAsync(ShowId);
 
+            if (!OrderStateData.IsValid())
+            {
+                OrderStateData = OrderingPageService.GetDefaultOrderStateData(ShowId);
+                await OrderingPageService.SaveOrderStateDataAsync(OrderStateData);
+            }
+
             Task[] getDataTasks = new Task[]
             {
                 GetShowResponseAsync(),
+                GetAuditoriumResponseAsync(),
                 GetShowProductsResponseAsync(),
                 GetUserReservationsResponseAsync()
             };
@@ -68,6 +111,23 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
                     NavigationBroker.NavigateTo($"/shows/{ShowId}");
                     return;
                 }
+
+                bool removed = false;
+                foreach (OrderItemStateData orderItem in OrderStateData.Items.ToList())
+                {
+                    ShowProduct showProduct = GetShowProduct(orderItem.ShowProductId);
+                    if (showProduct == null || GetShowProductQuantity(showProduct) <= 0 || !showProduct.IsEnabled)
+                    {
+                        OrderStateData.Items.Remove(orderItem);
+                        removed = true;
+                    }
+                }
+
+                if (removed)
+                {
+                    await UpdateOrderStateDataAsync();
+                }
+
             }
             
             LoadingView.StopLoading();
@@ -83,6 +143,11 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
             {
                 ShowResponse = await APIBroker.GetPublicShowByIdAsync(ShowId);
             }
+        }
+
+        private async Task GetAuditoriumResponseAsync()
+        {
+            AuditoriumResponse = await APIBroker.GetAuditoriumByShowIdAsync(ShowId);
         }
 
         private async Task GetShowProductsResponseAsync()
@@ -138,7 +203,8 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows.Orders
                 orderItem = new()
                 {
                     ShowId = showProduct.ShowId,
-                    ShowProductId = showProduct.Id
+                    ShowProductId = showProduct.Id,
+                    SeatIds = new()
                 };
                 OrderStateData.Items.Add(orderItem);
             }

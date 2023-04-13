@@ -6,6 +6,7 @@ using FMFT.Web.Server.Models.Orders.Params;
 using FMFT.Web.Server.Models.Payments;
 using FMFT.Web.Server.Models.Payments.Exceptions;
 using FMFT.Web.Server.Models.Reservations;
+using FMFT.Web.Server.Models.Reservations.Exceptions;
 using FMFT.Web.Server.Services.Coordinations.Orders;
 using FMFT.Web.Server.Services.Coordinations.Reservations;
 using Microsoft.AspNetCore.Mvc;
@@ -226,6 +227,14 @@ namespace FMFT.Web.Server.Controllers
                 return BadRequest(exception);
             }
             catch (ShowSellNotStartedOrderException exception)
+            {
+                return BadRequest(exception);
+            }
+            catch (SeatsInvalidReservationException exception)
+            {
+                return BadRequest(exception);
+            }
+            catch (SeatsNotProvidedReservationException exception)
             {
                 return BadRequest(exception);
             }

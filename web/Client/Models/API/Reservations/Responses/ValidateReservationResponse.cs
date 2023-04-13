@@ -4,5 +4,6 @@
     {
         public Reservation Reservation { get; set; }
         public int? ReservationSeatId { get; set; }
+        public DateTimeOffset? ScanDate { get; set; }
     }
 }

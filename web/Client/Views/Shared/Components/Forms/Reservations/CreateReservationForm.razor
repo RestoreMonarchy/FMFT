@@ -5,160 +5,159 @@
 <EditForm Model="Model" OnValidSubmit="HandleSubmitAsync">
     <DataAnnotationsValidator />
     
-    <div class="card-body">
-
-        <div class="mb-3">
-            <p class="fs-5">
-                1. Dane osoby
-            </p>
-            <div class="mb-2">
-                <label class="form-label">Adres email</label>
-                <InputText @bind-Value="Model.Email" class="form-control" placeholder="Adres email" />
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card mb-3">
+                <div class="card-header">
+                    Dane Osoby
+                </div>
+                <div class="card-body">
+                    <div class="mb-2">
+                        <label class="form-label">Adres email</label>
+                        <InputText @bind-Value="Model.Email" class="form-control" placeholder="Adres email" />
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-6">
+                            <label class="form-label">Imię</label>
+                            <InputText @bind-Value="Model.FirstName" class="form-control" placeholder="Imię" />
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label">Nazwisko</label>
+                            <InputText @bind-Value="Model.LastName" class="form-control" placeholder="Nazwisko" />
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="mb-2">
-                <label class="form-label">Imię</label>
-                <InputText @bind-Value="Model.FirstName" class="form-control" placeholder="Imię" />
+            <div class="card mb-3">
+                <div class="card-header">
+                    Wybór wydarzenia
+                </div>
+                <div class="card-body">
+                    <div>
+                        <span class="form-label">Wydarzenie</span>
+                        <select @onchange="HandleShowIdChangeAsync" class="form-select mt-2" disabled="@Model.Items.Any()">
+                            <option selected>Wybierz wydarzenie</option>
+                            <Iterations Items="Shows.OrderBy(x => x.IsPast()).ThenBy(x => x.StartDateTime)" Context="show">
+                                <option value="@show.Id" disabled="@show.IsPast()">
+                                    @show.Name (@show.StartDateTime.LocalDateTime.ToShortDateString())
+                                </option>
+                            </Iterations>
+                        </select>
+                        <div class="text-danger">
+                            <ValidationMessage For="@(() => Model.ShowId)" />
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="mb-2">
-                <label class="form-label">Nazwisko</label>
-                <InputText @bind-Value="Model.LastName" class="form-control" placeholder="Nazwisko" />
+            <div class="card mb-3">
+                <div class="card-header">
+                    Produkty
+                </div>
+                <div class="card-body">
+                    <Condition Evaluation="Model.ShowId.HasValue">
+                        <NotMatch>
+                            Wybierz wydarzenie aby wyświetlić produkty
+                        </NotMatch>
+                    </Condition>
+                    <LoadingView @ref="ProductsLoadingView">
+                        <Condition Evaluation="ShowProductsResponse.IsSuccessful">
+                            <Match>
+                                <Iterations Items="ShowProducts" Context="showProduct">
+                                    <AddReservationItemForm 
+                                        ShowProduct="showProduct" 
+                                        QuantityLeft="GetShowProductQuantityLeft(showProduct)" 
+                                        ShowProductAdded="HandleShowProductAddedAsync" />
+                                </Iterations>
+                            </Match>
+                            <NotMatch>
+                                <ErrorResponseAlert />
+                            </NotMatch>
+                        </Condition>
+                    </LoadingView>
+                </div>
             </div>
         </div>
-
-        <div class="mb-3">
-            <p class="fs-5">
-                2. Wybór miejsca
-            </p>
-            <span class="form-label">Wydarzenie</span>
-            <select @onchange="HandleShowIdChangeAsync" class="form-select mt-2">
-                <option selected>Wybierz wydarzenie</option>
-                <Iterations Items="Shows.OrderBy(x => x.IsPast()).ThenBy(x => x.StartDateTime)" Context="show">
-                    <option value="@show.Id" disabled="@show.IsPast()">
-                        @show.Name (@show.StartDateTime.LocalDateTime.ToShortDateString())
-                    </option>
-                </Iterations>
-            </select>
-            <div class="text-danger">
-                <ValidationMessage For="@(() => Model.ShowId)" />
+        <div class="col-lg-4">
+            <div class="card mb-3">
+                <div class="card-header">
+                    Bilety (@Model.Items.Count)
+                </div>
+                <ul class="list-group list-group-flush">
+                    <Iterations Items="Model.Items" Context="item">
+                        <li class="list-group-item d-flex align-items-center">
+                            <div>
+                                <Condition Evaluation="item.Seat != null">
+                                    <Match>
+                                        @item.Seat.SectorString Rząd: @item.Seat.Row Miejsce: @item.Seat.Number
+                                    </Match>
+                                    <NotMatch>
+                                        @item.ShowProduct.Name
+                                    </NotMatch>
+                                </Condition>
+                            </div>
+                            <div class="ms-auto">
+                                <button class="btn btn-sm btn-outline-danger" type="button" @onclick="() => HandleRemoveModelItem(item)">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </li>
+                    </Iterations>
+                </ul>
             </div>
-        </div>
-
-        <LoadingView @ref="SeatSelectorLoadingView">
-            <div class="mb-3">
-                <AuditoriumSeatPanzoom @ref="AuditoriumSeatPanzoom" ReservedSeats="Show.ReservedSeats" Auditorium="Auditorium" @bind-SelectedSeats="Model.Seats" MaxAmount="50" />
-                <div class="text-danger">
-                    <ValidationMessage For="@(() => Model.Seats)" />
-                </div>                
-            </div>
-        </LoadingView>
-
-    </div>
-    <div class="card-footer">
-        <div class="d-flex align-items-center">
-            <div>
-                <SubmitButtonBase @ref="SubmitButton" Class="btn btn-sm btn-primary">
-                    <i class="fa-solid fa-plus me-1"></i>
+            <div class="card">
+                <div class="card-header">
                     Utwórz rezerwację
-                </SubmitButtonBase>
+                </div>
+                <div class="list-group list-group-flush">
+                    <div class="list-group-item d-flex align-items-center small">
+                        <div>
+                            Wartość:
+                        </div>
+                        <div class="ms-auto">
+                            @ItemsValue.ToString("N2") PLN
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="mb-2">
+                        <ValidationSummary />
+                    </div>
+
+                    <div class="mb-2">
+                        <AlertGroupBase @ref="AlertGroup">
+                            <AlertBase @ref="SeatAlertReservedAlert" Class="alert-danger">
+                                Jedno lub kilka z wybranych miejsc jest już zajęta
+                            </AlertBase>
+                            <AlertBase @ref="SeatsNotProvidedAlert" Class="alert-danger">
+                                Nie wybrano żadnego miejsca dla tej rezerwacji
+                            </AlertBase>
+                            <AlertBase @ref="UserAlreadyReservedAlert" Class="alert-danger">
+                                Ten użytkownik posiada już rezerwację na to wydarzenie
+                            </AlertBase>
+                            <AlertBase @ref="ValidationErrorAlert" Class="alert-danger">
+                                Problem z walidacją
+                            </AlertBase>
+                            <AlertBase @ref="DuplicateSeatErrorAlert" Class="alert-danger">
+                                Jedno lub więcej miejsc występuje wiele razy
+                            </AlertBase>
+                            <AlertBase @ref="ErrorAlert" Class="alert-danger">
+                                Wystąpił błąd. Spróbuj ponownie później
+                            </AlertBase>
+                            <AlertBase @ref="SuccessAlert" Class="alert-success">
+                                Dodawanie rejestracji przebiegło pomyślnie!
+                            </AlertBase>
+                        </AlertGroupBase>
+                    </div>
+
+                    <SubmitButtonBase @ref="SubmitButton" Class="btn btn btn-primary w-100">
+                        <i class="fa-solid fa-plus me-1"></i>
+                        Dodaj rezerwację
+                    </SubmitButtonBase>
+                </div>
             </div>
         </div>
     </div>
 
 </EditForm>
 
-<ModalDialog @ref="SubmitModalDialog" AlignCenter="true">
-    <Title>
-        Utwórz rezerwację
-    </Title>
-    <Body>
-        <Condition Evaluation="Model.ShowId.HasValue">
-            <Match>
-                <div class="mb-3">
-                    Czy napewno chcesz utworzyć rezerwację?
-                </div>
-                <div class="dropdown-divider"></div>
-                <div>
-                    <div class="lead">
-                        Podsumowanie
-                    </div>
-                    <div>
-                        <span class="fw-bold">Wydarzenie:</span> 
-                        <span>@Show.Name</span>
-                    </div>
-                    <div>
-                        <span class="fw-bold">Adres email: </span>
-                        <Condition Evaluation="string.IsNullOrEmpty(Model.Email)">
-                            <Match>
-                                <span class="text-muted">nie podano</span>
-                            </Match>
-                            <NotMatch>
-                                <span>@Model.Email</span>
-                            </NotMatch>
-                        </Condition>
-                    </div>
-                    <div>
-                        <span class="fw-bold">Imię: </span>
-                        <Condition Evaluation="string.IsNullOrEmpty(Model.FirstName)">
-                            <Match>
-                                <span class="text-muted">nie podano</span>
-                            </Match>
-                            <NotMatch>
-                                <span>@Model.FirstName</span>
-                            </NotMatch>
-                        </Condition>
-                    </div>
-                    <div>
-                        <span class="fw-bold">Nazwisko: </span>
-                        <Condition Evaluation="string.IsNullOrEmpty(Model.LastName)">
-                            <Match>
-                                <span class="text-muted">nie podano</span>
-                            </Match>
-                            <NotMatch>
-                                <span>@Model.LastName</span>
-                            </NotMatch>
-                        </Condition>
-                    </div>
-                </div>
-                <div>
-                    <div class="fw-bold">
-                        Miejsca (@Model.Seats.Count):
-                    </div>
-                    <ul>
-                        <Iterations Items="Model.Seats.OrderBy(x => x.Sector).ThenBy(x => x.Row).ThenBy(x => x.Number)" Context="seat">
-                            <li>
-                                @seat.SectorString Rząd: @seat.Row Miejsce: @seat.Number
-                            </li>
-                        </Iterations>
-                    </ul>
-                </div>
-            </Match>
-        </Condition>
-
-        <AlertGroupBase @ref="AlertGroup">
-            <AlertBase @ref="SeatAlertReservedAlert" Class="alert-danger">
-                Jedno lub kilka z wybranych miejsc jest już zajęta
-            </AlertBase>
-            <AlertBase @ref="SeatsNotProvidedAlert" Class="alert-danger">
-                Nie wybrano żadnego miejsca dla tej rezerwacji
-            </AlertBase>
-            <AlertBase @ref="UserAlreadyReservedAlert" Class="alert-danger">
-                Ten użytkownik posiada już rezerwację na to wydarzenie
-            </AlertBase>
-            <AlertBase @ref="ValidationErrorAlert" Class="alert-danger">
-                Problem z walidacją
-            </AlertBase>
-            <AlertBase @ref="SuccessAlert" Class="alert-success">
-                Dodawanie rejestracji przebiegło pomyślnie!
-            </AlertBase>
-        </AlertGroupBase>
-
-    </Body>
-    <Footer>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-            Anuluj
-        </button>
-        <ButtonBase @ref="SubmitConfirmButton" Class="btn btn-success" OnClick="HandleConfirmSubmitAsync">
-            Potwierdź
-        </ButtonBase>
-    </Footer>
-</ModalDialog>
+<SelectSeatsModalDialog @ref="SelectSeatsModalDialog" OnSeatsSelected="HandleOnSeatsSelectedAsync" />

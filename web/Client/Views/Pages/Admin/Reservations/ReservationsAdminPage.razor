@@ -75,7 +75,7 @@
                                         Status
                                     </th>
                                     <th scope="col" class="d-none d-lg-table-cell">
-                                        Miejsca
+                                        Ilość
                                      </th>
                                     <th scope="col"class="d-none d-sm-table-cell">
                                         Data
@@ -114,7 +114,7 @@
                                             @FormatHelper.TranslateReservationStatus(reservation.Status)
                                         </td>
                                         <td class="d-none d-lg-table-cell">
-                                            @reservation.Seats.Count
+                                            @reservation.Items.Count()
                                         </td>
                                         <td class="d-none d-sm-table-cell">
                                             @reservation.CreateDate.LocalDateTime.ToShortDateString()

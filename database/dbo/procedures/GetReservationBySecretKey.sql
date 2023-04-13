@@ -1,6 +1,7 @@
 ﻿CREATE PROCEDURE dbo.GetReservationBySecretKey 
 	@SecretCode UNIQUEIDENTIFIER,
-	@ReservationSeatId INT OUTPUT
+	@ReservationItemId INT OUTPUT,
+	@ScanDate DATETIME2(0) OUTPUT
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -9,10 +10,26 @@ BEGIN
 	DECLARE @reservationId CHAR(8);
 
 	SELECT 
-		@ReservationSeatId = Id,
+		@ReservationItemId = Id,
 		@reservationId = ReservationId
-	FROM dbo.ReservationSeats
-	WHERE SecretCode = @SecretCode;
+	FROM dbo.ReservationItems
+	WHERE SecretCode = @SecretCode;	
+
+	IF @ReservationItemId IS NOT NULL
+	BEGIN
+		SELECT 
+			@ScanDate = ScanDate
+		FROM dbo.ReservationItems 
+		WHERE Id = @ReservationItemId;
+
+		-- mark reservation item (ticket) as scanned
+		IF @ScanDate IS NULL
+		BEGIN
+			UPDATE dbo.ReservationItems 
+			SET ScanDate = SYSDATETIME()
+			WHERE Id = @ReservationItemId;
+		END
+	END
 
 	IF @reservationId IS NULL
 	BEGIN

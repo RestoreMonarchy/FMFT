@@ -26,3 +26,20 @@ BEGIN
 	(2,1),(2,2),(2,3),(2,4),(2,5),(2,6),(2,7),(2,8),(2,9),(2,10),(2,11),(2,12),(2,13),(2,14),(2,15),(2,16),(2,17),(2,18),(2,19),(2,20),(2,21),(2,22),(2,23),(2,24),(2,25),(2,26),(2,27),(2,28),(2,29),(2,30)
 	) T([Row],Number);
 END;
+
+
+-- Migration from ReservationSeats to ReservationItems
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'ReservationSeats')
+BEGIN
+    
+	INSERT INTO dbo.ReservationItems (SecretCode, ReservationId, SeatId, ShowProductId)
+	SELECT 
+		SecretCode, 
+		ReservationId, 
+		SeatId, 
+		(SELECT TOP 1 sp.Id FROM dbo.Reservations r JOIN dbo.ShowProducts sp ON sp.ShowId = r.ShowId 
+			WHERE IsBulk = 0 AND r.Id = ReservationId ORDER BY sp.Id)
+	FROM dbo.ReservationSeats;
+
+	DROP TABLE dbo.ReservationSeats;
+END

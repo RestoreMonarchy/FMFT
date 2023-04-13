@@ -62,3 +62,5 @@ ERR054 | Update Show Selling Details validation problem
 ERR055 | Update Show Status validation problem
 ERR056 | Update Show Time validation problem
 ERR057 | Failed to register payment at payment provider
+ERR058 | One or more seats are duplicate in this reservation
+ERR059 | One or more seat id are invalid in this reservation

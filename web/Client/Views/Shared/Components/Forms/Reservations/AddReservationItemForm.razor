@@ -1,0 +1,56 @@
+﻿@using FMFT.Web.Client.Models.API.ShowProducts;
+@using FMFT.Web.Client.Models.API.Shows;
+
+<div class="input-group mb-2">
+    <span class="input-group-text" style="min-width: 150px;">
+        @ShowProduct.Name
+    </span>
+    <select @bind="Quantity" class="form-select" disabled="@Disabled">
+        
+        <Condition Evaluation="Disabled">
+            <Match>
+                <option selected>
+                    Niedostępne
+                </option>
+            </Match>
+            <NotMatch>
+                @for (int i = 1; i <= Math.Min(10, QuantityLeft); i++)
+                {
+                    <option value="@i">
+                        @i
+                    </option>
+                }
+            </NotMatch>
+        </Condition>
+    </select>
+    <button class="btn btn-secondary" type="button" @onclick="HandleAddAsync" disabled="@Disabled">
+        Dodaj
+    </button>
+</div>
+
+@code {
+    [Parameter]
+    public ShowProduct ShowProduct { get; set; }    
+    [Parameter]
+    public int QuantityLeft { get; set; }
+
+    public int Quantity { get; set; } = 1;
+
+    private bool Disabled => QuantityLeft <= 0;
+
+    [Parameter]
+    public EventCallback<Tuple<ShowProduct, int>> ShowProductAdded { get; set; }
+
+    private async Task HandleAddAsync()
+    {
+        if (Disabled)
+        {
+            return;
+        }
+
+        Tuple<ShowProduct, int> tuple = new(ShowProduct, Quantity);
+        await ShowProductAdded.InvokeAsync(tuple);
+
+        Quantity = 1;
+    }
+}

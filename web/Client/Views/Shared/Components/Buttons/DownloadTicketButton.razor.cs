@@ -11,7 +11,7 @@ namespace FMFT.Web.Client.Views.Shared.Components.Buttons
         [Parameter]
         public Reservation Reservation { get; set; }
         [Parameter]
-        public ReservationSeat ReservationSeat { get; set; }
+        public ReservationItem ReservationItem { get; set; }
         [Parameter]
         public bool IsSmall { get; set; }
 
@@ -32,12 +32,12 @@ namespace FMFT.Web.Client.Views.Shared.Components.Buttons
         {
             DownloadButton.StartSpinning();
 
-            APIResponse<QRCodeImage> response = await APIBroker.GetReservationSeatTicketAsync(Reservation.Id, ReservationSeat.Id);
+            APIResponse<QRCodeImage> response = await APIBroker.GetReservationSeatTicketAsync(Reservation.Id, ReservationItem.Id);
 
             if (response.IsSuccessful)
             {
                 QRCodeImage qrCodeImage = response.Object;
-                string fileName = $"{Reservation.Show.Name}-{Reservation.Id}-{ReservationSeat.Id}.jpg";
+                string fileName = $"{Reservation.Show.Name}-{Reservation.Id}-{ReservationItem.Id}.jpg";
 
                 await JSRuntimeBroker.DownloadFromByteArrayAsync(qrCodeImage.Data, fileName, qrCodeImage.ContentType);
             }

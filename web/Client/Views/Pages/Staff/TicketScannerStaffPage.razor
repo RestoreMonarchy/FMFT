@@ -2,6 +2,7 @@
 @using FMFT.Extensions.Blazor.Bases.Conditions
 @using FMFT.Extensions.Blazor.Bases.Timers
 @using FMFT.Web.Client.Views.Shared.Components.Alerts.Reservations
+@using FMFT.Web.Client.Views.Shared.Components.Cards.Reservations
 @using FMFT.Web.Client.Views.Shared.Components.Headers
 
 <MainLayoutBody>
@@ -35,6 +36,17 @@
                         </NotMatch>
                     </Condition>
 
+                    <Condition Evaluation="showInput">
+                        <Match>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" @bind="SecretCode" placeholder="Secret Code">
+                                <button class="btn btn-outline-secondary" type="button" @onclick="HandleSubmitAsync">
+                                    Scan
+                                </button>
+                            </div>
+                        </Match>
+                    </Condition>
+
                     <Condition Evaluation="ValidateReservationResponse == null">
                         <Match>
                             <div class="p-3 bg-light border rounded border-2 text-center mb-3">
@@ -61,6 +73,14 @@
                                 <Match>
                                     <Condition Evaluation="ValidateReservationResponse.IsSuccessful">
                                         <Match>
+
+                                            <Condition Evaluation="IsScanned">
+                                                <Match>
+                                                    <div class="alert alert-warning">
+                                                        Ten bilet został już zeskanowany @ScanDate.LocalDateTime.ToString()
+                                                    </div>
+                                                </Match>
+                                            </Condition>
 
                                             <div class="mb-3">
                                                 <Condition Evaluation="ShowId.HasValue && Reservation.Show.Id != ShowId.Value">
@@ -119,18 +139,7 @@
 
                                             <Condition Evaluation="Reservation.Status == ReservationStatus.Ok">
                                                 <Match>
-                                                    <div class="card mb-3">
-                                                        <div class="card-header">
-                                                            Miejsca (@Reservation.Seats.Count)
-                                                        </div>
-                                                        <div class="list-group list-group-flush">
-                                                            <Iterations Items="Reservation.Seats.OrderBy(x => x.Seat.Sector).ThenBy(x => x.Seat.Row).ThenBy(x => x.Seat.Number)" Context="seat">
-                                                                <div class="list-group-item @GetSeatClass(seat)">
-                                                                    @seat.Seat.SectorString Rząd @seat.Seat.Row Numer @seat.Seat.Number
-                                                                </div>
-                                                            </Iterations>
-                                                        </div>
-                                                    </div>
+                                                    <ReservationSeatsCard Reservation="Reservation" />
                                                 </Match>
                                                 <NotMatch>
                                                     <ReservationStatusAlert ReservationStatus="Reservation.Status" />

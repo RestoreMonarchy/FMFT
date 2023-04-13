@@ -19,13 +19,14 @@ BEGIN
 		Quantity INT NOT NULL, 
 		Price DECIMAL(9,2) NOT NULL, 
 		ShowId INT NULL, 
-		ShowEndDateTime DATETIME2(0) NULL);
+		ShowEndDateTime DATETIME2(0) NULL,
+		SeatIds NVARCHAR(MAX) NULL);
 
-	DECLARE @Seats TABLE (RowNum INT NOT NULL, SeatId INT NOT NULL, ShowProductId INT NULL, ShowId INT NULL);
+	DECLARE @Seats TABLE (SeatId INT NULL, ShowProductId INT NULL, ShowId INT NULL, Quantity INT);
 
 	DECLARE @orderId INT;
 	DECLARE @showId INT;
-	DECLARE @seatIds VARCHAR(8000);
+	DECLARE @itemsJSON VARCHAR(8000);
 	DECLARE @ret INT = 0;
 	DECLARE @retCreateReservation INT;
 
@@ -41,8 +42,7 @@ BEGIN
 		@paymentMethod = PaymentMethod,
 		@paymentProvider = PaymentProvider,
 		@expireDate = [ExpireDate],
-		@orderItemsJSON = [Items],
-		@seatIdsJSON = SeatIds 
+		@orderItemsJSON = [Items]
 	FROM OPENJSON ( @Order )  
 	WITH (   
 		UserId INT '$.UserId',
@@ -51,30 +51,43 @@ BEGIN
 		PaymentMethod VARCHAR(255) '$.PaymentMethod',
 		PaymentProvider TINYINT '$.PaymentProvider',
 		[ExpireDate] DATETIME2(0) '$.ExpireDate',
-		[Items] NVARCHAR(MAX) AS JSON, 
-		SeatIds NVARCHAR(MAX) AS JSON
+		[Items] NVARCHAR(MAX) AS JSON
 	 );
 
-	INSERT INTO @OrderItems (ShowProductId, Quantity, Price)
+	INSERT INTO @OrderItems (ShowProductId, Quantity, Price, SeatIds)
 	SELECT 
 		ShowProductId, 
 		Quantity, 
-		Price
-	FROM OPENJSON ( @orderItemsJSON )  
+		Price,
+		SeatIds
+	FROM OPENJSON( @orderItemsJSON )  
 	WITH (   
 		ShowProductId INT '$.ShowProductId',
 		Quantity INT '$.Quantity',
-		Price DECIMAL(9,2) '$.Price'
+		Price DECIMAL(9,2) '$.Price',
+		SeatIds NVARCHAR(MAX) AS JSON
 	);
 
-	INSERT INTO @Seats (RowNum, SeatId)
+	INSERT INTO @Seats (SeatId, ShowProductId, ShowId, Quantity)
 	SELECT 
-		rownum = ROW_NUMBER() OVER(ORDER BY SeatId), 
-		SeatId
-	FROM OPENJSON ( @seatIdsJSON )  
-	WITH ( SeatId INT '$');
+		s.SeatId,
+		i.ShowProductId,
+		sp.ShowId,
+		i.Quantity
+	FROM @OrderItems i
+	JOIN ShowProducts sp ON sp.Id = i.ShowProductId
+	OUTER APPLY (SELECT SeatId FROM OPENJSON( i.SeatIds ) WITH ( SeatId INT '$')) s(SeatId)
 	
 	SET @reservedSeatsCount = @@ROWCOUNT;
+	
+	INSERT INTO @Seats(SeatId, ShowProductId, ShowId, Quantity)
+	SELECT SeatId, ShowProductId, ShowId, Quantity
+	FROM @Seats s
+	JOIN dbo.Tally t ON t.N < s.Quantity
+	WHERE s.SeatId IS NULL
+	AND s.Quantity > 1
+
+	SET @reservedSeatsCount += @@ROWCOUNT;
 
 	SELECT @sumOrderQuantity = SUM(Quantity)
 	FROM @OrderItems;
@@ -97,8 +110,7 @@ BEGIN
 	FROM @OrderItems o
 	JOIN dbo.ShowProducts p ON p.Id = o.ShowProductId
 	JOIN dbo.Shows s ON s.Id = p.ShowId;
-
-
+	
 	IF EXISTS (SELECT * FROM @OrderItems WHERE ShowId IS NULL)
 	BEGIN 
 		PRINT 'Invalid value of ShowProductId';
@@ -147,22 +159,6 @@ BEGIN
 	IF @ret = 0
 	BEGIN
 
-		WITH CTE_Tally AS (
-			SELECT * FROM dbo.Tally WHERE N <= @sumOrderQuantity
-		), CTE_OrderItemsSplit AS (
-			SELECT 
-				RowNum = ROW_NUMBER() OVER(ORDER BY o.ShowProductId), 
-				o.* 
-			FROM @OrderItems o
-			JOIN dbo.Tally t ON t.N <= o.Quantity
-		)
-		UPDATE s
-		SET 
-			s.ShowProductId = o.ShowProductId,
-			s.ShowId = o.ShowId
-		FROM @Seats s
-		JOIN CTE_OrderItemsSplit o ON o.RowNum = s.RowNum;
-
 		IF @isExternalTransaction = 0
 			BEGIN TRAN; 
 
@@ -191,14 +187,19 @@ BEGIN
 			IF @showId IS NULL
 				BREAK;
 
-			SELECT @seatIds = STRING_AGG(SeatId, ',')
-			FROM @Seats
-			WHERE ShowId = @showId;
+			-- N'[{"ShowProductId":10},{"ShowProductId":2,"SeatId":125}]',
+
+			SET @itemsJSON = (
+				SELECT ShowProductId, SeatId
+				FROM @Seats
+				WHERE  ShowId = @showId
+				FOR JSON PATH
+			);
 
 			EXEC @retCreateReservation = dbo.CreateReservation
 				@ShowId = @showId,
 				@UserId = @userId,
-				@Seats = @seatIds,
+				@Items = @itemsJSON,
 				@OrderId = @orderId,
 				@ReturnReservations = 0,
 				@DisallowMultipleReservationsForOneShowFromOneUser = 0;
@@ -228,30 +229,38 @@ BEGIN
 
 END;
 GO
-/*
 -- EXECUTE EXAMPLE:
+/*
 
 DECLARE @Order NVARCHAR(MAX) = N'{  
     "UserId":1,  
-    "Amount":146.12, 
+    "Amount":176.12, 
 	"Currency":"PLN",
 	"PaymentMethod":"1",
 	"PaymentProvider": 1,
 	"ExpireDate":"2023-01-17T20:01:12",
-    "Items": [{  
-		"ShowProductId":1,
+    "Items": [
+	{  
+		"ShowProductId":3,
 		"Price":100.12,  
-		"Quantity":1
+		"Quantity":1,
+		"SeatIds": [47]
     },
 	{  
-		"ShowProductId":2,
-		"Price":23.00,  
-		"Quantity":2
-    }],
-	"SeatIds": [47,48,49]
+		"ShowProductId":3,
+		"Price":23.00,
+		"Quantity":2,
+		"SeatIds": [48,49]
+    },
+	{
+		"ShowProductId":10,
+		"Price": 10.00,
+		"Quantity": 3,
+		"SeatIds": []
+	}]
   }';
-  DECLARE @ret INT;
-  EXEC @ret = dbo.CreateOrder @Order = @Order;
-  SELECT @ret;
+DECLARE @ret INT;
+EXEC @ret = dbo.CreateOrder @Order = @Order;
+SELECT @ret;
 
 */

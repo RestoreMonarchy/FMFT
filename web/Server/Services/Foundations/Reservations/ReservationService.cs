@@ -6,6 +6,7 @@ using FMFT.Web.Server.Models.Reservations.DTOs;
 using FMFT.Web.Server.Models.Reservations.Exceptions;
 using FMFT.Web.Server.Models.Reservations.Params;
 using FMFT.Web.Server.Models.Reservations.Results;
+using Newtonsoft.Json;
 
 namespace FMFT.Web.Server.Services.Foundations.Reservations
 {
@@ -62,8 +63,7 @@ namespace FMFT.Web.Server.Services.Foundations.Reservations
             {
                 ShowId = @params.ShowId,
                 UserId = @params.UserId,
-                Seats = @params.SeatIds != null ? string.Join(',', @params.SeatIds) : string.Empty,
-                
+                Items = JsonConvert.SerializeObject(@params.Items),
                 Email = @params.Email,
                 FirstName = @params.FirstName,
                 LastName = @params.LastName
@@ -84,6 +84,11 @@ namespace FMFT.Web.Server.Services.Foundations.Reservations
             if (result.ReturnValue == 3)
             {
                 throw new SeatsNotProvidedReservationException();
+            }
+
+            if (result.ReturnValue == 4)
+            {
+                throw new DuplicateSeatsReservationException();
             }
 
             return result.Result;

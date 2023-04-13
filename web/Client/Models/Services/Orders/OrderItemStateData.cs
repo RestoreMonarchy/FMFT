@@ -7,5 +7,6 @@ namespace FMFT.Web.Client.Models.Services.Orders
         public int ShowProductId { get; set; }
         public int ShowId { get; set; }
         public int Quantity { get; set; }
+        public List<int> SeatIds { get; set; }
     }
 }

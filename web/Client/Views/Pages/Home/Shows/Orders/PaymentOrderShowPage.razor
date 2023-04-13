@@ -68,11 +68,31 @@
                                                 </Condition>                                                
                                             </li>
                                         </Iterations>
-                                        <li>
-                                            <a href="/shows/@ShowId/order/seats" class="text-decoration-none">
-                                                Zmień miejsca
-                                            </a>
-                                        </li>
+                                        <Condition Evaluation="BulkItemsCount > 0">
+                                            <Match>
+                                                <Iterations Items="BulkItems" Context="bulkItem">
+                                                    <li>
+                                                        <span>x</span>@bulkItem.Quantity @GetShowProduct(bulkItem.ShowProductId).Name
+                                                    </li>
+                                                </Iterations>                                                
+                                            </Match>
+                                        </Condition>
+                                        <Condition Evaluation="BulkItemsCount > 0">
+                                            <Match>
+                                                <li>
+                                                    <a href="/shows/@ShowId/order/products" class="text-decoration-none">
+                                                        Zmień miejsca
+                                                    </a>
+                                                </li>
+                                            </Match>
+                                            <NotMatch>
+                                                <li>
+                                                    <a href="/shows/@ShowId/order/seats" class="text-decoration-none">
+                                                        Zmień miejsca
+                                                    </a>
+                                                </li>
+                                            </NotMatch>
+                                        </Condition>                                        
                                     </ul>
                                 </div>
                                 <div class="mb-3">

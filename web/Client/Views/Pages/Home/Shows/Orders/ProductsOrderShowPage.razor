@@ -48,7 +48,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <Iterations Items="ShowProducts" Context="showProduct">
+                                    <Iterations Items="EnabledShowProducts" Context="showProduct">
                                         <tr>
                                             <td class="align-middle">
                                                 @showProduct.Name
@@ -57,12 +57,20 @@
                                                 @showProduct.Price.ToString("N2") zł
                                             </td>
                                             <td class="align-middle">
-                                                <select @onchange="(args) => HandleQuantityChangeAsync(showProduct, args)" value="@GetQuantity(showProduct.Id)" class="form-select">
-                                                    @for (int i = 0; i <= MaxQuantity; i++)
-                                                    {
-                                                        <option value="@i">@i</option>
-                                                    }
-                                                </select>
+
+                                                <Condition Evaluation="GetShowProductQuantity(showProduct) <= 0">
+                                                    <Match>
+                                                        <span class="fw-bold">Wyprzedane!</span>
+                                                    </Match>
+                                                    <NotMatch>
+                                                        <select @onchange="(args) => HandleQuantityChangeAsync(showProduct, args)" value="@GetQuantity(showProduct.Id)" class="form-select">
+                                                            @for (int i = 0; i <= GetShowProductQuantity(showProduct); i++)
+                                                            {
+                                                                <option value="@i">@i</option>
+                                                            }
+                                                        </select>
+                                                    </NotMatch>
+                                                </Condition>                                                
                                             </td>
                                         </tr>
                                     </Iterations>
@@ -80,9 +88,9 @@
                                 Zrezygnuj
                             </button>
                             <div class="ms-auto">
-                                <a class="btn btn-primary @NextDisabled()" href="@GetUrl("seats")">
+                                <button class="btn btn-primary @NextDisabled()" @onclick="HandleNextButton">
                                     Przejdź dalej
-                                </a>
+                                </button>
                             </div>
                         </div>
                     </Match>

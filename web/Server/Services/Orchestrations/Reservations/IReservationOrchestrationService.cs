@@ -14,7 +14,7 @@ namespace FMFT.Web.Server.Services.Orchestrations.Reservations
         ValueTask<Reservation> CreateReservationAsync(CreateReservationParams @params);
         ValueTask<Reservation> CreateUserReservationAsync(CreateUserReservationParams @params);
         ValueTask<QRCodeImage> GenerateGuidQRCodeImageAsync(Guid guid);
-        ValueTask<QRCodeImage> GenerateReservationTicketAsync(ReservationSeat reservationSeat, Reservation reservation);
+        ValueTask<QRCodeImage> GenerateReservationTicketAsync(ReservationItem reservationSeat, Reservation reservation);
         ValueTask<IEnumerable<Reservation>> RetrieveAllReservationsAsync();
         ValueTask<Reservation> RetrieveReservationByIdAsync(string reservationId);
         ValueTask<IEnumerable<Reservation>> RetrieveReservationsByShowIdAsync(int showId);

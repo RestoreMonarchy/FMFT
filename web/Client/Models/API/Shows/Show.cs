@@ -15,8 +15,10 @@ namespace FMFT.Web.Client.Models.API.Shows
         public bool IsEnabled { get; set; }
         public DateTimeOffset UpdateDate { get; set; }
         public DateTimeOffset CreateDate { get; set; }
-        public List<ShowReservedSeat> ReservedSeats { get; set; }
-
+        public List<ShowReservedItem> ReservedItems { get; set; }
+        public IEnumerable<ShowReservedItem> ReservedSeats => ReservedItems.Where(x => x.SeatId != 0);
+        public IEnumerable<ShowReservedItem> ReservedBulkItems => ReservedItems.Where(x => x.SeatId == 0);
+        public IEnumerable<int> ReservedSeatIds => ReservedSeats.Select(x => x.SeatId);
 
         public bool IsPast() => EndDateTime.UtcDateTime < DateTime.UtcNow;
         public bool IsSellDisabled() => SellStartDateTime.UtcDateTime > DateTime.UtcNow;

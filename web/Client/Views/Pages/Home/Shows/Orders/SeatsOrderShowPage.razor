@@ -15,9 +15,31 @@
 
             <LoadingView @ref="LoadingView">
 
-                <Condition Evaluation="ShowResponse.IsSuccessful && AuditoriumResponse.IsSuccessful">
+                <Condition Evaluation="ShowResponse.IsSuccessful && AuditoriumResponse.IsSuccessful && ShowProductsResponse.IsSuccessful">
                     <Match>
                         <ShowHeader Show="Show" />
+
+                        <Condition Evaluation="BulkItems.Count() == 1">
+                            <Match>
+                                <div class="alert alert-info mb-3">
+                                    Masz 1 bilet który nie wymaga wyboru miejsca
+                                </div>
+                            </Match>
+                        </Condition>
+                        <Condition Evaluation="BulkItems.Count() > 1 && BulkItems.Count() < 5">
+                            <Match>
+                                <div class="alert alert-info mb-3">
+                                    Masz @BulkItems.Count() bilety które nie wymagają wyboru miejsca
+                                </div>
+                            </Match>
+                        </Condition>
+                        <Condition Evaluation="BulkItems.Count() > 4">
+                            <Match>
+                                <div class="alert alert-info mb-3">
+                                    Masz @BulkItems.Count() biletów które nie wymagają wyboru miejsca
+                                </div>
+                            </Match>
+                        </Condition>
 
                         <div class="mb-3">
                             <div class="d-md-flex d-block align-items-center">
@@ -41,7 +63,7 @@
 
                         <div class="mb-3">
                             <AuditoriumSeatPanzoom Auditorium="Auditorium"
-                                                   ReservedSeats="Show.ReservedSeats"
+                                                   ReservedSeats="Show.ReservedSeatIds"
                                                    MaxAmount="MaxSeatsAmount"
                                                    SelectedSeats="OriginalSelectedSeats"
                                                    SelectedSeatsChanged="HandleSelectedSeatsChangedAsync" />

@@ -22,16 +22,17 @@ namespace FMFT.Web.Server.Brokers.Storages
 
         public async ValueTask<ShowProduct> InsertShowProductAsync(AddShowProductParams @params)
         {
-            const string sql = "INSERT INTO dbo.ShowProducts (ShowId, Name, Price, IsEnabled) " +
+            const string sql = "INSERT INTO dbo.ShowProducts (ShowId, Name, Price, Quantity, IsBulk, IsEnabled) " +
                 "OUTPUT INSERTED.* " +
-                "VALUES (@ShowId, @Name, @Price, @IsEnabled);";
+                "VALUES (@ShowId, @Name, @Price, @Quantity, @IsBulk, @IsEnabled);";
 
             return await connection.QuerySingleOrDefaultAsync<ShowProduct>(sql, @params);
         }
 
         public async ValueTask<ShowProduct> UpdateShowProductAsync(UpdateShowProductParams @params)
         {
-            const string sql = @"UPDATE dbo.ShowProducts SET Name = @Name, Price = @Price, IsEnabled = @IsEnabled 
+            const string sql = @"UPDATE dbo.ShowProducts SET Name = @Name, Price = @Price, Quantity = @Quantity, 
+                IsBulk = @IsBulk, IsEnabled = @IsEnabled 
                 WHERE Id = @Id AND ShowId = @ShowId;";
 
             await connection.ExecuteAsync(sql, @params);

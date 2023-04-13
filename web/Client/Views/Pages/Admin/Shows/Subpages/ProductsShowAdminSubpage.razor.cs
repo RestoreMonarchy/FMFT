@@ -1,5 +1,6 @@
 ﻿using FMFT.Extensions.Blazor.Bases.Loadings;
 using FMFT.Web.Client.Models.API;
+using FMFT.Web.Client.Models.API.Auditoriums;
 using FMFT.Web.Client.Models.API.ShowProducts;
 using FMFT.Web.Client.Models.API.Shows;
 using FMFT.Web.Client.Views.Shared.Components.Dialogs.Shows;
@@ -11,6 +12,8 @@ namespace FMFT.Web.Client.Views.Pages.Admin.Shows.Subpages
     {
         [Parameter]
         public Show Show { get; set; }
+        [Parameter]
+        public Auditorium Auditorium { get; set; }
         [Parameter]
         public EventCallback<Show> ShowChanged { get; set; }
 
@@ -69,6 +72,11 @@ namespace FMFT.Web.Client.Views.Pages.Admin.Shows.Subpages
         private string GetRowClass(ShowProduct showProduct)
         {
             return showProduct.IsEnabled ? "" : "text-muted";
+        }
+
+        private int GetShowProductReservedCount(ShowProduct showProduct)
+        {
+            return Show.ReservedBulkItems.Where(x => x.ShowProductId == showProduct.Id).Count();
         }
     }
 }

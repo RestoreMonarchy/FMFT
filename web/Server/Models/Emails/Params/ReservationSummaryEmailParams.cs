@@ -8,6 +8,7 @@ namespace FMFT.Web.Server.Models.Emails.Params
         public string ShowName { get; set; }
         public string ReservationId { get; set; }
         public List<ReservationSeat> ReservationSeats { get; set; }
+        public List<ReservationBulkItem> ReservationBulkItems { get; set; }
 
         public List<EmailAttachment> Attachments { get; set; }
 
@@ -16,6 +17,12 @@ namespace FMFT.Web.Server.Models.Emails.Params
             public int Row { get; set; }
             public int Number { get; set; }
             public char Sector { get; set; }
+        }
+
+        public class ReservationBulkItem
+        {
+            public int Id { get; set; }
+            public string ProductName { get; set; }
         }
     }
 }

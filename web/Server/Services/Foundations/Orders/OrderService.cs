@@ -5,6 +5,7 @@ using FMFT.Web.Server.Models.Orders;
 using FMFT.Web.Server.Models.Orders.DTOs;
 using FMFT.Web.Server.Models.Orders.Exceptions;
 using FMFT.Web.Server.Models.Orders.Params;
+using FMFT.Web.Server.Models.Reservations.Exceptions;
 
 namespace FMFT.Web.Server.Services.Foundations.Orders
 {
@@ -80,7 +81,6 @@ namespace FMFT.Web.Server.Services.Foundations.Orders
 
         public async ValueTask<Order> CreateOrderAsync(CreateOrderParams @params)
         {
-
             List<CreateOrderItemDTO> orderItems = new();
 
             @params.Items.ForEach (item => orderItems.Add(
@@ -88,7 +88,8 @@ namespace FMFT.Web.Server.Services.Foundations.Orders
                 {
                     ShowProductId = item.ShowProductId,
                     Price = item.Price,
-                    Quantity= item.Quantity
+                    Quantity= item.Quantity,
+                    SeatIds = item.SeatIds ?? new List<int>()
                 })
             );
 
@@ -100,7 +101,6 @@ namespace FMFT.Web.Server.Services.Foundations.Orders
                 PaymentMethod = @params.PaymentMethod,
                 ExpireDate = DateTime.Now.AddMinutes(15),
                 Items = orderItems,
-                SeatIds = @params.SeatIds,
                 PaymentProvider = @params.PaymentProvider
             };
 
@@ -121,6 +121,20 @@ namespace FMFT.Web.Server.Services.Foundations.Orders
                 throw new SeatsNotProvidedOrderReservationException();
             }
 
+            if (result.ReturnValue == 4)
+            {
+                throw new DuplicateSeatsReservationException();
+            }
+
+            if (result.ReturnValue == 5)
+            {
+                throw new SeatsNotProvidedOrderReservationException();
+            }
+
+            if (result.ReturnValue == 6)
+            {
+                throw new SeatsInvalidReservationException();
+            }
             if (result.ReturnValue == 101)
             {
                 throw new NotMatchOrderedItemsQtyWithSeatsOrderException();

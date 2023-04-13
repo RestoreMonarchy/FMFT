@@ -14,12 +14,16 @@ namespace FMFT.Web.Server.Models.Reservations
         public DateTimeOffset CreateDate { get; set; }
         public DateTimeOffset? UpdateStatusDate { get; set; }
 
-        public Show Show { get; set; }
+        public ShowInfo Show { get; set; }
         public UserInfo User { get; set; }
-        public UserInfo AdminUser { get; set; }
 
         public ReservationDetails Details { get; set; }
-        public List<ReservationSeat> Seats { get; set; }
+        public List<ReservationItem> Items { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<ReservationItem> SeatItems => Items.Where(x => x.Seat != null);
+        [JsonIgnore]
+        public IEnumerable<ReservationItem> BulkItems => Items.Where(x => x.Seat == null);
 
         [JsonIgnore]
         public Guid SecretCode { get; set; }

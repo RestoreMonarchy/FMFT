@@ -5,10 +5,12 @@ using FMFT.Web.Server.Models.Reservations.DTOs;
 using FMFT.Web.Server.Models.Reservations.Params;
 using FMFT.Web.Server.Models.Reservations.Results;
 using FMFT.Web.Server.Models.Seats;
+using FMFT.Web.Server.Models.ShowProducts;
 using FMFT.Web.Server.Models.Shows;
 using FMFT.Web.Server.Models.Users;
 using Microsoft.Extensions.Logging.Abstractions;
 using System.Data;
+using System.Security.AccessControl;
 
 namespace FMFT.Web.Server.Brokers.Storages
 {
@@ -119,12 +121,15 @@ namespace FMFT.Web.Server.Brokers.Storages
             { 
                 SecretCode = secretCode
             });
-            parameters.Add("ReservationSeatId", dbType: DbType.Int32, direction: ParameterDirection.Output);
+            parameters.Add("ReservationItemId", dbType: DbType.Int32, direction: ParameterDirection.Output);
+            parameters.Add("ScanDate", dbType: DbType.DateTime, direction: ParameterDirection.Output);
 
             ValidateReservationSecretCodeResult result = new();
 
             result.Reservation = await QueryReservationAsync(sql, parameters, CommandType.StoredProcedure);
-            result.ReservationSeatId = parameters.Get<int?>("ReservationSeatId");
+            result.ReservationItemId = parameters.Get<int?>("ReservationItemId");
+            DateTime? scanDate = parameters.Get<DateTime?>("ScanDate");
+            result.ScanDate = scanDate.HasValue ? scanDate.Value : null;
 
             spResult.Result = result;
             spResult.ReturnValue = GetReturnValue(parameters);
@@ -150,31 +155,51 @@ namespace FMFT.Web.Server.Brokers.Storages
         {
             Reservation reservation = null;
 
-            await connection.QueryAsync<Reservation, Show, UserInfo, UserInfo, ReservationDetails, ReservationSeat, Seat, Reservation>(sql, (r, s, u, au, rd, rs, se) => 
+            Type[] types = new Type[]
             {
+                typeof(Reservation),
+                typeof(ShowInfo),
+                typeof(UserInfo),
+                typeof(ReservationDetails),
+                typeof(ReservationItem),
+                typeof(ShowProduct),
+                typeof(Seat)
+            };
+
+            await connection.QueryAsync<Reservation>(sql, types, objects => 
+            {
+                int i = 0;
+                Reservation r = objects[i++] as Reservation;
+                ShowInfo s = objects[i++] as ShowInfo;
+                UserInfo u = objects[i++] as UserInfo;
+                ReservationDetails rd = objects[i++] as ReservationDetails;
+                ReservationItem ri = objects[i++] as ReservationItem;
+                ShowProduct sp = objects[i++] as ShowProduct;
+                Seat se = objects[i++] as Seat;
+
                 if (reservation == null)
                 {
                     reservation = r;
                     reservation.Show = s;
                     reservation.User = u;
-                    reservation.AdminUser = au;
 
                     if (rd != null && rd.ReservationId != null)
                     {
                         reservation.Details = rd;
                     }
 
-                    reservation.Seats = new();
+                    reservation.Items = new();
                 }
 
-                if (rs != null)
+                if (ri != null)
                 {
-                    rs.Seat = se;
-                    reservation.Seats.Add(rs);
+                    ri.ShowProduct = sp;
+                    ri.Seat = se;                    
+                    reservation.Items.Add(ri);
                 }                
 
                 return null;
-            }, param, commandType: commandType, splitOn: "Id,Id,Id,Id,ReservationId,Id,Id");
+            }, param, commandType: commandType);
 
             return reservation;
         }
@@ -183,8 +208,28 @@ namespace FMFT.Web.Server.Brokers.Storages
         {
             List<Reservation> reservations = new();
 
-            await connection.QueryAsync<Reservation, Show, UserInfo, UserInfo, ReservationDetails, ReservationSeat, Seat, Reservation>(sql, (r, s, u, au, rd, rs, se) =>
+            Type[] types = new Type[]
             {
+                typeof(Reservation),
+                typeof(ShowInfo),
+                typeof(UserInfo),
+                typeof(ReservationDetails),
+                typeof(ReservationItem),
+                typeof(ShowProduct),
+                typeof(Seat)
+            };
+
+            await connection.QueryAsync<Reservation>(sql, types, objects =>
+            {
+                int i = 0;
+                Reservation r = objects[i++] as Reservation;
+                ShowInfo s = objects[i++] as ShowInfo;
+                UserInfo u = objects[i++] as UserInfo;
+                ReservationDetails rd = objects[i++] as ReservationDetails;
+                ReservationItem ri = objects[i++] as ReservationItem;
+                ShowProduct sp = objects[i++] as ShowProduct;
+                Seat se = objects[i++] as Seat;
+
                 Reservation reservation = reservations.FirstOrDefault(x => x.Id == r.Id);
 
                 if (reservation == null)
@@ -192,26 +237,26 @@ namespace FMFT.Web.Server.Brokers.Storages
                     reservation = r;
                     reservation.Show = s;
                     reservation.User = u;
-                    reservation.AdminUser = au;
 
                     if (rd != null && rd.ReservationId != null)
                     {
                         reservation.Details = rd;
                     }
                     
-                    reservation.Seats = new();
+                    reservation.Items = new();
 
                     reservations.Add(reservation);
                 }
 
-                if (rs != null)
+                if (ri != null)
                 {
-                    rs.Seat = se;
-                    reservation.Seats.Add(rs);
+                    ri.ShowProduct = sp;
+                    ri.Seat = se;
+                    reservation.Items.Add(ri);
                 }
 
                 return null;
-            }, param, commandType: commandType, splitOn: "Id,Id,Id,Id,ReservationId,Id,Id");
+            }, param, commandType: commandType);
 
             return reservations;
         }

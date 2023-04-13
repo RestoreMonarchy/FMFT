@@ -28,7 +28,9 @@ namespace FMFT.Web.Client.Views.Pages.Staff
 
         public Show Show => ShowResponse.Object;
         public int? TicketReservationSeatId => ValidateReservationResponse.Object.ReservationSeatId;
-        public ReservationSeat TicketReservationSeat => Reservation.Seats.FirstOrDefault(x => x.Id == TicketReservationSeatId);
+        public DateTimeOffset ScanDate => ValidateReservationResponse.Object.ScanDate.Value;
+        public bool IsScanned => ValidateReservationResponse.Object.ScanDate.HasValue;
+        public ReservationItem TicketReservationSeat => Reservation.Seats.FirstOrDefault(x => x.Id == TicketReservationSeatId);
         public Reservation Reservation => ValidateReservationResponse.Object.Reservation;
 
         protected override async Task OnParametersSetAsync()
@@ -48,6 +50,7 @@ namespace FMFT.Web.Client.Views.Pages.Staff
         }
 
         private string text = string.Empty;
+        private bool showInput = false;
 
         private async Task HandleKeyPressAsync(KeyPressParams @params)
         {
@@ -64,6 +67,15 @@ namespace FMFT.Web.Client.Views.Pages.Staff
             // When the pressed key is "Enter"
             if (@params.KeyCode == 13)
             {
+                if (text == "test")
+                {
+                    showInput = true;
+                    text = string.Empty;
+                    StateHasChanged();                    
+                    return;
+                }
+                
+
                 SecretCode = text;
                 text = string.Empty;
                 await HandleSubmitAsync();
@@ -100,7 +112,7 @@ namespace FMFT.Web.Client.Views.Pages.Staff
             StateHasChanged();
         }
 
-        private string GetSeatClass(ReservationSeat seat)
+        private string GetSeatClass(ReservationItem seat)
         {
             if (TicketReservationSeatId.HasValue && TicketReservationSeatId.Value == seat.Id)
             {
