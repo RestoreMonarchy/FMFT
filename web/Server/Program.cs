@@ -1,4 +1,3 @@
-using AspNetCoreRateLimit;
 using FMFT.Web.Server.Extensions;
 using Hangfire;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -73,8 +72,6 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
 });
 
 var app = builder.Build();
-
-app.UseIpRateLimiting();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
