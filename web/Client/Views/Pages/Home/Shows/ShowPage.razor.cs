@@ -33,7 +33,8 @@ namespace FMFT.Web.Client.Views.Pages.Home.Shows
         public MarkupString Description => new(MarkdownEditorHelper.ParseToHtml(Show.Description));
 
         public ShowProduct CheapestShowProduct => ShowProducts.Where(x => x.IsEnabled).OrderBy(x => x.Price).FirstOrDefault();
-        public int ShowProductsQuantity => ShowProducts.Where(x => x.IsBulk && x.IsEnabled).Sum(x => x.Quantity);
+        public int ShowProductsQuantity => ShowProducts.Where(x => x.IsBulk && x.IsEnabled)
+            .Sum(x => Math.Max(x.Quantity, Show.ReservedBulkItems.Count(y => y.ShowProductId == x.Id)));
         public int MaxShowCapacity => Auditorium.Seats.Count + ShowProductsQuantity;
         public int ValidBulkItemsCount => Show.ReservedBulkItems.Count(x => GetShowProduct(x.ShowProductId)?.IsEnabled ?? false);
 
