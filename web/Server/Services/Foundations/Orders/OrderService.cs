@@ -133,6 +133,16 @@ namespace FMFT.Web.Server.Services.Foundations.Orders
 
             if (result.ReturnValue == 6)
             {
+                throw new InvalidShowReservationException();
+            }
+
+            if (result.ReturnValue == 7)
+            {
+                throw new ShowProductOverbookedReservationException();
+            }
+
+            if (result.ReturnValue == 6)
+            {
                 throw new SeatsInvalidReservationException();
             }
             if (result.ReturnValue == 101)
@@ -172,11 +182,10 @@ namespace FMFT.Web.Server.Services.Foundations.Orders
 
             if (result.ReturnValue == 111)
             {
-
+                throw new ShowSellNotStartedOrderException();
             }
 
             return result.Result;
         }
-
     }
 }

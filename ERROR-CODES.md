@@ -38,7 +38,7 @@ ERR029 | Reset password request not found
 ERR030 | Media not found
 ERR031 | The media file is too large
 ERR032 | The media file is required
-ERR033 | The seats for the reservation were not provided
+ERR033 | There are some non-bulk show products without SeatId
 ERR034 | Reservation seat not found
 ERR035 | Create user reservation validation problem
 ERR036 | Reservation is already canceled
@@ -64,3 +64,5 @@ ERR056 | Update Show Time validation problem
 ERR057 | Failed to register payment at payment provider
 ERR058 | One or more seats are duplicate in this reservation
 ERR059 | One or more seat id are invalid in this reservation
+ERR060 | One or more seatIds are for a different show than specified
+ERR061 | One or more bulk products are overbooked

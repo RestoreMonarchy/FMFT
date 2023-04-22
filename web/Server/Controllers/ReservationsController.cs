@@ -1,4 +1,5 @@
 ﻿using FMFT.Web.Server.Models.Accounts.Exceptions;
+using FMFT.Web.Server.Models.Orders.Exceptions;
 using FMFT.Web.Server.Models.QRCodes;
 using FMFT.Web.Server.Models.Reservations;
 using FMFT.Web.Server.Models.Reservations.Exceptions;
@@ -207,6 +208,14 @@ namespace FMFT.Web.Server.Controllers
                 return BadRequest(exception);
             }
             catch (DuplicateSeatsReservationException exception)
+            {
+                return BadRequest(exception);
+            }
+            catch (InvalidShowReservationException exception)
+            {
+                return BadRequest(exception);
+            }
+            catch (ShowProductOverbookedReservationException exception)
             {
                 return BadRequest(exception);
             }

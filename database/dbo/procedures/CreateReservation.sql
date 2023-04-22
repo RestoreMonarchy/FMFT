@@ -21,10 +21,10 @@ BEGIN
 	DECLARE @validatedSetsCount INT;
 	DECLARE @status TINYINT = CASE WHEN @OrderId IS NULL THEN 1 ELSE 0 END;
 
-	DECLARE @ItemsTable TABLE (ShowProductId INT NOT NULL, SeatId INT NULL);
+	DECLARE @ItemsTable TABLE (ShowProductId INT NOT NULL, SeatId INT NULL, IsBulk INT NOT NULL);
 
-	INSERT INTO @ItemsTable (ShowProductId, SeatId) 
-	SELECT ShowProductId, SeatId
+	INSERT INTO @ItemsTable (ShowProductId, SeatId, IsBulk) 
+	SELECT ShowProductId, SeatId, CASE WHEN SeatId IS NULL THEN 1 ELSE 0 END
 	FROM OPENJSON ( @Items )  
 	WITH (   
 		ShowProductId INT '$.ShowProductId',
@@ -70,7 +70,8 @@ BEGIN
 		SET @ret = 2;
 	END;
 
-	IF EXISTS(SELECT ShowProductId, SeatId
+	IF @ret = 0 
+		AND EXISTS(SELECT ShowProductId, SeatId
 			FROM @ItemsTable
 			WHERE SeatId IS NOT NULL 
 			GROUP BY ShowProductId, SeatId HAVING COUNT(*) > 1)
@@ -79,13 +80,15 @@ BEGIN
 		SET @ret = 4;
 	END;
 
-	IF EXISTS(SELECT * FROM @ItemsTable i JOIN dbo.ShowProducts s ON s.Id = i.ShowProductId WHERE s.IsBulk = 0 AND i.SeatId IS NULL)
+	IF @ret = 0 
+		AND EXISTS(SELECT * FROM @ItemsTable i JOIN dbo.ShowProducts s ON s.Id = i.ShowProductId WHERE s.IsBulk = 0 AND i.SeatId IS NULL)
 	BEGIN
 		PRINT 'There are some non-bulk show products with eampty SeatId';
 		SET @ret = 5;
 	END;
 	
-	IF EXISTS(SELECT * FROM @ItemsTable i 
+	IF @ret = 0
+		AND EXISTS(SELECT * FROM @ItemsTable i 
 		LEFT JOIN dbo.Shows s ON s.Id = @ShowId
 		LEFT JOIN dbo.Seats t ON t.Id = i.SeatId AND t.AuditoriumId = s.AuditoriumId
 		WHERE i.SeatId IS NOT NULL
@@ -93,6 +96,45 @@ BEGIN
 	BEGIN
 		PRINT 'One or more seatIds are for a different show than specified';
 		SET @ret = 6;
+	END;
+
+	IF @ret = 0
+		AND EXISTS(
+			SELECT * FROM @ItemsTable WHERE IsBulk = 1
+		)
+	BEGIN
+		
+		WITH CTE_ReservationBulkProducts AS (
+			SELECT ShowProductId, Qty = COUNT(*) 
+			FROM @ItemsTable 
+			WHERE IsBulk = 1
+			GROUP BY ShowProductId
+		), 
+		CTE_ShowBulkProducts AS (
+			SELECT 
+				ShowProductId = sp.Id, 
+				AlreadyReservedQty = t.AlreadyReservedQty,
+				MaxQty = sp.Quantity
+			FROM dbo.ShowProducts sp
+			OUTER APPLY (SELECT AlreadyReservedQty = COUNT(*) 
+				FROM dbo.ReservationItems ri
+					JOIN dbo.Reservations r ON r.Id = ri.ReservationId
+				WHERE r.IsValid = 1
+				AND ri.ShowProductId = sp.Id) AS t
+			WHERE sp.IsBulk = 1
+			AND sp.ShowId = @ShowId
+		)
+		SELECT rbp.ShowProductId, sbp.MaxQty, rbp.Qty, AlreadyReservedQty = ISNULL(sbp.AlreadyReservedQty, 0)
+		INTO #BulkShowProductIdsOverbooked
+		FROM CTE_ReservationBulkProducts rbp 
+		JOIN CTE_ShowBulkProducts sbp ON sbp.ShowProductId = rbp.ShowProductId
+		WHERE rbp.Qty + ISNULL(sbp.AlreadyReservedQty, 0) > sbp.MaxQty;
+
+		IF EXISTS(SELECT * FROM #BulkShowProductIdsOverbooked)
+		BEGIN
+			PRINT 'One or more bulk products are overbooked';
+			SET @ret = 7;
+		END;
 	END;
 
 	IF @ret = 0

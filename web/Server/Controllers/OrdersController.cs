@@ -190,6 +190,18 @@ namespace FMFT.Web.Server.Controllers
             {
                 return BadRequest(exception);
             }
+            catch (InvalidShowReservationException exception)
+            {
+                return BadRequest(exception);
+            }
+            catch (ShowProductOverbookedReservationException exception)
+            {
+                return BadRequest(exception);
+            }
+            catch (ShowSellNotStartedOrderException exception)
+            {
+                return BadRequest(exception);
+            }
             catch (NotAuthorizedAccountException exception)
             {
                 return Forbidden(exception);
@@ -223,10 +235,6 @@ namespace FMFT.Web.Server.Controllers
                 return BadRequest(exception);
             }
             catch (ShowDisabledOrderException exception)
-            {
-                return BadRequest(exception);
-            }
-            catch (ShowSellNotStartedOrderException exception)
             {
                 return BadRequest(exception);
             }
