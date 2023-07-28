@@ -29,7 +29,6 @@ namespace P24
 
             InitializeRestClient();
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-
         }
 
         private void InitializeRestClient()

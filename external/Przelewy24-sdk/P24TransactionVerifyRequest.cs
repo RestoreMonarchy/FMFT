@@ -7,7 +7,7 @@
         public string SessionId { get; set; }
         public int Amount { get; set; }
         public string Currency { get; set; }
-        public int OrderId { get; set; }
+        public long OrderId { get; set; }
         public string Sign { get; set; }
     }
 }
