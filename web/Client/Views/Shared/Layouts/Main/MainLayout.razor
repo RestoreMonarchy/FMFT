@@ -20,21 +20,31 @@
 <div class="py-3">
     <div class="container text-muted small">
         © FMFT @DateTime.Now.Year 
-        - <a href="/documents/privacy-policy.txt" target="_blank">Polityka prywatności</a>
+        - <a href="/documents/privacy-policy.pdf" target="_blank">Polityka prywatności</a>
         - <a href="/documents/terms-and-conditions.pdf" target="_blank">Regulamin</a>
     </div>
 </div>
 
-@code {
-    public ErrorBoundary ErrorBoundary { get; set; }
+<Condition Evaluation="displayCookies">
+    <Match>
+        <div style="padding-top: 50px;"></div>
 
-    protected override void OnParametersSet()
-    {
-        ErrorBoundary?.Recover();
-    }
-
-    protected override async Task OnParametersSetAsync()
-    {
-        await JSRuntimeBroker.ClearModalBackdropAsync();
-    }
-}
+        <div class="position-fixed bottom-0 right-0 left-0 w-100 bg-light p-2">
+            <div class="container small">
+                <div class="d-flex align-items-center">
+                    <div>
+                        Lubisz ciasteczka? 🍪 Używamy plików cookie, aby zapewnić najlepszą jakość korzystania z naszej aplikacji. <a href="/documents/privacy-policy.pdf" target="_blank">Dowiedz się więcej</a>
+                    </div>
+                    <div class="ms-2">
+                        <button class="btn btn-sm btn-primary d-none d-sm-block" @onclick="HideCookiesAlertAsync">
+                            Zgadzam się
+                        </button>
+                        <button class="btn btn-sm btn-primary d-block d-sm-none" @onclick="HideCookiesAlertAsync">
+                            Ok
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </Match>
+</Condition>
