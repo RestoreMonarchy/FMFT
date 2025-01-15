@@ -18,14 +18,14 @@ namespace FMFT.Web.Client.Views.Pages.Account.Authentications
 
         protected override async Task OnInitializedAsync()
         {
-            try
-            {
-                await ExternalLoginBroker.InitializeFacebookAsync();
-            } catch (Exception e)
-            {
-                LoggingBroker.LogError(e, "Failed to initialize facebook script");
-                IsFacebookDisabled = true;
-            }
+            //try
+            //{
+            //    await ExternalLoginBroker.InitializeFacebookAsync();
+            //} catch (Exception e)
+            //{
+            //    LoggingBroker.LogError(e, "Failed to initialize facebook script");
+            //    IsFacebookDisabled = true;
+            //}
             
             try
             {
