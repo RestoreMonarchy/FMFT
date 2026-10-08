@@ -148,6 +148,9 @@ function GetPosition(options, row, column, sector) {
         }
     }
 
+    // Mirror horizontally so seat 1 is on the left (as numbered in the theatre)
+    columnX = canvasWidth - columnX - sizeX;
+
     const columnY = rowIndex * marginY + stageOffset + sectorOffset;
 
     const posX = columnX + sizeX / 2;
